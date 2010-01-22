@@ -544,7 +544,7 @@ Source/LBServer.m,795
 - (mailimap *)session 308,10989
 - (struct mailstorage *)storageStruct 328,11477
 - (NSArray *) subscribedFolders 333,11542
-- (NSArray *)allFolders 371,13107
+- (NSArray *)allFolders 379,13100
 
 Source/LBSMTP.h,27
 @interface LBSMTP 41,1789

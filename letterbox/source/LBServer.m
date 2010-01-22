@@ -341,6 +341,8 @@
     
     NSMutableArray *subscribedFolders = [NSMutableArray array];   
     
+    // FIXME: get rid of this exception below.
+    
     //Fill the subscribed folder array
     err = mailimap_lsub([self session], "", "*", &subscribedList);
     if (err != MAIL_NO_ERROR) {
@@ -349,19 +351,25 @@
                                                        userInfo:nil];
         [exception raise];
     }
+    /*
     else if (clist_isempty(subscribedList)) {
-        NSException *exception = [NSException exceptionWithName:LBNoSubscribedFolders
-                                                         reason:LBNoSubscribedFoldersDesc
-                                                       userInfo:nil];
-        [exception raise];
+        // pft.
     }
+    */
+    
     for(cur = clist_begin(subscribedList); cur != NULL; cur = cur->next) {
         mailboxStruct = cur->data;
         mailboxName = mailboxStruct->mb_name;
         mailboxNameObject = [NSString stringWithCString:mailboxName encoding:NSUTF8StringEncoding];
         [subscribedFolders addObject:mailboxNameObject];
     }
+    
     mailimap_list_result_free(subscribedList);
+    
+    if (![subscribedFolders count]) {
+        // we're alwasy going to have an inbox.  I'm looking at you MobileMe
+        [subscribedFolders addObject:@"INBOX"];
+    }
     
     [self saveFoldersToCache:subscribedFolders];
     

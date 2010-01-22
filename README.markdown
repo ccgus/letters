@@ -13,7 +13,7 @@ What you'll find here isn't actually Letters.  It's a prototype named "CrashyEma
 
 It's for a bit of experimentation, and to act as a starting point.  It currently allows you to send plain text email, check your imap inbox, and crashes.
 
-**TODO:**
+**TODO**
 
   - Pretty much everything
   - Keychain support
@@ -26,4 +26,9 @@ It's for a bit of experimentation, and to act as a starting point.  It currently
   - Plugin API
   - A UI that doesn't make designers faint
   - Stop crashing
+  - LetterBox (the underlying framework for Letters) uses exceptions everywhere.  Need to take those out and put in NSError ** stuff instead.
   - Etc.
+
+**Building**
+
+Check out the git repository, open up Letters.xcodeproj, and build away.
