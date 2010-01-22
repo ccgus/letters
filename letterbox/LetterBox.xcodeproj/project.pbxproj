@@ -17,8 +17,7 @@
 		CC3D54271108E7F700EEEF77 /* FMResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = CC3D54211108E7F700EEEF77 /* FMResultSet.h */; };
 		CC3D54281108E7F700EEEF77 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3D54221108E7F700EEEF77 /* FMResultSet.m */; };
 		CC3D54381108EFE800EEEF77 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CC3D54371108EFE800EEEF77 /* libsqlite3.dylib */; };
-		CCBE55E211040E6400EEF1DF /* libetpan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCBE55E111040E6400EEF1DF /* libetpan.framework */; };
-		CCBE55E611040E7E00EEF1DF /* libetpan.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCBE55E511040E7E00EEF1DF /* libetpan.a */; };
+		CC86FB16110A59D30090F508 /* libetpan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC86FB15110A59D30090F508 /* libetpan.framework */; };
 		F81A8ADC0C03FC3B002F780A /* LBMIME_MessagePart.h in Headers */ = {isa = PBXBuildFile; fileRef = F81A8AD20C03FC3B002F780A /* LBMIME_MessagePart.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F81A8ADD0C03FC3B002F780A /* LBMIME_MessagePart.m in Sources */ = {isa = PBXBuildFile; fileRef = F81A8AD30C03FC3B002F780A /* LBMIME_MessagePart.m */; };
 		F81A8ADE0C03FC3B002F780A /* LBMIME_MultiPart.h in Headers */ = {isa = PBXBuildFile; fileRef = F81A8AD40C03FC3B002F780A /* LBMIME_MultiPart.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -73,6 +72,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		CC6D05E7110A488200D900E9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F890D38D10CEECD50039817C /* libetpan.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = libetpan;
+		};
+		CC6D0620110A4A5D00D900E9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F890D38D10CEECD50039817C /* libetpan.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C69AB10910546FE500F32FBD;
+			remoteInfo = "static libetpan";
+		};
 		F82D7D220F48ACDA00ADA65C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
@@ -92,13 +105,6 @@
 			containerPortal = F890D38D10CEECD50039817C /* libetpan.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = C69AB10A10546FE500F32FBD;
-			remoteInfo = "static libetpan";
-		};
-		F890D39C10CEED080039817C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F890D38D10CEECD50039817C /* libetpan.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C69AB10910546FE500F32FBD;
 			remoteInfo = "static libetpan";
 		};
 /* End PBXContainerItemProxy section */
@@ -131,10 +137,9 @@
 		CC3D54211108E7F700EEEF77 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = source/FMResultSet.h; sourceTree = "<group>"; };
 		CC3D54221108E7F700EEEF77 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = source/FMResultSet.m; sourceTree = "<group>"; };
 		CC3D54371108EFE800EEEF77 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		CC86FB15110A59D30090F508 /* libetpan.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libetpan.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCA553E01106DB6B00CEEFF4 /* Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Tests-Info.plist"; path = "resources/Tests-Info.plist"; sourceTree = "<group>"; };
 		CCA553E21106DB7100CEEFF4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = resources/Info.plist; sourceTree = "<group>"; };
-		CCBE55E111040E6400EEF1DF /* libetpan.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libetpan.framework; path = /builds/Debug/libetpan.framework; sourceTree = "<absolute>"; };
-		CCBE55E511040E7E00EEF1DF /* libetpan.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libetpan.a; path = /builds/Debug/libetpan.a; sourceTree = "<absolute>"; };
 		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		F81A8AD20C03FC3B002F780A /* LBMIME_MessagePart.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = LBMIME_MessagePart.h; path = Source/LBMIME_MessagePart.h; sourceTree = "<group>"; };
 		F81A8AD30C03FC3B002F780A /* LBMIME_MessagePart.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = LBMIME_MessagePart.m; path = Source/LBMIME_MessagePart.m; sourceTree = "<group>"; };
@@ -205,9 +210,8 @@
 				F8483E4309CE7B9C00B80440 /* libiconv.dylib in Frameworks */,
 				F8483E4C09CE7C2800B80440 /* libcrypto.dylib in Frameworks */,
 				F88804620B42018500D400E7 /* libsasl2.dylib in Frameworks */,
-				CCBE55E211040E6400EEF1DF /* libetpan.framework in Frameworks */,
-				CCBE55E611040E7E00EEF1DF /* libetpan.a in Frameworks */,
 				CC3D54381108EFE800EEEF77 /* libsqlite3.dylib in Frameworks */,
+				CC86FB16110A59D30090F508 /* libetpan.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,8 +300,7 @@
 		1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CCBE55E511040E7E00EEF1DF /* libetpan.a */,
-				CCBE55E111040E6400EEF1DF /* libetpan.framework */,
+				CC86FB15110A59D30090F508 /* libetpan.framework */,
 				F88804610B42018500D400E7 /* libsasl2.dylib */,
 				F8483E4B09CE7C2800B80440 /* libcrypto.dylib */,
 				F8483E4209CE7B9C00B80440 /* libiconv.dylib */,
@@ -456,7 +459,8 @@
 			buildRules = (
 			);
 			dependencies = (
-				F890D39D10CEED080039817C /* PBXTargetDependency */,
+				CC6D05E8110A488200D900E9 /* PBXTargetDependency */,
+				CC6D0621110A4A5D00D900E9 /* PBXTargetDependency */,
 			);
 			name = LetterBox;
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -643,15 +647,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		CC6D05E8110A488200D900E9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libetpan;
+			targetProxy = CC6D05E7110A488200D900E9 /* PBXContainerItemProxy */;
+		};
+		CC6D0621110A4A5D00D900E9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "static libetpan";
+			targetProxy = CC6D0620110A4A5D00D900E9 /* PBXContainerItemProxy */;
+		};
 		F82D7D230F48ACDA00ADA65C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8DC2EF4F0486A6940098B216 /* LetterBox */;
 			targetProxy = F82D7D220F48ACDA00ADA65C /* PBXContainerItemProxy */;
-		};
-		F890D39D10CEED080039817C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "static libetpan";
-			targetProxy = F890D39C10CEED080039817C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -666,6 +675,7 @@
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					/builds/Debug,
+					/builds/Release,
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/OpenSourceProjects/libetpan-0.58/build-mac/build/Release\"";
 				FRAMEWORK_VERSION = A;
@@ -676,19 +686,16 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Source/LetterBox_Prefix.pch;
 				INFOPLIST_FILE = resources/Info.plist;
-				INSTALL_PATH = "@loader_path/../Frameworks";
+				INSTALL_PATH = "@rpath";
 				LIBRARY_SEARCH_PATHS = (
 					"$(LIBRARY_SEARCH_PATHS)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
 					/builds/Debug,
+					/builds/Release,
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/OpenSourceProjects/build\"";
 				OTHER_CFLAGS = "-DDEBUG";
-				OTHER_LDFLAGS = (
-					"-seg1addr",
-					0xb0000000,
-				);
 				PRODUCT_NAME = LetterBox;
 				WRAPPER_EXTENSION = framework;
 				ZERO_LINK = YES;
@@ -698,34 +705,25 @@
 		1DEB91AF08733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
-				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
-					/builds/Debug,
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/OpenSourceProjects/libetpan-0.58/build-mac/build/Release\"";
 				FRAMEWORK_VERSION = A;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Source/LetterBox_Prefix.pch;
 				INFOPLIST_FILE = resources/Info.plist;
-				INSTALL_PATH = "@loader_path/../Frameworks";
+				INSTALL_PATH = "@rpath";
 				LIBRARY_SEARCH_PATHS = (
 					"$(LIBRARY_SEARCH_PATHS)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
-					/builds/Debug,
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/OpenSourceProjects/build\"";
-				OTHER_LDFLAGS = (
-					"-seg1addr",
-					0xb0000000,
-				);
 				PRODUCT_NAME = LetterBox;
 				STRIP_INSTALLED_PRODUCT = YES;
 				WRAPPER_EXTENSION = framework;

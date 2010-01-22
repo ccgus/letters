@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
+		CC5F9761110A5A2700522744 /* LetterBox.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CC86FB37110A59E10090F508 /* LetterBox.framework */; };
+		CC5F9762110A5A2700522744 /* libetpan.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CC86FB1B110A59DE0090F508 /* libetpan.framework */; };
+		CC6D05F6110A491C00D900E9 /* MailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCA554551106E1FE00CEEFF4 /* MailView.xib */; };
+		CC86FB1C110A59DE0090F508 /* libetpan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC86FB1B110A59DE0090F508 /* libetpan.framework */; };
+		CC86FB38110A59E10090F508 /* LetterBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC86FB37110A59E10090F508 /* LetterBox.framework */; };
 		CC9C527D1107A961008ED850 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC9C527C1107A961008ED850 /* AddressBook.framework */; };
 		CCA5542B1106DDF800CEEFF4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = CCA554231106DDF800CEEFF4 /* Credits.rtf */; };
 		CCA5542D1106DDF800CEEFF4 /* LADocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCA554271106DDF800CEEFF4 /* LADocument.xib */; };
@@ -19,8 +24,6 @@
 		CCA554541106E1BE00CEEFF4 /* LAMailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA554531106E1BE00CEEFF4 /* LAMailViewController.m */; };
 		CCA554841106EBBC00CEEFF4 /* LAPrefsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA554831106EBBC00CEEFF4 /* LAPrefsWindowController.m */; };
 		CCA554871106EBCC00CEEFF4 /* Prefs.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCA554851106EBCC00CEEFF4 /* Prefs.xib */; };
-		CCA554DA1106F2F100CEEFF4 /* LetterBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCA554D91106F2F100CEEFF4 /* LetterBox.framework */; };
-		CCA554F21106F2F300CEEFF4 /* LetterBox.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CCA554D91106F2F100CEEFF4 /* LetterBox.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,7 +57,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CCA554F21106F2F300CEEFF4 /* LetterBox.framework in Copy Frameworks */,
+				CC5F9761110A5A2700522744 /* LetterBox.framework in Copy Frameworks */,
+				CC5F9762110A5A2700522744 /* libetpan.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -66,7 +70,9 @@
 		13E42FBA07B3F13500E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		8D15AC370486D014006FF6A4 /* Letters.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Letters.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D15AC370486D014006FF6A4 /* CrashyEmailApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CrashyEmailApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC86FB1B110A59DE0090F508 /* libetpan.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libetpan.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC86FB37110A59E10090F508 /* LetterBox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LetterBox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC9C527C1107A961008ED850 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		CCA554241106DDF800CEEFF4 /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = resources/English.lproj/Credits.rtf; sourceTree = "<group>"; };
 		CCA554261106DDF800CEEFF4 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = resources/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -86,7 +92,6 @@
 		CCA554831106EBBC00CEEFF4 /* LAPrefsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LAPrefsWindowController.m; path = source/LAPrefsWindowController.m; sourceTree = "<group>"; };
 		CCA554861106EBCC00CEEFF4 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = resources/English.lproj/Prefs.xib; sourceTree = "<group>"; };
 		CCA554CD1106F2D600CEEFF4 /* LetterBox.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LetterBox.xcodeproj; path = letterbox/LetterBox.xcodeproj; sourceTree = "<group>"; };
-		CCA554D91106F2F100CEEFF4 /* LetterBox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LetterBox.framework; path = /builds/Debug/LetterBox.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,8 +100,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */,
-				CCA554DA1106F2F100CEEFF4 /* LetterBox.framework in Frameworks */,
 				CC9C527D1107A961008ED850 /* AddressBook.framework in Frameworks */,
+				CC86FB1C110A59DE0090F508 /* libetpan.framework in Frameworks */,
+				CC86FB38110A59E10090F508 /* LetterBox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,7 +112,8 @@
 		1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CCA554D91106F2F100CEEFF4 /* LetterBox.framework */,
+				CC86FB37110A59E10090F508 /* LetterBox.framework */,
+				CC86FB1B110A59DE0090F508 /* libetpan.framework */,
 				1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */,
 				CC9C527C1107A961008ED850 /* AddressBook.framework */,
 			);
@@ -126,7 +133,7 @@
 		19C28FB0FE9D524F11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D15AC370486D014006FF6A4 /* Letters.app */,
+				8D15AC370486D014006FF6A4 /* CrashyEmailApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -236,7 +243,7 @@
 			name = Letters;
 			productInstallPath = "$(HOME)/Applications";
 			productName = Letters;
-			productReference = 8D15AC370486D014006FF6A4 /* Letters.app */;
+			productReference = 8D15AC370486D014006FF6A4 /* CrashyEmailApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -289,6 +296,7 @@
 				CCA5542E1106DDF800CEEFF4 /* MainMenu.xib in Resources */,
 				CCA554311106DE0500CEEFF4 /* InfoPlist.strings in Resources */,
 				CCA554871106EBCC00CEEFF4 /* Prefs.xib in Resources */,
+				CC6D05F6110A491C00D900E9 /* MailView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,10 +382,6 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					/builds/Debug,
-				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -385,9 +389,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = source/Letters_Prefix.pch;
 				INFOPLIST_FILE = "resources/Letters-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				OTHER_CFLAGS = "-DDEBUG";
-				PRODUCT_NAME = Letters;
+				PRODUCT_NAME = CrashyEmailApp;
 			};
 			name = Debug;
 		};
@@ -396,16 +400,12 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					/builds/Debug,
-				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = source/Letters_Prefix.pch;
 				INFOPLIST_FILE = "resources/Letters-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				PRODUCT_NAME = Letters;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
+				PRODUCT_NAME = CrashyEmailApp;
 			};
 			name = Release;
 		};
@@ -413,6 +413,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				FRAMEWORK_SEARCH_PATHS = "$(BUILD_DIR)/$(CONFIGURATION)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -431,6 +432,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				FRAMEWORK_SEARCH_PATHS = "$(BUILD_DIR)/$(CONFIGURATION)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

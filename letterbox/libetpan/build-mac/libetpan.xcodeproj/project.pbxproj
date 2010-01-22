@@ -366,7 +366,6 @@
 		C6DC67351083CDA000FA050B /* imapdriver_tools_private.h in Headers */ = {isa = PBXBuildFile; fileRef = C6DC66AC1083CDA000FA050B /* imapdriver_tools_private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C6DC67361083CDA000FA050B /* imapdriver_types.h in Headers */ = {isa = PBXBuildFile; fileRef = C6DC66AD1083CDA000FA050B /* imapdriver_types.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C6DC67371083CDA000FA050B /* imapstorage.h in Headers */ = {isa = PBXBuildFile; fileRef = C6DC66AE1083CDA000FA050B /* imapstorage.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C6DC67381083CDA000FA050B /* libetpan-config.h in Headers */ = {isa = PBXBuildFile; fileRef = C6DC66AF1083CDA000FA050B /* libetpan-config.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C6DC67391083CDA000FA050B /* libetpan.h in Headers */ = {isa = PBXBuildFile; fileRef = C6DC66B01083CDA000FA050B /* libetpan.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C6DC673A1083CDA000FA050B /* libetpan_version.h in Headers */ = {isa = PBXBuildFile; fileRef = C6DC66B11083CDA000FA050B /* libetpan_version.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C6DC673B1083CDA000FA050B /* mail.h in Headers */ = {isa = PBXBuildFile; fileRef = C6DC66B21083CDA000FA050B /* mail.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -702,7 +701,6 @@
 		C6DC66AC1083CDA000FA050B /* imapdriver_tools_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imapdriver_tools_private.h; sourceTree = "<group>"; };
 		C6DC66AD1083CDA000FA050B /* imapdriver_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imapdriver_types.h; sourceTree = "<group>"; };
 		C6DC66AE1083CDA000FA050B /* imapstorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imapstorage.h; sourceTree = "<group>"; };
-		C6DC66AF1083CDA000FA050B /* libetpan-config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "libetpan-config.h"; sourceTree = "<group>"; };
 		C6DC66B01083CDA000FA050B /* libetpan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libetpan.h; sourceTree = "<group>"; };
 		C6DC66B11083CDA000FA050B /* libetpan_version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libetpan_version.h; sourceTree = "<group>"; };
 		C6DC66B21083CDA000FA050B /* mail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mail.h; sourceTree = "<group>"; };
@@ -1276,7 +1274,6 @@
 				C6DC66AC1083CDA000FA050B /* imapdriver_tools_private.h */,
 				C6DC66AD1083CDA000FA050B /* imapdriver_types.h */,
 				C6DC66AE1083CDA000FA050B /* imapstorage.h */,
-				C6DC66AF1083CDA000FA050B /* libetpan-config.h */,
 				C6DC66B01083CDA000FA050B /* libetpan.h */,
 				C6DC66B11083CDA000FA050B /* libetpan_version.h */,
 				C6DC66B21083CDA000FA050B /* mail.h */,
@@ -2014,7 +2011,6 @@
 				C6DC67351083CDA000FA050B /* imapdriver_tools_private.h in Headers */,
 				C6DC67361083CDA000FA050B /* imapdriver_types.h in Headers */,
 				C6DC67371083CDA000FA050B /* imapstorage.h in Headers */,
-				C6DC67381083CDA000FA050B /* libetpan-config.h in Headers */,
 				C6DC67391083CDA000FA050B /* libetpan.h in Headers */,
 				C6DC673A1083CDA000FA050B /* libetpan_version.h in Headers */,
 				C6DC673B1083CDA000FA050B /* mail.h in Headers */,
@@ -2712,10 +2708,9 @@
 				FRAMEWORK_VERSION = A;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				INSTALL_PATH = "@rpath";
 				PRODUCT_NAME = libetpan;
 				WRAPPER_EXTENSION = framework;
 			};
@@ -2725,13 +2720,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
-				GCC_MODEL_TUNING = G5;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				INSTALL_PATH = "@rpath";
 				PRODUCT_NAME = libetpan;
 				WRAPPER_EXTENSION = framework;
 			};
