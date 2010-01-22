@@ -1,0 +1,13 @@
+/.cvsignore/1.1/Wed Dec 16 19:49:11 2009//
+/Makefile.am/1.1/Wed Dec 16 19:49:11 2009//
+/TODO/1.1/Wed Dec 16 19:49:11 2009//
+/mailsmtp.c/1.33/Sat Dec 19 01:45:44 2009//
+/mailsmtp.h/1.21/Wed Dec 16 19:49:11 2009//
+/mailsmtp_helper.c/1.14/Wed Dec 16 19:49:11 2009//
+/mailsmtp_helper.h/1.11/Wed Dec 16 19:49:11 2009//
+/mailsmtp_socket.c/1.19/Sat Dec 19 01:45:44 2009//
+/mailsmtp_socket.h/1.18/Wed Dec 16 19:49:11 2009//
+/mailsmtp_ssl.c/1.16/Wed Dec 16 19:49:11 2009//
+/mailsmtp_ssl.h/1.16/Wed Dec 16 19:49:11 2009//
+/mailsmtp_types.h/1.17/Wed Dec 16 19:49:11 2009//
+D

@@ -1,0 +1,16 @@
+/.cvsignore/1.1/Wed Dec 16 19:49:11 2009//
+/Makefile.am/1.1/Wed Dec 16 19:49:11 2009//
+/pop3driver.c/1.43/Wed Dec 16 19:49:11 2009//
+/pop3driver.h/1.15/Wed Dec 16 19:49:11 2009//
+/pop3driver_cached.c/1.50/Wed Dec 16 19:49:11 2009//
+/pop3driver_cached.h/1.15/Wed Dec 16 19:49:11 2009//
+/pop3driver_cached_message.c/1.22/Wed Dec 16 19:49:11 2009//
+/pop3driver_cached_message.h/1.6/Wed Dec 16 19:49:11 2009//
+/pop3driver_message.c/1.15/Wed Dec 16 19:49:11 2009//
+/pop3driver_message.h/1.6/Wed Dec 16 19:49:11 2009//
+/pop3driver_tools.c/1.17/Wed Dec 16 19:49:11 2009//
+/pop3driver_tools.h/1.11/Wed Dec 16 19:49:11 2009//
+/pop3driver_types.h/1.11/Wed Dec 16 19:49:11 2009//
+/pop3storage.c/1.22/Wed Dec 16 19:49:11 2009//
+/pop3storage.h/1.12/Wed Dec 16 19:49:11 2009//
+D

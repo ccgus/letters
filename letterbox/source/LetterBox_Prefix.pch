@@ -1,0 +1,14 @@
+//
+// Prefix header for all source files of the 'MailCore' target in the 'MailCore' project.
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif
+
+#ifdef DEBUG
+    #define debug(...) NSLog(__VA_ARGS__)
+#else
+    #define debug(...)
+#endif
+

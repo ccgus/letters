@@ -1,0 +1,12 @@
+/.cvsignore/1.1/Wed Dec 16 19:49:11 2009//
+/Makefile.am/1.1/Wed Dec 16 19:49:11 2009//
+/mailpop3.c/1.32/Wed Dec 16 19:49:11 2009//
+/mailpop3.h/1.18/Wed Dec 16 19:49:11 2009//
+/mailpop3_helper.c/1.11/Wed Dec 16 19:49:11 2009//
+/mailpop3_helper.h/1.9/Wed Dec 16 19:49:11 2009//
+/mailpop3_socket.c/1.16/Sat Dec 19 01:45:44 2009//
+/mailpop3_socket.h/1.16/Wed Dec 16 19:49:11 2009//
+/mailpop3_ssl.c/1.17/Sat Dec 19 01:45:44 2009//
+/mailpop3_ssl.h/1.17/Wed Dec 16 19:49:11 2009//
+/mailpop3_types.h/1.19/Wed Dec 16 19:49:11 2009//
+D

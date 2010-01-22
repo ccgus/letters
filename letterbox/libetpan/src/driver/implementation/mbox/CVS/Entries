@@ -1,0 +1,16 @@
+/.cvsignore/1.1/Wed Dec 16 19:49:10 2009//
+/Makefile.am/1.1/Wed Dec 16 19:49:10 2009//
+/mboxdriver.c/1.45/Wed Dec 16 19:49:10 2009//
+/mboxdriver.h/1.14/Wed Dec 16 19:49:10 2009//
+/mboxdriver_cached.c/1.56/Wed Dec 16 19:49:10 2009//
+/mboxdriver_cached.h/1.11/Wed Dec 16 19:49:10 2009//
+/mboxdriver_cached_message.c/1.27/Wed Dec 16 19:49:10 2009//
+/mboxdriver_cached_message.h/1.6/Wed Dec 16 19:49:10 2009//
+/mboxdriver_message.c/1.20/Wed Dec 16 19:49:10 2009//
+/mboxdriver_message.h/1.6/Wed Dec 16 19:49:10 2009//
+/mboxdriver_tools.c/1.17/Wed Dec 16 19:49:10 2009//
+/mboxdriver_tools.h/1.11/Wed Dec 16 19:49:10 2009//
+/mboxdriver_types.h/1.7/Wed Dec 16 19:49:10 2009//
+/mboxstorage.c/1.14/Wed Dec 16 19:49:10 2009//
+/mboxstorage.h/1.8/Wed Dec 16 19:49:10 2009//
+D
