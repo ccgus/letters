@@ -293,8 +293,8 @@ source/LBAddress.m,428
 - (void)encodeWithCoder:76,2465
 - (void)dealloc 82,2611
 -(NSString*)decodedName 88,2696
-- (BOOL)isEqual:104,3321
-- (NSString*) description 112,3545
+- (BOOL)isEqual:104,3359
+- (NSString*) description 112,3583
 
 source/LBAttachment.h,33
 @interface LBAttachment 35,1641
@@ -317,8 +317,8 @@ source/LBBareAttachment.m,245
 - (id)initWithMIMESinglePart:42,1794
 - (void)dealloc 52,2047
 -(NSString*)decodedFilename 59,2167
-- (NSString *)description 74,2807
-- (LBAttachment *)fetchFullAttachment 79,2960
+- (NSString *)description 75,2850
+- (LBAttachment *)fetchFullAttachment 80,3003
 
 source/LBBareMessage.h,34
 @interface LBBareMessage 37,1685
@@ -338,42 +338,43 @@ static int fill_remote_ip_port(44,1795
 static int fill_local_ip_port(71,2458
 - (bool)helo 94,3113
 - (void)startTLS 101,3291
-- (void)authenticateWithUsername:(NSString *)username password:(NSString *)password server:authenticateWithUsername:password:server:120,3868
-- (void)setFrom:164,5541
-- (void)setRecipientAddress:170,5786
+- (void)authenticateWithUsername:(NSString *)username password:(NSString *)password server:authenticateWithUsername:password:server:133,4163
+- (void)setFrom:185,5976
+- (void)setRecipientAddress:199,6377
 
 source/LBFolder.h,91
 @class LBMessage,42,1950
 @class LBMessage, LBServer;42,1950
 @interface LBFolder 44,1979
 
-source/LBFolder.m,1136
+source/LBFolder.m,1163
 @interface LBFolder (Private)LBFolder(Private)39,1725
 - (id)initWithPath:(NSString *)path inServer:initWithPath:inServer:43,1790
 - (void)dealloc 58,2241
 - (void)connect 69,2416
-- (void)disconnect 79,2720
-- (NSString *)name 87,2821
-- (NSString *)path 94,3007
-- (void)create 116,3585
-- (void)delete 128,3927
-- (void)subscribe 140,4268
-- (void)unsubscribe 151,4591
-- (struct mailfolder *)folderStruct 162,4921
-- (BOOL)isUIDValid:167,4983
-- (NSUInteger)uidValidity 174,5259
-- (void)check 185,5514
-- (NSUInteger)sequenceNumberForUID:192,5717
-- (NSSet *)messageListWithFetchAttributes:240,7334
-- (NSSet *)messageObjectsFromIndex:(unsigned int)start toIndex:messageObjectsFromIndex:toIndex:334,10478
-- (LBMessage *)messageWithUID:430,13697
-- (unsigned int)flagsForMessage:476,15850
-- (void)setFlags:(unsigned int)flags forMessage:setFlags:forMessage:491,16337
-- (void)expunge 502,16673
-- (void)copyMessageWithUID:(NSString *)uid toFolderWithPath:copyMessageWithUID:toFolderWithPath:510,16900
-- (NSUInteger)unreadMessageCount 521,17405
-- (NSUInteger)totalMessageCount 534,17761
-int uid_list_to_env_list(562,18474
+- (void)disconnect 87,2947
+- (NSString *)name 95,3048
+- (NSString *)path 102,3265
+- (void)setPath:107,3308
+- (void)create 130,4027
+- (void)delete 148,4553
+- (void)subscribe 166,5074
+- (void)unsubscribe 182,5572
+- (struct mailfolder *)folderStruct 199,6082
+- (BOOL)isUIDValid:204,6144
+- (NSUInteger)uidValidity 211,6420
+- (void)check 222,6675
+- (NSUInteger)sequenceNumberForUID:236,7072
+- (NSSet *)messageListWithFetchAttributes:292,8819
+- (NSSet *)messageObjectsFromIndex:(unsigned int)start toIndex:messageObjectsFromIndex:toIndex:395,12155
+- (LBMessage *)messageWithUID:511,15952
+- (unsigned int)flagsForMessage:575,18649
+- (void)setFlags:(unsigned int)flags forMessage:setFlags:forMessage:596,19315
+- (void)expunge 612,19831
+- (void)copyMessageWithUID:(NSString *)uid toFolderWithPath:copyMessageWithUID:toFolderWithPath:626,20239
+- (NSUInteger)unreadMessageCount 643,20929
+- (NSUInteger)totalMessageCount 661,21462
+int uid_list_to_env_list(689,22175
 
 source/LBMessage.h,199
 @class LBFolder,44,2030
@@ -499,8 +500,8 @@ source/LBMIME_SinglePart.m,340
 - (id)initWithData:47,1940
         forMessage:initWithMIMEStruct:forMessage:57,2147
 - (void)fetchPart 91,3498
-- (struct mailmime *)buildMIMEStruct 128,4964
-- (void)dealloc 147,5606
+- (struct mailmime *)buildMIMEStruct 136,5195
+- (void)dealloc 155,5837
 
 source/LBMIME_TextPart.h,36
 @interface LBMIME_TextPart 35,1642
@@ -519,7 +520,7 @@ source/LBMIMEFactory.h,99
 
 source/LBMIMEFactory.m,197
                           forMessage:createMIMEWithMIMEStruct:forMessage:45,1892
-                                               forMessage:createMIMESinglePartWithMIMEStruct:forMessage:67,2713
+                                               forMessage:createMIMESinglePartWithMIMEStruct:forMessage:70,2744
 
 source/LBServer.h,103
 @class LBAccount;13,194
@@ -540,28 +541,28 @@ source/LBServer.m,795
 - (NSArray*) cachedFolders 204,6993
 - (NSArray*) cachedMessagesForFolder:222,7472
 - (BOOL)isConnected 259,8792
-- (void) connect 264,8841
-- (void) disconnect 317,11150
-- (LBFolder *)folderWithPath:322,11234
-- (mailimap *)session 328,11394
-- (struct mailstorage *)storageStruct 348,11882
-- (NSArray *) subscribedFolders 353,11947
-- (NSArray *)allFolders 399,13505
+- (BOOL) connect:263,8840
+- (void) disconnect 310,10565
+- (LBFolder *)folderWithPath:315,10649
+- (mailimap *)session 321,10809
+- (struct mailstorage *)storageStruct 341,11297
+- (NSArray *) subscribedFolders:346,11362
+- (NSArray *)allFolders 388,12718
 
 source/LBSMTP.h,27
 @interface LBSMTP 41,1789
 
-source/LBSMTP.m,452
+source/LBSMTP.m,454
 - (id)initWithResource:38,1691
 - (void)connectToServer:(NSString *)server port:connectToServer:port:47,1823
-- (bool)helo 54,2127
-- (void)startTLS 62,2401
-- (void)authenticateWithUsername:(NSString *)username password:(NSString *)password server:authenticateWithUsername:password:server:67,2451
-- (void)setFrom:72,2594
-- (void)setRecipients:78,2824
-- (void)setRecipientAddress:87,3043
-- (void)setData:93,3295
-- (mailsmtp *)resource 102,3698
+- (bool)helo 61,2279
+- (void)startTLS 76,2707
+- (void)authenticateWithUsername:(NSString *)username password:(NSString *)password server:authenticateWithUsername:password:server:81,2757
+- (void)setFrom:86,2900
+- (void)setRecipients:99,3280
+- (void)setRecipientAddress:108,3499
+- (void)setData:121,3907
+- (mailsmtp *)resource 143,4603
 
 source/LBSMTPConnection.h,100
 @class LBMessage,41,1943
@@ -615,14 +616,12 @@ source/LetterBoxTypes.h,1448
 #define    LBSMTPData 102,4636
 #define    LBSMTPDataDesc 103,4689
 
-source/LetterBoxUtilities.m,239
+source/LetterBoxUtilities.m,164
 void letterbox_logger(36,1699
 void LetterBoxEnableLogging(54,2144
 void LetterBoxDisableLogging(59,2247
-void IfFalse_RaiseException(64,2338
-void IfTrue_RaiseException(70,2504
-void RaiseException(76,2668
-BOOL StringStartsWith(85,2938
+BOOL StringStartsWith(86,2943
+void LBQuickError(95,3198
 
 libetpan/build-mac/include/config.h,1365
 #define DBVERS 11,305

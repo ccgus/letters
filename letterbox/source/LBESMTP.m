@@ -104,7 +104,13 @@ static int fill_local_ip_port(mailstream * stream, char * local_ip_port, size_t 
     mailstream_low * new_low;
     
     int ret = mailesmtp_starttls([self resource]);
-    IfTrue_RaiseException(ret != MAILSMTP_NO_ERROR, LBSMTPTLS, LBSMTPTLSDesc);
+    if (ret != MAILSMTP_NO_ERROR) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(LBSMTPTLSDesc);
+        return;
+    }
+    
+    //IfTrue_RaiseException(ret != MAILSMTP_NO_ERROR, LBSMTPTLS, LBSMTPTLSDesc);
 
     low = mailstream_get_low([self resource]->stream);
     fd = mailstream_low_get_fd(low);
@@ -113,7 +119,14 @@ static int fill_local_ip_port(mailstream * stream, char * local_ip_port, size_t 
     mailstream_set_low([self resource]->stream, new_low);
 
     ret = mailesmtp_ehlo([self resource]);
-    IfTrue_RaiseException(ret != MAILSMTP_NO_ERROR, LBSMTPHello, LBSMTPHelloDesc);
+    
+    if (ret != MAILSMTP_NO_ERROR) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(LBSMTPHelloDesc);
+        return;
+    }
+    
+    //IfTrue_RaiseException(ret != MAILSMTP_NO_ERROR, LBSMTPHello, LBSMTPHelloDesc);
 }
 
 
@@ -141,8 +154,10 @@ static int fill_local_ip_port(mailstream * stream, char * local_ip_port, size_t 
     ret = fill_remote_ip_port([self resource]->stream, remote_ip_port_buf, sizeof(remote_ip_port_buf));
     if (ret < 0)
         remote_ip_port = NULL;
-    else
+    else {
         remote_ip_port = remote_ip_port_buf;
+    }
+        
  /*
     in most case, login = auth_name = user@domain
     and realm = server hostname full qualified domain name
@@ -155,23 +170,41 @@ static int fill_local_ip_port(mailstream * stream, char * local_ip_port, size_t 
         const char * password, const char * realm);
 
  */     
-    ret = mailesmtp_auth_sasl([self resource], "PLAIN", cServer, local_ip_port, remote_ip_port,
-                            cUsername, cUsername, cPassword, cServer);
-    IfTrue_RaiseException(ret != MAILSMTP_NO_ERROR, LBSMTPLogin, LBSMTPLoginDesc);
+    ret = mailesmtp_auth_sasl([self resource], "PLAIN", cServer, local_ip_port, remote_ip_port, cUsername, cUsername, cPassword, cServer);
+    
+    if (ret != MAILSMTP_NO_ERROR) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(LBSMTPLoginDesc);
+        return;
+    }
+    
+    //IfTrue_RaiseException(ret != MAILSMTP_NO_ERROR, LBSMTPLogin, LBSMTPLoginDesc);
 }
 
 
 - (void)setFrom:(NSString *)fromAddress {
     int ret = mailesmtp_mail([self resource], [fromAddress cStringUsingEncoding:NSUTF8StringEncoding], 1, "Letters");
-    IfTrue_RaiseException(ret != MAILSMTP_NO_ERROR, LBSMTPFrom, LBSMTPFromDesc);
+    
+    
+    if (ret != MAILSMTP_NO_ERROR) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(LBSMTPFromDesc);
+        return;
+    }
+    
+    ///IfTrue_RaiseException(ret != MAILSMTP_NO_ERROR, LBSMTPFrom, LBSMTPFromDesc);
 }
 
 
 - (void)setRecipientAddress:(NSString *)recAddress {
     int ret = mailesmtp_rcpt([self resource], [recAddress cStringUsingEncoding:NSUTF8StringEncoding], MAILSMTP_DSN_NOTIFY_FAILURE|MAILSMTP_DSN_NOTIFY_DELAY,NULL);
     
-    debug(@"ret: %d", ret);
+    if (ret != MAILSMTP_NO_ERROR) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(LBSMTPRecipientsDesc);
+        return;
+    }
     
-    IfTrue_RaiseException(ret != MAILSMTP_NO_ERROR, LBSMTPRecipients, LBSMTPRecipientsDesc);
+    //IfTrue_RaiseException(ret != MAILSMTP_NO_ERROR, LBSMTPRecipients, LBSMTPRecipientsDesc);
 }
 @end

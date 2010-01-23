@@ -87,7 +87,7 @@
 
 -(NSString*)decodedName {
     // added by Gabor
-    
+    // FIXME: Why not use hasPrefix: here?
     if (StringStartsWith(self.name, @"=?ISO-8859-1?Q?")) {
         NSString* newName = [self.name substringFromIndex:[@"=?ISO-8859-1?Q?" length]];
         newName = [newName stringByReplacingOccurrencesOfString:@"?=" withString:@""];

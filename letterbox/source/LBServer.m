@@ -260,8 +260,7 @@
     return _connected;
 }
 
-
-- (void) connect {
+- (BOOL) connect:(NSError**)outErr {
     
     int err = 0;
     int imap_cached = 0;
@@ -286,31 +285,25 @@
                                      imap_cached,
                                      NULL);
     
-    // FIXME: don't throw an exception here.  return an NSError* instead.  Same with the other exceptions.
-    
     if (err != MAIL_NO_ERROR) {
-        NSException *exception = [NSException exceptionWithName:LBMemoryError
-                                                         reason:LBMemoryErrorDesc
-                                                       userInfo:nil];
-        [exception raise];
+        LBQuickError(outErr, LBMemoryError, err, LBMemoryErrorDesc);
+        return NO;
     }
     
     err = mailstorage_connect(_storage);
+    
     if (err == MAIL_ERROR_LOGIN) {
-        NSException *exception = [NSException exceptionWithName:LBLoginError
-                                                         reason:LBLoginErrorDesc
-                                                       userInfo:nil];
-        [exception raise];
+        LBQuickError(outErr, LBLoginError, err, LBLoginErrorDesc);
+        return NO;
     }
     else if (err != MAIL_NO_ERROR) {
-        NSException *exception = [NSException exceptionWithName:LBUnknownError
-                                                         reason:[NSString stringWithFormat:@"Error number: %d",err]
-                                                       userInfo:nil];
-        [exception raise];
+        LBQuickError(outErr, LBUnknownError, err, [NSString stringWithFormat:@"Error number: %d",err]);
+        return NO;
     }
-    else {
-        _connected = YES;
-    }
+    
+    _connected = YES;
+    
+    return _connected;
 }
 
 
@@ -350,7 +343,7 @@
 }
 
 
-- (NSArray *) subscribedFolders {
+- (NSArray *) subscribedFolders:(NSError**)outErr {
     struct mailimap_mailbox_list * mailboxStruct;
     clist *subscribedList;
     clistiter *cur;
@@ -361,15 +354,11 @@
     
     NSMutableArray *subscribedFolders = [NSMutableArray array];   
     
-    // FIXME: get rid of this exception below.
-    
     //Fill the subscribed folder array
     err = mailimap_lsub([self session], "", "*", &subscribedList);
     if (err != MAIL_NO_ERROR) {
-        NSException *exception = [NSException exceptionWithName:LBUnknownError
-                                                         reason:[NSString stringWithFormat:@"Error number: %d",err]
-                                                       userInfo:nil];
-        [exception raise];
+        LBQuickError(outErr, LBUnknownError, err, [NSString stringWithFormat:@"Error number: %d",err]);
+        return nil;
     }
     /*
     else if (clist_isempty(subscribedList)) {

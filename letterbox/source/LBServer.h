@@ -50,7 +50,7 @@
  @abstract   Retrieves a list of only the subscribed folders from the server.
  @result     Returns a NSSet which contains NSStrings of the folders pathnames.
  */
-- (NSArray *)subscribedFolders;
+- (NSArray *) subscribedFolders:(NSError**)outErr;
 
 /*!
  @abstract   If you have the path of a folder on the server use this method to retrieve just the one folder.
@@ -76,7 +76,7 @@
  @param      login The username to connect with.
  @param      password The password to use to connect.
  */
-- (void) connect;
+- (BOOL) connect:(NSError**)err;
 
 /*!
  @abstract   This method returns the current connection status.

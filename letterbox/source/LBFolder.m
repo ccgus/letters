@@ -68,10 +68,18 @@
 
 - (void)connect {
     int err = MAIL_NO_ERROR;
-    err =  mailfolder_connect(_folder);
-    #warning NOOOOOOOOOOOOOOO NO MORE EXCEPTIONS NOOOOOO
-    IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError, 
-        [NSString stringWithFormat:@"Error number: %d",err]);   
+    err = mailfolder_connect(_folder);
+    
+    // FIXME: should we err if we're already connected?
+    // FIXME: maybe return a boolean?
+    
+    if (err != MAILSMTP_NO_ERROR) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"%@", [NSString stringWithFormat:@"Error number: %d",err]);
+        return;
+    }
+    
+    //IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError,  [NSString stringWithFormat:@"Error number: %d",err]);   
     _connected = YES;
 }
 
@@ -90,22 +98,28 @@
     return [pathParts objectAtIndex:[pathParts count]-1];
 }
 
-
+// FIXME: make this a property.
 - (NSString *)path {
     return _path;
 }
 
 
-- (void)setPath:(NSString *)path; {
+- (void)setPath:(NSString *)path {
     int err;
     const char *newPath = [path cStringUsingEncoding:NSUTF8StringEncoding];
     const char *oldPath = [_path cStringUsingEncoding:NSUTF8StringEncoding];
     
     [self connect]; 
     [self unsubscribe];
-    err =  mailimap_rename([_server session], oldPath, newPath);
-    IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError, 
-        [NSString stringWithFormat:@"Error number: %d",err]);   
+    err = mailimap_rename([_server session], oldPath, newPath);
+    
+    if (err != MAILSMTP_NO_ERROR) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"%@", [NSString stringWithFormat:@"Error number: %d",err]);
+        return;
+    }
+    
+    //IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError,  [NSString stringWithFormat:@"Error number: %d",err]);   
     [path retain];
     [_path release];
     _path = path;
@@ -117,45 +131,68 @@
     int err;
     const char *path = [_path cStringUsingEncoding:NSUTF8StringEncoding];
     
-    err =  mailimap_create([_server session], path);
-    IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError, 
-        [NSString stringWithFormat:@"Error number: %d",err]);
+    err = mailimap_create([_server session], path);
+    
+    if (err != MAILSMTP_NO_ERROR) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"%@", [NSString stringWithFormat:@"Error number: %d",err]);
+        return;
+    }
+    
+    //IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError, [NSString stringWithFormat:@"Error number: %d",err]);
     [self connect];
     [self subscribe];   
 }
 
 
 - (void)delete {
-    int err;
+    
     const char *path = [_path cStringUsingEncoding:NSUTF8StringEncoding];
     
     [self connect];
     [self unsubscribe];
-    err =  mailimap_delete([_server session], path);
-    IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError, 
-        [NSString stringWithFormat:@"Error number: %d",err]);
+    int err = mailimap_delete([_server session], path);
+    
+    if (err != MAILSMTP_NO_ERROR) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"%@", [NSString stringWithFormat:@"Error number: %d",err]);
+        return;
+    }
+    
+    //IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError, [NSString stringWithFormat:@"Error number: %d",err]);
 }
 
 
 - (void)subscribe {
-    int err;
+    
     const char *path = [_path cStringUsingEncoding:NSUTF8StringEncoding];
     
     [self connect];
-    err =  mailimap_subscribe([_server session], path);
-    IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError, 
-        [NSString stringWithFormat:@"Error number: %d",err]);
+    int err = mailimap_subscribe([_server session], path);
+    if (err != MAILSMTP_NO_ERROR) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"%@", [NSString stringWithFormat:@"Error number: %d",err]);
+        return;
+    }
+    
+    //IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError, [NSString stringWithFormat:@"Error number: %d",err]);
 }
 
 
 - (void)unsubscribe {
-    int err;
+    
     const char *path = [_path cStringUsingEncoding:NSUTF8StringEncoding];
     
     [self connect];
-    err =  mailimap_unsubscribe([_server session], path);
-    IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError, 
-        [NSString stringWithFormat:@"Error number: %d",err]);   
+    int err = mailimap_unsubscribe([_server session], path);
+    
+    if (err != MAILSMTP_NO_ERROR) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"%@", [NSString stringWithFormat:@"Error number: %d",err]);
+        return;
+    }
+    
+    //IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError, [NSString stringWithFormat:@"Error number: %d",err]);   
 }
 
 
@@ -185,27 +222,35 @@
 - (void)check {
     [self connect];
     int err = mailfolder_check(_folder);
-    IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError, [NSString stringWithFormat:@"Error number: %d",err]);
+    
+    if (err != MAILSMTP_NO_ERROR) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"%@", [NSString stringWithFormat:@"Error number: %d",err]);
+        return;
+    }
+    
+    //IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError, [NSString stringWithFormat:@"Error number: %d",err]);
 }
 
 
 - (NSUInteger)sequenceNumberForUID:(NSString *)uid {
-    //TODO check UID validity
-    //TODO factor out this duplicate code
+    //TODO: check UID validity
+    //TODO: factor out this duplicate code
     
     int r;
     struct mailimap_fetch_att * fetch_att;
     struct mailimap_fetch_type * fetch_type;
     struct mailimap_set * set;
     clist * fetch_result;
-    //TODO factor this out
+    //TODO: factor this out
     NSUInteger uidnum = (unsigned int)[[[uid componentsSeparatedByString:@"-"] objectAtIndex:1] doubleValue];
 
     [self connect];
     set = mailimap_set_new_single(uidnum);
-    if (set == NULL) 
+    if (set == NULL)  {
         return 0;
-
+    }
+    
     fetch_type = mailimap_fetch_type_new_fetch_att_list_empty();
     fetch_att = mailimap_fetch_att_new_uid();
     r = mailimap_fetch_type_new_fetch_att_list_add(fetch_type, fetch_att);
@@ -216,18 +261,25 @@
 
     r = mailimap_uid_fetch([self imapSession], set, fetch_type, &fetch_result);
     if (r != MAIL_NO_ERROR) {
-        NSException *exception = [NSException
-                    exceptionWithName:LBUnknownError
-                    reason:[NSString stringWithFormat:@"Error number: %d",r]
-                    userInfo:nil];
-        [exception raise];
+        
+        // FIXME: return NSError instead?
+        
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"Error %d", [NSString stringWithFormat:@"Error number: %d",r]);
+        
+        return 0;
+        
     }
 
     mailimap_fetch_type_free(fetch_type);
     mailimap_set_free(set);
 
-    if (r != MAILIMAP_NO_ERROR) 
-        return 0; //Add exception
+    if (r != MAILIMAP_NO_ERROR)  {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"Error %d", [NSString stringWithFormat:@"Error number: %d",r]);
+        return 0;
+    }
+        
     NSUInteger sequenceNumber = 0;  
     if (!clist_isempty(fetch_result)) {
         struct mailimap_msg_att *msg_att = (struct mailimap_msg_att *)clist_nth_data(fetch_result, 0);
@@ -246,9 +298,10 @@
 
     [self connect];
     set = mailimap_set_new_interval(1, 0);
-    if (set == NULL) 
+    if (set == NULL)  {
         return nil;
-
+    }
+    
     fetch_type = mailimap_fetch_type_new_fetch_att_list_empty();
     fetch_att = mailimap_fetch_att_new_uid();
     r = mailimap_fetch_type_new_fetch_att_list_add(fetch_type, fetch_att);
@@ -272,18 +325,26 @@
 
     r = mailimap_fetch([self imapSession], set, fetch_type, &fetch_result);
     if (r != MAIL_NO_ERROR) {
+        
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"Error %d", [NSString stringWithFormat:@"Error number: %d",r]);
+        return nil;
+        /*
         NSException *exception = [NSException
                     exceptionWithName:LBUnknownError
                     reason:[NSString stringWithFormat:@"Error number: %d",r]
                     userInfo:nil];
         [exception raise];
+        */
     }
 
     mailimap_fetch_type_free(fetch_type);
     mailimap_set_free(set);
 
-    if (r != MAILIMAP_NO_ERROR) 
-        return nil; //Add exception
+    if (r != MAILIMAP_NO_ERROR)  {
+        return nil;
+    }
+        
 
     NSMutableSet *messages = [NSMutableSet set];
     NSUInteger uidValidity = [self uidValidity];
@@ -369,31 +430,51 @@
 
     r = mailimap_fetch([self imapSession], set, fetch_type, &fetch_result);
     if (r != MAIL_NO_ERROR) {
+        
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"Error %d", [NSString stringWithFormat:@"Error number: %d",r]);
+        // FIXME: return NSError* ?
+        return nil;
+        
+        /*
         #warning nooooooooooo more exceptions! booo
         NSException *exception = [NSException
                     exceptionWithName:LBUnknownError
                     reason:[NSString stringWithFormat:@"Error number: %d",r]
                     userInfo:nil];
         [exception raise];
+        */
     }
 
     mailimap_fetch_type_free(fetch_type);
     mailimap_set_free(set);
 
-    if (r != MAILIMAP_NO_ERROR) 
-        return nil; //Add exception
+    if (r != MAILIMAP_NO_ERROR)  {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"Error %d", [NSString stringWithFormat:@"Error number: %d",r]);
+        return nil;
+    }
 
     env_list = NULL;
     r = uid_list_to_env_list(fetch_result, &env_list, [self folderSession], imap_message_driver);
     r = mailfolder_get_envelopes_list(_folder, env_list);
     if (r != MAIL_NO_ERROR) {
-        if ( env_list != NULL )
+        if ( env_list != NULL ) {
             mailmessage_list_free(env_list);
+        }
+        
+        
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"Error %d", [NSString stringWithFormat:@"Error number: %d",r]);
+        return nil;
+        // FIXME: return NSError?
+        /*
         NSException *exception = [NSException
                     exceptionWithName:LBUnknownError
                     reason:[NSString stringWithFormat:@"Error number: %d",r]
                     userInfo:nil];
         [exception raise];
+        */
     }
     
     int len = carray_count(env_list->msg_tab);
@@ -437,30 +518,48 @@
         return nil;
     }
     else if (err != MAIL_NO_ERROR) {
+        
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"Error %d", [NSString stringWithFormat:@"Error number: %d", err]);
+        return nil;
+        /*
         NSException *exception = [NSException
                     exceptionWithName:LBUnknownError
                     reason:[NSString stringWithFormat:@"Error number: %d",err]
                     userInfo:nil];
         [exception raise];
+        */
     }
     err = mailmessage_fetch_envelope(msgStruct,&(msgStruct->msg_fields));
     if (err != MAIL_NO_ERROR) {
+        
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"Error %d", [NSString stringWithFormat:@"Error number: %d",err]);
+        return nil;
+        /*
         NSException *exception = [NSException
                     exceptionWithName:LBUnknownError
                     reason:[NSString stringWithFormat:@"Error number: %d",err]
                     userInfo:nil];
         [exception raise];
+        */
     }
     
     //TODO Fix me, i'm missing alot of things that aren't being downloaded, 
     // I just hacked this in here for the mean time
     err = mailmessage_get_flags(msgStruct, &(msgStruct->msg_flags));
     if (err != MAIL_NO_ERROR) {
+        
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"Error %d", [NSString stringWithFormat:@"Error number: %d",err]);
+        return nil;
+        /*
         NSException *exception = [NSException
                     exceptionWithName:LBUnknownError
                     reason:[NSString stringWithFormat:@"Error number: %d",err]
                     userInfo:nil];
         [exception raise];
+        */
     }
     return [[[LBMessage alloc] initWithMessageStruct:msgStruct] autorelease];
 }
@@ -478,33 +577,50 @@
     struct mail_flags *flagStruct;
     err = mailmessage_get_flags([msg messageStruct], &flagStruct);
     if (err != MAILIMAP_NO_ERROR) {
+        
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"Error %d", [NSString stringWithFormat:@"Error number: %d",err]);
+        return 0;
+        /*
         NSException *exception = [NSException
                     exceptionWithName:LBUnknownError
                     reason:[NSString stringWithFormat:@"Error number: %d",err]
                     userInfo:nil];
         [exception raise];  
+        */
     }
     return flagStruct->fl_flags;
 }
 
 
 - (void)setFlags:(unsigned int)flags forMessage:(LBMessage *)msg {
-    int err;
-
+    
     [msg messageStruct]->msg_flags->fl_flags=flags;
-    err = mailmessage_check([msg messageStruct]);
-    IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError, 
-        [NSString stringWithFormat:@"Error number: %d",err]);
+    int err = mailmessage_check([msg messageStruct]);
+    
+    if (err != MAILSMTP_NO_ERROR) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"%@", [NSString stringWithFormat:@"Error number: %d",err]);
+        return;
+    }
+    
+    //IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError, [NSString stringWithFormat:@"Error number: %d",err]);
     [self check];
 }
 
 
 - (void)expunge {
-    int err;
+    
     [self connect];
-    err = mailfolder_expunge(_folder);
-    IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError, 
-        [NSString stringWithFormat:@"Error number: %d",err]);   
+    int err = mailfolder_expunge(_folder);
+    
+    if (err != MAILSMTP_NO_ERROR) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"%@", [NSString stringWithFormat:@"Error number: %d",err]);
+        return;
+    }
+    
+    //IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError, [NSString stringWithFormat:@"Error number: %d",err]);   
 }
 
 - (void)copyMessageWithUID:(NSString *)uid toFolderWithPath:(NSString *)path {
@@ -513,20 +629,31 @@
     const char *mbPath = [path cStringUsingEncoding:NSUTF8StringEncoding];
     NSUInteger uidnum = (unsigned int)[[[uid componentsSeparatedByString:@"-"] objectAtIndex:1] doubleValue];
     int err = mailsession_copy_message([self folderSession], uidnum, mbPath);
-    IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError, 
-        [NSString stringWithFormat:@"Error number: %d",err]);       
+    
+    if (err != MAILSMTP_NO_ERROR) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"%@", [NSString stringWithFormat:@"Error number: %d",err]);
+        return;
+    }
+    
+    //IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError, [NSString stringWithFormat:@"Error number: %d",err]);       
 }
 
 
 - (NSUInteger)unreadMessageCount {
     unsigned int unseenCount = 0;
     unsigned int junk;
-    int err;
     
     [self connect];
-    err =  mailfolder_status(_folder, &junk, &junk, &unseenCount);
-    IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError, 
-        [NSString stringWithFormat:@"Error number: %d",err]);
+    int err = mailfolder_status(_folder, &junk, &junk, &unseenCount);
+    
+    if (err != MAILSMTP_NO_ERROR) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"%@", [NSString stringWithFormat:@"Error number: %d",err]);
+        return 0;
+    }
+    
+    //IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError, [NSString stringWithFormat:@"Error number: %d",err]);
     return unseenCount;
 }
 
@@ -559,8 +686,8 @@
 
 /* From Libetpan source */
 //TODO Can these things be made public in libetpan?
-int uid_list_to_env_list(clist * fetch_result, struct mailmessage_list ** result, 
-                        mailsession * session, mailmessage_driver * driver) {
+int uid_list_to_env_list(clist * fetch_result, struct mailmessage_list ** result,  mailsession * session, mailmessage_driver * driver) {
+    
     clistiter * cur;
     struct mailmessage_list * env_list;
     int r;

@@ -61,6 +61,7 @@ void LetterBoxDisableLogging() {
     mailstream_logger = nil;
 }
 
+/*
 void IfFalse_RaiseException(bool value, NSString *exceptionName, NSString *exceptionDesc) {
     if (!value)
         RaiseException(exceptionName, exceptionDesc);
@@ -80,7 +81,7 @@ void RaiseException(NSString *exceptionName, NSString *exceptionDesc) {
                 userInfo:nil];
     [exception raise];
 }
-
+*/
 // From Gabor
 BOOL StringStartsWith(NSString *string, NSString *subString) {
     if([string length] < [subString length]) {
@@ -90,3 +91,13 @@ BOOL StringStartsWith(NSString *string, NSString *subString) {
     NSString* comp = [string substringToIndex:[subString length]];
     return [comp isEqualToString:subString];
 }
+
+void LBQuickError(NSError **err, NSString *domain, NSInteger code, NSString *description) {
+    // fixme: add a com.lettersapp in front of the domain?
+    if (err) {
+        *err = [NSError errorWithDomain:domain code:code userInfo:[NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey]];
+    }
+    
+}
+
+
