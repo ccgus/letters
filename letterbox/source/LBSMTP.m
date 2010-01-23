@@ -47,14 +47,28 @@
 - (void)connectToServer:(NSString *)server port:(unsigned int)port {
     /* first open the stream */
     int ret = mailsmtp_socket_connect([self resource], [server cStringUsingEncoding:NSUTF8StringEncoding], port);
-    IfTrue_RaiseException(ret != MAILSMTP_NO_ERROR, LBSMTPSocket, LBSMTPSocketDesc);
+    
+    if (ret != MAILSMTP_NO_ERROR) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(LBSMTPSocketDesc);
+        return;
+    }
+    
+   // IfTrue_RaiseException(ret != MAILSMTP_NO_ERROR, LBSMTPSocket, LBSMTPSocketDesc);
 }
 
 
 - (bool)helo {
     /*  The server doesn't support esmtp, so try regular smtp */
     int ret = mailsmtp_helo([self resource]);
-    IfTrue_RaiseException(ret != MAILSMTP_NO_ERROR, LBSMTPHello, LBSMTPHelloDesc);
+    
+    if (ret != MAILSMTP_NO_ERROR) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(LBSMTPHelloDesc);
+        return NO;
+    }
+    
+    //IfTrue_RaiseException(ret != MAILSMTP_NO_ERROR, LBSMTPHello, LBSMTPHelloDesc);
     return YES; /* The server supports helo so return YES */
 }
 
@@ -71,7 +85,14 @@
 
 - (void)setFrom:(NSString *)fromAddress {
     int ret = mailsmtp_mail([self resource], [fromAddress cStringUsingEncoding:NSUTF8StringEncoding]);
-    IfTrue_RaiseException(ret != MAILSMTP_NO_ERROR, LBSMTPFrom, LBSMTPFromDesc);
+    
+    if (ret != MAILSMTP_NO_ERROR) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(LBSMTPFromDesc);
+        return;
+    }
+    
+    //IfTrue_RaiseException(ret != MAILSMTP_NO_ERROR, LBSMTPFrom, LBSMTPFromDesc);
 }
 
 
@@ -86,16 +107,36 @@
 
 - (void)setRecipientAddress:(NSString *)recAddress {
     int ret = mailsmtp_rcpt([self resource], [recAddress cStringUsingEncoding:NSUTF8StringEncoding]);
-    IfTrue_RaiseException(ret != MAILSMTP_NO_ERROR, LBSMTPRecipients, LBSMTPRecipientsDesc);
+    
+    if (ret != MAILSMTP_NO_ERROR) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(LBSMTPRecipientsDesc);
+        return;
+    }
+    
+    //IfTrue_RaiseException(ret != MAILSMTP_NO_ERROR, LBSMTPRecipients, LBSMTPRecipientsDesc);
 }
 
 
 - (void)setData:(NSString *)data {
     NSData *dataObj = [data dataUsingEncoding:NSUTF8StringEncoding];
     int ret = mailsmtp_data([self resource]);
-    IfTrue_RaiseException(ret != MAILSMTP_NO_ERROR, LBSMTPData, LBSMTPDataDesc);
-      ret = mailsmtp_data_message([self resource], [dataObj bytes], [dataObj length]);
-    IfTrue_RaiseException(ret != MAILSMTP_NO_ERROR, LBSMTPData, LBSMTPDataDesc);
+    
+    if (ret != MAILSMTP_NO_ERROR) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(LBSMTPDataDesc);
+        return;
+    }
+    
+    //IfTrue_RaiseException(ret != MAILSMTP_NO_ERROR, LBSMTPData, LBSMTPDataDesc);
+    ret = mailsmtp_data_message([self resource], [dataObj bytes], [dataObj length]);
+    if (ret != MAILSMTP_NO_ERROR) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(LBSMTPDataDesc);
+        return;
+    }
+    
+    //IfTrue_RaiseException(ret != MAILSMTP_NO_ERROR, LBSMTPData, LBSMTPDataDesc);
 }
 
 

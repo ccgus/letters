@@ -57,6 +57,7 @@
 }
 
 -(NSString*)decodedFilename {
+    // FIXME: Why not use hasPrefix: here?
     // added by Gabor
     if (StringStartsWith(self.filename, @"=?ISO-8859-1?Q?")) {
         NSString* newName = [self.filename substringFromIndex:[@"=?ISO-8859-1?Q?" length]];

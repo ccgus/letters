@@ -94,7 +94,15 @@
         {
             NSMutableArray *folders = [NSMutableArray array];
             
-            self.folders = [[[_server subscribedFolders] mutableCopy] autorelease];
+            NSError *err = nil;
+            
+            self.folders = [[[_server subscribedFolders:&err] mutableCopy] autorelease];
+            
+            if (err) {
+                // do something nice with this.
+                NSLog(@"err: %@", err);
+                return;
+            }
             
             dispatch_async(dispatch_get_main_queue(),^ {
                 [foldersList reloadData];
@@ -145,9 +153,27 @@
     self.folders = [[[_server cachedFolders] mutableCopy] autorelease];
     [foldersList reloadData];
     
-    [_server connect];
+    NSError *err = nil;
     
-    [self listFolder:@"INBOX"];
+    if ([_server connect:&err]) {
+        [self listFolder:@"INBOX"];
+    }
+    else {
+        NSLog(@"Could not connect");
+    }
+    
+    if (err) {
+        
+        // OH CRAP.
+        
+        NSString *desc = [err localizedDescription];
+        
+        desc = desc ? desc : NSLocalizedString(@"Unknown Error", @"Unknown Error");
+        
+        NSRunAlertPanel(@"Error Connecting", desc, @"OK", nil, nil);
+        
+    }
+    
     
 }
 

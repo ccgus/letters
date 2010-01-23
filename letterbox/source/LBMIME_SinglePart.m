@@ -94,8 +94,10 @@
         
         int encoding = MAILMIME_MECHANISM_8BIT;
         mimeFields = mailmime_single_fields_new(mMime->mm_mime_fields, mMime->mm_content_type);
-        if (mimeFields != NULL && mimeFields->fld_encoding != NULL)
+        if (mimeFields != NULL && mimeFields->fld_encoding != NULL) {
             encoding = mimeFields->fld_encoding->enc_type;
+        }
+            
         
         char *fetchedData;
         size_t fetchedDataLen;
@@ -103,7 +105,10 @@
         r = mailmessage_fetch_section(mMessage, mMime, &fetchedData, &fetchedDataLen);
         if (r != MAIL_NO_ERROR) {
             mailmessage_fetch_result_free(mMessage, fetchedData);
-            RaiseException(LBMIMEParseError, LBMIMEParseErrorDesc);
+            
+            NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+            NSLog(@"Error %d", r);
+            //RaiseException(LBMIMEParseError, LBMIMEParseErrorDesc);
         }
 
         size_t current_index = 0;
@@ -113,7 +118,10 @@
                                     encoding, &result, &result_len);
         if (r != MAILIMF_NO_ERROR) {
             mailmime_decoded_part_free(result);
-            RaiseException(LBMIMEParseError, LBMIMEParseErrorDesc);
+            
+            NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+            NSLog(@"Error %d", r);
+            //RaiseException(LBMIMEParseError, LBMIMEParseErrorDesc);
         }
         NSData *data = [NSData dataWithBytes:result length:result_len];
         mailmessage_fetch_result_free(mMessage, fetchedData);

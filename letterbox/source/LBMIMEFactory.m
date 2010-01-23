@@ -44,7 +44,10 @@
 + (LBMIME *)createMIMEWithMIMEStruct:(struct mailmime *)mime 
                           forMessage:(struct mailmessage *)message {
     if (mime == nil) {
-        RaiseException(LBMIMEParseError, LBMIMEParseErrorDesc);
+        
+        NSLog(@"nil mime");
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        
         return nil;
     }
     
