@@ -365,14 +365,14 @@ Source/LBFolder.m,1136
 - (NSUInteger)sequenceNumberForUID:192,5717
 - (NSSet *)messageListWithFetchAttributes:240,7334
 - (NSSet *)messageObjectsFromIndex:(unsigned int)start toIndex:messageObjectsFromIndex:toIndex:334,10478
-- (LBMessage *)messageWithUID:427,13629
-- (unsigned int)flagsForMessage:473,15782
-- (void)setFlags:(unsigned int)flags forMessage:setFlags:forMessage:488,16269
-- (void)expunge 499,16605
-- (void)copyMessageWithUID:(NSString *)uid toFolderWithPath:copyMessageWithUID:toFolderWithPath:507,16832
-- (NSUInteger)unreadMessageCount 518,17337
-- (NSUInteger)totalMessageCount 531,17693
-int uid_list_to_env_list(559,18406
+- (LBMessage *)messageWithUID:430,13697
+- (unsigned int)flagsForMessage:476,15850
+- (void)setFlags:(unsigned int)flags forMessage:setFlags:forMessage:491,16337
+- (void)expunge 502,16673
+- (void)copyMessageWithUID:(NSString *)uid toFolderWithPath:copyMessageWithUID:toFolderWithPath:510,16900
+- (NSUInteger)unreadMessageCount 521,17405
+- (NSUInteger)totalMessageCount 534,17761
+int uid_list_to_env_list(562,18474
 
 Source/LBMessage.h,199
 @class LBFolder,44,2030

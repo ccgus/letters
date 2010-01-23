@@ -16,6 +16,7 @@ It's for a bit of experimentation, and to act as a starting point.  It currently
 **TODO**
 
   - Pretty much everything
+  - Message caching.  I've got something started, but I was rushing it and it's lame, so right now it's commented out.
   - Keychain support
   - Support for multiple accounts
   - Responding to messages

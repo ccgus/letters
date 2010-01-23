@@ -95,8 +95,6 @@
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
         
-        debug(@"Sending...");
-        
         // FIXME: how do we know if it was successful or not?
         
         [LBSMTPConnection sendMessage:msg
@@ -115,8 +113,6 @@
         
         [msg release];
     });
-    
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
 }
 
 @end

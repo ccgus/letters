@@ -341,8 +341,10 @@
 
     [self connect];
     set = mailimap_set_new_interval(start, end);
-    if (set == NULL) 
+    if (set == NULL) {
         return nil;
+    }
+        
 
     fetch_type = mailimap_fetch_type_new_fetch_att_list_empty();
     fetch_att = mailimap_fetch_att_new_uid();
@@ -367,6 +369,7 @@
 
     r = mailimap_fetch([self imapSession], set, fetch_type, &fetch_result);
     if (r != MAIL_NO_ERROR) {
+        #warning nooooooooooo more exceptions! booo
         NSException *exception = [NSException
                     exceptionWithName:LBUnknownError
                     reason:[NSString stringWithFormat:@"Error number: %d",r]
