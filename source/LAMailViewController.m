@@ -222,6 +222,78 @@
 
 }
 
+// FIXME: put this somewhere where it makes more sense, maybe a utils file?
+
+NSString *FQuote(NSString *s) {
+    NSMutableString *ret = [NSMutableString string];
+    s = [s stringByReplacingOccurrencesOfString:@"\r\n" withString:@"\n"];
+    s = [s stringByReplacingOccurrencesOfString:@"\r" withString:@"\n"];
+    for (NSString *line in [s componentsSeparatedByString:@"\n"]) {
+        [ret appendFormat:@">%@\n", line];
+    }
+    return ret;
+}
+
+NSString *FRewrapLines(NSString *s, int len) {
+    
+    NSMutableString *ret = [NSMutableString string];
+    
+    
+    s = [s stringByReplacingOccurrencesOfString:@"\r\n" withString:@"\n"];
+    s = [s stringByReplacingOccurrencesOfString:@"\r" withString:@"\n"];
+    
+    for (NSString *line in [s componentsSeparatedByString:@"\n"]) {
+        
+        if (![line length]) {
+            [ret appendString:@"\n"];
+            continue;
+        }
+        
+        int idx = 0;
+        
+        while ((idx < [line length]) && ([line characterAtIndex:idx] == '>')) {
+            idx++;
+        }
+        
+        NSMutableString *pre = [NSMutableString string];
+        
+        for (int i = 0; i < idx; i++) {
+            [pre appendString:@">"];
+        }
+        
+        NSString *oldLine = [line substringFromIndex:idx];
+        
+        NSMutableString *newLine = [NSMutableString string];
+        
+        [newLine appendString:pre];
+        
+        for (NSString *word in [oldLine componentsSeparatedByString:@" "]) {
+            
+            if ([newLine length] + [word length] > len) {
+                [ret appendString:newLine];
+                [ret appendString:@"\n"];
+                [newLine setString:pre];
+            }
+            
+            if ([word length] && [newLine length]) {
+                [newLine appendString:@" "];
+            }
+            
+            [newLine appendString:word];
+            
+        }
+        
+        [ret appendString:newLine];
+        [ret appendString:@"\n"];
+        
+    }
+    
+    return ret;
+}
+
+
+
+
 - (void) replyToSelectedMessage:(id)sender {
     
     NSInteger selectedRow = [mailboxMessageList selectedRow];
@@ -242,20 +314,23 @@
     NSError *err = nil;
     LADocument *doc = [dc openUntitledDocumentAndDisplay:YES error:&err];
     
-    [doc setMessage:[msg body]];
-    [doc setToList:[[[msg from] anyObject] email]];
+    LBAccount *account = [[appDelegate accounts] lastObject];
+    
+    debug(@"[account fromAddress]: %@", [account fromAddress]);
+    
+    [doc setFromList:[account fromAddress]];
+    [doc setToList:[[msg sender] email]];
+    
+    debug(@"FRewrapLines([msg body], 72): %@", FRewrapLines([msg body], 72));
+    
+    // fixme - 72?  a pref maybe?
+    [doc setMessage:FRewrapLines(FQuote([msg body]), 72)];
     
     NSString *subject = [msg subject];
     if (![[subject lowercaseString] hasPrefix:@"re: "]) {
         subject = [NSString stringWithFormat:@"Re: ", subject];
     }
-    
-    LBAccount *account = [[appDelegate accounts] lastObject];
-    
-    debug(@"[account fromAddress]: %@", [account fromAddress]);
-    
     [doc setSubject:subject];
-    [doc setFromList:[account fromAddress]];
     
     [doc updateChangeCount:NSChangeDone];
 }

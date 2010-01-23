@@ -111,10 +111,6 @@
 	[msg setBody:[[_message copy] autorelease]];
 	[msg setSubject:_subject];
     
-    if (YES) {
-        return;
-    }
-    
     [self setStatusMessage:NSLocalizedString(@"Sending message", @"Sending message")];
     [progressIndicator startAnimation:self];
     

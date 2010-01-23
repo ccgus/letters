@@ -166,10 +166,6 @@
 */
 - (NSSet *)from;
 
-
-// FIXME: document
-- (void)setFrom:(NSSet *)addresses;
-
 /*!
     @abstract   Sets the message's from addresses
     @param      addresses A NSSet containing LBAddress's

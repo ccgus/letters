@@ -32,6 +32,8 @@
     [serverField        setStringValue:[account imapServer] ? [account imapServer] : @""];
     [smtpServerField    setStringValue:[account smtpServer] ? [account smtpServer] : @""];
     
+    [fromAddressField setStringValue:[account fromAddress] ? [account fromAddress] : @""];
+    
     [usernameField setStringValue:[account username]   ? [account username] : @""];
     [passwordField setStringValue:[account password]   ? [account password] : @""];
     
@@ -50,6 +52,10 @@
     
     [account setImapServer:[serverField stringValue]];
     [account setSmtpServer:[smtpServerField stringValue]];
+    
+    debug(@"[fromAddressField stringValue]: %@", [fromAddressField stringValue]);
+    
+    [account setFromAddress:[fromAddressField stringValue]];
     
     [account setImapPort:[portField intValue]];
     [account setUsername:[usernameField stringValue]];
