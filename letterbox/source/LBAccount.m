@@ -36,6 +36,7 @@
 @synthesize username=_username;
 @synthesize password=_password;
 @synthesize imapServer=_imapServer;
+@synthesize fromAddress=_fromAddress;
 @synthesize authType=_authType;
 @synthesize imapPort=_imapPort;
 @synthesize connectionType=_connectionType;
@@ -57,6 +58,7 @@
     [_password release];
     [_imapServer release];
     [_smtpServer release];
+    [_fromAddress release];
     
     [super dealloc];
 }
@@ -76,6 +78,10 @@
     
     if ([d objectForKey:@"imapServer"]) {
         acct.imapServer = [d objectForKey:@"imapServer"];
+    }
+    
+    if ([d objectForKey:@"fromAddress"]) {
+        acct.fromAddress = [d objectForKey:@"fromAddress"];
     }
     
     if ([d objectForKey:@"authType"]) {
@@ -103,6 +109,8 @@
     
     [d setObject:_username ? _username : @"" forKey:@"username"];
     [d setObject:_password ? _password : @"" forKey:@"password"];
+    
+    [d setObject:_fromAddress ? _fromAddress : @"" forKey:@"fromAddress"];
     
     [d setObject:_imapServer ? _imapServer : @"" forKey:@"imapServer"];
     [d setObject:_smtpServer ? _smtpServer : @"" forKey:@"smtpServer"];

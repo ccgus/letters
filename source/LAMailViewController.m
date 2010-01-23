@@ -178,7 +178,9 @@
     
     else if ([notification object] == foldersList) {
         NSUInteger selectedRow = [foldersList selectedRow];
-        if (selectedRow >= 0) {
+        
+        // the real fix here is to not overwrite selected folders.
+        if (selectedRow >= 0 && selectedRow < [_folders count] ) {
             
             NSString *folder = [_folders objectAtIndex:selectedRow];
             [self listFolder:folder];
@@ -241,6 +243,19 @@
     LADocument *doc = [dc openUntitledDocumentAndDisplay:YES error:&err];
     
     [doc setMessage:[msg body]];
+    [doc setToList:[[[msg from] anyObject] email]];
+    
+    NSString *subject = [msg subject];
+    if (![[subject lowercaseString] hasPrefix:@"re: "]) {
+        subject = [NSString stringWithFormat:@"Re: ", subject];
+    }
+    
+    LBAccount *account = [[appDelegate accounts] lastObject];
+    
+    debug(@"[account fromAddress]: %@", [account fromAddress]);
+    
+    [doc setSubject:subject];
+    [doc setFromList:[account fromAddress]];
     
     [doc updateChangeCount:NSChangeDone];
 }

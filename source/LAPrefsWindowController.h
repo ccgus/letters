@@ -14,6 +14,7 @@
     IBOutlet NSTextField *serverField;
     IBOutlet NSTextField *usernameField;
     IBOutlet NSTextField *passwordField;
+    IBOutlet NSTextField *fromAddressField;
     IBOutlet NSTextField *portField;
     
     IBOutlet NSTextField *smtpServerField;

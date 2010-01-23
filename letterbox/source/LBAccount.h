@@ -37,6 +37,8 @@
     NSString *_username;
     NSString *_password;
     NSString *_imapServer;
+    NSString *_fromAddress;
+    
     int       _authType;
     int       _imapPort;
     int       _connectionType;
@@ -51,6 +53,7 @@
 @property (retain) NSString *username;
 @property (retain) NSString *password;
 @property (retain) NSString *imapServer;
+@property (retain) NSString *fromAddress;
 @property (assign) int authType;
 @property (assign) int imapPort;
 @property (assign) int connectionType;
