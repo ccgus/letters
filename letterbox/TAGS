@@ -264,19 +264,20 @@ JRLog(215,6991
 source/LBAccount.h,30
 @interface LBAccount 36,1614
 
-source/LBAccount.m,393
+source/LBAccount.m,426
 @synthesize username=36,1627
 @synthesize password=37,1659
 @synthesize imapServer=38,1691
-@synthesize authType=39,1727
-@synthesize imapPort=40,1759
-@synthesize connectionType=41,1791
-@synthesize smtpServer=42,1835
-- (id) init 44,1872
-- (void)dealloc 53,1968
-+ (id) accountWithDictionary:65,2189
-- (NSDictionary*) dictionaryRepresentation 100,3122
-- (NSString*) description 118,3780
+@synthesize fromAddress=39,1727
+@synthesize authType=40,1765
+@synthesize imapPort=41,1797
+@synthesize connectionType=42,1829
+@synthesize smtpServer=43,1873
+- (id) init 45,1910
+- (void)dealloc 54,2006
++ (id) accountWithDictionary:67,2255
+- (NSDictionary*) dictionaryRepresentation 106,3302
+- (NSString*) description 126,4040
 
 source/LBAddress.h,30
 @interface LBAddress 41,1922

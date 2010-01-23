@@ -15,7 +15,7 @@
 		CC3D54271108E7F700EEEF77 /* FMResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = CC3D54211108E7F700EEEF77 /* FMResultSet.h */; };
 		CC3D54281108E7F700EEEF77 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3D54221108E7F700EEEF77 /* FMResultSet.m */; };
 		CC3D54381108EFE800EEEF77 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CC3D54371108EFE800EEEF77 /* libsqlite3.dylib */; };
-		CC86FB16110A59D30090F508 /* libetpan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC86FB15110A59D30090F508 /* libetpan.framework */; };
+		CC517468110ACD8400C01407 /* libetpan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC517467110ACD8400C01407 /* libetpan.framework */; };
 		CC877CA6110ABBA2005ECF65 /* LBSMTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CA0110ABBA2005ECF65 /* LBSMTPConnection.m */; };
 		CC877CA7110ABBA2005ECF65 /* LBSMTPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CA1110ABBA2005ECF65 /* LBSMTPConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC877CA8110ABBA2005ECF65 /* LBSMTP.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CA2110ABBA2005ECF65 /* LBSMTP.m */; };
@@ -128,7 +128,7 @@
 		CC3D54211108E7F700EEEF77 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = source/FMResultSet.h; sourceTree = "<group>"; };
 		CC3D54221108E7F700EEEF77 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = source/FMResultSet.m; sourceTree = "<group>"; };
 		CC3D54371108EFE800EEEF77 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		CC86FB15110A59D30090F508 /* libetpan.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libetpan.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC517467110ACD8400C01407 /* libetpan.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libetpan.framework; path = ../build/Debug/libetpan.framework; sourceTree = SOURCE_ROOT; };
 		CC877CA0110ABBA2005ECF65 /* LBSMTPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBSMTPConnection.m; path = source/LBSMTPConnection.m; sourceTree = "<group>"; };
 		CC877CA1110ABBA2005ECF65 /* LBSMTPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBSMTPConnection.h; path = source/LBSMTPConnection.h; sourceTree = "<group>"; };
 		CC877CA2110ABBA2005ECF65 /* LBSMTP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBSMTP.m; path = source/LBSMTP.m; sourceTree = "<group>"; };
@@ -206,7 +206,7 @@
 				F8483E4C09CE7C2800B80440 /* libcrypto.dylib in Frameworks */,
 				F88804620B42018500D400E7 /* libsasl2.dylib in Frameworks */,
 				CC3D54381108EFE800EEEF77 /* libsqlite3.dylib in Frameworks */,
-				CC86FB16110A59D30090F508 /* libetpan.framework in Frameworks */,
+				CC517468110ACD8400C01407 /* libetpan.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,7 +295,7 @@
 		1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CC86FB15110A59D30090F508 /* libetpan.framework */,
+				CC517467110ACD8400C01407 /* libetpan.framework */,
 				F88804610B42018500D400E7 /* libsasl2.dylib */,
 				F8483E4B09CE7C2800B80440 /* libcrypto.dylib */,
 				F8483E4209CE7B9C00B80440 /* libiconv.dylib */,
@@ -666,8 +666,10 @@
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					/builds/Debug,
 					/builds/Release,
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/OpenSourceProjects/libetpan-0.58/build-mac/build/Release\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../build/Debug\"";
 				FRAMEWORK_VERSION = A;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -700,8 +702,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/OpenSourceProjects/libetpan-0.58/build-mac/build/Release\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../build/Debug\"";
 				FRAMEWORK_VERSION = A;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -734,6 +738,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				PREBINDING = NO;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
+				SYMROOT = ../build;
 			};
 			name = Debug;
 		};
@@ -752,6 +757,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				PREBINDING = NO;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
+				SYMROOT = ../build;
 			};
 			name = Release;
 		};

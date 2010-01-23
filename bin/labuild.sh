@@ -45,7 +45,7 @@ function buildTarget {
     
     echo Building "$1"
     
-    $xcodebuild -target "$1" -configuration Release OBJROOT=/tmp/letters/build SYMROOT=/tmp/letters/build OTHER_CFLAGS="-DHAVE_CONFIG_H"
+    $xcodebuild -target "$1" -configuration Release OTHER_CFLAGS="-DHAVE_CONFIG_H"
     
     if [ $? != 0 ]; then
         echo "****** Bad build for $1 ********"
