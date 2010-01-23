@@ -8,6 +8,7 @@
 
 #import "LAMailViewController.h"
 #import "LAAppDelegate.h"
+#import "LADocument.h"
 
 @implementation LAMailViewController
 @synthesize folders=_folders;
@@ -121,9 +122,7 @@
             [self setStatusMessage:nil];
             [workingIndicator stopAnimation:self];
         });
-        
     });
-    
 }
 
 - (void) connectToServerAndList {
@@ -219,6 +218,31 @@
     
     return [LAPrefs boolForKey:@"chocklock"] ? [[msg valueForKeyPath:identifier] uppercaseString] : [msg valueForKeyPath:identifier];
 
+}
+
+- (void) replyToSelectedMessage:(id)sender {
+    
+    NSInteger selectedRow = [mailboxMessageList selectedRow];
+    
+    if (selectedRow < 0) {
+        // FIXME: we should validate the menu item.
+        return;
+    }
+    
+    LBMessage *msg = [_messages objectAtIndex:selectedRow];
+    
+    if (![msg messageDownloaded]) {
+        // FIXME: validate for this case as well.
+        return;
+    }
+    
+    NSDocumentController *dc = [NSDocumentController sharedDocumentController];
+    NSError *err = nil;
+    LADocument *doc = [dc openUntitledDocumentAndDisplay:YES error:&err];
+    
+    [doc setMessage:[msg body]];
+    
+    [doc updateChangeCount:NSChangeDone];
 }
 
 

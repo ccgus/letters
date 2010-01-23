@@ -10,6 +10,10 @@
 
 @implementation LADocument
 @synthesize statusMessage=_statusMessage;
+@synthesize toList=_toList;
+@synthesize fromList=_fromList;
+@synthesize subject=_subject;
+@synthesize message=_message;
 
 - (id)init
 {
@@ -74,21 +78,42 @@
 
 - (void) sendMessage:(id)sender {
     
+    // make the message binding do it's thing.
+    // FIXME: is there a better way?  I'm sure there is...
+    [[progressIndicator window] makeFirstResponder:nil];
+    
     LBAccount *account = [[appDelegate accounts] lastObject];
     
     assert(account);
     
+    debug(@"_message: %@", _message);
+    
+    if (![_fromList length]) {
+        debug(@"need a from!");
+        return;
+    }
+    
+    if (![_toList length]) {
+        debug(@"need a _toList!");
+        return;
+    }
+    
     NSMutableSet *toSet = [NSMutableSet set];
     
-    for (NSString *addr in [[toField stringValue] componentsSeparatedByString:@" "]) {
+    for (NSString *addr in [_toList componentsSeparatedByString:@" "]) {
         [toSet addObject:[LBAddress addressWithName:@"" email:addr]];
     }
     
+    
     LBMessage *msg = [[LBMessage alloc] init];
 	[msg setTo:toSet];
-	[msg setFrom:[NSSet setWithObject:[LBAddress addressWithName:@"" email:[fromField stringValue]]]];
-	[msg setBody:[[[[messageView textStorage] mutableString] copy] autorelease]];
-	[msg setSubject:[subjectField stringValue]];
+	[msg setFrom:[NSSet setWithObject:[LBAddress addressWithName:@"" email:_fromList]]];
+	[msg setBody:[[_message copy] autorelease]];
+	[msg setSubject:_subject];
+    
+    if (YES) {
+        return;
+    }
     
     [self setStatusMessage:NSLocalizedString(@"Sending message", @"Sending message")];
     [progressIndicator startAnimation:self];

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
+		CC12D797110AC7960041D78E /* LetterBox.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CC877DF4110ABE17005ECF65 /* LetterBox.framework */; };
 		CC5F9762110A5A2700522744 /* libetpan.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CC86FB1B110A59DE0090F508 /* libetpan.framework */; };
 		CC6D05F6110A491C00D900E9 /* MailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCA554551106E1FE00CEEFF4 /* MailView.xib */; };
 		CC86FB1C110A59DE0090F508 /* libetpan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC86FB1B110A59DE0090F508 /* libetpan.framework */; };
@@ -56,6 +57,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				CC12D797110AC7960041D78E /* LetterBox.framework in Copy Frameworks */,
 				CC5F9762110A5A2700522744 /* libetpan.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
@@ -249,6 +251,9 @@
 /* Begin PBXProject section */
 		2A37F4A9FDCFA73011CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = "Letters App";
+			};
 			buildConfigurationList = C05733CB08A9546B00998B17 /* Build configuration list for PBXProject "Letters" */;
 			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;

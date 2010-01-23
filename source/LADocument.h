@@ -11,16 +11,21 @@
 @interface LADocument : NSDocument {
     
     // FIXME: this should all probably go in a window controller subclass...
-    IBOutlet NSTextField *toField;
-    IBOutlet NSTextField *fromField;
-    IBOutlet NSTextField *subjectField;
     
-    IBOutlet NSTextView  *messageView;
+    NSString *_toList;
+    NSString *_fromList;
+    NSString *_subject;
+    NSString *_message;
     
     IBOutlet NSProgressIndicator *progressIndicator;
     
     NSString *_statusMessage;
 }
+
+@property (retain) NSString *toList;
+@property (retain) NSString *fromList;
+@property (retain) NSString *subject;
+@property (retain) NSString *message;
 
 @property (retain) NSString *statusMessage;
 
