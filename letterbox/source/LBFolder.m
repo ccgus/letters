@@ -69,6 +69,7 @@
 - (void)connect {
     int err = MAIL_NO_ERROR;
     err =  mailfolder_connect(_folder);
+    #warning NOOOOOOOOOOOOOOO NO MORE EXCEPTIONS NOOOOOO
     IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError, 
         [NSString stringWithFormat:@"Error number: %d",err]);   
     _connected = YES;
@@ -416,7 +417,8 @@
     }
     mailimap_fetch_list_free(fetch_result);
     
-    [_server saveMessagesToCache:messages forFolder:_path];
+    // turned off for now.
+    // [_server saveMessagesToCache:messages forFolder:_path];
     
     return messages;
 }

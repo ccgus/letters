@@ -9,6 +9,7 @@
 #import "LAAppDelegate.h"
 
 @implementation LADocument
+@synthesize statusMessage=_statusMessage;
 
 - (id)init
 {
@@ -21,6 +22,14 @@
     }
     return self;
 }
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [_statusMessage release];
+    [super dealloc];
+}
+
 
 - (NSString *)windowNibName
 {
@@ -81,10 +90,14 @@
 	[msg setBody:[[[[messageView textStorage] mutableString] copy] autorelease]];
 	[msg setSubject:[subjectField stringValue]];
     
+    [self setStatusMessage:NSLocalizedString(@"Sending message", @"Sending message")];
+    [progressIndicator startAnimation:self];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
         
         debug(@"Sending...");
+        
+        // FIXME: how do we know if it was successful or not?
         
         [LBSMTPConnection sendMessage:msg
                                server:[account smtpServer]
@@ -94,7 +107,11 @@
                                useTLS:YES // fixme, lookup in acct
                               useAuth:YES];
         
-        debug(@"Sent!");
+        dispatch_async(dispatch_get_main_queue(),^ {
+            [self setStatusMessage:nil];
+            [progressIndicator stopAnimation:self];
+            [self close];
+        });
         
         [msg release];
     });

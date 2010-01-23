@@ -12,6 +12,7 @@
 @implementation LAMailViewController
 @synthesize folders=_folders;
 @synthesize server=_server;
+@synthesize statusMessage=_statusMessage;
 
 + (id) openNewMailViewController {
     
@@ -31,6 +32,7 @@
 
 
 - (void)dealloc {
+    [_statusMessage release];
     [_messages release];
     [_folders release];
     [super dealloc];
@@ -39,8 +41,6 @@
 
 - (void)awakeFromNib {
 	
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
-    
     [mailboxMessageList setDataSource:self];
     [mailboxMessageList setDelegate:self];
     
@@ -73,7 +73,6 @@
     
     [_messages removeAllObjects];
     
-    debug(@"Loading cache messages");
     _messages = [[_server cachedMessagesForFolder:folder] mutableCopy];
     [mailboxMessageList reloadData];
     
@@ -84,6 +83,9 @@
     }    
     
     [workingIndicator startAnimation:self];
+    
+    NSString *format = NSLocalizedString(@"Finding messages in %@", @"Finding messages in %@");
+    [self setStatusMessage:[NSString stringWithFormat:format, folder]];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
         
@@ -98,21 +100,28 @@
             });
         }
         
-        
-        
         LBFolder *inbox   = [_server folderWithPath:folder];
         NSSet *messageSet = [inbox messageObjectsFromIndex:1 toIndex:0]; 
         
-
-        
         dispatch_async(dispatch_get_main_queue(),^ {
-            debug(@"updating with what's on the server.");
             [_messages removeAllObjects];
             [_messages addObjectsFromArray:[messageSet allObjects]];
             
             [mailboxMessageList reloadData];
+            
+            [self setStatusMessage:NSLocalizedString(@"Download message bodies", @"Download message bodies")];
+        });
+        
+        
+        for (LBMessage *msg in messageSet) {
+            [msg body]; // pull down the body. in the background.
+        }
+        
+        dispatch_async(dispatch_get_main_queue(),^ {
+            [self setStatusMessage:nil];
             [workingIndicator stopAnimation:self];
         });
+        
     });
     
 }
@@ -125,6 +134,8 @@
         [appDelegate openPreferences:nil];
         return;
     }
+    
+    [self setStatusMessage:NSLocalizedString(@"Connecting to server", @"Connecting to server")];
     
     // FIXME: this ivar shouldn't be here.  It probably belongs in the account?
     _server = [[LBServer alloc] initWithAccount:account usingCacheFolder:[self cacheFolderURL]];
@@ -151,7 +162,18 @@
         else {
             LBMessage *msg = [_messages objectAtIndex:selectedRow];
             
-            [[[messageTextView textStorage] mutableString] setString:[LAPrefs boolForKey:@"chocklock"] ? [[msg body] uppercaseString] : [msg body]];
+            NSString *message = nil;
+            
+            if ([msg messageDownloaded]) {
+                message = [msg body];
+            }
+            else {
+                message = NSLocalizedString(@"This message has not been downloaded from the server yet.", @"This message has not been downloaded from the server yet.");
+            }
+            
+            message = [LAPrefs boolForKey:@"chocklock"] ? [message uppercaseString] : message;
+            
+            [[[messageTextView textStorage] mutableString] setString:message];
         }
     }
     

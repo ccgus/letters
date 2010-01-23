@@ -693,7 +693,9 @@ NSString *LBMessageBodyTextPropertKey       = @"bodyTextThisNeedsToGoAwayASAP";
     [self loadPropertyListRepresentation:d];
 }
 
-
+- (BOOL) messageDownloaded {
+    return _bodyCache != nil;
+}
 
 
 

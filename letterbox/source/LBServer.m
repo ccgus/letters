@@ -133,7 +133,8 @@
 }
 
 - (void) saveMessagesToCache:(NSSet*)messages forFolder:(NSString*)folderName {
-    
+
+#ifdef LBUSECACHE
     [_cacheDB beginTransaction];
     
     // FIXME - the dates are allllllll off.
@@ -174,10 +175,15 @@
         
         [msg writePropertyListRepresentationToURL:messageCacheURL];
     }
+#endif
 }
 
 // FIXME: need to setup a way to differentiate between subscribed and non subscribed.
 - (void) saveFoldersToCache:(NSArray*)messages {
+    
+    // I'm just going to turn this off for now.  It's stupidly incomplete
+    
+#ifdef LBUSECACHE
     
     [_cacheDB beginTransaction];
     
@@ -189,11 +195,18 @@
     }
     
     [_cacheDB commit];
+#endif
+
 }
 
 // FIXME: why am I returning strings here and not a LBFolder of some sort?
 
 - (NSArray*) cachedFolders {
+    
+    // I'm just going to turn this off for now.  It's stupidly incomplete
+    return [NSArray array];
+    
+#ifdef LBUSECACHE
     
     NSMutableArray *array = [NSMutableArray array];
     
@@ -203,9 +216,15 @@
     }
     
     return [array sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+#endif
 }
 
 - (NSArray*) cachedMessagesForFolder:(NSString *)folder {
+    
+    // I'm just going to turn this off for now.  It's stupidly incomplete
+    return [NSArray array];
+    
+#ifdef LBUSECACHE
     
     NSMutableArray *messageArray = [NSMutableArray array];
     
@@ -234,6 +253,7 @@
     }
     
     return messageArray;
+#endif
 }
 
 - (BOOL)isConnected {

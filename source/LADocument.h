@@ -16,6 +16,12 @@
     IBOutlet NSTextField *subjectField;
     
     IBOutlet NSTextView  *messageView;
+    
+    IBOutlet NSProgressIndicator *progressIndicator;
+    
+    NSString *_statusMessage;
 }
+
+@property (retain) NSString *statusMessage;
 
 @end

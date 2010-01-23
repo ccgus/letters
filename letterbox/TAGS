@@ -351,28 +351,28 @@ Source/LBFolder.m,1136
 - (id)initWithPath:(NSString *)path inServer:initWithPath:inServer:43,1790
 - (void)dealloc 58,2241
 - (void)connect 69,2416
-- (void)disconnect 78,2663
-- (NSString *)name 86,2764
-- (NSString *)path 93,2950
-- (void)create 115,3528
-- (void)delete 127,3870
-- (void)subscribe 139,4211
-- (void)unsubscribe 150,4534
-- (struct mailfolder *)folderStruct 161,4864
-- (BOOL)isUIDValid:166,4926
-- (NSUInteger)uidValidity 173,5202
-- (void)check 184,5457
-- (NSUInteger)sequenceNumberForUID:191,5660
-- (NSSet *)messageListWithFetchAttributes:239,7277
-- (NSSet *)messageObjectsFromIndex:(unsigned int)start toIndex:messageObjectsFromIndex:toIndex:333,10421
-- (LBMessage *)messageWithUID:425,13542
-- (unsigned int)flagsForMessage:471,15695
-- (void)setFlags:(unsigned int)flags forMessage:setFlags:forMessage:486,16182
-- (void)expunge 497,16518
-- (void)copyMessageWithUID:(NSString *)uid toFolderWithPath:copyMessageWithUID:toFolderWithPath:505,16745
-- (NSUInteger)unreadMessageCount 516,17250
-- (NSUInteger)totalMessageCount 529,17606
-int uid_list_to_env_list(557,18319
+- (void)disconnect 79,2720
+- (NSString *)name 87,2821
+- (NSString *)path 94,3007
+- (void)create 116,3585
+- (void)delete 128,3927
+- (void)subscribe 140,4268
+- (void)unsubscribe 151,4591
+- (struct mailfolder *)folderStruct 162,4921
+- (BOOL)isUIDValid:167,4983
+- (NSUInteger)uidValidity 174,5259
+- (void)check 185,5514
+- (NSUInteger)sequenceNumberForUID:192,5717
+- (NSSet *)messageListWithFetchAttributes:240,7334
+- (NSSet *)messageObjectsFromIndex:(unsigned int)start toIndex:messageObjectsFromIndex:toIndex:334,10478
+- (LBMessage *)messageWithUID:427,13629
+- (unsigned int)flagsForMessage:473,15782
+- (void)setFlags:(unsigned int)flags forMessage:setFlags:forMessage:488,16269
+- (void)expunge 499,16605
+- (void)copyMessageWithUID:(NSString *)uid toFolderWithPath:copyMessageWithUID:toFolderWithPath:507,16832
+- (NSUInteger)unreadMessageCount 518,17337
+- (NSUInteger)totalMessageCount 531,17693
+int uid_list_to_env_list(559,18406
 
 Source/LBMessage.h,199
 @class LBFolder,44,2030
@@ -381,7 +381,7 @@ Source/LBMessage.h,199
 @class LBFolder, LBAddress, LBAttachment, LBMIME;44,2030
 @interface LBMessage 46,2081
 
-Source/LBMessage.m,2276
+Source/LBMessage.m,2314
 @interface LBMessage (Private)LBMessage(Private)42,1813
 @synthesize mime=65,2687
 @synthesize sequenceNumber=66,2717
@@ -434,6 +434,7 @@ NSString *LBMessageBodyTextPropertKey LBMessageBodyTextPropertKey609,19544
 - (void) loadPropertyListRepresentation:636,20551
 - (void) writePropertyListRepresentationToURL:658,21308
 - (void) loadPropertyListRepresentationFromURL:678,21965
+- (BOOL) messageDownloaded 696,22608
 
 Source/LBMIME.h,61
 @class LBMIME_Enumerator;35,1642
@@ -534,17 +535,17 @@ Source/LBServer.m,795
 - (void) makeCacheFolders 51,1101
 - (void) loadCache 67,1710
 - (void) saveMessagesToCache:(NSSet*)messages forFolder:saveMessagesToCache:forFolder:135,4454
-- (void) saveFoldersToCache:180,6433
-- (NSArray*) cachedFolders 196,6862
-- (NSArray*) cachedMessagesForFolder:208,7204
-- (BOOL)isConnected 239,8387
-- (void) connect 244,8436
-- (void) disconnect 297,10745
-- (LBFolder *)folderWithPath:302,10829
-- (mailimap *)session 308,10989
-- (struct mailstorage *)storageStruct 328,11477
-- (NSArray *) subscribedFolders 333,11542
-- (NSArray *)allFolders 379,13100
+- (void) saveFoldersToCache:182,6454
+- (NSArray*) cachedFolders 204,6993
+- (NSArray*) cachedMessagesForFolder:222,7472
+- (BOOL)isConnected 259,8792
+- (void) connect 264,8841
+- (void) disconnect 317,11150
+- (LBFolder *)folderWithPath:322,11234
+- (mailimap *)session 328,11394
+- (struct mailstorage *)storageStruct 348,11882
+- (NSArray *) subscribedFolders 353,11947
+- (NSArray *)allFolders 399,13505
 
 Source/LBSMTP.h,27
 @interface LBSMTP 41,1789
