@@ -449,7 +449,6 @@
 				8DC2EF560486A6940098B216 /* Frameworks */,
 				F848422D09CFACA000B80440 /* ShellScript */,
 				F89614140A79D30A00F93E26 /* CopyFiles */,
-				F82D7D490F4A0D1900ADA65C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -554,19 +553,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
-		};
-		F82D7D490F4A0D1900ADA65C /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "find tests source libetpan -name \"*.h\" -or -name \"*.c\" -or -name \"*.m\" | xargs /usr/bin/etags";
 		};
 		F848422D09CFACA000B80440 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
