@@ -8,11 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
-		CC12D797110AC7960041D78E /* LetterBox.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CC877DF4110ABE17005ECF65 /* LetterBox.framework */; };
+		CC12D7BE110AC8E00041D78E /* LetterBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC12D7BD110AC8E00041D78E /* LetterBox.framework */; };
+		CC12D7C3110AC92A0041D78E /* LetterBox.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CC12D7BD110AC8E00041D78E /* LetterBox.framework */; };
 		CC5F9762110A5A2700522744 /* libetpan.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CC86FB1B110A59DE0090F508 /* libetpan.framework */; };
 		CC6D05F6110A491C00D900E9 /* MailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCA554551106E1FE00CEEFF4 /* MailView.xib */; };
 		CC86FB1C110A59DE0090F508 /* libetpan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC86FB1B110A59DE0090F508 /* libetpan.framework */; };
-		CC877DF5110ABE17005ECF65 /* LetterBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC877DF4110ABE17005ECF65 /* LetterBox.framework */; };
 		CC9C527D1107A961008ED850 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC9C527C1107A961008ED850 /* AddressBook.framework */; };
 		CCA5542B1106DDF800CEEFF4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = CCA554231106DDF800CEEFF4 /* Credits.rtf */; };
 		CCA5542D1106DDF800CEEFF4 /* LADocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCA554271106DDF800CEEFF4 /* LADocument.xib */; };
@@ -57,7 +57,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CC12D797110AC7960041D78E /* LetterBox.framework in Copy Frameworks */,
+				CC12D7C3110AC92A0041D78E /* LetterBox.framework in Copy Frameworks */,
 				CC5F9762110A5A2700522744 /* libetpan.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
@@ -71,8 +71,8 @@
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D15AC370486D014006FF6A4 /* CrashyEmailApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CrashyEmailApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC12D7BD110AC8E00041D78E /* LetterBox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LetterBox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC86FB1B110A59DE0090F508 /* libetpan.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libetpan.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CC877DF4110ABE17005ECF65 /* LetterBox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LetterBox.framework; path = /builds/Debug/LetterBox.framework; sourceTree = "<absolute>"; };
 		CC9C527C1107A961008ED850 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		CCA554241106DDF800CEEFF4 /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = resources/English.lproj/Credits.rtf; sourceTree = "<group>"; };
 		CCA554261106DDF800CEEFF4 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = resources/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -102,7 +102,7 @@
 				8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */,
 				CC9C527D1107A961008ED850 /* AddressBook.framework in Frameworks */,
 				CC86FB1C110A59DE0090F508 /* libetpan.framework in Frameworks */,
-				CC877DF5110ABE17005ECF65 /* LetterBox.framework in Frameworks */,
+				CC12D7BE110AC8E00041D78E /* LetterBox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,7 +112,7 @@
 		1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CC877DF4110ABE17005ECF65 /* LetterBox.framework */,
+				CC12D7BD110AC8E00041D78E /* LetterBox.framework */,
 				CC86FB1B110A59DE0090F508 /* libetpan.framework */,
 				1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */,
 				CC9C527C1107A961008ED850 /* AddressBook.framework */,
