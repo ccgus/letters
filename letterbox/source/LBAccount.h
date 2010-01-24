@@ -31,7 +31,7 @@
 
 #import <Foundation/Foundation.h>
 
-
+@class LBServer;
 
 @interface LBAccount : NSObject {
     NSString *_username;
@@ -44,7 +44,9 @@
     int       _connectionType;
     
     NSString *_smtpServer;    // this doesn't belong here.  Instead, we need a pointer to a preferred one from a list.
-
+    
+    LBServer *_server;
+    
 }
 
 + (id) accountWithDictionary:(NSDictionary*)d;
@@ -59,7 +61,5 @@
 @property (assign) int connectionType;
 
 @property (retain) NSString *smtpServer;
-
-
 
 @end

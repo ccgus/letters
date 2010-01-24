@@ -32,22 +32,22 @@
 #import "LBFolder.h"
 #import <libetpan/libetpan.h>
 #import "LBMessage.h"
-#import "LBServer.h"
 #import "LetterBoxTypes.h"
 #import "LBBareMessage.h"
+#import "LBIMAPConnection.h"
 
 @interface LBFolder (Private)
 @end
     
 @implementation LBFolder
-- (id)initWithPath:(NSString *)path inServer:(LBServer *)server {
-    struct mailstorage *storage = (struct mailstorage *)[server storageStruct];
+- (id)initWithPath:(NSString *)path inIMAPConnection:(LBIMAPConnection *)connection {
+    struct mailstorage *storage = (struct mailstorage *)[connection storageStruct];
     self = [super init];
     if (self)
     {
         _path = [path retain];
         _connected = NO;
-        _server = [server retain];
+        _connection = [connection retain];
         _folder = mailfolder_new(storage, (char *)[_path cStringUsingEncoding:NSUTF8StringEncoding], NULL); 
         assert(_folder != NULL);
     }
@@ -60,7 +60,7 @@
         [self disconnect];
     }
     mailfolder_free(_folder);
-    [_server release];
+    [_connection release];
     [_path release];
     [super dealloc];
 }
@@ -111,7 +111,7 @@
     
     [self connect]; 
     [self unsubscribe];
-    err = mailimap_rename([_server session], oldPath, newPath);
+    err = mailimap_rename([_connection session], oldPath, newPath);
     
     if (err != MAILSMTP_NO_ERROR) {
         NSLog(@"%s:%d", __FUNCTION__, __LINE__);
@@ -131,7 +131,7 @@
     int err;
     const char *path = [_path cStringUsingEncoding:NSUTF8StringEncoding];
     
-    err = mailimap_create([_server session], path);
+    err = mailimap_create([_connection session], path);
     
     if (err != MAILSMTP_NO_ERROR) {
         NSLog(@"%s:%d", __FUNCTION__, __LINE__);
@@ -151,7 +151,7 @@
     
     [self connect];
     [self unsubscribe];
-    int err = mailimap_delete([_server session], path);
+    int err = mailimap_delete([_connection session], path);
     
     if (err != MAILSMTP_NO_ERROR) {
         NSLog(@"%s:%d", __FUNCTION__, __LINE__);
@@ -168,7 +168,7 @@
     const char *path = [_path cStringUsingEncoding:NSUTF8StringEncoding];
     
     [self connect];
-    int err = mailimap_subscribe([_server session], path);
+    int err = mailimap_subscribe([_connection session], path);
     if (err != MAILSMTP_NO_ERROR) {
         NSLog(@"%s:%d", __FUNCTION__, __LINE__);
         NSLog(@"%@", [NSString stringWithFormat:@"Error number: %d",err]);
@@ -184,7 +184,7 @@
     const char *path = [_path cStringUsingEncoding:NSUTF8StringEncoding];
     
     [self connect];
-    int err = mailimap_unsubscribe([_server session], path);
+    int err = mailimap_unsubscribe([_connection session], path);
     
     if (err != MAILSMTP_NO_ERROR) {
         NSLog(@"%s:%d", __FUNCTION__, __LINE__);
@@ -500,9 +500,6 @@
         free(env_list);
     }
     mailimap_fetch_list_free(fetch_result);
-    
-    // turned off for now.
-    // [_server saveMessagesToCache:messages forFolder:_path];
     
     return messages;
 }

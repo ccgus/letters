@@ -63,6 +63,11 @@
     [super dealloc];
 }
 
+- (LBServer*) server {
+    // FIXME: create on demand.
+    return _server;
+}
+
 
 + (id) accountWithDictionary:(NSDictionary*)d {
     

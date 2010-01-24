@@ -58,6 +58,8 @@
 		CC877CF7110ABC04005ECF65 /* LBAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CE3110ABC04005ECF65 /* LBAccount.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC877CFA110ABC1D005ECF65 /* JRLog.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CF8110ABC1D005ECF65 /* JRLog.m */; };
 		CC877CFB110ABC1D005ECF65 /* JRLog.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CF9110ABC1D005ECF65 /* JRLog.h */; };
+		CCD58CD5110BD9A30077F572 /* LBIMAPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = CCD58CD3110BD9A30077F572 /* LBIMAPConnection.h */; };
+		CCD58CD6110BD9A30077F572 /* LBIMAPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = CCD58CD4110BD9A30077F572 /* LBIMAPConnection.m */; };
 		F82D7D1F0F48ACC700ADA65C /* LetterBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* LetterBox.framework */; };
 		F8483E4109CE7B9000B80440 /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8483E4009CE7B9000B80440 /* libssl.dylib */; };
 		F8483E4309CE7B9C00B80440 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8483E4209CE7B9C00B80440 /* libiconv.dylib */; };
@@ -185,6 +187,8 @@
 		CC877D3F110ABD32005ECF65 /* CTMIMETests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTMIMETests.m; path = tests/CTMIMETests.m; sourceTree = "<group>"; };
 		CCA553E01106DB6B00CEEFF4 /* Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Tests-Info.plist"; path = "resources/Tests-Info.plist"; sourceTree = "<group>"; };
 		CCA553E21106DB7100CEEFF4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = resources/Info.plist; sourceTree = "<group>"; };
+		CCD58CD3110BD9A30077F572 /* LBIMAPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBIMAPConnection.h; path = source/LBIMAPConnection.h; sourceTree = "<group>"; };
+		CCD58CD4110BD9A30077F572 /* LBIMAPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBIMAPConnection.m; path = source/LBIMAPConnection.m; sourceTree = "<group>"; };
 		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		F82D7C810F48AC8500ADA65C /* Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8483E4009CE7B9000B80440 /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.dylib; path = /usr/lib/libssl.dylib; sourceTree = "<absolute>"; };
@@ -288,6 +292,8 @@
 				CC877CE1110ABC04005ECF65 /* LBAddress.h */,
 				CC877CE2110ABC04005ECF65 /* LBAccount.m */,
 				CC877CE3110ABC04005ECF65 /* LBAccount.h */,
+				CCD58CD3110BD9A30077F572 /* LBIMAPConnection.h */,
+				CCD58CD4110BD9A30077F572 /* LBIMAPConnection.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -432,6 +438,7 @@
 				CC877CF5110ABC04005ECF65 /* LBAddress.h in Headers */,
 				CC877CF7110ABC04005ECF65 /* LBAccount.h in Headers */,
 				CC877CFB110ABC1D005ECF65 /* JRLog.h in Headers */,
+				CCD58CD5110BD9A30077F572 /* LBIMAPConnection.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -610,6 +617,7 @@
 				CC877CF4110ABC04005ECF65 /* LBAddress.m in Sources */,
 				CC877CF6110ABC04005ECF65 /* LBAccount.m in Sources */,
 				CC877CFA110ABC1D005ECF65 /* JRLog.m in Sources */,
+				CCD58CD6110BD9A30077F572 /* LBIMAPConnection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
