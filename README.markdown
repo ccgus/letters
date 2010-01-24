@@ -28,6 +28,7 @@ It's for a bit of experimentation, and to act as a starting point.  It currently
   - A UI that doesn't make designers faint
   - Stop crashing
   - LetterBox (the underlying framework for Letters) uses exceptions everywhere.  Need to take those out and put in NSError ** stuff instead.
+  - Address Book integration for Mail.app-like recipient entry
   - Etc.
 
 **Building**
