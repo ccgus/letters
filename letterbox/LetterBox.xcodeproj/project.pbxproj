@@ -272,28 +272,28 @@
 				CC3D541C1108E7AC00EEEF77 /* FMDB */,
 				F81E26810C6ED57400B3FBAC /* SMTP */,
 				F81E26720C6ED56000B3FBAC /* MIME */,
-				CC877CD0110ABC04005ECF65 /* LetterBoxUtilities.m */,
-				CC877CD1110ABC04005ECF65 /* LetterBoxUtilities.h */,
-				CC877CD2110ABC04005ECF65 /* LetterBoxTypes.h */,
-				CC877CD3110ABC04005ECF65 /* LetterBox.h */,
-				CC877CD4110ABC04005ECF65 /* LBServer.m */,
-				CC877CD5110ABC04005ECF65 /* LBServer.h */,
-				CC877CD6110ABC04005ECF65 /* LBMessage.m */,
-				CC877CD7110ABC04005ECF65 /* LBMessage.h */,
-				CC877CD8110ABC04005ECF65 /* LBFolder.m */,
-				CC877CD9110ABC04005ECF65 /* LBFolder.h */,
-				CC877CDA110ABC04005ECF65 /* LBBareMessage.m */,
-				CC877CDB110ABC04005ECF65 /* LBBareMessage.h */,
-				CC877CDC110ABC04005ECF65 /* LBBareAttachment.m */,
-				CC877CDD110ABC04005ECF65 /* LBBareAttachment.h */,
-				CC877CDE110ABC04005ECF65 /* LBAttachment.m */,
-				CC877CDF110ABC04005ECF65 /* LBAttachment.h */,
-				CC877CE0110ABC04005ECF65 /* LBAddress.m */,
-				CC877CE1110ABC04005ECF65 /* LBAddress.h */,
-				CC877CE2110ABC04005ECF65 /* LBAccount.m */,
 				CC877CE3110ABC04005ECF65 /* LBAccount.h */,
+				CC877CE2110ABC04005ECF65 /* LBAccount.m */,
+				CC877CE1110ABC04005ECF65 /* LBAddress.h */,
+				CC877CE0110ABC04005ECF65 /* LBAddress.m */,
+				CC877CDF110ABC04005ECF65 /* LBAttachment.h */,
+				CC877CDE110ABC04005ECF65 /* LBAttachment.m */,
+				CC877CDD110ABC04005ECF65 /* LBBareAttachment.h */,
+				CC877CDC110ABC04005ECF65 /* LBBareAttachment.m */,
+				CC877CDB110ABC04005ECF65 /* LBBareMessage.h */,
+				CC877CDA110ABC04005ECF65 /* LBBareMessage.m */,
+				CC877CD9110ABC04005ECF65 /* LBFolder.h */,
+				CC877CD8110ABC04005ECF65 /* LBFolder.m */,
 				CCD58CD3110BD9A30077F572 /* LBIMAPConnection.h */,
 				CCD58CD4110BD9A30077F572 /* LBIMAPConnection.m */,
+				CC877CD7110ABC04005ECF65 /* LBMessage.h */,
+				CC877CD6110ABC04005ECF65 /* LBMessage.m */,
+				CC877CD5110ABC04005ECF65 /* LBServer.h */,
+				CC877CD4110ABC04005ECF65 /* LBServer.m */,
+				CC877CD3110ABC04005ECF65 /* LetterBox.h */,
+				CC877CD2110ABC04005ECF65 /* LetterBoxTypes.h */,
+				CC877CD1110ABC04005ECF65 /* LetterBoxUtilities.h */,
+				CC877CD0110ABC04005ECF65 /* LetterBoxUtilities.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -572,7 +572,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "sh scripts/DocScripts/doxygen.sh";
+			shellScript = "#sh scripts/DocScripts/doxygen.sh";
 		};
 		F89618D30A7D77CF00F93E26 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -684,7 +684,6 @@
 				OTHER_CFLAGS = "-DDEBUG";
 				PRODUCT_NAME = LetterBox;
 				WRAPPER_EXTENSION = framework;
-				ZERO_LINK = YES;
 			};
 			name = Debug;
 		};

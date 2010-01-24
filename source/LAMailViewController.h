@@ -14,15 +14,9 @@
     IBOutlet NSProgressIndicator *workingIndicator;
     IBOutlet NSTextView *messageTextView;
     
-    LBServer *_server;
-    NSMutableArray *_messages;
-    NSMutableArray *_folders;
-    
     NSString *_statusMessage;
 }
 
-@property (retain) NSMutableArray *folders;
-@property (retain) LBServer *server;
 @property (retain) NSString *statusMessage;
 
 

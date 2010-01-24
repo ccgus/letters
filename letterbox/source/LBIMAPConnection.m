@@ -12,6 +12,7 @@
 #import "LBFolder.h"
 #import "LBAddress.h"
 #import "LBMessage.h"
+#import "LetterBoxUtilities.h"
 
 @implementation LBIMAPConnection
 
@@ -127,7 +128,7 @@
 
 
 
-- (NSArray *) subscribedFolders:(NSError**)outErr {
+- (NSArray *) subscribedFolderNames:(NSError**)outErr {
     struct mailimap_mailbox_list * mailboxStruct;
     clist *subscribedList;
     clistiter *cur;

@@ -697,7 +697,7 @@ int mailsmtp_auth_type(mailsmtp * session,
     const char * user, const char * pass, int type)
 {
   int err;
-  char command[SMTP_STRING_SIZE];
+  //char command[SMTP_STRING_SIZE];
   char hostname[SMTP_STRING_SIZE];
   
   err = gethostname(hostname, sizeof(hostname));

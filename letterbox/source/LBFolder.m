@@ -36,6 +36,95 @@
 #import "LBBareMessage.h"
 #import "LBIMAPConnection.h"
 
+
+/* From Libetpan source */
+
+int imap_flags_to_flags(struct mailimap_msg_att_dynamic * att_dyn, struct mail_flags ** result);
+
+//TODO Can these things be made public in libetpan?
+int uid_list_to_env_list(clist * fetch_result, struct mailmessage_list ** result,  mailsession * session, mailmessage_driver * driver) {
+    
+    clistiter * cur;
+    struct mailmessage_list * env_list;
+    int r;
+    int res;
+    carray * tab;
+    unsigned int i;
+    mailmessage * msg;
+    
+    tab = carray_new(128);
+    if (tab == NULL) {
+        res = MAIL_ERROR_MEMORY;
+        goto err;
+    }
+    
+    for(cur = clist_begin(fetch_result); cur != NULL; cur = clist_next(cur)) {
+        struct mailimap_msg_att * msg_att;
+        clistiter * item_cur;
+        uint32_t uid;
+        size_t size;
+        
+        msg_att = clist_content(cur);
+        uid = 0;
+        size = 0;
+        for(item_cur = clist_begin(msg_att->att_list); item_cur != NULL; item_cur = clist_next(item_cur)) {
+            struct mailimap_msg_att_item * item;
+            
+            item = clist_content(item_cur);
+            switch (item->att_type) {
+                case MAILIMAP_MSG_ATT_ITEM_STATIC:
+                    switch (item->att_data.att_static->att_type) {
+                        case MAILIMAP_MSG_ATT_UID:
+                            uid = item->att_data.att_static->att_data.att_uid;
+                            break;
+                            
+                        case MAILIMAP_MSG_ATT_RFC822_SIZE:
+                            size = item->att_data.att_static->att_data.att_rfc822_size;
+                            break;
+                    }
+                    break;
+            }
+        }
+        
+        msg = mailmessage_new();
+        if (msg == NULL) {
+            res = MAIL_ERROR_MEMORY;
+            goto free_list;
+        }
+        
+        r = mailmessage_init(msg, session, driver, uid, size);
+        if (r != MAIL_NO_ERROR) {
+            res = r;
+            goto free_msg;
+        }
+        
+        r = carray_add(tab, msg, NULL);
+        if (r < 0) {
+            res = MAIL_ERROR_MEMORY;
+            goto free_msg;
+        }
+    }
+    
+    env_list = mailmessage_list_new(tab);
+    if (env_list == NULL) {
+        res = MAIL_ERROR_MEMORY;
+        goto free_list;
+    }
+    
+    * result = env_list;
+    
+    return MAIL_NO_ERROR;
+    
+free_msg:
+    mailmessage_free(msg);
+free_list:
+    for(i = 0 ; i < carray_count(tab) ; i++)
+        mailmessage_free(carray_get(tab, i));
+err:
+    return res;
+}
+
+
 @interface LBFolder (Private)
 @end
     
@@ -681,87 +770,4 @@
     return data->imap_session;  
 }
 
-/* From Libetpan source */
-//TODO Can these things be made public in libetpan?
-int uid_list_to_env_list(clist * fetch_result, struct mailmessage_list ** result,  mailsession * session, mailmessage_driver * driver) {
-    
-    clistiter * cur;
-    struct mailmessage_list * env_list;
-    int r;
-    int res;
-    carray * tab;
-    unsigned int i;
-    mailmessage * msg;
-
-    tab = carray_new(128);
-    if (tab == NULL) {
-        res = MAIL_ERROR_MEMORY;
-        goto err;
-    }
-
-    for(cur = clist_begin(fetch_result); cur != NULL; cur = clist_next(cur)) {
-        struct mailimap_msg_att * msg_att;
-        clistiter * item_cur;
-        uint32_t uid;
-        size_t size;
-
-        msg_att = clist_content(cur);
-        uid = 0;
-        size = 0;
-        for(item_cur = clist_begin(msg_att->att_list); item_cur != NULL; item_cur = clist_next(item_cur)) {
-            struct mailimap_msg_att_item * item;
-
-            item = clist_content(item_cur);
-            switch (item->att_type) {
-                case MAILIMAP_MSG_ATT_ITEM_STATIC:
-                switch (item->att_data.att_static->att_type) {
-                    case MAILIMAP_MSG_ATT_UID:
-                        uid = item->att_data.att_static->att_data.att_uid;
-                    break;
-
-                    case MAILIMAP_MSG_ATT_RFC822_SIZE:
-                        size = item->att_data.att_static->att_data.att_rfc822_size;
-                    break;
-                }
-                break;
-            }
-        }
-
-        msg = mailmessage_new();
-        if (msg == NULL) {
-            res = MAIL_ERROR_MEMORY;
-            goto free_list;
-        }
-
-        r = mailmessage_init(msg, session, driver, uid, size);
-        if (r != MAIL_NO_ERROR) {
-            res = r;
-            goto free_msg;
-        }
-
-        r = carray_add(tab, msg, NULL);
-        if (r < 0) {
-            res = MAIL_ERROR_MEMORY;
-            goto free_msg;
-        }
-    }
-
-    env_list = mailmessage_list_new(tab);
-    if (env_list == NULL) {
-        res = MAIL_ERROR_MEMORY;
-        goto free_list;
-    }
-
-    * result = env_list;
-
-    return MAIL_NO_ERROR;
-
-    free_msg:
-        mailmessage_free(msg);
-    free_list:
-        for(i = 0 ; i < carray_count(tab) ; i++)
-        mailmessage_free(carray_get(tab, i));
-    err:
-        return res;
-}
 @end

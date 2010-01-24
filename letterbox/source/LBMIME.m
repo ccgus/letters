@@ -92,9 +92,6 @@
     return nil;
 }
 
-- (NSString *)contentType {
-    return _contentType;
-}
 
 - (struct mailmime *)buildMIMEStruct {
     return NULL;

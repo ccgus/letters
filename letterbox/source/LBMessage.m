@@ -64,7 +64,6 @@ char * etpan_encode_mime_header(char * phrase)
 @implementation LBMessage
 @synthesize mime=_parsedMIME;
 @synthesize sequenceNumber=_sequenceNumber;
-@synthesize messageId=_messageId;
 
 - (id)init {
     [super init];
@@ -294,12 +293,23 @@ char * etpan_encode_mime_header(char * phrase)
 - (BOOL)isNew {
     struct mail_flags *flags = _message->msg_flags;
     if (flags != NULL) {
-        if ( (flags->fl_flags & MAIL_FLAG_SEEN == 0) && 
-            (flags->fl_flags & MAIL_FLAG_NEW == 0))
+        if ( ((flags->fl_flags & MAIL_FLAG_SEEN) == 0) && ((flags->fl_flags & MAIL_FLAG_NEW) == 0)) {
             return YES;
+        }
+            
     }
     return NO;
 }
+
+
+- (void)setMessageId:(NSString *)value {
+    if (_messageId != value) {
+        [_messageId release];
+        _messageId = [value retain];
+    }
+}
+
+
 
 - (NSString *)messageId {
     
@@ -626,7 +636,6 @@ NSString *LBMessageBodyTextPropertKey       = @"bodyTextThisNeedsToGoAwayASAP";
     
     // FIXME: find out the diff between sender and from
     
-    #warning this won't work for multiple mime types.  we need to save em' all.
     
     [props setValue:[self body] forKey:LBMessageBodyTextPropertKey];
     

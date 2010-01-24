@@ -25,9 +25,9 @@
 
 /*!
  @abstract   Retrieves a list of only the subscribed folders from the server.
- @result     Returns a NSSet which contains NSStrings of the folders pathnames.
+ @result     Returns an ordered NSArray which contains NSStrings of the folders pathnames.
  */
-- (NSArray *) subscribedFolders:(NSError**)outErr;
+- (NSArray *) subscribedFolderNames:(NSError**)outErr;
 
 /*!
  @abstract   If you have the path of a folder on the server use this method to retrieve just the one folder.

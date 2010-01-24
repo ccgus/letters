@@ -63,7 +63,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     
-    #ifdef DEBUG
+    #ifdef xDEBUG
     
     if (NSRunAlertPanel(@"Start Over(ish)?", @"Should I clear out the cache and acct prefs?", @"Clear", @"Keep", nil)) {
         
@@ -164,9 +164,48 @@
     [[_prefsWindowController window] makeKeyAndOrderFront:self];
 }
 
+- (void) pullTimerHit:(NSTimer*)t {
+    
+    for (LBAccount *acct in [self accounts]) {
+        if ([acct isActive]) {
+            [[acct server] checkForMail];
+        }
+    }
+}
+
 - (void) connectToDefaultServerAndPullMail {
-    // whatever.  it's a stub.
-    [[_mailViews lastObject] connectToServerAndList];
+    
+    for (LBAccount *acct in [self accounts]) {
+        
+        // FIXME: this is going to have to be temporary, till we get a UI to turn it on/ off
+        [acct setIsActive:YES];
+        
+        if ([acct isActive]) {
+            
+            [[acct server] connectUsingBlock:^(BOOL success, NSError *error) {
+                
+                if (!success) {
+                    // FIXME: show a warning or something?
+                    NSLog(@"error: %@", error);
+                }
+                else {
+                    [[acct server] checkForMail];
+                }
+            
+            }];
+        }
+    }
+    
+    if (!_periodicMailCheckTimer) {
+        NSTimeInterval checkTimeInSeconds = 120; // FIMXE: hidden pref?
+        
+        _periodicMailCheckTimer = [[NSTimer scheduledTimerWithTimeInterval:checkTimeInSeconds
+                                                                    target:self
+                                                                  selector:@selector(pullTimerHit:)
+                                                                  userInfo:nil
+                                                                   repeats:YES] retain];
+    }
+    
 }
 
 

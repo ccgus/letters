@@ -31,6 +31,7 @@
 
 #import "LBBareAttachment.h"
 
+#import "LetterBoxUtilities.h"
 #import "LetterBoxTypes.h"
 #import "LBMIME_SinglePart.h"
 #import "LBAttachment.h"

@@ -13,11 +13,17 @@
 #import "LBAddress.h"
 #import "LBMessage.h"
 #import "FMDatabase.h"
+#import "LBIMAPConnection.h"
+
+
+NSString *LBServerFolderUpdatedNotification = @"LBServerFolderUpdatedNotification";
 
 @implementation LBServer
 @synthesize account=_account;
 @synthesize baseCacheURL=_baseCacheURL;
 @synthesize accountCacheURL=_accountCacheURL;
+@synthesize foldersCache=_foldersCache;
+@synthesize foldersList=_foldersList;
 
 - (id) initWithAccount:(LBAccount*)anAccount usingCacheFolder:(NSURL*)cacheFileURL {
     
@@ -26,6 +32,10 @@
 		self.account        = anAccount;
         self.baseCacheURL   = cacheFileURL;
         
+        _inactiveIMAPConnections = [[NSMutableArray array] retain];
+        _activeIMAPConnections = [[NSMutableArray array] retain];
+        _foldersCache = [[NSMutableDictionary dictionary] retain];
+        _foldersList  = [[NSArray array] retain];
 	}
     
 	return self;
@@ -40,12 +50,101 @@
     [_accountCacheURL release];
     [_cacheDB release];
     
+    [_inactiveIMAPConnections release];
+    [_activeIMAPConnections release];
+    
     [super dealloc];
 }
 
-- (void) makeCacheFolders {
+- (LBIMAPConnection*) checkoutIMAPConnection {
     
-    debug(@"[_accountCacheURL path]: %@", [_accountCacheURL path]);
+    // FIXME: this isn't thread safe.
+    // FIXME: need to set an upper limit on these guys.
+    
+    LBIMAPConnection *conn = [_inactiveIMAPConnections lastObject];
+    
+    if (!conn) {
+        // FIXME: what about a second connection that hasn't been connected yet?
+        // should we worry about that?
+        conn = [[[LBIMAPConnection alloc] init] autorelease];
+    }
+    
+    [_activeIMAPConnections addObject:conn];
+    
+    return conn;
+}
+
+- (void) checkInIMAPConnection:(LBIMAPConnection*) conn {
+    
+    // FIXME: aint' thread safe.
+    // Possible solution- only ever checkout / check in on main thread?
+    
+    [_inactiveIMAPConnections addObject:conn];
+    [_activeIMAPConnections removeObject:conn];
+}
+
+- (void) connectUsingBlock:(void (^)(BOOL, NSError *))block {
+    LBIMAPConnection *conn = [self checkoutIMAPConnection];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
+        
+        NSError *err = nil;
+        BOOL success = [conn connectWithAccount:[self account] error:&err];
+        
+        if (block) {
+            dispatch_async(dispatch_get_main_queue(),^ {
+                
+                block(success, err);
+                
+                [self checkInIMAPConnection:conn];
+            });
+        }
+    });
+}
+
+- (void) checkForMail {
+    // weeeeeee
+    
+    LBIMAPConnection *conn = [self checkoutIMAPConnection];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
+        
+        if (![conn isConnected]) {
+            NSError *err = nil;
+            if (![conn connectWithAccount:[self account] error:&err]) {
+                NSLog(@"err: %@", err);
+                // FIXME: remove / invalidate the connection so it isn't used again?
+                return;
+            }
+        }
+        
+        NSError *err    = nil;
+        NSArray *list   = [conn subscribedFolderNames:&err];
+        
+        if (err) {
+            // do something nice with this.
+            NSLog(@"err: %@", err);
+            return;
+        }
+        
+        self.foldersList = list;
+        
+        dispatch_async(dispatch_get_main_queue(),^ {
+            [[NSNotificationCenter defaultCenter] postNotificationName:LBServerFolderUpdatedNotification
+                                                                object:self
+                                                              userInfo:nil];
+        });
+        
+        
+    });
+    
+    
+    
+    
+    
+}
+
+- (void) makeCacheFolders {
     
     NSError *err = nil;
     BOOL madeDir = [[NSFileManager defaultManager] createDirectoryAtPath:[_accountCacheURL path]
@@ -56,7 +155,6 @@
         // FIXME: do something sensible with this.
         NSLog(@"Error creating cache folder: %@", err);
     }
-    
 }
 
 - (void) loadCache {

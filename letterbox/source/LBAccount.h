@@ -47,6 +47,8 @@
     
     LBServer *_server;
     
+    BOOL     _isActive; // we might have an account, that's temporarily turned off for some reason.
+    
 }
 
 + (id) accountWithDictionary:(NSDictionary*)d;
@@ -59,7 +61,9 @@
 @property (assign) int authType;
 @property (assign) int imapPort;
 @property (assign) int connectionType;
-
 @property (retain) NSString *smtpServer;
+@property (assign) BOOL isActive;
+
+- (LBServer*)server;
 
 @end
