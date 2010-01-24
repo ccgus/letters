@@ -36,9 +36,10 @@ git clone git://github.com/ccgus/letters.git
 cd /tmp/letters
 
 v=`git log --pretty=oneline | wc -l | sed -e "s/ //g"`
+h=`git rev-parse --short HEAD`
 
-echo setting build id to $v
-sed -e "s/BUILDID/$v/g"  resources/Letters-Info.plist > resources/Letters-Info.plist.tmp
+echo "setting build id to $v $h"
+sed -e "s/BUILDID/$v $h/g"  resources/Letters-Info.plist > resources/Letters-Info.plist.tmp
 mv resources/Letters-Info.plist.tmp resources/Letters-Info.plist
 
 function buildTarget {
