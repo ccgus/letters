@@ -173,6 +173,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
                 continue;
             }
             
+            
             NSArray *messages = [[messageSet allObjects] sortedArrayUsingComparator:^(LBMessage *obj1, LBMessage *obj2) {
                 // FIXME: sort by date or something, not subject.
                 return [[obj1 subject] localizedCompare:[obj2 subject]];
