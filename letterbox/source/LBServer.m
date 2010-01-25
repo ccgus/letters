@@ -17,6 +17,8 @@
 
 
 NSString *LBServerFolderUpdatedNotification = @"LBServerFolderUpdatedNotification";
+NSString *LBServerSubjectsUpdatedNotification = @"LBServerSubjectsUpdatedNotification";
+NSString *LBServerBodiesUpdatedNotification = @"LBServerBodiesUpdatedNotification";
 
 @implementation LBServer
 @synthesize account=_account;
@@ -58,7 +60,12 @@ NSString *LBServerFolderUpdatedNotification = @"LBServerFolderUpdatedNotificatio
 
 - (LBIMAPConnection*) checkoutIMAPConnection {
     
-    // FIXME: this isn't thread safe.
+    // FIXME: this method isn't thread safe
+    if (![[NSThread currentThread] isMainThread]) {
+        NSLog(@"UH OH THIS IS BAD CHECKING OUT ON A NON MAIN THREAD NOOO.");
+    }
+    
+    
     // FIXME: need to set an upper limit on these guys.
     
     LBIMAPConnection *conn = [_inactiveIMAPConnections lastObject];
@@ -77,6 +84,10 @@ NSString *LBServerFolderUpdatedNotification = @"LBServerFolderUpdatedNotificatio
 - (void) checkInIMAPConnection:(LBIMAPConnection*) conn {
     
     // FIXME: aint' thread safe.
+    if (![[NSThread currentThread] isMainThread]) {
+        NSLog(@"UH OH THIS IS BAD CHECKING IN ON A NON MAIN THREAD NOOO.");
+    }
+    
     // Possible solution- only ever checkout / check in on main thread?
     
     [_inactiveIMAPConnections addObject:conn];
@@ -136,13 +147,57 @@ NSString *LBServerFolderUpdatedNotification = @"LBServerFolderUpdatedNotificatio
         });
         
         
+        
+        for (NSString *folderPath in list) {
+            
+            debug(@"Loading folder %@", folderPath);
+            
+            LBFolder *folder    = [[LBFolder alloc] initWithPath:folderPath inIMAPConnection:conn];
+            NSSet *messageSet   = [folder messageObjectsFromIndex:1 toIndex:0]; 
+            
+            NSArray *messages = [[messageSet allObjects] sortedArrayUsingComparator:^(LBMessage *obj1, LBMessage *obj2) {
+                // FIXME: sort by date or something, not subject.
+                return [[obj1 subject] localizedCompare:[obj2 subject]];
+            }];
+            
+            dispatch_async(dispatch_get_main_queue(),^ {
+                
+                [_foldersCache setObject:messages forKey:folderPath];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:LBServerSubjectsUpdatedNotification
+                                                                    object:self
+                                                                  userInfo:[NSDictionary dictionaryWithObject:folderPath
+                                                                                                       forKey:@"folderPath"]];
+            });
+            
+            for (LBMessage *msg in messages) {
+                [msg body]; // pull down the body.
+            }
+            
+            dispatch_async(dispatch_get_main_queue(),^ {
+                [[NSNotificationCenter defaultCenter] postNotificationName:LBServerBodiesUpdatedNotification
+                                                                    object:self
+                                                                  userInfo:[NSDictionary dictionaryWithObject:folderPath forKey:@"folderPath"]];
+            });
+            
+            [folder release];
+            
+            debug(@"Done folder %@", folderPath);
+        }
+        
+        dispatch_async(dispatch_get_main_queue(),^ {
+            [self checkInIMAPConnection:conn];
+        });
+        
+        
     });
     
-    
-    
-    
-    
 }
+
+- (NSArray*) messageListForPath:(NSString*)folderPath {
+    return [_foldersCache objectForKey:folderPath];
+}
+
 
 - (void) makeCacheFolders {
     

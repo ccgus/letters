@@ -22,6 +22,4 @@
 
 + (id) openNewMailViewController;
 
-- (void) connectToServerAndList;
-
 @end

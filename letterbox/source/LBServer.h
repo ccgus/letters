@@ -10,6 +10,8 @@
 #import <libetpan/libetpan.h>
 
 extern NSString *LBServerFolderUpdatedNotification;
+extern NSString *LBServerSubjectsUpdatedNotification;
+extern NSString *LBServerBodiesUpdatedNotification;
 
 @class LBAccount;
 @class LBFolder;
@@ -43,5 +45,7 @@ extern NSString *LBServerFolderUpdatedNotification;
 - (void) connectUsingBlock:(void (^)(BOOL, NSError *))block;
 
 - (void) checkForMail;
+
+- (NSArray*) messageListForPath:(NSString*)folderPath;
 
 @end

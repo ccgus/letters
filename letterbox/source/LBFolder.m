@@ -524,15 +524,6 @@ err:
         NSLog(@"Error %d", [NSString stringWithFormat:@"Error number: %d",r]);
         // FIXME: return NSError* ?
         return nil;
-        
-        /*
-        #warning nooooooooooo more exceptions! booo
-        NSException *exception = [NSException
-                    exceptionWithName:LBUnknownError
-                    reason:[NSString stringWithFormat:@"Error number: %d",r]
-                    userInfo:nil];
-        [exception raise];
-        */
     }
 
     mailimap_fetch_type_free(fetch_type);
