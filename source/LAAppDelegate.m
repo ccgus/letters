@@ -64,7 +64,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     
-    #ifdef xDEBUG
+    #ifdef DEBUG
     
     if (NSRunAlertPanel(@"Start Over(ish)?", @"Should I clear out the cache and acct prefs?", @"Clear", @"Keep", nil)) {
         

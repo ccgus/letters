@@ -172,6 +172,9 @@ err:
     _connected = YES;
 }
 
+- (BOOL) connected {
+    return _connected;
+}
 
 - (void)disconnect {
     if(_connected) {
@@ -490,6 +493,12 @@ err:
     clist * fetch_result;
 
     [self connect];
+    
+    if (!_connected) {
+        debug(@"Could not connect for folder %@", _path);
+        return nil;
+    }
+    
     set = mailimap_set_new_interval(start, end);
     if (set == NULL) {
         return nil;

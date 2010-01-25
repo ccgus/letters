@@ -164,7 +164,14 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
             [conn setActivityStatusAndNotifiy:[NSString stringWithFormat:status, folderPath]];
             
             LBFolder *folder    = [[LBFolder alloc] initWithPath:folderPath inIMAPConnection:conn];
+            
             NSSet *messageSet   = [folder messageObjectsFromIndex:1 toIndex:0]; 
+            
+            if (!messageSet || ![folder connected]) {
+                NSLog(@"Could not get folder listing for %@", list);
+                [folder release];
+                continue;
+            }
             
             NSArray *messages = [[messageSet allObjects] sortedArrayUsingComparator:^(LBMessage *obj1, LBMessage *obj2) {
                 // FIXME: sort by date or something, not subject.

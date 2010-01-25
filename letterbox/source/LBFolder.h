@@ -198,4 +198,7 @@
 - (struct mailfolder *)folderStruct;
 - (mailsession *)folderSession;
 - (mailimap *)imapSession;
+
+- (BOOL) connected;
+
 @end
