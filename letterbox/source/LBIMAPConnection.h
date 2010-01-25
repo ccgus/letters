@@ -9,12 +9,16 @@
 #import <Cocoa/Cocoa.h>
 #import <libetpan/libetpan.h>
 
+#import "LBActivity.h"
+
 @class LBFolder;
 @class LBAccount;
 
-@interface LBIMAPConnection : NSObject {
+@interface LBIMAPConnection : NSObject <LBActivity> {
     struct mailstorage  *_storage;
     BOOL                _connected;
+    BOOL                _shouldCancelActivity;
+    NSString            *_activityStatus;
 }
 
 /*!
@@ -55,4 +59,5 @@
 - (struct mailstorage *)storageStruct;
 
 
+- (void)setActivityStatusAndNotifiy:(NSString *)value;
 @end

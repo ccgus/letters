@@ -206,4 +206,53 @@
     
 }
 
+- (int) activityType {
+    return 0;
+}
+
+- (void)setActivityStatusAndNotifiy:(NSString *)value {
+    if (_activityStatus != value) {
+        
+        BOOL isNew  = (value && !_activityStatus);
+        BOOL isOver = (!value) && _activityStatus;
+        
+        [_activityStatus release];
+        _activityStatus = [value retain];
+        
+        dispatch_async(dispatch_get_main_queue(),^ {
+            
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:self forKey:@"activity"];
+            
+            if (isNew) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:LBActivityStartedNotification
+                                                                    object:self
+                                                                  userInfo:userInfo];
+            }
+            else if (isOver) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:LBActivityEndedNotification
+                                                                    object:self
+                                                                  userInfo:userInfo];
+            }
+            else {
+                [[NSNotificationCenter defaultCenter] postNotificationName:LBActivityUpdatedNotification
+                                                                    object:self
+                                                                  userInfo:userInfo];
+            }
+            
+        });
+        
+        
+    }
+}
+
+
+
+- (NSString*) activityStatus {
+    return _activityStatus;
+}
+
+- (void) cancelActivity {
+    _shouldCancelActivity = YES;
+}
+
 @end

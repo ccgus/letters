@@ -20,6 +20,11 @@ NSString *LBServerFolderUpdatedNotification = @"LBServerFolderUpdatedNotificatio
 NSString *LBServerSubjectsUpdatedNotification = @"LBServerSubjectsUpdatedNotification";
 NSString *LBServerBodiesUpdatedNotification = @"LBServerBodiesUpdatedNotification";
 
+// these are defined in LBActivity.h, but they need to go somewhere and I'm not making a .m just for them.
+NSString *LBActivityStartedNotification = @"LBActivityStartedNotification";
+NSString *LBActivityUpdatedNotification = @"LBActivityUpdatedNotification";
+NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
+
 @implementation LBServer
 @synthesize account=_account;
 @synthesize baseCacheURL=_baseCacheURL;
@@ -92,12 +97,15 @@ NSString *LBServerBodiesUpdatedNotification = @"LBServerBodiesUpdatedNotificatio
     
     [_inactiveIMAPConnections addObject:conn];
     [_activeIMAPConnections removeObject:conn];
+    [conn setActivityStatusAndNotifiy:nil];
 }
 
 - (void) connectUsingBlock:(void (^)(BOOL, NSError *))block {
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
+        
+        [conn setActivityStatusAndNotifiy:NSLocalizedString(@"Connecting", @"Connecting")];
         
         NSError *err = nil;
         BOOL success = [conn connectWithAccount:[self account] error:&err];
@@ -121,6 +129,7 @@ NSString *LBServerBodiesUpdatedNotification = @"LBServerBodiesUpdatedNotificatio
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
         
         if (![conn isConnected]) {
+            [conn setActivityStatusAndNotifiy:NSLocalizedString(@"Connecting", @"Connecting")];
             NSError *err = nil;
             if (![conn connectWithAccount:[self account] error:&err]) {
                 NSLog(@"err: %@", err);
@@ -129,6 +138,7 @@ NSString *LBServerBodiesUpdatedNotification = @"LBServerBodiesUpdatedNotificatio
             }
         }
         
+        [conn setActivityStatusAndNotifiy:NSLocalizedString(@"Updating folder list", @"Updating folder list")];
         NSError *err    = nil;
         NSArray *list   = [conn subscribedFolderNames:&err];
         
@@ -150,7 +160,8 @@ NSString *LBServerBodiesUpdatedNotification = @"LBServerBodiesUpdatedNotificatio
         
         for (NSString *folderPath in list) {
             
-            debug(@"Loading folder %@", folderPath);
+            NSString *status = NSLocalizedString(@"Finding messages in '%@'", @"Finding messages in '%@'");
+            [conn setActivityStatusAndNotifiy:[NSString stringWithFormat:status, folderPath]];
             
             LBFolder *folder    = [[LBFolder alloc] initWithPath:folderPath inIMAPConnection:conn];
             NSSet *messageSet   = [folder messageObjectsFromIndex:1 toIndex:0]; 
@@ -170,7 +181,14 @@ NSString *LBServerBodiesUpdatedNotification = @"LBServerBodiesUpdatedNotificatio
                                                                                                        forKey:@"folderPath"]];
             });
             
+            NSInteger idx = 0;
+            
             for (LBMessage *msg in messages) {
+                idx++;
+                
+                NSString *status = NSLocalizedString(@"Loading message %d of %d messages in '%@'", @"Loading message %d of %d messages in '%@'");
+                [conn setActivityStatusAndNotifiy:[NSString stringWithFormat:status, idx, [messages count], folderPath]];
+                
                 [msg body]; // pull down the body.
             }
             

@@ -8,6 +8,7 @@
 
 #import "LAAppDelegate.h"
 #import "LAMailViewController.h"
+#import "LAActivityViewer.h"
 #import <AddressBook/AddressBook.h>
 
 @interface LAAppDelegate ()
@@ -77,6 +78,10 @@
     }
     
     #endif
+    
+    // get this guy started up.
+    [[[LAActivityViewer sharedActivityViewer] window] orderFront:self];
+    
     
     [self openNewMailView:nil];
     
