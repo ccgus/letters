@@ -5,3 +5,4 @@
 letterbox/TAGS
 build/
 *~
+Debug.xcconfig

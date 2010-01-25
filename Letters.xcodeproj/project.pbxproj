@@ -24,6 +24,8 @@
 		CCA554541106E1BE00CEEFF4 /* LAMailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA554531106E1BE00CEEFF4 /* LAMailViewController.m */; };
 		CCA554841106EBBC00CEEFF4 /* LAPrefsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA554831106EBBC00CEEFF4 /* LAPrefsWindowController.m */; };
 		CCA554871106EBCC00CEEFF4 /* Prefs.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCA554851106EBCC00CEEFF4 /* Prefs.xib */; };
+		CCF4131F110D36D400401D5D /* LAActivityViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF4131E110D36D400401D5D /* LAActivityViewer.m */; };
+		CCF41324110D380800401D5D /* ActivityViewer.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCF41322110D380800401D5D /* ActivityViewer.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,6 +94,9 @@
 		CCA554831106EBBC00CEEFF4 /* LAPrefsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LAPrefsWindowController.m; path = source/LAPrefsWindowController.m; sourceTree = "<group>"; };
 		CCA554861106EBCC00CEEFF4 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = resources/English.lproj/Prefs.xib; sourceTree = "<group>"; };
 		CCA554CD1106F2D600CEEFF4 /* LetterBox.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LetterBox.xcodeproj; path = letterbox/LetterBox.xcodeproj; sourceTree = "<group>"; };
+		CCF4131D110D36D400401D5D /* LAActivityViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LAActivityViewer.h; path = source/LAActivityViewer.h; sourceTree = "<group>"; };
+		CCF4131E110D36D400401D5D /* LAActivityViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LAActivityViewer.m; path = source/LAActivityViewer.m; sourceTree = "<group>"; };
+		CCF41323110D380800401D5D /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = resources/English.lproj/ActivityViewer.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,10 +159,12 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				CCA554351106DE1300CEEFF4 /* LADocument.h */,
-				CCA554361106DE1300CEEFF4 /* LADocument.m */,
+				CCF4131D110D36D400401D5D /* LAActivityViewer.h */,
+				CCF4131E110D36D400401D5D /* LAActivityViewer.m */,
 				CCA5544B1106DF4D00CEEFF4 /* LAAppDelegate.h */,
 				CCA5544C1106DF4D00CEEFF4 /* LAAppDelegate.m */,
+				CCA554351106DE1300CEEFF4 /* LADocument.h */,
+				CCA554361106DE1300CEEFF4 /* LADocument.m */,
 				CCA554521106E1BE00CEEFF4 /* LAMailViewController.h */,
 				CCA554531106E1BE00CEEFF4 /* LAMailViewController.m */,
 				CCA554821106EBBC00CEEFF4 /* LAPrefsWindowController.h */,
@@ -206,6 +213,7 @@
 		CCA554581106E20500CEEFF4 /* xib */ = {
 			isa = PBXGroup;
 			children = (
+				CCF41322110D380800401D5D /* ActivityViewer.xib */,
 				CCA554851106EBCC00CEEFF4 /* Prefs.xib */,
 				CCA554551106E1FE00CEEFF4 /* MailView.xib */,
 				CCA554271106DDF800CEEFF4 /* LADocument.xib */,
@@ -301,6 +309,7 @@
 				CCA554311106DE0500CEEFF4 /* InfoPlist.strings in Resources */,
 				CCA554871106EBCC00CEEFF4 /* Prefs.xib in Resources */,
 				CC6D05F6110A491C00D900E9 /* MailView.xib in Resources */,
+				CCF41324110D380800401D5D /* ActivityViewer.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -332,6 +341,7 @@
 				CCA5544D1106DF4D00CEEFF4 /* LAAppDelegate.m in Sources */,
 				CCA554541106E1BE00CEEFF4 /* LAMailViewController.m in Sources */,
 				CCA554841106EBBC00CEEFF4 /* LAPrefsWindowController.m in Sources */,
+				CCF4131F110D36D400401D5D /* LAActivityViewer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -394,6 +404,14 @@
 			name = Prefs.xib;
 			sourceTree = "<group>";
 		};
+		CCF41322110D380800401D5D /* ActivityViewer.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CCF41323110D380800401D5D /* English */,
+			);
+			name = ActivityViewer.xib;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -409,7 +427,6 @@
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = source/Letters_Prefix.pch;
@@ -430,7 +447,6 @@
 					/builds/Debug,
 					"\"$(SRCROOT)/build/Debug\"",
 				);
-				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = source/Letters_Prefix.pch;
 				INFOPLIST_FILE = "resources/Letters-Info.plist";

@@ -36,6 +36,8 @@
 #import "LBMessage.h"
 #import "LBSMTPConnection.h"
 #import "LBBareMessage.h"
+#import "LBActivity.h"
 #import "LetterBoxTypes.h"
 #import "LetterBoxUtilities.h"
+
 #import <libetpan/libetpan.h>

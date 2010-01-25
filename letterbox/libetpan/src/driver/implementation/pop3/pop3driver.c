@@ -207,9 +207,9 @@ static int pop3driver_connect_stream(mailsession * session, mailstream * s)
 static int pop3driver_starttls(mailsession * session)
 {
   int r;
-  int fd;
-  mailstream_low * low;
-  mailstream_low * new_low;
+  //int fd;
+  //mailstream_low * low;
+  //mailstream_low * new_low;
   mailpop3 * pop3;
   struct pop3_session_state_data * data;
 

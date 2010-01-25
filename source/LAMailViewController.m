@@ -10,9 +10,12 @@
 #import "LAAppDelegate.h"
 #import "LADocument.h"
 
+@interface LAMailViewController ()
+- (NSString *)selectedFolderPath;
+@end
+
+
 @implementation LAMailViewController
-@synthesize folders=_folders;
-@synthesize server=_server;
 @synthesize statusMessage=_statusMessage;
 
 + (id) openNewMailViewController {
@@ -25,7 +28,7 @@
 - (id) initWithWindowNibName:(NSString*)nibName {
 	self = [super initWithWindowNibName:nibName];
 	if (self != nil) {
-		_messages = [[NSMutableArray alloc] init];
+		//
 	}
     
 	return self;
@@ -34,8 +37,7 @@
 
 - (void)dealloc {
     [_statusMessage release];
-    [_messages release];
-    [_folders release];
+    
     [super dealloc];
 }
 
@@ -47,6 +49,41 @@
     
     [foldersList setDataSource:self];
     [foldersList setDelegate:self];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:LBServerFolderUpdatedNotification
+                                                      object:nil
+                                                       queue:nil
+                                                  usingBlock:^(NSNotification *note)
+                                                  {
+                                                      debug(@"folder list updated");
+                                                      [foldersList reloadData];
+                                                  }];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:LBServerSubjectsUpdatedNotification
+                                                      object:nil
+                                                       queue:nil
+                                                  usingBlock:^(NSNotification *note)
+                                                  {
+                                                      debug(@"message list updated.");
+                                                      NSString *selectedFolder = [self selectedFolderPath];
+                                                      NSString *updatedFolder  = [[note userInfo] objectForKey:@"folderPath"];
+                                                      if ([selectedFolder isEqualToString:updatedFolder]) {
+                                                          [mailboxMessageList reloadData];
+                                                      }
+                                                  }];
+    
+}
+
+- (NSString *)selectedFolderPath {
+    
+    NSInteger selectedRow = [foldersList selectedRow];
+    if (selectedRow < 0) {
+        return @"INBOX";
+    }
+    else {
+        LBAccount *currentAccount = [[appDelegate accounts] lastObject];
+        return [[[currentAccount server] foldersList] objectAtIndex:selectedRow];        
+    }
 }
 
 - (NSURL*) cacheFolderURL {
@@ -70,112 +107,7 @@
     return [NSURL fileURLWithPath:path isDirectory:YES];
 }
 
-- (void) listFolder:(NSString*)folder {
-    
-    [_messages removeAllObjects];
-    
-    _messages = [[_server cachedMessagesForFolder:folder] mutableCopy];
-    [mailboxMessageList reloadData];
-    
-    if (![_server isConnected]) {
-        // FIXME: do something nice here.
-        NSLog(@"Not connected!");
-        return;
-    }    
-    
-    [workingIndicator startAnimation:self];
-    
-    NSString *format = NSLocalizedString(@"Finding messages in %@", @"Finding messages in %@");
-    [self setStatusMessage:[NSString stringWithFormat:format, folder]];
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
-        
-        // this needs to go somewhere else
-        {
-            NSMutableArray *folders = [NSMutableArray array];
-            
-            NSError *err = nil;
-            
-            self.folders = [[[_server subscribedFolders:&err] mutableCopy] autorelease];
-            
-            if (err) {
-                // do something nice with this.
-                NSLog(@"err: %@", err);
-                return;
-            }
-            
-            dispatch_async(dispatch_get_main_queue(),^ {
-                [foldersList reloadData];
-            });
-        }
-        
-        LBFolder *inbox   = [_server folderWithPath:folder];
-        NSSet *messageSet = [inbox messageObjectsFromIndex:1 toIndex:0]; 
-        
-        dispatch_async(dispatch_get_main_queue(),^ {
-            [_messages removeAllObjects];
-            [_messages addObjectsFromArray:[messageSet allObjects]];
-            
-            [mailboxMessageList reloadData];
-            
-            [self setStatusMessage:NSLocalizedString(@"Download message bodies", @"Download message bodies")];
-        });
-        
-        
-        for (LBMessage *msg in messageSet) {
-            [msg body]; // pull down the body. in the background.
-        }
-        
-        dispatch_async(dispatch_get_main_queue(),^ {
-            [self setStatusMessage:nil];
-            [workingIndicator stopAnimation:self];
-        });
-    });
-}
 
-- (void) connectToServerAndList {
-    
-    LBAccount *account = [[appDelegate accounts] lastObject];
-    
-    if (![[account password] length]) {
-        [appDelegate openPreferences:nil];
-        return;
-    }
-    
-    [self setStatusMessage:NSLocalizedString(@"Connecting to server", @"Connecting to server")];
-    
-    // FIXME: this ivar shouldn't be here.  It probably belongs in the account?
-    _server = [[LBServer alloc] initWithAccount:account usingCacheFolder:[self cacheFolderURL]];
-    
-    [_server loadCache]; // do this right away, so we can see our account info.  It's also kind of slow.
-    
-    // load our folder cache first.
-    self.folders = [[[_server cachedFolders] mutableCopy] autorelease];
-    [foldersList reloadData];
-    
-    NSError *err = nil;
-    
-    if ([_server connect:&err]) {
-        [self listFolder:@"INBOX"];
-    }
-    else {
-        NSLog(@"Could not connect");
-    }
-    
-    if (err) {
-        
-        // OH CRAP.
-        
-        NSString *desc = [err localizedDescription];
-        
-        desc = desc ? desc : NSLocalizedString(@"Unknown Error", @"Unknown Error");
-        
-        NSRunAlertPanel(@"Error Connecting", desc, @"OK", nil, nil);
-        
-    }
-    
-    
-}
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
     
@@ -185,7 +117,11 @@
             [[[messageTextView textStorage] mutableString] setString:@"This area intentionally left blank."];
         }
         else {
-            LBMessage *msg = [_messages objectAtIndex:selectedRow];
+            
+            LBAccount *currentAccount = [[appDelegate accounts] lastObject];
+            NSArray *messageList = [[currentAccount server] messageListForPath:[self selectedFolderPath]];
+            
+            LBMessage *msg = [messageList objectAtIndex:selectedRow];
             
             NSString *message = nil;
             
@@ -199,37 +135,37 @@
             message = [LAPrefs boolForKey:@"chocklock"] ? [message uppercaseString] : message;
             
             [[[messageTextView textStorage] mutableString] setString:message];
+            
         }
     }
     
     else if ([notification object] == foldersList) {
-        NSUInteger selectedRow = [foldersList selectedRow];
-        
-        // the real fix here is to not overwrite selected folders.
-        if (selectedRow >= 0 && selectedRow < [_folders count] ) {
-            
-            NSString *folder = [_folders objectAtIndex:selectedRow];
-            [self listFolder:folder];
-        }
-        
-        
+        [mailboxMessageList reloadData];
     }
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView {
     
+    // just grab the last account.
+    LBAccount *currentAccount = [[appDelegate accounts] lastObject];
+    
     if (aTableView == foldersList) {
-        return [_folders count];
+        return [[[currentAccount server] foldersList] count];
     }
     
-	return [_messages count];
+    NSArray *messageList = [[currentAccount server] messageListForPath:[self selectedFolderPath]];
+    
+    return [messageList count];
 }
 
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex {
 	
+    // just grab the last account.
+    LBAccount *currentAccount = [[appDelegate accounts] lastObject];
+    
     if (aTableView == foldersList) {
-        // this will be taken out eventually.  But I just can't help myself.
-        NSString *folderName = [_folders objectAtIndex:rowIndex];
+        
+        NSString *folderName = [[[currentAccount server] foldersList] objectAtIndex:rowIndex];
         
         /*
         if ([folderName hasPrefix:@"INBOX."]) {
@@ -237,15 +173,19 @@
         }
         */
         
+        // this will be taken out eventually.  But I just can't help myself.
+        
         return [LAPrefs boolForKey:@"chocklock"] ? [folderName uppercaseString] : folderName;
     }
     
-    LBMessage *msg = [_messages objectAtIndex:rowIndex];
+    NSArray *messageList = [[currentAccount server] messageListForPath:[self selectedFolderPath]];
+    
+    LBMessage *msg = [messageList objectAtIndex:rowIndex];
     
     NSString *identifier = [aTableColumn identifier];
     
     return [LAPrefs boolForKey:@"chocklock"] ? [[msg valueForKeyPath:identifier] uppercaseString] : [msg valueForKeyPath:identifier];
-
+    
 }
 
 // FIXME: put this somewhere where it makes more sense, maybe a utils file?
@@ -322,6 +262,7 @@ NSString *FRewrapLines(NSString *s, int len) {
 
 - (void) replyToSelectedMessage:(id)sender {
     
+    
     NSInteger selectedRow = [mailboxMessageList selectedRow];
     
     if (selectedRow < 0) {
@@ -329,7 +270,11 @@ NSString *FRewrapLines(NSString *s, int len) {
         return;
     }
     
-    LBMessage *msg = [_messages objectAtIndex:selectedRow];
+    LBAccount *currentAccount = [[appDelegate accounts] lastObject];
+    
+    NSArray *messageList = [[currentAccount server] messageListForPath:[self selectedFolderPath]];
+    
+    LBMessage *msg = [messageList objectAtIndex:selectedRow];
     
     if (![msg messageDownloaded]) {
         // FIXME: validate for this case as well.
@@ -342,12 +287,8 @@ NSString *FRewrapLines(NSString *s, int len) {
     
     LBAccount *account = [[appDelegate accounts] lastObject];
     
-    debug(@"[account fromAddress]: %@", [account fromAddress]);
-    
     [doc setFromList:[account fromAddress]];
     [doc setToList:[[msg sender] email]];
-    
-    debug(@"FRewrapLines([msg body], 72): %@", FRewrapLines([msg body], 72));
     
     // fixme - 72?  a pref maybe?
     [doc setMessage:FRewrapLines(FQuote([msg body]), 72)];
@@ -356,9 +297,11 @@ NSString *FRewrapLines(NSString *s, int len) {
     if (![[subject lowercaseString] hasPrefix:@"re: "]) {
         subject = [NSString stringWithFormat:@"Re: ", subject];
     }
+    
     [doc setSubject:subject];
     
     [doc updateChangeCount:NSChangeDone];
+    
 }
 
 

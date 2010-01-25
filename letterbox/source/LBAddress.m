@@ -31,6 +31,7 @@
 
 
 #import "LBAddress.h"
+#import "LetterBoxUtilities.h"
 
 @implementation LBAddress
 
@@ -71,6 +72,9 @@
 - (id)initWithCoder:(NSCoder *)aDecoder {
     [self setName:[aDecoder decodeObjectForKey:@"name"]];
     [self setEmail:[aDecoder decodeObjectForKey:@"email"]];
+    
+    return self;
+    
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
