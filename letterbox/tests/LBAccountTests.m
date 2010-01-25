@@ -1,7 +1,7 @@
 /*
- * Mailcore
+ * MailCore
  *
- * Copyright (C) 2009 - Matt Ronge
+ * Copyright (C) 2007 - Matt Ronge
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * SUCH DAMAGE.
  */
 
-#import "LBCoreAccountTests.h"
+#import "LBAccountTests.h"
 
 NSString *SERVER = @"192.168.1.106";
 NSString *USERNAME = @"test";

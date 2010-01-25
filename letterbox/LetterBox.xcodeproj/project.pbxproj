@@ -8,11 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
-		96FE05A8110D728D00B03DC3 /* LBCoreMessageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D3D110ABD32005ECF65 /* LBCoreMessageTests.m */; };
+		96CB484E110E4D3900185A28 /* LBActivityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96CB484D110E4D3900185A28 /* LBActivityTests.m */; };
+		96CB4851110E4DD300185A28 /* LBFolderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96CB4850110E4DD300185A28 /* LBFolderTests.m */; };
+		96CB4888110E500400185A28 /* LBIMAPConnectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96CB4887110E500400185A28 /* LBIMAPConnectionTests.m */; };
+		96CB488B110E503500185A28 /* LBServerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96CB488A110E503500185A28 /* LBServerTests.m */; };
+		96FE05A8110D728D00B03DC3 /* LBMessageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D3D110ABD32005ECF65 /* LBMessageTests.m */; };
 		96FE05D7110D73CE00B03DC3 /* LBMIMETests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D3F110ABD32005ECF65 /* LBMIMETests.m */; };
 		96FE05E0110D745100B03DC3 /* LBBareMessageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D35110ABD32005ECF65 /* LBBareMessageTests.m */; };
-		96FE05E2110D745100B03DC3 /* LBCoreAddressTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D39110ABD32005ECF65 /* LBCoreAddressTests.m */; };
-		96FE05E3110D745100B03DC3 /* LBCoreAttachmentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D3B110ABD32005ECF65 /* LBCoreAttachmentTests.m */; };
+		96FE05E2110D745100B03DC3 /* LBAddressTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D39110ABD32005ECF65 /* LBAddressTests.m */; };
+		96FE05E3110D745100B03DC3 /* LBAttachmentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D3B110ABD32005ECF65 /* LBAttachmentTests.m */; };
 		CC3D54231108E7F700EEEF77 /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = CC3D541D1108E7F700EEEF77 /* FMDatabase.h */; };
 		CC3D54241108E7F700EEEF77 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3D541E1108E7F700EEEF77 /* FMDatabase.m */; };
 		CC3D54251108E7F700EEEF77 /* FMDatabaseAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = CC3D541F1108E7F700EEEF77 /* FMDatabaseAdditions.h */; };
@@ -129,6 +133,14 @@
 		0867D6A5FE840307C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		8DC2EF5B0486A6940098B216 /* LetterBox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LetterBox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		96CB484C110E4D3900185A28 /* LBActivityTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBActivityTests.h; sourceTree = "<group>"; };
+		96CB484D110E4D3900185A28 /* LBActivityTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBActivityTests.m; sourceTree = "<group>"; };
+		96CB484F110E4DD300185A28 /* LBFolderTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBFolderTests.h; sourceTree = "<group>"; };
+		96CB4850110E4DD300185A28 /* LBFolderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBFolderTests.m; sourceTree = "<group>"; };
+		96CB4886110E500400185A28 /* LBIMAPConnectionTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBIMAPConnectionTests.h; sourceTree = "<group>"; };
+		96CB4887110E500400185A28 /* LBIMAPConnectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBIMAPConnectionTests.m; sourceTree = "<group>"; };
+		96CB4889110E503500185A28 /* LBServerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBServerTests.h; sourceTree = "<group>"; };
+		96CB488A110E503500185A28 /* LBServerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBServerTests.m; sourceTree = "<group>"; };
 		CC3D541D1108E7F700EEEF77 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabase.h; path = source/FMDatabase.h; sourceTree = "<group>"; };
 		CC3D541E1108E7F700EEEF77 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = source/FMDatabase.m; sourceTree = "<group>"; };
 		CC3D541F1108E7F700EEEF77 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = source/FMDatabaseAdditions.h; sourceTree = "<group>"; };
@@ -181,14 +193,14 @@
 		CC877CF9110ABC1D005ECF65 /* JRLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JRLog.h; path = source/JRLog.h; sourceTree = "<group>"; };
 		CC877D34110ABD32005ECF65 /* LBBareMessageTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBBareMessageTests.h; path = tests/LBBareMessageTests.h; sourceTree = "<group>"; };
 		CC877D35110ABD32005ECF65 /* LBBareMessageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBBareMessageTests.m; path = tests/LBBareMessageTests.m; sourceTree = "<group>"; };
-		CC877D36110ABD32005ECF65 /* LBCoreAccountTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBCoreAccountTests.h; path = tests/LBCoreAccountTests.h; sourceTree = "<group>"; };
-		CC877D37110ABD32005ECF65 /* LBCoreAccountTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBCoreAccountTests.m; path = tests/LBCoreAccountTests.m; sourceTree = "<group>"; };
-		CC877D38110ABD32005ECF65 /* LBCoreAddressTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBCoreAddressTests.h; path = tests/LBCoreAddressTests.h; sourceTree = "<group>"; };
-		CC877D39110ABD32005ECF65 /* LBCoreAddressTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBCoreAddressTests.m; path = tests/LBCoreAddressTests.m; sourceTree = "<group>"; };
-		CC877D3A110ABD32005ECF65 /* LBCoreAttachmentTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBCoreAttachmentTests.h; path = tests/LBCoreAttachmentTests.h; sourceTree = "<group>"; };
-		CC877D3B110ABD32005ECF65 /* LBCoreAttachmentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBCoreAttachmentTests.m; path = tests/LBCoreAttachmentTests.m; sourceTree = "<group>"; };
-		CC877D3C110ABD32005ECF65 /* LBCoreMessageTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBCoreMessageTests.h; path = tests/LBCoreMessageTests.h; sourceTree = "<group>"; };
-		CC877D3D110ABD32005ECF65 /* LBCoreMessageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBCoreMessageTests.m; path = tests/LBCoreMessageTests.m; sourceTree = "<group>"; };
+		CC877D36110ABD32005ECF65 /* LBAccountTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBAccountTests.h; path = tests/LBAccountTests.h; sourceTree = "<group>"; };
+		CC877D37110ABD32005ECF65 /* LBAccountTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBAccountTests.m; path = tests/LBAccountTests.m; sourceTree = "<group>"; };
+		CC877D38110ABD32005ECF65 /* LBAddressTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBAddressTests.h; path = tests/LBAddressTests.h; sourceTree = "<group>"; };
+		CC877D39110ABD32005ECF65 /* LBAddressTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBAddressTests.m; path = tests/LBAddressTests.m; sourceTree = "<group>"; };
+		CC877D3A110ABD32005ECF65 /* LBAttachmentTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBAttachmentTests.h; path = tests/LBAttachmentTests.h; sourceTree = "<group>"; };
+		CC877D3B110ABD32005ECF65 /* LBAttachmentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBAttachmentTests.m; path = tests/LBAttachmentTests.m; sourceTree = "<group>"; };
+		CC877D3C110ABD32005ECF65 /* LBMessageTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBMessageTests.h; path = tests/LBMessageTests.h; sourceTree = "<group>"; };
+		CC877D3D110ABD32005ECF65 /* LBMessageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBMessageTests.m; path = tests/LBMessageTests.m; sourceTree = "<group>"; };
 		CC877D3E110ABD32005ECF65 /* LBMIMETests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBMIMETests.h; path = tests/LBMIMETests.h; sourceTree = "<group>"; };
 		CC877D3F110ABD32005ECF65 /* LBMIMETests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBMIMETests.m; path = tests/LBMIMETests.m; sourceTree = "<group>"; };
 		CCA553E01106DB6B00CEEFF4 /* Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Tests-Info.plist"; path = "resources/Tests-Info.plist"; sourceTree = "<group>"; };
@@ -389,18 +401,26 @@
 		F85A18AF09C7D8F200305C06 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				CC877D36110ABD32005ECF65 /* LBAccountTests.h */,
+				CC877D37110ABD32005ECF65 /* LBAccountTests.m */,
+				96CB484C110E4D3900185A28 /* LBActivityTests.h */,
+				96CB484D110E4D3900185A28 /* LBActivityTests.m */,
+				CC877D38110ABD32005ECF65 /* LBAddressTests.h */,
+				CC877D39110ABD32005ECF65 /* LBAddressTests.m */,
+				CC877D3A110ABD32005ECF65 /* LBAttachmentTests.h */,
+				CC877D3B110ABD32005ECF65 /* LBAttachmentTests.m */,
 				CC877D34110ABD32005ECF65 /* LBBareMessageTests.h */,
 				CC877D35110ABD32005ECF65 /* LBBareMessageTests.m */,
-				CC877D36110ABD32005ECF65 /* LBCoreAccountTests.h */,
-				CC877D37110ABD32005ECF65 /* LBCoreAccountTests.m */,
-				CC877D38110ABD32005ECF65 /* LBCoreAddressTests.h */,
-				CC877D39110ABD32005ECF65 /* LBCoreAddressTests.m */,
-				CC877D3A110ABD32005ECF65 /* LBCoreAttachmentTests.h */,
-				CC877D3B110ABD32005ECF65 /* LBCoreAttachmentTests.m */,
-				CC877D3C110ABD32005ECF65 /* LBCoreMessageTests.h */,
-				CC877D3D110ABD32005ECF65 /* LBCoreMessageTests.m */,
+				96CB484F110E4DD300185A28 /* LBFolderTests.h */,
+				96CB4850110E4DD300185A28 /* LBFolderTests.m */,
+				96CB4886110E500400185A28 /* LBIMAPConnectionTests.h */,
+				96CB4887110E500400185A28 /* LBIMAPConnectionTests.m */,
+				CC877D3C110ABD32005ECF65 /* LBMessageTests.h */,
+				CC877D3D110ABD32005ECF65 /* LBMessageTests.m */,
 				CC877D3E110ABD32005ECF65 /* LBMIMETests.h */,
 				CC877D3F110ABD32005ECF65 /* LBMIMETests.m */,
+				96CB4889110E503500185A28 /* LBServerTests.h */,
+				96CB488A110E503500185A28 /* LBServerTests.m */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -568,7 +588,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+			shellScript = "## Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n\n## In the future we might use gcov to determine code coverage of the tests.\n# FRAMEWORK_OBJ_DIR=${OBJROOT}/LetterBox.build/${CONFIGURATION}/LetterBox.build/Objects-normal/${ARCHS}\n# echo $FRAMEWORK_OBJ_DIR\n# mkdir -p coverage\n# pushd coverage\n# find ${OBJROOT} -name *.gcno -exec gcov -o ${FRAMEWORK_OBJ_DIR} {} \\;\n# popd\n";
 		};
 		F848422D09CFACA000B80440 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -634,11 +654,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96CB484E110E4D3900185A28 /* LBActivityTests.m in Sources */,
+				96FE05E2110D745100B03DC3 /* LBAddressTests.m in Sources */,
+				96FE05E3110D745100B03DC3 /* LBAttachmentTests.m in Sources */,
 				96FE05E0110D745100B03DC3 /* LBBareMessageTests.m in Sources */,
-				96FE05E2110D745100B03DC3 /* LBCoreAddressTests.m in Sources */,
-				96FE05E3110D745100B03DC3 /* LBCoreAttachmentTests.m in Sources */,
-				96FE05A8110D728D00B03DC3 /* LBCoreMessageTests.m in Sources */,
+				96CB4851110E4DD300185A28 /* LBFolderTests.m in Sources */,
+				96CB4888110E500400185A28 /* LBIMAPConnectionTests.m in Sources */,
+				96FE05A8110D728D00B03DC3 /* LBMessageTests.m in Sources */,
 				96FE05D7110D73CE00B03DC3 /* LBMIMETests.m in Sources */,
+				96CB488B110E503500185A28 /* LBServerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -669,33 +693,15 @@
 				COPY_PHASE_STRIP = NO;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
-					/builds/Debug,
-					/builds/Release,
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
-				);
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/OpenSourceProjects/libetpan-0.58/build-mac/build/Release\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../build/Debug\"";
 				FRAMEWORK_VERSION = A;
-				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = "";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = source/LetterBox_Prefix.pch;
 				INFOPLIST_FILE = resources/Info.plist;
 				INSTALL_PATH = "@rpath";
-				LIBRARY_SEARCH_PATHS = (
-					"$(LIBRARY_SEARCH_PATHS)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
-					/builds/Debug,
-					/builds/Release,
-				);
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/OpenSourceProjects/build\"";
 				OTHER_CFLAGS = "-DDEBUG";
+				OTHER_LDFLAGS = "-lgcov";
 				PRODUCT_NAME = LetterBox;
 				WRAPPER_EXTENSION = framework;
 			};
@@ -706,25 +712,11 @@
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
-				);
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/OpenSourceProjects/libetpan-0.58/build-mac/build/Release\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../build/Debug\"";
 				FRAMEWORK_VERSION = A;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = source/LetterBox_Prefix.pch;
 				INFOPLIST_FILE = resources/Info.plist;
 				INSTALL_PATH = "@rpath";
-				LIBRARY_SEARCH_PATHS = (
-					"$(LIBRARY_SEARCH_PATHS)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
-				);
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/OpenSourceProjects/build\"";
 				PRODUCT_NAME = LetterBox;
 				STRIP_INSTALLED_PRODUCT = YES;
 				WRAPPER_EXTENSION = framework;
@@ -777,11 +769,9 @@
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/OpenSourceProjects/libetpan-0.58/build-mac/build/Release\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";

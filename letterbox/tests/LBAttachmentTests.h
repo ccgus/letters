@@ -1,7 +1,7 @@
 /*
  * MailCore
  *
- * Copyright (C) 2009 - Matt Ronge
+ * Copyright (C) 2007 - Matt Ronge
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,11 +28,13 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-
+ 
 #import <SenTestingKit/SenTestingKit.h>
-#import "LBAccount.h"
+#import "LBAttachment.h"
+#import "LBMIMETests.h"
 
-@interface LBCoreAccountTests : SenTestCase {
-    LBAccount *account;
+@interface LBAttachmentTests : SenTestCase {
+
 }
+
 @end
