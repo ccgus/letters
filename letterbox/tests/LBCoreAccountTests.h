@@ -1,7 +1,7 @@
 /*
  * MailCore
  *
- * Copyright (C) 2007 - Matt Ronge
+ * Copyright (C) 2009 - Matt Ronge
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -20,28 +20,19 @@
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRELB, INDIRELB, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
  * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRALB, STRILB
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
 
-#import "LBAddressTests.h"
+#import <SenTestingKit/SenTestingKit.h>
+#import "LBAccount.h"
 
-
-@implementation LBAddressTests
-- (void)testEquals {
-	LBAddress *addr1 = [LBAddress addressWithName:@"Matt" email:@"test@test.com"];
-	LBAddress *addr2 = [LBAddress addressWithName:@"Matt" email:@"test@test.com"];
-	STAssertTrue([addr1 isEqual:addr2], @"LBAddress should have been equal!");
-}
-
-- (void)testNotEqual {
-	LBAddress *addr1 = [LBAddress addressWithName:@"" email:@"something@some.com"];
-	LBAddress *addr2 = [LBAddress addressWithName:@"Something" email:@"something@some.com"];
-	STAssertFalse([addr1 isEqual:addr2], @"LBAddress should not have been equal!");
+@interface LBCoreAccountTests : SenTestCase {
+    LBAccount *account;
 }
 @end
