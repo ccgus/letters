@@ -257,6 +257,19 @@ NSString *FRewrapLines(NSString *s, int len) {
     return ret;
 }
 
+- (void)moveLeft:(id)sender {
+    if ([[self window] firstResponder] == mailboxMessageList) {
+        [[self window] makeFirstResponder:foldersList];
+    }
+    
+}
+
+- (void)moveRight:(id)sender {
+    
+    if ([[self window] firstResponder] == foldersList) {
+        [[self window] makeFirstResponder:mailboxMessageList];
+    }
+}
 
 
 
