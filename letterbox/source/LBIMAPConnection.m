@@ -160,7 +160,7 @@
     
     mailimap_list_result_free(subscribedList);
     
-    if (![subscribedFolders count]) {
+    if (![subscribedFolders containsObject:@"INBOX"]) {
         // we're alwasy going to have an inbox.  I'm looking at you MobileMe
         [subscribedFolders addObject:@"INBOX"];
     }
