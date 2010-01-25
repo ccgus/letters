@@ -1,7 +1,7 @@
 /*
  * MailCore
  *
- * Copyright (C) 2009 - Matt Ronge
+ * Copyright (C) 2007 - Matt Ronge
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,10 +29,19 @@
  * SUCH DAMAGE.
  */
 
-#import <SenTestingKit/SenTestingKit.h>
-#import "LBAccount.h"
+#import "LBCoreAddressTests.h"
 
-@interface LBAccountTests : SenTestCase {
-    LBAccount *account;
+
+@implementation LBAddressTests
+- (void)testEquals {
+	LBAddress *addr1 = [LBAddress addressWithName:@"Matt" email:@"test@test.com"];
+	LBAddress *addr2 = [LBAddress addressWithName:@"Matt" email:@"test@test.com"];
+	STAssertTrue([addr1 isEqual:addr2], @"LBAddress should have been equal!");
+}
+
+- (void)testNotEqual {
+	LBAddress *addr1 = [LBAddress addressWithName:@"" email:@"something@some.com"];
+	LBAddress *addr2 = [LBAddress addressWithName:@"Something" email:@"something@some.com"];
+	STAssertFalse([addr1 isEqual:addr2], @"LBAddress should not have been equal!");
 }
 @end

@@ -29,7 +29,7 @@
  * SUCH DAMAGE.
  */
 
-#import "LBMessageTests.h"
+#import "LBCoreMessageTests.h"
 #import "LBMIMETests.h"
 #import "LBAddress.h"
 #import "LBAttachment.h"
@@ -38,7 +38,7 @@
 @implementation LBMessageTests
 - (void)setUp {
 	myMsg = [[LBMessage alloc] init];
-	myRealMsg = [[LBMessage alloc] initWithFileAtPath:[NSString stringWithFormat:@"%@%@",filePrefix,@"TestData/kiwi-dev/1167196014.6158_0.theronge.com:2,Sab"]];
+	myRealMsg = [[LBMessage alloc] initWithFileAtPath:[NSString stringWithFormat:@"%@%@",filePrefix,@"testdata/kiwi-dev/1167196014.6158_0.theronge.com:2,Sab"]];
 }
 
 - (void)tearDown {
@@ -78,7 +78,7 @@
 }
 
 - (void)testSubjectOnData {
-	LBMessage *msg = [[LBMessage alloc] initWithFileAtPath:[NSString stringWithFormat:@"%@%@",filePrefix,@"TestData/kiwi-dev/1167196014.6158_0.theronge.com:2,Sab"]];
+	LBMessage *msg = [[LBMessage alloc] initWithFileAtPath:[NSString stringWithFormat:@"%@%@",filePrefix,@"testdata/kiwi-dev/1167196014.6158_0.theronge.com:2,Sab"]];
 	[msg fetchBody];
 	STAssertEqualObjects(@"[Kiwi-dev] Revision 16", [msg subject], @"");
 	NSRange notFound = NSMakeRange(NSNotFound, 0);
@@ -126,7 +126,7 @@
 }
 
 - (void)testFromSpecialChar {
-	LBMessage *msg = [[LBMessage alloc] initWithFileAtPath:[NSString stringWithFormat:@"%@%@",filePrefix,@"TestData/kiwi-dev/1162094633.15211_0.randymail-mx2:2,RSab"]];
+	LBMessage *msg = [[LBMessage alloc] initWithFileAtPath:[NSString stringWithFormat:@"%@%@",filePrefix,@"testdata/kiwi-dev/1162094633.15211_0.randymail-mx2:2,RSab"]];
 	LBAddress *addr = [[msg from] anyObject];
 	STAssertEqualObjects(@"Joachim Mårtensson", [addr name], @"");
 	[msg release];
@@ -169,7 +169,7 @@
 
 - (void)testAttachments {
 	LBMessage *msg = [[LBMessage alloc] initWithFileAtPath:
-				[NSString stringWithFormat:@"%@%@",filePrefix,@"TestData/mime-tests/png_attachment"]];
+				[NSString stringWithFormat:@"%@%@",filePrefix,@"testdata/mime-tests/png_attachment"]];
 	[msg fetchBody];
 	NSArray *attachments = [msg attachments];
 	STAssertTrue([attachments count] == 1, @"Count should have been 1");
@@ -177,7 +177,7 @@
 	LBBareAttachment *bareAttach = [attachments objectAtIndex:0];
 	LBAttachment *attach = [bareAttach fetchFullAttachment];
 	NSData *origData = [NSData dataWithContentsOfFile:
-						[NSString stringWithFormat:@"%@%@",filePrefix,@"TestData/Picture 1.png"]];
+						[NSString stringWithFormat:@"%@%@",filePrefix,@"testdata/Picture 1.png"]];
 	STAssertEqualObjects(origData, attach.data, @"Original data and attach data should be the same");
 	[msg release];
 }
