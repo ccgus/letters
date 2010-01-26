@@ -88,7 +88,7 @@
 
 - (NSURL*) cacheFolderURL {
     
-    NSString *path = [@"~/Library/Letters/" stringByExpandingTildeInPath];
+    NSString *path = [[LAPrefs stringForKey:@"cacheStoreFolder"] stringByExpandingTildeInPath];
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
         
