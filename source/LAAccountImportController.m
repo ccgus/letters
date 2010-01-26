@@ -18,6 +18,7 @@
 @implementation LAAccountImportController
 
 - (id)initWithWindowNibName:(NSString *)windowNibName {
+<<<<<<< HEAD
 	self = [super initWithWindowNibName:windowNibName];
 	if(!self) return nil;
 	
@@ -28,6 +29,39 @@
 
 - (void)loadMailAccounts {
 	mailAccounts = [[NSMutableArray alloc] init];
+=======
+    
+	self = [super initWithWindowNibName:windowNibName];
+	if (self != nil) {
+		[self loadMailAccounts];
+	}
+    
+	return self;
+}
+
+- (void)dealloc {
+    
+	[_mailAccounts release];
+    _mailAccounts = nil;
+	
+    [_smtpAccounts release];
+    _smtpAccounts = nil;
+	
+    [super dealloc];
+}
+
+- (void)awakeFromNib {
+	[tableView setDoubleAction:@selector(importSelectedAccount:)];
+}
+
+
+- (void)windowWillClose:(NSNotification *)notification {
+    [self autorelease]; // clang is going to hate this.
+}
+
+- (void)loadMailAccounts {
+	_mailAccounts = [[NSMutableArray alloc] init];
+>>>>>>> 69ba902a6f4e5a293c8dbb6a4d1a52998f80b74c
 	
 	NSDictionary* mailDict = [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"com.apple.mail"];
 	NSArray* imapAccounts = [mailDict objectForKey:@"MailAccounts"];
@@ -38,16 +72,27 @@
 		if( [[editableAccount objectForKey:@"AccountType"] isEqualToString:@"iToolsAccount"] ) {
 			[editableAccount setObject:@"mail.mac.com" forKey:@"Hostname"];
 		}
+<<<<<<< HEAD
 		[mailAccounts addObject:[editableAccount autorelease]];
 	}
 	
 	smtpAccounts = [[NSMutableDictionary alloc] init];
+=======
+		[_mailAccounts addObject:[editableAccount autorelease]];
+	}
+	
+	_smtpAccounts = [[NSMutableDictionary alloc] init];
+>>>>>>> 69ba902a6f4e5a293c8dbb6a4d1a52998f80b74c
 	for( NSDictionary* smtpAccount in [mailDict objectForKey:@"DeliveryAccounts"] ) {
 		NSString* key = [smtpAccount objectForKey:@"Hostname"];
 		if( [smtpAccount objectForKey:@"Username"] ) {
 			key = [key stringByAppendingFormat:@":%@", [smtpAccount objectForKey:@"Username"]];
 		}
+<<<<<<< HEAD
 		[smtpAccounts setObject:smtpAccount forKey:key];
+=======
+		[_smtpAccounts setObject:smtpAccount forKey:key];
+>>>>>>> 69ba902a6f4e5a293c8dbb6a4d1a52998f80b74c
 	}
 }
 
@@ -73,7 +118,11 @@
 	if( returnCode != 0 ) { return; }
 	
 	NSUInteger indexOfSelectedAccount = [[tableView selectedRowIndexes] firstIndex];
+<<<<<<< HEAD
 	NSDictionary* mailAccount = [mailAccounts objectAtIndex:indexOfSelectedAccount];
+=======
+	NSDictionary* mailAccount = [_mailAccounts objectAtIndex:indexOfSelectedAccount];
+>>>>>>> 69ba902a6f4e5a293c8dbb6a4d1a52998f80b74c
   
 	LBAccount *account = [[appDelegate accounts] lastObject];
     
@@ -81,7 +130,11 @@
 	    
 	[account setImapServer:[mailAccount objectForKey:@"Hostname"]];
 	
+<<<<<<< HEAD
 	NSDictionary* smtpServerInfo = [smtpAccounts objectForKey:[mailAccount objectForKey:@"SMTPIdentifier"]];
+=======
+	NSDictionary* smtpServerInfo = [_smtpAccounts objectForKey:[mailAccount objectForKey:@"SMTPIdentifier"]];
+>>>>>>> 69ba902a6f4e5a293c8dbb6a4d1a52998f80b74c
 	[account setSmtpServer:[smtpServerInfo objectForKey:@"Hostname"]];
     	
 	NSArray* addresses = [mailAccount objectForKey:@"EmailAddresses"];
@@ -103,25 +156,41 @@
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
+<<<<<<< HEAD
 	return [mailAccounts count];
 }
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
 	return [[mailAccounts objectAtIndex:row] objectForKey:@"Username"];
+=======
+	return [_mailAccounts count];
+}
+
+- (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+	return [[_mailAccounts objectAtIndex:row] objectForKey:@"Username"];
+>>>>>>> 69ba902a6f4e5a293c8dbb6a4d1a52998f80b74c
 }
 
 - (NSIndexSet *)tableView:(NSTableView *)tableView selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes {
 	if( [proposedSelectionIndexes count] == 0) {
 		[importButton setEnabled:NO];
+<<<<<<< HEAD
 	} else {
+=======
+	}
+    else {
+>>>>>>> 69ba902a6f4e5a293c8dbb6a4d1a52998f80b74c
 		[importButton setEnabled:YES];
 	}
 	return proposedSelectionIndexes;
 }
 
+<<<<<<< HEAD
 - (void)dealloc {
 	[mailAccounts release]; mailAccounts = nil;
 	[smtpAccounts release]; smtpAccounts = nil;
 	[super dealloc];
 }
 
+=======
+>>>>>>> 69ba902a6f4e5a293c8dbb6a4d1a52998f80b74c
 @end
