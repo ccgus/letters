@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
+		96FE05A8110D728D00B03DC3 /* LBCoreMessageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D3D110ABD32005ECF65 /* LBCoreMessageTests.m */; };
+		96FE05D7110D73CE00B03DC3 /* LBMIMETests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D3F110ABD32005ECF65 /* LBMIMETests.m */; };
+		96FE05E0110D745100B03DC3 /* LBBareMessageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D35110ABD32005ECF65 /* LBBareMessageTests.m */; };
+		96FE05E2110D745100B03DC3 /* LBCoreAddressTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D39110ABD32005ECF65 /* LBCoreAddressTests.m */; };
+		96FE05E3110D745100B03DC3 /* LBCoreAttachmentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D3B110ABD32005ECF65 /* LBCoreAttachmentTests.m */; };
 		CC3D54231108E7F700EEEF77 /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = CC3D541D1108E7F700EEEF77 /* FMDatabase.h */; };
 		CC3D54241108E7F700EEEF77 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3D541E1108E7F700EEEF77 /* FMDatabase.m */; };
 		CC3D54251108E7F700EEEF77 /* FMDatabaseAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = CC3D541F1108E7F700EEEF77 /* FMDatabaseAdditions.h */; };
@@ -58,6 +63,9 @@
 		CC877CF7110ABC04005ECF65 /* LBAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CE3110ABC04005ECF65 /* LBAccount.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC877CFA110ABC1D005ECF65 /* JRLog.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CF8110ABC1D005ECF65 /* JRLog.m */; };
 		CC877CFB110ABC1D005ECF65 /* JRLog.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CF9110ABC1D005ECF65 /* JRLog.h */; };
+		CCD58CD5110BD9A30077F572 /* LBIMAPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = CCD58CD3110BD9A30077F572 /* LBIMAPConnection.h */; };
+		CCD58CD6110BD9A30077F572 /* LBIMAPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = CCD58CD4110BD9A30077F572 /* LBIMAPConnection.m */; };
+		CCF41348110D39F200401D5D /* LBActivity.h in Headers */ = {isa = PBXBuildFile; fileRef = CCF41346110D39F200401D5D /* LBActivity.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F82D7D1F0F48ACC700ADA65C /* LetterBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* LetterBox.framework */; };
 		F8483E4109CE7B9000B80440 /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8483E4009CE7B9000B80440 /* libssl.dylib */; };
 		F8483E4309CE7B9C00B80440 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8483E4209CE7B9C00B80440 /* libiconv.dylib */; };
@@ -171,20 +179,23 @@
 		CC877CE3110ABC04005ECF65 /* LBAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBAccount.h; path = source/LBAccount.h; sourceTree = "<group>"; };
 		CC877CF8110ABC1D005ECF65 /* JRLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JRLog.m; path = source/JRLog.m; sourceTree = "<group>"; };
 		CC877CF9110ABC1D005ECF65 /* JRLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JRLog.h; path = source/JRLog.h; sourceTree = "<group>"; };
-		CC877D34110ABD32005ECF65 /* CTBareMessageTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTBareMessageTests.h; path = tests/CTBareMessageTests.h; sourceTree = "<group>"; };
-		CC877D35110ABD32005ECF65 /* CTBareMessageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTBareMessageTests.m; path = tests/CTBareMessageTests.m; sourceTree = "<group>"; };
-		CC877D36110ABD32005ECF65 /* CTCoreAccountTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTCoreAccountTests.h; path = tests/CTCoreAccountTests.h; sourceTree = "<group>"; };
-		CC877D37110ABD32005ECF65 /* CTCoreAccountTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTCoreAccountTests.m; path = tests/CTCoreAccountTests.m; sourceTree = "<group>"; };
-		CC877D38110ABD32005ECF65 /* CTCoreAddressTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTCoreAddressTests.h; path = tests/CTCoreAddressTests.h; sourceTree = "<group>"; };
-		CC877D39110ABD32005ECF65 /* CTCoreAddressTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTCoreAddressTests.m; path = tests/CTCoreAddressTests.m; sourceTree = "<group>"; };
-		CC877D3A110ABD32005ECF65 /* CTCoreAttachmentTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTCoreAttachmentTests.h; path = tests/CTCoreAttachmentTests.h; sourceTree = "<group>"; };
-		CC877D3B110ABD32005ECF65 /* CTCoreAttachmentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTCoreAttachmentTests.m; path = tests/CTCoreAttachmentTests.m; sourceTree = "<group>"; };
-		CC877D3C110ABD32005ECF65 /* CTCoreMessageTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTCoreMessageTests.h; path = tests/CTCoreMessageTests.h; sourceTree = "<group>"; };
-		CC877D3D110ABD32005ECF65 /* CTCoreMessageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTCoreMessageTests.m; path = tests/CTCoreMessageTests.m; sourceTree = "<group>"; };
-		CC877D3E110ABD32005ECF65 /* CTMIMETests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTMIMETests.h; path = tests/CTMIMETests.h; sourceTree = "<group>"; };
-		CC877D3F110ABD32005ECF65 /* CTMIMETests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTMIMETests.m; path = tests/CTMIMETests.m; sourceTree = "<group>"; };
+		CC877D34110ABD32005ECF65 /* LBBareMessageTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBBareMessageTests.h; path = tests/LBBareMessageTests.h; sourceTree = "<group>"; };
+		CC877D35110ABD32005ECF65 /* LBBareMessageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBBareMessageTests.m; path = tests/LBBareMessageTests.m; sourceTree = "<group>"; };
+		CC877D36110ABD32005ECF65 /* LBCoreAccountTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBCoreAccountTests.h; path = tests/LBCoreAccountTests.h; sourceTree = "<group>"; };
+		CC877D37110ABD32005ECF65 /* LBCoreAccountTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBCoreAccountTests.m; path = tests/LBCoreAccountTests.m; sourceTree = "<group>"; };
+		CC877D38110ABD32005ECF65 /* LBCoreAddressTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBCoreAddressTests.h; path = tests/LBCoreAddressTests.h; sourceTree = "<group>"; };
+		CC877D39110ABD32005ECF65 /* LBCoreAddressTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBCoreAddressTests.m; path = tests/LBCoreAddressTests.m; sourceTree = "<group>"; };
+		CC877D3A110ABD32005ECF65 /* LBCoreAttachmentTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBCoreAttachmentTests.h; path = tests/LBCoreAttachmentTests.h; sourceTree = "<group>"; };
+		CC877D3B110ABD32005ECF65 /* LBCoreAttachmentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBCoreAttachmentTests.m; path = tests/LBCoreAttachmentTests.m; sourceTree = "<group>"; };
+		CC877D3C110ABD32005ECF65 /* LBCoreMessageTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBCoreMessageTests.h; path = tests/LBCoreMessageTests.h; sourceTree = "<group>"; };
+		CC877D3D110ABD32005ECF65 /* LBCoreMessageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBCoreMessageTests.m; path = tests/LBCoreMessageTests.m; sourceTree = "<group>"; };
+		CC877D3E110ABD32005ECF65 /* LBMIMETests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBMIMETests.h; path = tests/LBMIMETests.h; sourceTree = "<group>"; };
+		CC877D3F110ABD32005ECF65 /* LBMIMETests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBMIMETests.m; path = tests/LBMIMETests.m; sourceTree = "<group>"; };
 		CCA553E01106DB6B00CEEFF4 /* Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Tests-Info.plist"; path = "resources/Tests-Info.plist"; sourceTree = "<group>"; };
 		CCA553E21106DB7100CEEFF4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = resources/Info.plist; sourceTree = "<group>"; };
+		CCD58CD3110BD9A30077F572 /* LBIMAPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBIMAPConnection.h; path = source/LBIMAPConnection.h; sourceTree = "<group>"; };
+		CCD58CD4110BD9A30077F572 /* LBIMAPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBIMAPConnection.m; path = source/LBIMAPConnection.m; sourceTree = "<group>"; };
+		CCF41346110D39F200401D5D /* LBActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBActivity.h; path = source/LBActivity.h; sourceTree = "<group>"; };
 		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		F82D7C810F48AC8500ADA65C /* Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8483E4009CE7B9000B80440 /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.dylib; path = /usr/lib/libssl.dylib; sourceTree = "<absolute>"; };
@@ -268,26 +279,29 @@
 				CC3D541C1108E7AC00EEEF77 /* FMDB */,
 				F81E26810C6ED57400B3FBAC /* SMTP */,
 				F81E26720C6ED56000B3FBAC /* MIME */,
-				CC877CD0110ABC04005ECF65 /* LetterBoxUtilities.m */,
-				CC877CD1110ABC04005ECF65 /* LetterBoxUtilities.h */,
-				CC877CD2110ABC04005ECF65 /* LetterBoxTypes.h */,
-				CC877CD3110ABC04005ECF65 /* LetterBox.h */,
-				CC877CD4110ABC04005ECF65 /* LBServer.m */,
-				CC877CD5110ABC04005ECF65 /* LBServer.h */,
-				CC877CD6110ABC04005ECF65 /* LBMessage.m */,
-				CC877CD7110ABC04005ECF65 /* LBMessage.h */,
-				CC877CD8110ABC04005ECF65 /* LBFolder.m */,
-				CC877CD9110ABC04005ECF65 /* LBFolder.h */,
-				CC877CDA110ABC04005ECF65 /* LBBareMessage.m */,
-				CC877CDB110ABC04005ECF65 /* LBBareMessage.h */,
-				CC877CDC110ABC04005ECF65 /* LBBareAttachment.m */,
-				CC877CDD110ABC04005ECF65 /* LBBareAttachment.h */,
-				CC877CDE110ABC04005ECF65 /* LBAttachment.m */,
-				CC877CDF110ABC04005ECF65 /* LBAttachment.h */,
-				CC877CE0110ABC04005ECF65 /* LBAddress.m */,
-				CC877CE1110ABC04005ECF65 /* LBAddress.h */,
-				CC877CE2110ABC04005ECF65 /* LBAccount.m */,
 				CC877CE3110ABC04005ECF65 /* LBAccount.h */,
+				CC877CE2110ABC04005ECF65 /* LBAccount.m */,
+				CCF41346110D39F200401D5D /* LBActivity.h */,
+				CC877CE1110ABC04005ECF65 /* LBAddress.h */,
+				CC877CE0110ABC04005ECF65 /* LBAddress.m */,
+				CC877CDF110ABC04005ECF65 /* LBAttachment.h */,
+				CC877CDE110ABC04005ECF65 /* LBAttachment.m */,
+				CC877CDD110ABC04005ECF65 /* LBBareAttachment.h */,
+				CC877CDC110ABC04005ECF65 /* LBBareAttachment.m */,
+				CC877CDB110ABC04005ECF65 /* LBBareMessage.h */,
+				CC877CDA110ABC04005ECF65 /* LBBareMessage.m */,
+				CC877CD9110ABC04005ECF65 /* LBFolder.h */,
+				CC877CD8110ABC04005ECF65 /* LBFolder.m */,
+				CCD58CD3110BD9A30077F572 /* LBIMAPConnection.h */,
+				CCD58CD4110BD9A30077F572 /* LBIMAPConnection.m */,
+				CC877CD7110ABC04005ECF65 /* LBMessage.h */,
+				CC877CD6110ABC04005ECF65 /* LBMessage.m */,
+				CC877CD5110ABC04005ECF65 /* LBServer.h */,
+				CC877CD4110ABC04005ECF65 /* LBServer.m */,
+				CC877CD3110ABC04005ECF65 /* LetterBox.h */,
+				CC877CD2110ABC04005ECF65 /* LetterBoxTypes.h */,
+				CC877CD1110ABC04005ECF65 /* LetterBoxUtilities.h */,
+				CC877CD0110ABC04005ECF65 /* LetterBoxUtilities.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -375,18 +389,18 @@
 		F85A18AF09C7D8F200305C06 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				CC877D34110ABD32005ECF65 /* CTBareMessageTests.h */,
-				CC877D35110ABD32005ECF65 /* CTBareMessageTests.m */,
-				CC877D36110ABD32005ECF65 /* CTCoreAccountTests.h */,
-				CC877D37110ABD32005ECF65 /* CTCoreAccountTests.m */,
-				CC877D38110ABD32005ECF65 /* CTCoreAddressTests.h */,
-				CC877D39110ABD32005ECF65 /* CTCoreAddressTests.m */,
-				CC877D3A110ABD32005ECF65 /* CTCoreAttachmentTests.h */,
-				CC877D3B110ABD32005ECF65 /* CTCoreAttachmentTests.m */,
-				CC877D3C110ABD32005ECF65 /* CTCoreMessageTests.h */,
-				CC877D3D110ABD32005ECF65 /* CTCoreMessageTests.m */,
-				CC877D3E110ABD32005ECF65 /* CTMIMETests.h */,
-				CC877D3F110ABD32005ECF65 /* CTMIMETests.m */,
+				CC877D34110ABD32005ECF65 /* LBBareMessageTests.h */,
+				CC877D35110ABD32005ECF65 /* LBBareMessageTests.m */,
+				CC877D36110ABD32005ECF65 /* LBCoreAccountTests.h */,
+				CC877D37110ABD32005ECF65 /* LBCoreAccountTests.m */,
+				CC877D38110ABD32005ECF65 /* LBCoreAddressTests.h */,
+				CC877D39110ABD32005ECF65 /* LBCoreAddressTests.m */,
+				CC877D3A110ABD32005ECF65 /* LBCoreAttachmentTests.h */,
+				CC877D3B110ABD32005ECF65 /* LBCoreAttachmentTests.m */,
+				CC877D3C110ABD32005ECF65 /* LBCoreMessageTests.h */,
+				CC877D3D110ABD32005ECF65 /* LBCoreMessageTests.m */,
+				CC877D3E110ABD32005ECF65 /* LBMIMETests.h */,
+				CC877D3F110ABD32005ECF65 /* LBMIMETests.m */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -432,6 +446,8 @@
 				CC877CF5110ABC04005ECF65 /* LBAddress.h in Headers */,
 				CC877CF7110ABC04005ECF65 /* LBAccount.h in Headers */,
 				CC877CFB110ABC1D005ECF65 /* JRLog.h in Headers */,
+				CCD58CD5110BD9A30077F572 /* LBIMAPConnection.h in Headers */,
+				CCF41348110D39F200401D5D /* LBActivity.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -565,7 +581,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "sh scripts/DocScripts/doxygen.sh";
+			shellScript = "#sh scripts/DocScripts/doxygen.sh";
 		};
 		F89618D30A7D77CF00F93E26 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -610,6 +626,7 @@
 				CC877CF4110ABC04005ECF65 /* LBAddress.m in Sources */,
 				CC877CF6110ABC04005ECF65 /* LBAccount.m in Sources */,
 				CC877CFA110ABC1D005ECF65 /* JRLog.m in Sources */,
+				CCD58CD6110BD9A30077F572 /* LBIMAPConnection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -617,6 +634,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96FE05E0110D745100B03DC3 /* LBBareMessageTests.m in Sources */,
+				96FE05E2110D745100B03DC3 /* LBCoreAddressTests.m in Sources */,
+				96FE05E3110D745100B03DC3 /* LBCoreAttachmentTests.m in Sources */,
+				96FE05A8110D728D00B03DC3 /* LBCoreMessageTests.m in Sources */,
+				96FE05D7110D73CE00B03DC3 /* LBMIMETests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -676,7 +698,6 @@
 				OTHER_CFLAGS = "-DDEBUG";
 				PRODUCT_NAME = LetterBox;
 				WRAPPER_EXTENSION = framework;
-				ZERO_LINK = YES;
 			};
 			name = Debug;
 		};
@@ -764,7 +785,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
-				INFOPLIST_FILE = "Tests-Info.plist";
+				INFOPLIST_FILE = "resources/Tests-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				OTHER_LDFLAGS = (
 					"-framework",

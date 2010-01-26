@@ -8,6 +8,7 @@
 
 #import "LAAppDelegate.h"
 #import "LAMailViewController.h"
+#import "LAActivityViewer.h"
 #import <AddressBook/AddressBook.h>
 
 @interface LAAppDelegate ()
@@ -77,6 +78,10 @@
     }
     
     #endif
+    
+    // get this guy started up.
+    [[[LAActivityViewer sharedActivityViewer] window] orderFront:self];
+    
     
     [self openNewMailView:nil];
     
@@ -148,7 +153,11 @@
 - (void) openNewMailView:(id)sender {
     LAMailViewController *mailView = [LAMailViewController openNewMailViewController];
     
-    [[mailView window] center];
+    
+    [mailView setWindowFrameAutosaveName:@"LAMailViewController"];
+    [[mailView window] setFrameAutosaveName:@"LAMailViewController"];
+    
+    //[[mailView window] center];
     [[mailView window] makeKeyAndOrderFront:self];
     
     [_mailViews addObject:mailView];
@@ -164,9 +173,48 @@
     [[_prefsWindowController window] makeKeyAndOrderFront:self];
 }
 
+- (void) pullTimerHit:(NSTimer*)t {
+    
+    for (LBAccount *acct in [self accounts]) {
+        if ([acct isActive]) {
+            [[acct server] checkForMail];
+        }
+    }
+}
+
 - (void) connectToDefaultServerAndPullMail {
-    // whatever.  it's a stub.
-    [[_mailViews lastObject] connectToServerAndList];
+    
+    for (LBAccount *acct in [self accounts]) {
+        
+        // FIXME: this is going to have to be temporary, till we get a UI to turn it on/ off
+        [acct setIsActive:YES];
+        
+        if ([acct isActive]) {
+            
+            [[acct server] connectUsingBlock:^(BOOL success, NSError *error) {
+                
+                if (!success) {
+                    // FIXME: show a warning or something?
+                    NSLog(@"error: %@", error);
+                }
+                else {
+                    [[acct server] checkForMail];
+                }
+            
+            }];
+        }
+    }
+    
+    if (!_periodicMailCheckTimer) {
+        NSTimeInterval checkTimeInSeconds = 120; // FIMXE: hidden pref?
+        
+        _periodicMailCheckTimer = [[NSTimer scheduledTimerWithTimeInterval:checkTimeInSeconds
+                                                                    target:self
+                                                                  selector:@selector(pullTimerHit:)
+                                                                  userInfo:nil
+                                                                   repeats:YES] retain];
+    }
+    
 }
 
 

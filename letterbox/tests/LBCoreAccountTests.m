@@ -20,27 +20,27 @@
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRELB, INDIRELB, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
  * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRALB, STRILB
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
 
-#import "LBAccountTests.h"
+#import "LBCoreAccountTests.h"
 
 NSString *SERVER = @"192.168.1.106";
 NSString *USERNAME = @"test";
 NSString *PASSWORD = @"password";
 
-@interface LBAccountTests (LBAccountTestsPrivate)
+@interface LBCoreAccountTests (LBAccountTestsPrivate)
 - (void)disconnect;
 - (void)connect;
 @end
 
-@implementation LBAccountTests
+@implementation LBCoreAccountTests
 - (void)setUp {
     account = [[LBAccount alloc] init];
     [self connect];
@@ -79,15 +79,15 @@ NSString *PASSWORD = @"password";
 }
 
 - (void)testIsConnected {
-    STAssertEquals(YES, [account isConnected], nil);
+    STAssertEquals(YES, [account isActive], nil);
     [self disconnect];
-    STAssertEquals(NO, [account isConnected], nil);
+    STAssertEquals(NO, [account isActive], nil);
     [self connect];
-    STAssertEquals(YES, [account isConnected], nil);
+    STAssertEquals(YES, [account isActive], nil);
 }
 
 - (void)connect {
-    [account connectToServer:SERVER port:143 connectionType:CONNELBION_TYPE_PLAIN authType:IMAP_AUTH_TYPE_PLAIN
+    [account connectToServer:SERVER port:143 connectionType:CONNECTION_TYPE_PLAIN authType:IMAP_AUTH_TYPE_PLAIN
              login:USERNAME password:PASSWORD];
 }
 

@@ -24,5 +24,5 @@
 }
 
 - (void) saveAccountSettings:(id)sender;
-
+- (void) importMailAccount:(id)sender;
 @end

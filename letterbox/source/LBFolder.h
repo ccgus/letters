@@ -39,11 +39,11 @@
     first by calling connect. All methods throw an exceptions on failure.
 */
 
-@class LBMessage, LBServer;
+@class LBMessage, LBIMAPConnection;
 
 @interface LBFolder : NSObject {
     struct mailfolder *_folder;
-    LBServer *_server;
+    LBIMAPConnection *_connection;
     NSString *_path;
     BOOL _connected;
 }
@@ -53,7 +53,7 @@
                 method in LBAccount folderWithPath can be used to setup a folder.
     @param      inAccount This parameter must be passed in so the folder can initiate it's connection.
 */
-- (id)initWithPath:(NSString *)path inServer:(LBServer *)account;
+- (id)initWithPath:(NSString *)path inIMAPConnection:(LBIMAPConnection *)connection;
 
 /*!
     @abstract   This initiates the connection after the folder has been initalized.
@@ -198,4 +198,7 @@
 - (struct mailfolder *)folderStruct;
 - (mailsession *)folderSession;
 - (mailimap *)imapSession;
+
+- (BOOL) connected;
+
 @end

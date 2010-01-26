@@ -13,11 +13,24 @@
 #import "LBAddress.h"
 #import "LBMessage.h"
 #import "FMDatabase.h"
+#import "LBIMAPConnection.h"
+
+
+NSString *LBServerFolderUpdatedNotification = @"LBServerFolderUpdatedNotification";
+NSString *LBServerSubjectsUpdatedNotification = @"LBServerSubjectsUpdatedNotification";
+NSString *LBServerBodiesUpdatedNotification = @"LBServerBodiesUpdatedNotification";
+
+// these are defined in LBActivity.h, but they need to go somewhere and I'm not making a .m just for them.
+NSString *LBActivityStartedNotification = @"LBActivityStartedNotification";
+NSString *LBActivityUpdatedNotification = @"LBActivityUpdatedNotification";
+NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 
 @implementation LBServer
 @synthesize account=_account;
 @synthesize baseCacheURL=_baseCacheURL;
 @synthesize accountCacheURL=_accountCacheURL;
+@synthesize foldersCache=_foldersCache;
+@synthesize foldersList=_foldersList;
 
 - (id) initWithAccount:(LBAccount*)anAccount usingCacheFolder:(NSURL*)cacheFileURL {
     
@@ -25,10 +38,11 @@
 	if (self != nil) {
 		self.account        = anAccount;
         self.baseCacheURL   = cacheFileURL;
-        _connected          = NO;
-        _storage            = mailstorage_new(NULL);
         
-        assert(_storage != NULL);
+        _inactiveIMAPConnections = [[NSMutableArray array] retain];
+        _activeIMAPConnections = [[NSMutableArray array] retain];
+        _foldersCache = [[NSMutableDictionary dictionary] retain];
+        _foldersList  = [[NSArray array] retain];
 	}
     
 	return self;
@@ -43,14 +57,186 @@
     [_accountCacheURL release];
     [_cacheDB release];
     
-    mailstorage_disconnect(_storage);
-    mailstorage_free(_storage);
+    [_inactiveIMAPConnections release];
+    [_activeIMAPConnections release];
+    
     [super dealloc];
 }
 
-- (void) makeCacheFolders {
+- (LBIMAPConnection*) checkoutIMAPConnection {
     
-    debug(@"[_accountCacheURL path]: %@", [_accountCacheURL path]);
+    // FIXME: this method isn't thread safe
+    if (![[NSThread currentThread] isMainThread]) {
+        NSLog(@"UH OH THIS IS BAD CHECKING OUT ON A NON MAIN THREAD NOOO.");
+    }
+    
+    
+    // FIXME: need to set an upper limit on these guys.
+    
+    LBIMAPConnection *conn = [_inactiveIMAPConnections lastObject];
+    
+    if (!conn) {
+        // FIXME: what about a second connection that hasn't been connected yet?
+        // should we worry about that?
+        conn = [[[LBIMAPConnection alloc] init] autorelease];
+    }
+    
+    [_activeIMAPConnections addObject:conn];
+    
+    return conn;
+}
+
+- (void) checkInIMAPConnection:(LBIMAPConnection*) conn {
+    
+    // FIXME: aint' thread safe.
+    if (![[NSThread currentThread] isMainThread]) {
+        NSLog(@"UH OH THIS IS BAD CHECKING IN ON A NON MAIN THREAD NOOO.");
+    }
+    
+    // Possible solution- only ever checkout / check in on main thread?
+    
+    [conn setShouldCancelActivity:NO];
+    
+    [_inactiveIMAPConnections addObject:conn];
+    [_activeIMAPConnections removeObject:conn];
+    [conn setActivityStatusAndNotifiy:nil];
+}
+
+- (void) connectUsingBlock:(void (^)(BOOL, NSError *))block {
+    LBIMAPConnection *conn = [self checkoutIMAPConnection];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
+        
+        [conn setActivityStatusAndNotifiy:NSLocalizedString(@"Connecting", @"Connecting")];
+        
+        NSError *err = nil;
+        BOOL success = [conn connectWithAccount:[self account] error:&err];
+        
+        if (block) {
+            dispatch_async(dispatch_get_main_queue(),^ {
+                
+                block(success, err);
+                
+                [self checkInIMAPConnection:conn];
+            });
+        }
+    });
+}
+
+
+
+#define CheckConnectionAndReturnIfCanceled(aConn) { if (aConn.shouldCancelActivity) { dispatch_async(dispatch_get_main_queue(),^ { [self checkInIMAPConnection:conn]; }); return; } }
+
+- (void) checkForMail {
+    // weeeeeee
+    
+    LBIMAPConnection *conn = [self checkoutIMAPConnection];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
+        
+        if (![conn isConnected]) {
+            [conn setActivityStatusAndNotifiy:NSLocalizedString(@"Connecting", @"Connecting")];
+            NSError *err = nil;
+            if (![conn connectWithAccount:[self account] error:&err]) {
+                NSLog(@"err: %@", err);
+                // FIXME: remove / invalidate the connection so it isn't used again?
+                return;
+            }
+        }
+        
+        CheckConnectionAndReturnIfCanceled(conn);
+        
+        [conn setActivityStatusAndNotifiy:NSLocalizedString(@"Updating folder list", @"Updating folder list")];
+        NSError *err    = nil;
+        NSArray *list   = [conn subscribedFolderNames:&err];
+        
+        if (err) {
+            // do something nice with this.
+            NSLog(@"err: %@", err);
+            return;
+        }
+        
+        self.foldersList = list;
+        
+        dispatch_async(dispatch_get_main_queue(),^ {
+            [[NSNotificationCenter defaultCenter] postNotificationName:LBServerFolderUpdatedNotification
+                                                                object:self
+                                                              userInfo:nil];
+        });
+        
+        
+        for (NSString *folderPath in list) {
+            
+            CheckConnectionAndReturnIfCanceled(conn);
+            
+            NSString *status = NSLocalizedString(@"Finding messages in '%@'", @"Finding messages in '%@'");
+            [conn setActivityStatusAndNotifiy:[NSString stringWithFormat:status, folderPath]];
+            
+            LBFolder *folder    = [[LBFolder alloc] initWithPath:folderPath inIMAPConnection:conn];
+            
+            NSSet *messageSet   = [folder messageObjectsFromIndex:1 toIndex:0]; 
+            
+            if (!messageSet || ![folder connected]) {
+                NSLog(@"Could not get folder listing for %@", list);
+                [folder release];
+                continue;
+            }
+            
+            
+            NSArray *messages = [[messageSet allObjects] sortedArrayUsingComparator:^(LBMessage *obj1, LBMessage *obj2) {
+                // FIXME: sort by date or something, not subject.
+                return [[obj1 subject] localizedCompare:[obj2 subject]];
+            }];
+            
+            dispatch_async(dispatch_get_main_queue(),^ {
+                
+                [_foldersCache setObject:messages forKey:folderPath];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:LBServerSubjectsUpdatedNotification
+                                                                    object:self
+                                                                  userInfo:[NSDictionary dictionaryWithObject:folderPath
+                                                                                                       forKey:@"folderPath"]];
+            });
+            
+            NSInteger idx = 0;
+            
+            for (LBMessage *msg in messages) {
+                
+                CheckConnectionAndReturnIfCanceled(conn);
+                
+                idx++;
+                
+                NSString *status = NSLocalizedString(@"Loading message %d of %d messages in '%@'", @"Loading message %d of %d messages in '%@'");
+                [conn setActivityStatusAndNotifiy:[NSString stringWithFormat:status, idx, [messages count], folderPath]];
+                
+                [msg body]; // pull down the body.
+            }
+            
+            dispatch_async(dispatch_get_main_queue(),^ {
+                [[NSNotificationCenter defaultCenter] postNotificationName:LBServerBodiesUpdatedNotification
+                                                                    object:self
+                                                                  userInfo:[NSDictionary dictionaryWithObject:folderPath forKey:@"folderPath"]];
+            });
+            
+            [folder release];
+            
+        }
+        
+        dispatch_async(dispatch_get_main_queue(),^ {
+            [self checkInIMAPConnection:conn];
+        });
+        
+        
+    });
+    
+}
+
+- (NSArray*) messageListForPath:(NSString*)folderPath {
+    return [_foldersCache objectForKey:folderPath];
+}
+
+
+- (void) makeCacheFolders {
     
     NSError *err = nil;
     BOOL madeDir = [[NSFileManager defaultManager] createDirectoryAtPath:[_accountCacheURL path]
@@ -61,7 +247,6 @@
         // FIXME: do something sensible with this.
         NSLog(@"Error creating cache folder: %@", err);
     }
-    
 }
 
 - (void) loadCache {
@@ -256,172 +441,8 @@
 #endif
 }
 
-- (BOOL)isConnected {
-    return _connected;
-}
-
-- (BOOL) connect:(NSError**)outErr {
-    
-    int err = 0;
-    int imap_cached = 0;
-    
-    const char* auth_type_to_pass = NULL;
-    if(_account.authType == IMAP_AUTH_TYPE_SASL_CRAM_MD5) {
-        auth_type_to_pass = "CRAM-MD5";
-    }
-    
-    err = imap_mailstorage_init_sasl(_storage,
-                                     (char *)[[_account imapServer] cStringUsingEncoding:NSUTF8StringEncoding],
-                                     (uint16_t)[_account imapPort],
-                                     NULL,
-                                     [_account connectionType],
-                                     auth_type_to_pass,
-                                     NULL,
-                                     NULL, NULL,
-                                     (char *)[[_account username] cStringUsingEncoding:NSUTF8StringEncoding],
-                                     (char *)[[_account username] cStringUsingEncoding:NSUTF8StringEncoding],
-                                     (char *)[[_account password] cStringUsingEncoding:NSUTF8StringEncoding],
-                                     NULL,
-                                     imap_cached,
-                                     NULL);
-    
-    if (err != MAIL_NO_ERROR) {
-        LBQuickError(outErr, LBMemoryError, err, LBMemoryErrorDesc);
-        return NO;
-    }
-    
-    err = mailstorage_connect(_storage);
-    
-    if (err == MAIL_ERROR_LOGIN) {
-        LBQuickError(outErr, LBLoginError, err, LBLoginErrorDesc);
-        return NO;
-    }
-    else if (err != MAIL_NO_ERROR) {
-        LBQuickError(outErr, LBUnknownError, err, [NSString stringWithFormat:@"Error number: %d",err]);
-        return NO;
-    }
-    
-    _connected = YES;
-    
-    return _connected;
-}
 
 
-- (void) disconnect {
-    _connected = NO;
-    mailstorage_disconnect(_storage);
-}
-
-- (LBFolder *)folderWithPath:(NSString *)path {
-    LBFolder *folder = [[LBFolder alloc] initWithPath:path inServer:self];
-    return [folder autorelease];
-}
-
-
-- (mailimap *)session {
-    struct imap_cached_session_state_data * cached_data;
-    struct imap_session_state_data * data;
-    mailsession *session;
-    
-    session = _storage->sto_session;
-    if(session == nil) {
-        return nil;
-    }
-    
-    if (strcasecmp(session->sess_driver->sess_name, "imap-cached") == 0) {
-        cached_data = session->sess_data;
-        session = cached_data->imap_ancestor;
-    }
-    
-    data = session->sess_data;
-    return data->imap_session;
-}
-
-
-- (struct mailstorage *)storageStruct {
-    return _storage;
-}
-
-
-- (NSArray *) subscribedFolders:(NSError**)outErr {
-    struct mailimap_mailbox_list * mailboxStruct;
-    clist *subscribedList;
-    clistiter *cur;
-    
-    NSString *mailboxNameObject;
-    char *mailboxName;
-    int err;
-    
-    NSMutableArray *subscribedFolders = [NSMutableArray array];   
-    
-    //Fill the subscribed folder array
-    err = mailimap_lsub([self session], "", "*", &subscribedList);
-    if (err != MAIL_NO_ERROR) {
-        LBQuickError(outErr, LBUnknownError, err, [NSString stringWithFormat:@"Error number: %d",err]);
-        return nil;
-    }
-    /*
-    else if (clist_isempty(subscribedList)) {
-        // pft.
-    }
-    */
-    
-    for(cur = clist_begin(subscribedList); cur != NULL; cur = cur->next) {
-        mailboxStruct = cur->data;
-        mailboxName = mailboxStruct->mb_name;
-        mailboxNameObject = [NSString stringWithCString:mailboxName encoding:NSUTF8StringEncoding];
-        [subscribedFolders addObject:mailboxNameObject];
-    }
-    
-    mailimap_list_result_free(subscribedList);
-    
-    if (![subscribedFolders count]) {
-        // we're alwasy going to have an inbox.  I'm looking at you MobileMe
-        [subscribedFolders addObject:@"INBOX"];
-    }
-    
-    [self saveFoldersToCache:subscribedFolders];
-    
-    return [subscribedFolders sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
-}
-
-- (NSArray *)allFolders {
-    struct mailimap_mailbox_list * mailboxStruct;
-    clist *allList;
-    clistiter *cur;
-    
-    NSString *mailboxNameObject;
-    char *mailboxName;
-    int err;
-    
-    NSMutableArray *allFolders = [NSMutableArray array];
-    
-    //Now, fill the all folders array
-    //TODO Fix this so it doesn't use *
-    err = mailimap_list([self session], "", "*", &allList);     
-    if (err != MAIL_NO_ERROR) {
-        NSException *exception = [NSException exceptionWithName:LBUnknownError
-                                                         reason:[NSString stringWithFormat:@"Error number: %d",err]
-                                                       userInfo:nil];
-        [exception raise];
-    }
-    else if (clist_isempty(allList)) {
-        NSException *exception = [NSException exceptionWithName:LBNoFolders
-                                                         reason:LBNoFoldersDesc
-                                                       userInfo:nil];
-        [exception raise];
-    }
-    for(cur = clist_begin(allList); cur != NULL; cur = cur->next) {
-        mailboxStruct = cur->data;
-        mailboxName = mailboxStruct->mb_name;
-        mailboxNameObject = [NSString stringWithCString:mailboxName encoding:NSUTF8StringEncoding];
-        [allFolders addObject:mailboxNameObject];
-    }
-    mailimap_list_result_free(allList);
-    
-    return [allFolders sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
-
-}
 
 
 @end

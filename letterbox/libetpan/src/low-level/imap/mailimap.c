@@ -1596,7 +1596,7 @@ int mailimap_authenticate(mailimap * session, const char * auth_type,
   int r;
   int error_code;
   size_t indx;
-  struct mailimap_cont_req_or_resp_data * cont_or_resp_data;
+  //struct mailimap_cont_req_or_resp_data * cont_or_resp_data;
   sasl_callback_t sasl_callback[5];
   const char * sasl_out;
   unsigned sasl_out_len;

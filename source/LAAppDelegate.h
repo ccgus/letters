@@ -17,6 +17,8 @@
     NSMutableArray *_accounts;
     
     LAPrefsWindowController *_prefsWindowController;
+    
+    NSTimer *_periodicMailCheckTimer;
 }
 
 @property (retain) NSMutableArray *mailViews;

@@ -29,7 +29,7 @@
  * SUCH DAMAGE.
  */
 
-#import "LBAttachmentTests.h"
+#import "LBCoreAttachmentTests.h"
 
 
 @implementation LBAttachmentTests

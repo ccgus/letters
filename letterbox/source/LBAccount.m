@@ -30,6 +30,7 @@
  */
 
 #import "LBAccount.h"
+#import "LBServer.h"
 
 @implementation LBAccount
 
@@ -41,6 +42,7 @@
 @synthesize imapPort=_imapPort;
 @synthesize connectionType=_connectionType;
 @synthesize smtpServer=_smtpServer;
+@synthesize isActive=_isActive;
 
 - (id) init {
 	self = [super init];
@@ -61,6 +63,18 @@
     [_fromAddress release];
     
     [super dealloc];
+}
+
+- (LBServer*) server {
+    
+    if (!_server) {
+        
+        NSString *cacheFolder = [@"~/Library/Letters/" stringByExpandingTildeInPath];
+        
+        _server = [[LBServer alloc] initWithAccount:self usingCacheFolder:[NSURL fileURLWithPath:cacheFolder isDirectory:YES]];
+    }
+    
+    return _server;
 }
 
 
@@ -92,6 +106,10 @@
         acct.imapPort = [[d objectForKey:@"imapPort"] intValue];
     }
     
+    if ([d objectForKey:@"isActive"]) {
+        acct.isActive = [[d objectForKey:@"isActive"] boolValue];
+    }
+    
     if ([d objectForKey:@"connectionType"]) {
         acct.connectionType = [[d objectForKey:@"connectionType"] intValue];
     }
@@ -117,6 +135,7 @@
     
     [d setObject:[NSNumber numberWithInt:_authType] forKey:@"authType"];
     [d setObject:[NSNumber numberWithInt:_imapPort] forKey:@"imapPort"];
+    [d setObject:[NSNumber numberWithInt:_isActive] forKey:@"isActive"];
     
     [d setObject:[NSNumber numberWithInt:_connectionType] forKey:@"connectionType"];
     
