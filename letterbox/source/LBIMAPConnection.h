@@ -21,6 +21,8 @@
     NSString            *_activityStatus;
 }
 
+@property (assign) BOOL shouldCancelActivity;
+
 /*!
  @abstract   Retrieves the list of all the available folders from the server.
  @result     Returns a NSSet which contains NSStrings of the folders pathnames.

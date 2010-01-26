@@ -17,4 +17,6 @@
 
 + (id) sharedActivityViewer;
 
+- (void) cancelAllActivities:(id)sender;
+
 @end

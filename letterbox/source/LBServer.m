@@ -157,8 +157,12 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         });
         
         
-        
         for (NSString *folderPath in list) {
+            
+            if (conn.shouldCancelActivity) {
+                // FUCK YEA GOTO!
+                goto checkinAndQuit;
+            }
             
             NSString *status = NSLocalizedString(@"Finding messages in '%@'", @"Finding messages in '%@'");
             [conn setActivityStatusAndNotifiy:[NSString stringWithFormat:status, folderPath]];
@@ -192,6 +196,11 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
             NSInteger idx = 0;
             
             for (LBMessage *msg in messages) {
+                
+                if (conn.shouldCancelActivity) {
+                    goto checkinAndQuit;
+                }
+                
                 idx++;
                 
                 NSString *status = NSLocalizedString(@"Loading message %d of %d messages in '%@'", @"Loading message %d of %d messages in '%@'");
@@ -208,8 +217,10 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
             
             [folder release];
             
-            debug(@"Done folder %@", folderPath);
+            
         }
+        
+        checkinAndQuit:
         
         dispatch_async(dispatch_get_main_queue(),^ {
             [self checkInIMAPConnection:conn];

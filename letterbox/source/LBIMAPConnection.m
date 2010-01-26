@@ -15,6 +15,7 @@
 #import "LetterBoxUtilities.h"
 
 @implementation LBIMAPConnection
+@synthesize shouldCancelActivity=_shouldCancelActivity;
 
 - (id) init {
     
@@ -241,7 +242,6 @@
             
         });
         
-        
     }
 }
 
@@ -253,6 +253,7 @@
 
 - (void) cancelActivity {
     _shouldCancelActivity = YES;
+    [self setActivityStatusAndNotifiy:NSLocalizedString(@"Canceling…", @"Canceling…")];
 }
 
 @end
