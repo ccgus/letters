@@ -1,0 +1,105 @@
+The Official Letters Coding Style Guide
+=======================================
+           By Gus Mueller
+     (now you know who to blame)
+
+
+Spacing: 4 spaces for indentation, no tabs.
+
+Brackets go in the following style:
+
+if (foo) {
+    bar();
+}
+
+Always always always use brackets, even if you only have a single
+statment after an if statment.  ie, this is the wrong way:
+if (foo) bar();
+
+
+When assigning a var in a conditional statment, use two parens:
+
+while ((foo = [e nextObject])) {
+	<#statements#>
+}
+
+
+Some more examples:
+
+
+LBFooClass.h:
+
+@interface LBFooClass : NSObject {
+    
+    // instance variables start with an underscore:
+    NSString *_myFoo;
+    NSDictionary *_myBar;
+    
+    // IB Outlets don't however:
+    IBOutlet NSTableView *fooTable;
+}
+
+// properties go above the public methods:
+@property (retain) NSString *myFoo;
+@property (retain) NSDictionary *myBar;
+
+- (void) myGreatAction:(id)sender;
+
+@end
+
+
+
+LBFooClass.m:
+
+#import "LBFooClass.h"
+#import <LetterBox/LetterBox.h>
+
+@interface LBFooClass ()
+- (void) registerForNotifications;
+@end
+
+
+@implementation LAActivityViewer
+
+// synthesized properties go up here
+@synthesize myFoo=_myFoo;
+@synthesize myBar=_myBar;
+
+// initialize goes at the very very top.
++ (void) initialize {
+   // wee!
+}
+
+// inits go next, in the following style.
+- (id) init {
+	self = [super init];
+	if (self != nil) {
+		// stuff here.
+	}
+	return self;
+}
+
+// deallocs go right below the init.
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [_myFoo release];
+    [_myBar release];
+    
+    // You can also assign your ivars to nil here, if you think they might 
+    // still be referrenced at this point.
+    // However, it'd be great if they didn't (because that would be a bug).
+    
+    // _myFoo = nil;
+    // _myBar= nil;
+    
+    [super dealloc];
+}
+
+
+// and all your wonderful methods go below.
+- (void) myGreatAction:(id)sender {
+
+}
+
+@end

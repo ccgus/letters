@@ -35,6 +35,10 @@ It's for a bit of experimentation, and to act as a starting point.  It currently
 
 Check out the git repository, open up Letters.xcodeproj, and build away.
 
+**System Requirements**
+
+a) One Macintosh Personal Microcomputer with at least one 64 bit Intel processor, running Mac OS X 10.7 or later.
+
 
 Letters Vision Statement
 ========================
