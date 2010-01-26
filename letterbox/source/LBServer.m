@@ -95,6 +95,8 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     
     // Possible solution- only ever checkout / check in on main thread?
     
+    [conn setShouldCancelActivity:NO];
+    
     [_inactiveIMAPConnections addObject:conn];
     [_activeIMAPConnections removeObject:conn];
     [conn setActivityStatusAndNotifiy:nil];
@@ -121,6 +123,10 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     });
 }
 
+
+
+#define CheckConnectionAndReturnIfCanceled(aConn) { if (aConn.shouldCancelActivity) { dispatch_async(dispatch_get_main_queue(),^ { [self checkInIMAPConnection:conn]; }); return; } }
+
 - (void) checkForMail {
     // weeeeeee
     
@@ -137,6 +143,8 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
                 return;
             }
         }
+        
+        CheckConnectionAndReturnIfCanceled(conn);
         
         [conn setActivityStatusAndNotifiy:NSLocalizedString(@"Updating folder list", @"Updating folder list")];
         NSError *err    = nil;
@@ -159,10 +167,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         
         for (NSString *folderPath in list) {
             
-            if (conn.shouldCancelActivity) {
-                // FUCK YEA GOTO!
-                goto checkinAndQuit;
-            }
+            CheckConnectionAndReturnIfCanceled(conn);
             
             NSString *status = NSLocalizedString(@"Finding messages in '%@'", @"Finding messages in '%@'");
             [conn setActivityStatusAndNotifiy:[NSString stringWithFormat:status, folderPath]];
@@ -197,9 +202,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
             
             for (LBMessage *msg in messages) {
                 
-                if (conn.shouldCancelActivity) {
-                    goto checkinAndQuit;
-                }
+                CheckConnectionAndReturnIfCanceled(conn);
                 
                 idx++;
                 
@@ -217,10 +220,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
             
             [folder release];
             
-            
         }
-        
-        checkinAndQuit:
         
         dispatch_async(dispatch_get_main_queue(),^ {
             [self checkInIMAPConnection:conn];
