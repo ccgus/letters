@@ -1,0 +1,28 @@
+
+Gus Mueller
+Jason R. McNeil
+Joe Heck
+
+<# Your Name Here #>
+
+
+
+
+
+
+ORIGINAL MAILCORE AUTHORS:
+
+Primary Authors:
+
+	* Matt Ronge
+	
+Contributors:
+	
+	* Stefano Barbato - For a patch that fixes a memory leak
+	* Julián Romero - For a patch that adds unicode support for addresses
+	* Kyle Van Essen - For a patch that fixes a flags memory leak
+	
+Thanks to:
+
+	* Dinh Viet Hoa - For writing libetpan, which made MailCore possible
+	

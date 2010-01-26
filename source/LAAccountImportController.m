@@ -18,16 +18,37 @@
 @implementation LAAccountImportController
 
 - (id)initWithWindowNibName:(NSString *)windowNibName {
+    
 	self = [super initWithWindowNibName:windowNibName];
-	if(!self) return nil;
-	
-	[self loadMailAccounts];
-	
+	if (self != nil) {
+		[self loadMailAccounts];
+	}
+    
 	return self;
 }
 
+- (void)dealloc {
+    
+	[_mailAccounts release];
+    _mailAccounts = nil;
+	
+    [_smtpAccounts release];
+    _smtpAccounts = nil;
+	
+    [super dealloc];
+}
+
+- (void)awakeFromNib {
+	[tableView setDoubleAction:@selector(importSelectedAccount:)];
+}
+
+
+- (void)windowWillClose:(NSNotification *)notification {
+    [self autorelease]; // clang is going to hate this.
+}
+
 - (void)loadMailAccounts {
-	mailAccounts = [[NSMutableArray alloc] init];
+	_mailAccounts = [[NSMutableArray alloc] init];
 	
 	NSDictionary* mailDict = [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"com.apple.mail"];
 	NSArray* imapAccounts = [mailDict objectForKey:@"MailAccounts"];
@@ -38,16 +59,16 @@
 		if( [[editableAccount objectForKey:@"AccountType"] isEqualToString:@"iToolsAccount"] ) {
 			[editableAccount setObject:@"mail.mac.com" forKey:@"Hostname"];
 		}
-		[mailAccounts addObject:[editableAccount autorelease]];
+		[_mailAccounts addObject:[editableAccount autorelease]];
 	}
 	
-	smtpAccounts = [[NSMutableDictionary alloc] init];
+	_smtpAccounts = [[NSMutableDictionary alloc] init];
 	for( NSDictionary* smtpAccount in [mailDict objectForKey:@"DeliveryAccounts"] ) {
 		NSString* key = [smtpAccount objectForKey:@"Hostname"];
 		if( [smtpAccount objectForKey:@"Username"] ) {
 			key = [key stringByAppendingFormat:@":%@", [smtpAccount objectForKey:@"Username"]];
 		}
-		[smtpAccounts setObject:smtpAccount forKey:key];
+		[_smtpAccounts setObject:smtpAccount forKey:key];
 	}
 }
 
@@ -73,7 +94,7 @@
 	if( returnCode != 0 ) { return; }
 	
 	NSUInteger indexOfSelectedAccount = [[tableView selectedRowIndexes] firstIndex];
-	NSDictionary* mailAccount = [mailAccounts objectAtIndex:indexOfSelectedAccount];
+	NSDictionary* mailAccount = [_mailAccounts objectAtIndex:indexOfSelectedAccount];
   
 	LBAccount *account = [[appDelegate accounts] lastObject];
     
@@ -81,7 +102,7 @@
 	    
 	[account setImapServer:[mailAccount objectForKey:@"Hostname"]];
 	
-	NSDictionary* smtpServerInfo = [smtpAccounts objectForKey:[mailAccount objectForKey:@"SMTPIdentifier"]];
+	NSDictionary* smtpServerInfo = [_smtpAccounts objectForKey:[mailAccount objectForKey:@"SMTPIdentifier"]];
 	[account setSmtpServer:[smtpServerInfo objectForKey:@"Hostname"]];
     	
 	NSArray* addresses = [mailAccount objectForKey:@"EmailAddresses"];
@@ -103,25 +124,21 @@
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-	return [mailAccounts count];
+	return [_mailAccounts count];
 }
+
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
-	return [[mailAccounts objectAtIndex:row] objectForKey:@"Username"];
+	return [[_mailAccounts objectAtIndex:row] objectForKey:@"Username"];
 }
 
 - (NSIndexSet *)tableView:(NSTableView *)tableView selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes {
 	if( [proposedSelectionIndexes count] == 0) {
 		[importButton setEnabled:NO];
-	} else {
+	}
+    else {
 		[importButton setEnabled:YES];
 	}
 	return proposedSelectionIndexes;
-}
-
-- (void)dealloc {
-	[mailAccounts release]; mailAccounts = nil;
-	[smtpAccounts release]; smtpAccounts = nil;
-	[super dealloc];
 }
 
 @end
