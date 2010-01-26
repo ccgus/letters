@@ -153,7 +153,11 @@
 - (void) openNewMailView:(id)sender {
     LAMailViewController *mailView = [LAMailViewController openNewMailViewController];
     
-    [[mailView window] center];
+    
+    [mailView setWindowFrameAutosaveName:@"LAMailViewController"];
+    [[mailView window] setFrameAutosaveName:@"LAMailViewController"];
+    
+    //[[mailView window] center];
     [[mailView window] makeKeyAndOrderFront:self];
     
     [_mailViews addObject:mailView];

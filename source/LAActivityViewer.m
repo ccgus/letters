@@ -86,6 +86,15 @@
      }];
 }
 
+
+- (void) cancelAllActivities:(id)sender {
+    
+    for (id <LBActivity> activity in _runningActivities) {
+        [activity cancelActivity];
+    }
+    
+}
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
@@ -105,6 +114,7 @@
 	id <LBActivity>activity = [_runningActivities objectAtIndex:rowIndex];
 	return [activity activityStatus];
 }
+
 
 
 @end
