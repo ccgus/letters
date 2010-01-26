@@ -3,6 +3,10 @@ The Official Letters Coding Style Guide
            By Gus Mueller
      (now you know who to blame)
 
+First, read this:
+http://developer.apple.com/mac/library/documentation/Cocoa/Conceptual/CodingGuidelines/CodingGuidelines.html
+
+Prefix class names for Letters with "LA" (Letters App)
 
 Spacing: 4 spaces for indentation, no tabs.
 
@@ -62,8 +66,8 @@ LBFooClass.m:
 @implementation LAActivityViewer
 
 // synthesized properties go up here
-@synthesize myFoo=_myFoo;
-@synthesize myBar=_myBar;
+@synthesize myFoo = _myFoo;
+@synthesize myBar = _myBar;
 
 // initialize goes at the very very top.
 + (void) initialize {
@@ -91,7 +95,7 @@ LBFooClass.m:
     // However, it'd be great if they didn't (because that would be a bug).
     
     // _myFoo = nil;
-    // _myBar= nil;
+    // _myBar = nil;
     
     [super dealloc];
 }
