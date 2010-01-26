@@ -7,6 +7,7 @@ First, read this:
 http://developer.apple.com/mac/library/documentation/Cocoa/Conceptual/CodingGuidelines/CodingGuidelines.html
 
 Prefix class names for Letters with "LA" (Letters App)
+Prefix class names for LetterBox starts with with "LB"
 
 Spacing: 4 spaces for indentation, no tabs.
 
