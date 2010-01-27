@@ -35,12 +35,14 @@ extern NSString *LBServerBodiesUpdatedNotification;
 @property (retain) NSArray *foldersList;
 
 
-- (id) initWithAccount:(LBAccount*)anAccount usingCacheFolder:(NSURL*)cacheFileURL;
+- (id)initWithAccount:(LBAccount*)anAccount usingCacheFolder:(NSURL*)cacheFileURL;
 
-- (void) connectUsingBlock:(void (^)(BOOL, NSError *))block;
+- (void)connectUsingBlock:(void (^)(BOOL, NSError *))block;
 
-- (void) checkForMail;
+- (void)checkForMail;
 
-- (NSArray*) messageListForPath:(NSString*)folderPath;
+- (NSArray*)messageListForPath:(NSString*)folderPath;
+
+- (void)moveMessages:(NSArray*)messageList inFolder:(NSString*)currentFolder toFolder:(NSString*)folder finshedBlock:(void (^)(BOOL, NSError *))block;
 
 @end
