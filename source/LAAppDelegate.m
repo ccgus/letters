@@ -36,6 +36,8 @@
         [defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"chocklock"];
     }
     
+    [defaultValues setValue:@"~/Library/Letters/" forKey:@"cacheStoreFolder"];
+    
     // other defaults would go here.
     
     [defaults registerDefaults:defaultValues];
@@ -70,9 +72,9 @@
         
         debug(@"deleting.");
         
-        NSString *path = [@"~/Library/Letters/" stringByExpandingTildeInPath];
+        NSString *cacheLocation = [[LAPrefs stringForKey:@"cacheStoreFolder"] stringByExpandingTildeInPath];
         
-        [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+        [[NSFileManager defaultManager] removeItemAtPath:cacheLocation error:nil];
         
         [LAPrefs setObject:nil forKey:@"accounts"];
     }
