@@ -86,7 +86,7 @@ const NSString *filePrefix = @"/Users/jason/git-local/letters/letterbox/";
 		if (!NSEqualRanges([file rangeOfString:@".svn"],notFound))
 			continue;
 		LBMessage *msg = [[LBMessage alloc] initWithFileAtPath:[NSString stringWithFormat:@"%@TestData/kiwi-dev/%@",filePrefix,file]];
-		NSLog([msg subject]);
+		NSLog(@"%@",[msg subject]);
 		[msg fetchBody];
 		NSString *stuff = [msg body];
 		[stuff length]; //Get the warning to shutup about stuff not being used
