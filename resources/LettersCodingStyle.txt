@@ -1,0 +1,119 @@
+                  The Official Letters Coding Style Guide
+                  =======================================
+                              By Gus Mueller
+                       (now you know who to blame)
+
+
+First, read Apple's Coding Guidelines for Cocoa:
+http://goo.gl/eY7a
+
+And you should be familiar with the modern runtime for 64 bit apps in 10.6:
+http://goo.gl/ewMq
+
+Class names in the Letters project are prefixed with LA
+Class names in the LetterBox project are prefixed with LB
+
+Spacing: 4 spaces for indentation, no tabs.
+
+Brackets go in the following style:
+
+if (foo) {
+    bar();
+}
+
+Always use brackets, even if you only have a single statment after a
+conditional.  ie, this is the wrong way:
+
+if (foo) bar();
+
+
+When assigning a var in a conditional statment, use two parens:
+
+while ((foo = [e nextObject])) {
+	<#statements#>
+}
+
+
+An example class:
+-----------------
+
+LBObject.h:
+
+@interface LBObject : NSObject {
+    @private
+    NSString *someNonPropertyIvar;
+    IBOutlet NSTextField *somePrivateField;
+}
+
+// properties go above the public methods:
+@property (nonatomic, assign) IBOutlet NSTableView *tableView;
+@property (retain) NSString *foo;
+@property (retain) NSDictionary *bar;
+
+- (void)myGreatAction:(id)sender;
+
+@end
+
+
+LBObject.m:
+
+#import "LBObject.h"
+
+// Class extensions go at the top
+@interface LBObject ()
+- (void)registerForNotifications;
+@end
+
+
+@implementation LBObject
+
+// synthesized properties go at the top
+@synthesize foo;
+@synthesize bar;
+@synthesize tableView;
+
+// if you have one, your initialize goes at the very very top.
++ (void)initialize {
+    // 
+}
+
+// inits go next, in the following style.
+- (id) init {
+	self = [super init];
+	if (self != nil) {
+		// stuff here.
+	}
+	return self;
+}
+
+// deallocs go right below the init.
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [foo release];
+    [bar release];
+    
+    // You can also assign your ivars to nil here, if you think they might be
+    // referrenced after this point for some reason.
+    // However, it'd be great if they didn't (because that would be a bug) and
+    // we should probably fix the case where that happens.
+    
+    // foo = nil;
+    // bar = nil;
+    
+    [super dealloc];
+}
+
+
+// and all your wonderful methods go below.
+- (void)myGreatAction:(id)sender {
+    
+}
+
+- (void)registerForNotifications {
+    
+}
+
+@end
+
+
