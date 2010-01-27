@@ -10,10 +10,10 @@
 
 @interface LAAccountImportController : NSWindowController<NSTableViewDelegate,NSTableViewDataSource> {
 	IBOutlet NSTableView *tableView;
+
 	IBOutlet NSButton* importButton;
 	IBOutlet NSWindow* passwordSheet;
 	IBOutlet NSSecureTextField* passwordField;
-    
     
 	NSMutableArray*		  _mailAccounts;
 	NSMutableDictionary*  _smtpAccounts;
