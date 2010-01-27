@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		29140C621110B5CE003C8AFB /* Prefs.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29140C601110B5CE003C8AFB /* Prefs.xib */; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		CC51746C110ACD9200C01407 /* libetpan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC51746B110ACD9200C01407 /* libetpan.framework */; };
 		CC517470110ACD9900C01407 /* LetterBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC51746F110ACD9900C01407 /* LetterBox.framework */; };
@@ -23,7 +24,6 @@
 		CCA5544D1106DF4D00CEEFF4 /* LAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA5544C1106DF4D00CEEFF4 /* LAAppDelegate.m */; };
 		CCA554541106E1BE00CEEFF4 /* LAMailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA554531106E1BE00CEEFF4 /* LAMailViewController.m */; };
 		CCA554841106EBBC00CEEFF4 /* LAPrefsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA554831106EBBC00CEEFF4 /* LAPrefsWindowController.m */; };
-		CCA554871106EBCC00CEEFF4 /* Prefs.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCA554851106EBCC00CEEFF4 /* Prefs.xib */; };
 		CCD9E1A511100A9D006F3C84 /* AccountImport.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCD9E1A311100A9D006F3C84 /* AccountImport.xib */; };
 		CCF4131F110D36D400401D5D /* LAActivityViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF4131E110D36D400401D5D /* LAActivityViewer.m */; };
 		CCF41324110D380800401D5D /* ActivityViewer.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCF41322110D380800401D5D /* ActivityViewer.xib */; };
@@ -72,6 +72,7 @@
 /* Begin PBXFileReference section */
 		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FBA07B3F13500E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+		29140C611110B5CE003C8AFB /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = resources/English.lproj/Prefs.xib; sourceTree = "<group>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D15AC370486D014006FF6A4 /* CrashyEmailApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CrashyEmailApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,7 +95,6 @@
 		CCA554561106E1FE00CEEFF4 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = resources/English.lproj/MailView.xib; sourceTree = "<group>"; };
 		CCA554821106EBBC00CEEFF4 /* LAPrefsWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LAPrefsWindowController.h; path = source/LAPrefsWindowController.h; sourceTree = "<group>"; };
 		CCA554831106EBBC00CEEFF4 /* LAPrefsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LAPrefsWindowController.m; path = source/LAPrefsWindowController.m; sourceTree = "<group>"; };
-		CCA554861106EBCC00CEEFF4 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = resources/English.lproj/Prefs.xib; sourceTree = "<group>"; };
 		CCA554CD1106F2D600CEEFF4 /* LetterBox.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LetterBox.xcodeproj; path = letterbox/LetterBox.xcodeproj; sourceTree = "<group>"; };
 		CCD9E1A411100A9D006F3C84 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = resources/English.lproj/AccountImport.xib; sourceTree = "<group>"; };
 		CCF4131D110D36D400401D5D /* LAActivityViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LAActivityViewer.h; path = source/LAActivityViewer.h; sourceTree = "<group>"; };
@@ -225,7 +225,7 @@
 				CCA554271106DDF800CEEFF4 /* LADocument.xib */,
 				CCA554551106E1FE00CEEFF4 /* MailView.xib */,
 				CCA554291106DDF800CEEFF4 /* MainMenu.xib */,
-				CCA554851106EBCC00CEEFF4 /* Prefs.xib */,
+				29140C601110B5CE003C8AFB /* Prefs.xib */,
 			);
 			name = xib;
 			sourceTree = "<group>";
@@ -314,10 +314,10 @@
 				CCA5542D1106DDF800CEEFF4 /* LADocument.xib in Resources */,
 				CCA5542E1106DDF800CEEFF4 /* MainMenu.xib in Resources */,
 				CCA554311106DE0500CEEFF4 /* InfoPlist.strings in Resources */,
-				CCA554871106EBCC00CEEFF4 /* Prefs.xib in Resources */,
 				CC6D05F6110A491C00D900E9 /* MailView.xib in Resources */,
 				CCF41324110D380800401D5D /* ActivityViewer.xib in Resources */,
 				CCD9E1A511100A9D006F3C84 /* AccountImport.xib in Resources */,
+				29140C621110B5CE003C8AFB /* Prefs.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -349,6 +349,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		29140C601110B5CE003C8AFB /* Prefs.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				29140C611110B5CE003C8AFB /* English */,
+			);
+			name = Prefs.xib;
+			sourceTree = "<group>";
+		};
 		CCA554231106DDF800CEEFF4 /* Credits.rtf */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -389,14 +397,6 @@
 			name = MailView.xib;
 			sourceTree = "<group>";
 		};
-		CCA554851106EBCC00CEEFF4 /* Prefs.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				CCA554861106EBCC00CEEFF4 /* English */,
-			);
-			name = Prefs.xib;
-			sourceTree = "<group>";
-		};
 		CCD9E1A311100A9D006F3C84 /* AccountImport.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -425,6 +425,7 @@
 					"$(inherited)",
 					/builds/Debug,
 					"\"$(SRCROOT)/build/Debug\"",
+					"\"$(SRCROOT)/BWToolkit\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -447,6 +448,7 @@
 					"$(inherited)",
 					/builds/Debug,
 					"\"$(SRCROOT)/build/Debug\"",
+					"\"$(SRCROOT)/BWToolkit\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = source/Letters_Prefix.pch;
