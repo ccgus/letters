@@ -271,23 +271,23 @@ char * etpan_encode_mime_header(char * phrase)
 }
 
 
-//- (NSCalendarDate *)sentDate {
-//      if ( _fields->fld_orig_date == NULL) {
-//      return [NSDate distantPast];
-//  }
-//      else {
-//      //This feels like a hack, there should be a better way to deal with the time zone
-//      NSInteger seconds = 60*60*_fields->fld_orig_date->dt_date_time->dt_zone/100;
-//      NSTimeZone *timeZone = [NSTimeZone timeZoneForSecondsFromGMT:seconds];
-//      return [NSCalendarDate dateWithYear:_fields->fld_orig_date->dt_date_time->dt_year 
-//                                      month:_fields->fld_orig_date->dt_date_time->dt_month
-//                                        day:_fields->fld_orig_date->dt_date_time->dt_day
-//                                       hour:_fields->fld_orig_date->dt_date_time->dt_hour
-//                                     minute:_fields->fld_orig_date->dt_date_time->dt_min
-//                                    second:_fields->fld_orig_date->dt_date_time->dt_sec
-//                                   timeZone:timeZone];
-//      }
-//}
+- (NSCalendarDate *)sentDate {
+	if ( fields->fld_orig_date == NULL) {
+		return [NSDate distantPast];
+	}
+	else {
+		// FIXME: (Matt Ronge?)  This feels like a hack, there should be a better way to deal with the time zone
+		NSInteger seconds = 60*60*fields->fld_orig_date->dt_date_time->dt_zone/100;
+		NSTimeZone *timeZone = [NSTimeZone timeZoneForSecondsFromGMT:seconds];
+		return [NSCalendarDate dateWithYear:fields->fld_orig_date->dt_date_time->dt_year
+                                      month:fields->fld_orig_date->dt_date_time->dt_month
+                                        day:fields->fld_orig_date->dt_date_time->dt_day
+                                       hour:fields->fld_orig_date->dt_date_time->dt_hour
+                                     minute:fields->fld_orig_date->dt_date_time->dt_min
+									 second:fields->fld_orig_date->dt_date_time->dt_sec
+                                   timeZone:timeZone];
+	}
+}
 
 
 - (BOOL)isNew {

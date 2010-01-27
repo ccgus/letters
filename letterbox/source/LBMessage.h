@@ -131,8 +131,7 @@
     @abstract   Return the date the message was sent. If a date wasn't included then
                 a date from the distant past is used instead.
 */
-//FIXME 
-//- (NSCalendarDate *)sentDate;
+- (NSCalendarDate *)sentDate;
 
 /*!
     @abstract   Returns YES if the method is unread.

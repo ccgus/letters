@@ -41,7 +41,8 @@
 #import "LBMIME_TextPart.h"
 #import "LBMIME_Enumerator.h"
 
-const NSString *filePrefix = @"/Users/jason/git-local/letters/letterbox/";
+// FIXME: jasonrm - This may or may not work for everyone, but for now it's better than trying to use an absolute path.
+const NSString *filePrefix = @"../../letters/letterbox/";
 
 @implementation LBMIMETests
 - (void)testMIMETextPart {

@@ -31,67 +31,62 @@
 
 #import "LBAccountTests.h"
 
-NSString *SERVER = @"192.168.1.106";
-NSString *USERNAME = @"test";
-NSString *PASSWORD = @"password";
-
-@interface LBCoreAccountTests (LBAccountTestsPrivate)
-- (void)disconnect;
-- (void)connect;
-@end
-
 @implementation LBCoreAccountTests
+
+@synthesize accountTestInfo;
+
 - (void)setUp {
-    account = [[LBAccount alloc] init];
-    [self connect];
+	accountTestInfo = [NSMutableDictionary dictionary];
+	// FIXME: jasonrm - I'm not sure if a retain is really needed here.
+	[accountTestInfo retain];
+
+	[accountTestInfo setObject:@"Aefooci7se6ooy@lettersapp.com" forKey:@"username"];
+	[accountTestInfo setObject:@"wuree2Ei9Tu5ie"			forKey:@"password"];
+
+	[accountTestInfo setObject:@"Aefooci7se6ooy@lettersapp.com" forKey:@"fromAddress"];
+
+	[accountTestInfo setObject:@"imap.pool.lettersapp.com" forKey:@"imapServer"];
+	[accountTestInfo setObject:[NSNumber numberWithInt:993] forKey:@"imapPort"];
+	[accountTestInfo setObject:@"smtp.pool.lettersapp.com" forKey:@"smtpServer"];
+
+	[accountTestInfo setObject:[NSNumber numberWithInt:CONNECTION_TYPE_TLS] forKey:@"authType"];
+	[accountTestInfo setObject:[NSNumber numberWithInt:YES] forKey:@"isActive"];
+	[accountTestInfo setObject:[NSNumber numberWithInt:IMAP_AUTH_TYPE_PLAIN] forKey:@"connectionType"];
 }
 
 - (void)tearDown {
-    [self disconnect];
-    [account release];
+	// FIXME: jasonrm - If the above retain isn't needed, then -tearDown isn't needed either.
+    [accountTestInfo release];
 }
 
-- (void)testAllFolders {
-    NSSet *folders = [account allFolders];
-    NSSet *expectedFolders = [NSSet setWithObjects:@"ACM", @"Drafts", @"JDEE", @"Lucene", 
-                                    @"Lucene-Dev", @"MacWarriors", @"Sent", @"Templates",
-                                    @"TestMailbox", @"TestMailbox.SubMailbox", @"Trash", 
-                                    @"INBOX", nil];
-    STAssertEqualObjects(folders, expectedFolders, nil);
+
+- (void)testAccountWithDictionary {
+	LBAccount *account = [LBAccount accountWithDictionary:accountTestInfo];
+	STAssertEqualObjects([account className], @"LBAccount", @": testAccountWithDictionary - Expected class of 'LBAccount', got '%@'", [account className]);
 }
 
-/*!
-  Make sure every folder can be opened
-*/
-- (void)testOpenAllFolders {
-    for (NSString *folderPath in [account allFolders]) {
-        STAssertNotNil([account folderWithPath:folderPath], nil);
-    }
+- (void)testDictionaryRepresentation {
+	LBAccount *account = [LBAccount accountWithDictionary:accountTestInfo];
+	NSDictionary *testDict = [account dictionaryRepresentation];
+	STAssertEqualObjects([testDict objectForKey:@"username"], [accountTestInfo objectForKey:@"username"], @": testDictionaryRepresentation -  username should not have been modified.");
+	STAssertEqualObjects([testDict objectForKey:@"password"], [accountTestInfo objectForKey:@"password"], @": testDictionaryRepresentation -  password should not have been modified.");
+	STAssertEqualObjects([testDict objectForKey:@"fromAddress"], [accountTestInfo objectForKey:@"fromAddress"], @": testDictionaryRepresentation -  fromAddress should not have been modified.");
+	STAssertEqualObjects([testDict objectForKey:@"imapServer"], [accountTestInfo objectForKey:@"imapServer"], @": testDictionaryRepresentation - imapServer should not have been modified.");
+	STAssertEqualObjects([testDict objectForKey:@"imapPort"], [accountTestInfo objectForKey:@"imapPort"], @": testDictionaryRepresentation - imapPort should not have been modified.");
+	STAssertEqualObjects([testDict objectForKey:@"smtpServer"], [accountTestInfo objectForKey:@"smtpServer"], @": testDictionaryRepresentation - smtpServer should not have been modified.");
+	STAssertEqualObjects([testDict objectForKey:@"authType"], [accountTestInfo objectForKey:@"authType"], @": testDictionaryRepresentation - authType should not have been modified.");
+	STAssertEqualObjects([testDict objectForKey:@"isActive"], [accountTestInfo objectForKey:@"isActive"], @": testDictionaryRepresentation - isActive should not have been modified.");
 }
 
-- (void)testSubscribedFolders {
-    NSSet *folders = [account subscribedFolders];
-    NSSet *expectedFolders = [NSSet setWithObjects:@"Drafts", @"JDEE", @"Lucene", 
-                                    @"Lucene-Dev", @"MacWarriors", @"Sent", @"Templates",
-                                    @"TestMailbox", @"TestMailbox.SubMailbox", @"Trash", 
-                                    @"INBOX", nil];
-    STAssertEqualObjects(folders, expectedFolders, nil);
-}
-
-- (void)testIsConnected {
+- (void)testIsActive {
+	// TODO: jasonrm - Unless the isActive switch becomes more complex than a synthesized varible, this is a rather silly test.
+	LBAccount *account = [LBAccount accountWithDictionary:accountTestInfo];
     STAssertEquals(YES, [account isActive], nil);
-    [self disconnect];
+    account.isActive = NO;
     STAssertEquals(NO, [account isActive], nil);
-    [self connect];
-    STAssertEquals(YES, [account isActive], nil);
+    account.isActive = YES;
+	STAssertEquals(YES, [account isActive], nil);
 }
 
-- (void)connect {
-    [account connectToServer:SERVER port:143 connectionType:CONNECTION_TYPE_PLAIN authType:IMAP_AUTH_TYPE_PLAIN
-             login:USERNAME password:PASSWORD];
-}
 
-- (void)disconnect {
-    [account disconnect];
-}
 @end

@@ -30,9 +30,14 @@
  */
 
 #import <SenTestingKit/SenTestingKit.h>
+#import "mailstorage_types.h"
+#import "imapdriver_types.h"
 #import "LBAccount.h"
 
 @interface LBCoreAccountTests : SenTestCase {
-    LBAccount *account;
+
 }
+
+@property (retain) NSMutableDictionary *accountTestInfo;
+
 @end
