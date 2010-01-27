@@ -9,20 +9,38 @@
 #import <Cocoa/Cocoa.h>
 
 
+typedef enum {
+    LAPrefsPaneTabIdUnknown = 0,
+    LAPrefsPaneTabIdGeneral,
+    LAPrefsPaneTabIdAccounts,
+    LAPrefsPaneTabIdFontsAndColors
+} LAPrefsPaneTabId;
+
+
 @interface LAPrefsWindowController : NSWindowController {
     
-    IBOutlet NSTextField *serverField;
-    IBOutlet NSTextField *usernameField;
-    IBOutlet NSTextField *passwordField;
-    IBOutlet NSTextField *fromAddressField;
-    IBOutlet NSTextField *portField;
+    IBOutlet NSTabView     *tabView;
+    LAPrefsPaneTabId        preSelectTabId;
     
-    IBOutlet NSTextField *smtpServerField;
-    IBOutlet NSTextField *smtpServerPortField;
+    // General
+    IBOutlet NSPopUpButton *emailAppsPopup;
     
-    IBOutlet NSButton *tlsButton;
+    // Account(s)
+    IBOutlet NSTextField   *serverField;
+    IBOutlet NSTextField   *usernameField;
+    IBOutlet NSTextField   *passwordField;
+    IBOutlet NSTextField   *fromAddressField;
+    IBOutlet NSTextField   *portField;
+    
+    IBOutlet NSTextField   *smtpServerField;
+    IBOutlet NSTextField   *smtpServerPortField;
+    
+    IBOutlet NSButton      *tlsButton;
+    
 }
 
-- (void)saveAccountSettings:(id)sender;
-- (void)importMailAccount:(id)sender;
+- (IBAction)saveAccountSettings:(id)sender;
+- (IBAction)importMailAccount:(id)sender;
+
+- (void)selectTabWithId:(LAPrefsPaneTabId)tabId;
 @end
