@@ -25,8 +25,16 @@
         [self loadAccountSettings:[[appDelegate accounts] lastObject]];
     }
     
+    // Possibly select a specific tab
+    if (preSelectTabId != LAPrefsPaneTabIdUnknown) {
+        // We were asked to select a specific tab before having loaded the nib, select now
+        [self selectTabWithId:preSelectTabId];
+    }
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountUpdated:) name:@"AccountUpdated" object:nil];
 }
+
+
 
 - (void)loadAccountSettings:(LBAccount*)account {
     
@@ -84,9 +92,29 @@
     [self loadAccountSettings:[[appDelegate accounts] lastObject]];
 }
 
+- (void)selectTabWithId:(LAPrefsPaneTabId)tabId {
+    // Select the tab with the given id
+    if (tabId == LAPrefsPaneTabIdUnknown) {
+        return;
+    }
+    if (!tabView) {
+        // We haven't awoken from nib yet, store it for when we have
+        preSelectTabId = tabId;
+        return;
+    }
+    // Check that the Id is valid
+    NSInteger tabIndex = [tabView indexOfTabViewItemWithIdentifier:[NSString stringWithFormat:@"%i", tabId]];
+    if (tabIndex != NSNotFound) {
+        [tabView selectTabViewItemAtIndex:tabIndex];
+    }
+}
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
+}
+
+- (NSString *)windowFrameAutosaveName {
+    return @"LAPrefsWindowController";
 }
 
 @end
