@@ -16,7 +16,6 @@
 
 
 @implementation LAMailViewController
-@synthesize statusMessage=_statusMessage;
 
 + (id) openNewMailViewController {
     
@@ -25,25 +24,8 @@
     return [me autorelease];
 }
 
-- (id) initWithWindowNibName:(NSString*)nibName {
-	self = [super initWithWindowNibName:nibName];
-	if (self != nil) {
-		//
-	}
-    
-	return self;
-}
-
-
-- (void)dealloc {
-    [_statusMessage release];
-    
-    [super dealloc];
-}
-
-
 - (void)awakeFromNib {
-	
+    
     [mailboxMessageList setDataSource:self];
     [mailboxMessageList setDelegate:self];
     
@@ -159,7 +141,7 @@
 }
 
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex {
-	
+    
     // just grab the last account.
     LBAccount *currentAccount = [[appDelegate accounts] lastObject];
     
