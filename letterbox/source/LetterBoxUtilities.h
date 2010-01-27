@@ -41,3 +41,8 @@ void LetterBoxEnableLogging();
 BOOL StringStartsWith(NSString *string, NSString *subString);
 
 void LBQuickError(NSError **err, NSString *domain, NSInteger code, NSString *description);
+
+NSString *LBQuote(NSString *body, NSString *prefix);
+
+NSString *LBWrapLines(NSString *body, int width);
+

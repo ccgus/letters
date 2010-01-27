@@ -12,9 +12,11 @@
     IBOutlet NSTableView *mailboxMessageList;
     IBOutlet NSTableView *foldersList;
     IBOutlet NSTextView *messageTextView;
+    
+    NSUndoManager *undoManager;
 }
 
 
-+ (id) openNewMailViewController;
++ (id)openNewMailViewController;
 
 @end

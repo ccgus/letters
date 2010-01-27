@@ -10,6 +10,8 @@
 #import "LAAppDelegate.h"
 #import "LADocument.h"
 
+
+
 @interface LAMailViewController ()
 - (NSString *)selectedFolderPath;
 @end
@@ -17,14 +19,24 @@
 
 @implementation LAMailViewController
 
-+ (id) openNewMailViewController {
++ (id)openNewMailViewController {
     
     LAMailViewController *me = [[LAMailViewController alloc] initWithWindowNibName:@"MailView"];
     
     return [me autorelease];
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [undoManager release];
+    [super dealloc];
+}
+
+
 - (void)awakeFromNib {
+    
+    undoManager = [[NSUndoManager alloc] init];
     
     [mailboxMessageList setDataSource:self];
     [mailboxMessageList setDelegate:self];
@@ -56,6 +68,10 @@
     
 }
 
+- (NSUndoManager *)undoManager {
+    return undoManager;
+}
+
 - (NSString *)selectedFolderPath {
     
     NSInteger selectedRow = [foldersList selectedRow];
@@ -68,7 +84,7 @@
     }
 }
 
-- (NSURL*) cacheFolderURL {
+- (NSURL*)cacheFolderURL {
     
     NSString *path = [[LAPrefs stringForKey:@"cacheStoreFolder"] stringByExpandingTildeInPath];
     
@@ -149,14 +165,7 @@
         
         NSString *folderName = [[[currentAccount server] foldersList] objectAtIndex:rowIndex];
         
-        /*
-        if ([folderName hasPrefix:@"INBOX."]) {
-            folderName = [folderName substringFromIndex:6];
-        }
-        */
-        
-        // this will be taken out eventually.  But I just can't help myself.
-        
+        // this will be taken out eventually.  But I just can't help myself.  Please be quiet about it.
         return [LAPrefs boolForKey:@"chocklock"] ? [folderName uppercaseString] : folderName;
     }
     
@@ -170,74 +179,6 @@
     
 }
 
-// FIXME: put this somewhere where it makes more sense, maybe a utils file?
-
-NSString *FQuote(NSString *s) {
-    NSMutableString *ret = [NSMutableString string];
-    s = [s stringByReplacingOccurrencesOfString:@"\r\n" withString:@"\n"];
-    s = [s stringByReplacingOccurrencesOfString:@"\r" withString:@"\n"];
-    for (NSString *line in [s componentsSeparatedByString:@"\n"]) {
-        [ret appendFormat:@">%@\n", line];
-    }
-    return ret;
-}
-
-NSString *FRewrapLines(NSString *s, int len) {
-    
-    NSMutableString *ret = [NSMutableString string];
-    
-    
-    s = [s stringByReplacingOccurrencesOfString:@"\r\n" withString:@"\n"];
-    s = [s stringByReplacingOccurrencesOfString:@"\r" withString:@"\n"];
-    
-    for (NSString *line in [s componentsSeparatedByString:@"\n"]) {
-        
-        if (![line length]) {
-            [ret appendString:@"\n"];
-            continue;
-        }
-        
-        int idx = 0;
-        
-        while ((idx < [line length]) && ([line characterAtIndex:idx] == '>')) {
-            idx++;
-        }
-        
-        NSMutableString *pre = [NSMutableString string];
-        
-        for (int i = 0; i < idx; i++) {
-            [pre appendString:@">"];
-        }
-        
-        NSString *oldLine = [line substringFromIndex:idx];
-        
-        NSMutableString *newLine = [NSMutableString string];
-        
-        [newLine appendString:pre];
-        
-        for (NSString *word in [oldLine componentsSeparatedByString:@" "]) {
-            
-            if ([newLine length] + [word length] > len) {
-                [ret appendString:newLine];
-                [ret appendString:@"\n"];
-                [newLine setString:pre];
-            }
-            
-            if ([word length] && [newLine length]) {
-                [newLine appendString:@" "];
-            }
-            
-            [newLine appendString:word];
-            
-        }
-        
-        [ret appendString:newLine];
-        [ret appendString:@"\n"];
-        
-    }
-    
-    return ret;
-}
 
 - (void)moveLeft:(id)sender {
     if ([[self window] firstResponder] == mailboxMessageList) {
@@ -252,8 +193,43 @@ NSString *FRewrapLines(NSString *s, int len) {
 }
 
 
+- (void)moveMessages:(NSArray*)messages toFolder:(NSString*)folder {
+    
+    // what about a combined view of multiple folders?  How would we handle that?
+    
+    [[[self undoManager] prepareWithInvocationTarget:self] moveMessages:messages toFolder:[self selectedFolderPath]];
+    
+    // FIXME: why isn't undo working?
+    
+    // this is a work in progress.
+    LBAccount *currentAccount = [[appDelegate accounts] lastObject];
+    
+    [[currentAccount server] moveMessages:messages inFolder:[self selectedFolderPath] toFolder:folder finshedBlock:^(BOOL arg1, NSError *arg2) {
+    
+        NSLog(@"All done with move... I think");
+    }];
+    
+}
 
-- (void) replyToSelectedMessage:(id)sender {
+- (void)delete:(id)sender {
+    debug(@"%s:%d", __FUNCTION__, __LINE__);
+    
+    if ([[self window] firstResponder] != mailboxMessageList) {
+        return;
+    }
+    
+    LBAccount *currentAccount               = [[appDelegate accounts] lastObject];
+    __block NSArray *messageList            = [[currentAccount server] messageListForPath:[self selectedFolderPath]];
+    __block NSMutableArray *mesagesToDelete = [NSMutableArray array];
+    
+    [[mailboxMessageList selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+        [mesagesToDelete addObject:[messageList objectAtIndex:idx]];
+    }];
+    
+    [self moveMessages:mesagesToDelete toFolder:LATrashFolderName];
+}
+
+- (void)replyToSelectedMessage:(id)sender {
     
     NSInteger selectedRow = [mailboxMessageList selectedRow];
     
@@ -282,8 +258,8 @@ NSString *FRewrapLines(NSString *s, int len) {
     [doc setFromList:[account fromAddress]];
     [doc setToList:[[msg sender] email]];
     
-    // fixme - 72?  a pref maybe?
-    [doc setMessage:FRewrapLines(FQuote([msg body]), 72)];
+    // FIXME: - 72?  a hidden pref maybe?
+    [doc setMessage:LBWrapLines(LBQuote([msg body], @">"), 72)];
     
     NSString *subject = [msg subject];
     if (![[subject lowercaseString] hasPrefix:@"re: "]) {

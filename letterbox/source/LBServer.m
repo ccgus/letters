@@ -86,7 +86,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     return conn;
 }
 
-- (void) checkInIMAPConnection:(LBIMAPConnection*) conn {
+- (void)checkInIMAPConnection:(LBIMAPConnection*) conn {
     
     // FIXME: aint' thread safe.
     if (![[NSThread currentThread] isMainThread]) {
@@ -102,7 +102,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     [conn setActivityStatusAndNotifiy:nil];
 }
 
-- (void) connectUsingBlock:(void (^)(BOOL, NSError *))block {
+- (void)connectUsingBlock:(void (^)(BOOL, NSError *))block {
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
@@ -127,7 +127,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 
 #define CheckConnectionAndReturnIfCanceled(aConn) { if (aConn.shouldCancelActivity) { dispatch_async(dispatch_get_main_queue(),^ { [self checkInIMAPConnection:conn]; }); return; } }
 
-- (void) checkForMail {
+- (void)checkForMail {
     // weeeeeee
     
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
@@ -235,8 +235,97 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     return [foldersCache objectForKey:folderPath];
 }
 
+static struct mailimap_set * setFromArray(NSArray * array)
+{
+    unsigned int currentIndex;
+    unsigned int currentFirst;
+    unsigned int currentValue;
+    unsigned int lastValue;
+    struct mailimap_set * imap_set;
+    
+    currentFirst = 0;
+    currentValue = 0;
+    lastValue = 0;
+    
+    imap_set = mailimap_set_new_empty();
+    
+	while (currentIndex < [array count]) {
+        currentValue = [[array objectAtIndex:currentIndex] unsignedLongValue];
+        if (currentFirst == 0) {
+            currentFirst = currentValue;
+        }
+        
+        if (lastValue != 0) {
+            if (currentValue != lastValue + 1) {
+                mailimap_set_add_interval(imap_set, currentFirst, lastValue);
+                currentFirst = 0;
+            }
+        }
+        else {
+            lastValue = currentValue;
+            currentValue ++;
+        }
+    }
+    
+    return imap_set;
+}
 
-- (void) makeCacheFolders {
+- (void)moveMessages:(NSArray*)messageList inFolder:(NSString*)currentFolder toFolder:(NSString*)folder finshedBlock:(void (^)(BOOL, NSError *))block {
+    
+    /*
+    // FIXME: we need a way have this guy auto log in in.
+    LBIMAPConnection *conn = [self checkoutIMAPConnection];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
+        
+        BOOL success = YES;
+        NSError *err = nil;
+        
+        int mr = mailimap_select([conn session], [currentFolder UTF8String]);
+        
+        // uhhhhhh
+        
+        //struct mailimap_set *set = mailimap_set_new_empty(void);
+        //struct mailimap_set_item
+        
+        NSMutableArray *messageIdList = [NSMutableArray array];
+        
+        for (LBMessage *message in messageList) {
+            [messageIdList addObject:[NSNumber numberWithUnsignedLong:[message sequenceNumber]]];
+        }
+        
+        debug(@"messageIdList: %@", messageIdList);
+        
+        struct mailimap_set *set = setFromArray(messageIdList);
+        
+        mr = mailimap_uid_copy([conn session], set, [folder UTF8String]);
+        
+        //int mailimap_copy([conn session], struct mailimap_set * set, const char * mb);
+        
+        
+        
+        
+        
+        dispatch_async(dispatch_get_main_queue(),^ {
+            [self checkInIMAPConnection:conn];
+        });
+        
+        if (block) {
+            dispatch_async(dispatch_get_main_queue(),^ {
+                
+                block(success, err);
+                
+                [self checkInIMAPConnection:conn];
+            });
+        }
+        
+    });
+    */
+    
+}
+
+
+- (void)makeCacheFolders {
     
     NSError *err = nil;
     BOOL madeDir = [[NSFileManager defaultManager] createDirectoryAtPath:[accountCacheURL path]
@@ -249,7 +338,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     }
 }
 
-- (void) loadCache {
+- (void)loadCache {
     
     assert(baseCacheURL);
     assert(account);
@@ -317,7 +406,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     }
 }
 
-- (void) saveMessagesToCache:(NSSet*)messages forFolder:(NSString*)folderName {
+- (void)saveMessagesToCache:(NSSet*)messages forFolder:(NSString*)folderName {
 
 #ifdef LBUSECACHE
     [cacheDB beginTransaction];
@@ -364,7 +453,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 }
 
 // FIXME: need to setup a way to differentiate between subscribed and non subscribed.
-- (void) saveFoldersToCache:(NSArray*)messages {
+- (void)saveFoldersToCache:(NSArray*)messages {
     
     // I'm just going to turn this off for now.  It's stupidly incomplete
     

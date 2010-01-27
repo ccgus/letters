@@ -81,3 +81,82 @@ void LBQuickError(NSError **err, NSString *domain, NSInteger code, NSString *des
 }
 
 
+
+NSString *LBQuote(NSString *body, NSString *prefix) {
+    NSMutableString *ret = [NSMutableString string];
+    
+    // normalize the line endings to make things easier.
+    body = [body stringByReplacingOccurrencesOfString:@"\r\n" withString:@"\n"];
+    body = [body stringByReplacingOccurrencesOfString:@"\r" withString:@"\n"];
+    
+    for (NSString *line in [body componentsSeparatedByString:@"\n"]) {
+        [ret appendFormat:@"%@%@\n", prefix, line];
+    }
+    return ret;
+}
+
+
+NSString *LBWrapLines(NSString *body, int width) {
+    
+    if (width < 10) {
+        width = 10; // some sanity here please.
+    }
+    
+    NSMutableString *ret = [NSMutableString string];
+    
+    
+    body = [body stringByReplacingOccurrencesOfString:@"\r\n" withString:@"\n"];
+    body = [body stringByReplacingOccurrencesOfString:@"\r" withString:@"\n"];
+    
+    for (NSString *line in [body componentsSeparatedByString:@"\n"]) {
+        
+        if (![line length]) {
+            [ret appendString:@"\n"];
+            continue;
+        }
+        
+        int idx = 0;
+        
+        while ((idx < [line length]) && ([line characterAtIndex:idx] == '>')) {
+            idx++;
+        }
+        
+        NSMutableString *pre = [NSMutableString string];
+        
+        for (int i = 0; i < idx; i++) {
+            [pre appendString:@">"];
+        }
+        
+        NSString *oldLine = [line substringFromIndex:idx];
+        
+        NSMutableString *newLine = [NSMutableString string];
+        
+        [newLine appendString:pre];
+        
+        for (NSString *word in [oldLine componentsSeparatedByString:@" "]) {
+            
+            if ([newLine length] + [word length] > width) {
+                [ret appendString:newLine];
+                [ret appendString:@"\n"];
+                [newLine setString:pre];
+            }
+            
+            if ([word length] && [newLine length]) {
+                [newLine appendString:@" "];
+            }
+            
+            [newLine appendString:word];
+            
+        }
+        
+        [ret appendString:newLine];
+        [ret appendString:@"\n"];
+        
+    }
+    
+    return ret;
+}
+
+
+
+

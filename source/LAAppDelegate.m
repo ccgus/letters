@@ -75,6 +75,10 @@
     
     #ifdef DEBUG
     
+    if ([LAPrefs boolForKey:@"enableLogging"]) {
+        LetterBoxEnableLogging();
+    }
+    
     if (NSRunAlertPanel(@"Start Over(ish)?", @"Should I clear out the cache and acct prefs?", @"Clear", @"Keep", nil)) {
         
         debug(@"deleting.");
