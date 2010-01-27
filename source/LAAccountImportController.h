@@ -9,17 +9,18 @@
 #import <Cocoa/Cocoa.h>
 
 @interface LAAccountImportController : NSWindowController<NSTableViewDelegate,NSTableViewDataSource> {
-	IBOutlet NSTableView *tableView;
-	IBOutlet NSButton* importButton;
-	IBOutlet NSWindow* passwordSheet;
-	IBOutlet NSSecureTextField* passwordField;
+    IBOutlet NSTableView *tableView;
+
+    IBOutlet NSButton* importButton;
+    IBOutlet NSWindow* passwordSheet;
+    IBOutlet NSSecureTextField* passwordField;
     
-    
-	NSMutableArray*		  _mailAccounts;
-	NSMutableDictionary*  _smtpAccounts;
+    NSMutableArray*       mailAccounts;
+    NSMutableDictionary*  smtpAccounts;
 }
-- (void) importSelectedAccount:(id)sender;
+
+- (void)importSelectedAccount:(id)sender;
 
 - (void)passwordSheetCancelPressed:(id)sender;
-- (void)passwordSheetOKPressed:(id)sender;	
+- (void)passwordSheetOKPressed:(id)sender;  
 @end

@@ -19,33 +19,30 @@ extern NSString *LBServerBodiesUpdatedNotification;
 
 
 @interface LBServer : NSObject {
-    LBAccount *_account;
     
-    NSURL               *_baseCacheURL;
-    NSURL               *_accountCacheURL;
-    FMDatabase          *_cacheDB;
+    FMDatabase          *cacheDB;
     
-    NSMutableArray      *_inactiveIMAPConnections;
-    NSMutableArray      *_activeIMAPConnections;
-    
-    // this is temp, until we get a real cache.
-    NSMutableDictionary *_foldersCache;
-    NSArray             *_foldersList;
+    NSMutableArray      *inactiveIMAPConnections;
+    NSMutableArray      *activeIMAPConnections;
 }
 
 @property (retain) LBAccount *account;
 @property (retain) NSURL *baseCacheURL;
 @property (retain) NSURL *accountCacheURL;
+
+    // this is temp, until we get a real cache.
 @property (readonly, retain) NSMutableDictionary *foldersCache;
 @property (retain) NSArray *foldersList;
 
 
-- (id) initWithAccount:(LBAccount*)anAccount usingCacheFolder:(NSURL*)cacheFileURL;
+- (id)initWithAccount:(LBAccount*)anAccount usingCacheFolder:(NSURL*)cacheFileURL;
 
-- (void) connectUsingBlock:(void (^)(BOOL, NSError *))block;
+- (void)connectUsingBlock:(void (^)(BOOL, NSError *))block;
 
-- (void) checkForMail;
+- (void)checkForMail;
 
-- (NSArray*) messageListForPath:(NSString*)folderPath;
+- (NSArray*)messageListForPath:(NSString*)folderPath;
+
+- (void)moveMessages:(NSArray*)messageList inFolder:(NSString*)currentFolder toFolder:(NSString*)folder finshedBlock:(void (^)(BOOL, NSError *))block;
 
 @end

@@ -33,7 +33,7 @@
 #import "LBBareAttachment.h"
 
 @interface LBAttachment : LBBareAttachment {
-    NSData *_data;
+    
 }
 @property(retain) NSData *data;
 

@@ -16,3 +16,5 @@
 
 #define LAPrefs [NSUserDefaults standardUserDefaults]
 
+#define LATrashFolderName @"INBOX.Trash"
+

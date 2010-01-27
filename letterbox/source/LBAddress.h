@@ -39,8 +39,7 @@
 */
 
 @interface LBAddress : NSObject <NSCoding> {
-    NSString *_email;
-    NSString *_name;
+
 }
 
 

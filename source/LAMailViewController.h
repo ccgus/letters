@@ -11,15 +11,12 @@
 @interface LAMailViewController : NSWindowController <NSTableViewDataSource,NSTableViewDelegate> {
     IBOutlet NSTableView *mailboxMessageList;
     IBOutlet NSTableView *foldersList;
-    IBOutlet NSProgressIndicator *workingIndicator;
     IBOutlet NSTextView *messageTextView;
     
-    NSString *_statusMessage;
+    NSUndoManager *undoManager;
 }
 
-@property (retain) NSString *statusMessage;
 
-
-+ (id) openNewMailViewController;
++ (id)openNewMailViewController;
 
 @end

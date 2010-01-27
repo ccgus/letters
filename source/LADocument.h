@@ -12,14 +12,7 @@
     
     // FIXME: this should all probably go in a window controller subclass...
     
-    NSString *_toList;
-    NSString *_fromList;
-    NSString *_subject;
-    NSString *_message;
-    
     IBOutlet NSProgressIndicator *progressIndicator;
-    
-    NSString *_statusMessage;
 }
 
 @property (retain) NSString *toList;

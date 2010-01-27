@@ -37,23 +37,23 @@
 #import "LBAttachment.h"
 
 @implementation LBBareAttachment
-@synthesize contentType=_contentType;
-@synthesize filename=_filename;
+@synthesize contentType;
+@synthesize filename;
 
 - (id)initWithMIMESinglePart:(LBMIME_SinglePart *)part {
     self = [super init];
     if (self) {
-        _MIMEPart = [part retain];
-        self.filename = _MIMEPart.filename;
-        self.contentType = _MIMEPart.contentType;
+        MIMEPart = [part retain];
+        self.filename = MIMEPart.filename;
+        self.contentType = MIMEPart.contentType;
     }
     return self;
 }
 
 - (void)dealloc {
-    [_MIMEPart release];
-    [_filename release];
-    [_contentType release];
+    [MIMEPart release];
+    [filename release];
+    [contentType release];
     [super dealloc];
 }
 
@@ -79,9 +79,10 @@
 }
 
 - (LBAttachment *)fetchFullAttachment {
-    [_MIMEPart fetchPart];
-    LBAttachment *attach = [[LBAttachment alloc] initWithData:_MIMEPart.data
-                                 contentType:self.contentType filename:self.filename];
+    [MIMEPart fetchPart];
+    LBAttachment *attach = [[LBAttachment alloc] initWithData:MIMEPart.data
+                                                  contentType:self.contentType
+                                                     filename:self.filename];
     return [attach autorelease];
 }
 

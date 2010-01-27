@@ -37,10 +37,12 @@
 */
 void LetterBoxEnableLogging();
 
-//void IfFalse_RaiseException(bool value, NSString *exceptionName, NSString *exceptionDesc);
-//void IfTrue_RaiseException(bool value, NSString *exceptionName, NSString *exceptionDesc);
-//void RaiseException(NSString *exceptionName, NSString *exceptionDesc);
 
 BOOL StringStartsWith(NSString *string, NSString *subString);
 
 void LBQuickError(NSError **err, NSString *domain, NSInteger code, NSString *description);
+
+NSString *LBQuote(NSString *body, NSString *prefix);
+
+NSString *LBWrapLines(NSString *body, int width);
+

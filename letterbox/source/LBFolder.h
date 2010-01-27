@@ -42,10 +42,10 @@
 @class LBMessage, LBIMAPConnection;
 
 @interface LBFolder : NSObject {
-    struct mailfolder *_folder;
-    LBIMAPConnection *_connection;
-    NSString *_path;
-    BOOL _connected;
+    struct mailfolder *folder;
+    LBIMAPConnection *connection;
+    NSString *path;
+    BOOL connected;
 }
 
 /*!

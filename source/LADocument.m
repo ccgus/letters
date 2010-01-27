@@ -9,14 +9,13 @@
 #import "LAAppDelegate.h"
 
 @implementation LADocument
-@synthesize statusMessage=_statusMessage;
-@synthesize toList=_toList;
-@synthesize fromList=_fromList;
-@synthesize subject=_subject;
-@synthesize message=_message;
+@synthesize statusMessage;
+@synthesize toList;
+@synthesize fromList;
+@synthesize subject;
+@synthesize message;
 
-- (id)init
-{
+- (id)init {
     self = [super init];
     if (self) {
     
@@ -30,53 +29,55 @@
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    [_statusMessage release];
+    [statusMessage release];
+    [toList release];
+    [fromList release];
+    [subject release];
+    [statusMessage release];
+    
     [super dealloc];
 }
 
 
-- (NSString *)windowNibName
-{
+- (NSString *)windowNibName {
     // Override returning the nib file name of the document
     // If you need to use a subclass of NSWindowController or if your document supports multiple NSWindowControllers, you should remove this method and override -makeWindowControllers instead.
     return @"LADocument";
 }
 
-- (void)windowControllerDidLoadNib:(NSWindowController *) aController
-{
+- (void)windowControllerDidLoadNib:(NSWindowController *) aController {
     [super windowControllerDidLoadNib:aController];
     // Add any code here that needs to be executed once the windowController has loaded the document's window.
 }
 
-- (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError
-{
+- (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError {
     // Insert code here to write your document to data of the specified type. If the given outError != NULL, ensure that you set *outError when returning nil.
 
     // You can also choose to override -fileWrapperOfType:error:, -writeToURL:ofType:error:, or -writeToURL:ofType:forSaveOperation:originalContentsURL:error: instead.
 
     // For applications targeted for Panther or earlier systems, you should use the deprecated API -dataRepresentationOfType:. In this case you can also choose to override -fileWrapperRepresentationOfType: or -writeToFile:ofType: instead.
 
-    if ( outError != NULL ) {
-		*outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
-	}
-	return nil;
+    if (outError) {
+        *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
+    }
+    
+    return nil;
 }
 
-- (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError
-{
+- (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError {
     // Insert code here to read your document from the given data of the specified type.  If the given outError != NULL, ensure that you set *outError when returning NO.
 
     // You can also choose to override -readFromFileWrapper:ofType:error: or -readFromURL:ofType:error: instead. 
     
     // For applications targeted for Panther or earlier systems, you should use the deprecated API -loadDataRepresentation:ofType. In this case you can also choose to override -readFromFile:ofType: or -loadFileWrapperRepresentation:ofType: instead.
     
-    if ( outError != NULL ) {
-		*outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
-	}
+    if (outError != NULL) {
+        *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
+    }
     return YES;
 }
 
-- (void) sendMessage:(id)sender {
+- (void)sendMessage:(id)sender {
     
     // make the message binding do it's thing.
     // FIXME: is there a better way?  I'm sure there is...
@@ -86,30 +87,28 @@
     
     assert(account);
     
-    debug(@"_message: %@", _message);
-    
-    if (![_fromList length]) {
+    if (![fromList length]) {
         debug(@"need a from!");
         return;
     }
     
-    if (![_toList length]) {
+    if (![toList length]) {
         debug(@"need a _toList!");
         return;
     }
     
     NSMutableSet *toSet = [NSMutableSet set];
     
-    for (NSString *addr in [_toList componentsSeparatedByString:@" "]) {
+    for (NSString *addr in [toList componentsSeparatedByString:@" "]) {
         [toSet addObject:[LBAddress addressWithName:@"" email:addr]];
     }
     
     
     LBMessage *msg = [[LBMessage alloc] init];
-	[msg setTo:toSet];
-	[msg setFrom:[NSSet setWithObject:[LBAddress addressWithName:@"" email:_fromList]]];
-	[msg setBody:[[_message copy] autorelease]];
-	[msg setSubject:_subject];
+    [msg setTo:toSet];
+    [msg setFrom:[NSSet setWithObject:[LBAddress addressWithName:@"" email:fromList]]];
+    [msg setBody:[[message copy] autorelease]];
+    [msg setSubject:subject];
     
     [self setStatusMessage:NSLocalizedString(@"Sending message", @"Sending message")];
     [progressIndicator startAnimation:self];
