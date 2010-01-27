@@ -1,13 +1,17 @@
-The Official Letters Coding Style Guide
-=======================================
-           By Gus Mueller
-     (now you know who to blame)
+                  The Official Letters Coding Style Guide
+                  =======================================
+                              By Gus Mueller
+                       (now you know who to blame)
 
-First, read this:
-http://developer.apple.com/mac/library/documentation/Cocoa/Conceptual/CodingGuidelines/CodingGuidelines.html
 
-Prefix class names for Letters with "LA" (Letters App)
-Prefix class names for LetterBox starts with with "LB"
+First, read Apple's Coding Guidelines for Cocoa:
+http://goo.gl/eY7a
+
+And you should be familiar with the modern runtime for 64 bit apps in 10.6:
+http://goo.gl/ewMq
+
+Class names in the Letters project are prefixed with LA
+Class names in the LetterBox project are prefixed with LB
 
 Spacing: 4 spaces for indentation, no tabs.
 
@@ -17,8 +21,9 @@ if (foo) {
     bar();
 }
 
-Always always always use brackets, even if you only have a single
-statment after an if statment.  ie, this is the wrong way:
+Always use brackets, even if you only have a single statment after a
+conditional.  ie, this is the wrong way:
+
 if (foo) bar();
 
 
@@ -29,50 +34,47 @@ while ((foo = [e nextObject])) {
 }
 
 
-Some more examples:
+An example class:
+-----------------
 
+LBObject.h:
 
-LBFooClass.h:
-
-@interface LBFooClass : NSObject {
-    
-    // instance variables start with an underscore:
-    NSString *_myFoo;
-    NSDictionary *_myBar;
-    
-    // IB Outlets don't however:
-    IBOutlet NSTableView *fooTable;
+@interface LBObject : NSObject {
+    @private
+    NSString *someNonPropertyIvar;
+    IBOutlet NSTextField *somePrivateField;
 }
 
 // properties go above the public methods:
-@property (retain) NSString *myFoo;
-@property (retain) NSDictionary *myBar;
+@property (nonatomic, assign) IBOutlet NSTableView *tableView;
+@property (retain) NSString *foo;
+@property (retain) NSDictionary *bar;
 
-- (void) myGreatAction:(id)sender;
+- (void)myGreatAction:(id)sender;
 
 @end
 
 
+LBObject.m:
 
-LBFooClass.m:
+#import "LBObject.h"
 
-#import "LBFooClass.h"
-#import <LetterBox/LetterBox.h>
-
-@interface LBFooClass ()
-- (void) registerForNotifications;
+// Class extensions go at the top
+@interface LBObject ()
+- (void)registerForNotifications;
 @end
 
 
-@implementation LAActivityViewer
+@implementation LBObject
 
-// synthesized properties go up here
-@synthesize myFoo = _myFoo;
-@synthesize myBar = _myBar;
+// synthesized properties go at the top
+@synthesize foo;
+@synthesize bar;
+@synthesize tableView;
 
-// initialize goes at the very very top.
-+ (void) initialize {
-   // wee!
+// if you have one, your initialize goes at the very very top.
++ (void)initialize {
+    // 
 }
 
 // inits go next, in the following style.
@@ -88,23 +90,30 @@ LBFooClass.m:
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    [_myFoo release];
-    [_myBar release];
+    [foo release];
+    [bar release];
     
-    // You can also assign your ivars to nil here, if you think they might 
-    // still be referrenced at this point.
-    // However, it'd be great if they didn't (because that would be a bug).
+    // You can also assign your ivars to nil here, if you think they might be
+    // referrenced after this point for some reason.
+    // However, it'd be great if they didn't (because that would be a bug) and
+    // we should probably fix the case where that happens.
     
-    // _myFoo = nil;
-    // _myBar = nil;
+    // foo = nil;
+    // bar = nil;
     
     [super dealloc];
 }
 
 
 // and all your wonderful methods go below.
-- (void) myGreatAction:(id)sender {
+- (void)myGreatAction:(id)sender {
+    
+}
 
+- (void)registerForNotifications {
+    
 }
 
 @end
+
+
