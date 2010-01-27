@@ -35,8 +35,8 @@
 
 @implementation LBAddress
 
-@synthesize email=_email;
-@synthesize name=_name;
+@synthesize email;
+@synthesize name;
 
 + (id)address {
     LBAddress *aAddress = [[LBAddress alloc] init];
@@ -78,14 +78,14 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
-    [aCoder encodeObject:_email forKey:@"email"];
-    [aCoder encodeObject:_name forKey:@"name"];
+    [aCoder encodeObject:email forKey:@"email"];
+    [aCoder encodeObject:name forKey:@"name"];
 }
 
 
 - (void)dealloc {
-    [_email release];
-    [_name release];
+    [email release];
+    [name release];
     [super dealloc];
 }
 
@@ -114,8 +114,7 @@
 }
 
 - (NSString*) description {
-    return [NSString stringWithFormat:@"%@ %@ <%@>)", [super description], _name, _email];
-
+    return [NSString stringWithFormat:@"%@ %@ <%@>)", [super description], name, email];
 }
 
 @end

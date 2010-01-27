@@ -35,8 +35,7 @@
 //TODO Document me
 //TODO Eventually LBBareMessage should inherit from this
 @interface LBBareMessage : NSObject {
-    NSString *_uid;
-    unsigned int _flags;
+
 }
 @property(retain) NSString *uid;
 @property unsigned int flags;

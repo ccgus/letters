@@ -125,39 +125,35 @@ err:
 }
 
 
-@interface LBFolder (Private)
-@end
     
 @implementation LBFolder
-- (id)initWithPath:(NSString *)path inIMAPConnection:(LBIMAPConnection *)connection {
-    struct mailstorage *storage = (struct mailstorage *)[connection storageStruct];
+- (id)initWithPath:(NSString *)apath inIMAPConnection:(LBIMAPConnection *)aConnection {
+    struct mailstorage *storage = (struct mailstorage *)[aConnection storageStruct];
     self = [super init];
-    if (self)
-    {
-        _path = [path retain];
-        _connected = NO;
-        _connection = [connection retain];
-        _folder = mailfolder_new(storage, (char *)[_path cStringUsingEncoding:NSUTF8StringEncoding], NULL); 
-        assert(_folder != NULL);
+    if (self) {
+        path = [apath retain];
+        connection = [aConnection retain];
+        folder = mailfolder_new(storage, (char *)[path cStringUsingEncoding:NSUTF8StringEncoding], NULL); 
+        assert(folder != NULL);
     }
     return self;
 }
 
 
 - (void)dealloc {   
-    if (_connected) {
+    if (connected) {
         [self disconnect];
     }
-    mailfolder_free(_folder);
-    [_connection release];
-    [_path release];
+    mailfolder_free(folder);
+    [connection release];
+    [path release];
     [super dealloc];
 }
 
 
 - (void)connect {
     int err = MAIL_NO_ERROR;
-    err = mailfolder_connect(_folder);
+    err = mailfolder_connect(folder);
     
     // FIXME: should we err if we're already connected?
     // FIXME: maybe return a boolean?
@@ -169,16 +165,16 @@ err:
     }
     
     //IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError,  [NSString stringWithFormat:@"Error number: %d",err]);   
-    _connected = YES;
+    connected = YES;
 }
 
 - (BOOL) connected {
-    return _connected;
+    return connected;
 }
 
 - (void)disconnect {
-    if(_connected) {
-        mailfolder_disconnect(_folder);
+    if(connected) {
+        mailfolder_disconnect(folder);
     }
         
 }
@@ -186,24 +182,24 @@ err:
 
 - (NSString *)name {
     //Get the last part of the path
-    NSArray *pathParts = [_path componentsSeparatedByString:@"."];
+    NSArray *pathParts = [path componentsSeparatedByString:@"."];
     return [pathParts objectAtIndex:[pathParts count]-1];
 }
 
 // FIXME: make this a property.
 - (NSString *)path {
-    return _path;
+    return path;
 }
 
 
-- (void)setPath:(NSString *)path {
+- (void)setPath:(NSString *)aPath {
     int err;
-    const char *newPath = [path cStringUsingEncoding:NSUTF8StringEncoding];
-    const char *oldPath = [_path cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *newPath = [aPath cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *oldPath = [path cStringUsingEncoding:NSUTF8StringEncoding];
     
     [self connect]; 
     [self unsubscribe];
-    err = mailimap_rename([_connection session], oldPath, newPath);
+    err = mailimap_rename([connection session], oldPath, newPath);
     
     if (err != MAILSMTP_NO_ERROR) {
         NSLog(@"%s:%d", __FUNCTION__, __LINE__);
@@ -212,18 +208,18 @@ err:
     }
     
     //IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError,  [NSString stringWithFormat:@"Error number: %d",err]);   
-    [path retain];
-    [_path release];
-    _path = path;
+    [aPath retain];
+    [path release];
+    path = aPath;
     [self subscribe];
 }
 
 
 - (void)create {
     int err;
-    const char *path = [_path cStringUsingEncoding:NSUTF8StringEncoding];
     
-    err = mailimap_create([_connection session], path);
+    
+    err = mailimap_create([connection session], [path cStringUsingEncoding:NSUTF8StringEncoding]);
     
     if (err != MAILSMTP_NO_ERROR) {
         NSLog(@"%s:%d", __FUNCTION__, __LINE__);
@@ -239,11 +235,9 @@ err:
 
 - (void)delete {
     
-    const char *path = [_path cStringUsingEncoding:NSUTF8StringEncoding];
-    
     [self connect];
     [self unsubscribe];
-    int err = mailimap_delete([_connection session], path);
+    int err = mailimap_delete([connection session], [path cStringUsingEncoding:NSUTF8StringEncoding]);
     
     if (err != MAILSMTP_NO_ERROR) {
         NSLog(@"%s:%d", __FUNCTION__, __LINE__);
@@ -257,10 +251,8 @@ err:
 
 - (void)subscribe {
     
-    const char *path = [_path cStringUsingEncoding:NSUTF8StringEncoding];
-    
     [self connect];
-    int err = mailimap_subscribe([_connection session], path);
+    int err = mailimap_subscribe([connection session], [path cStringUsingEncoding:NSUTF8StringEncoding]);
     if (err != MAILSMTP_NO_ERROR) {
         NSLog(@"%s:%d", __FUNCTION__, __LINE__);
         NSLog(@"%@", [NSString stringWithFormat:@"Error number: %d",err]);
@@ -273,10 +265,8 @@ err:
 
 - (void)unsubscribe {
     
-    const char *path = [_path cStringUsingEncoding:NSUTF8StringEncoding];
-    
     [self connect];
-    int err = mailimap_unsubscribe([_connection session], path);
+    int err = mailimap_unsubscribe([connection session], [path cStringUsingEncoding:NSUTF8StringEncoding]);
     
     if (err != MAILSMTP_NO_ERROR) {
         NSLog(@"%s:%d", __FUNCTION__, __LINE__);
@@ -289,7 +279,7 @@ err:
 
 
 - (struct mailfolder *)folderStruct {
-    return _folder;
+    return folder;
 }
 
 
@@ -313,7 +303,7 @@ err:
 
 - (void)check {
     [self connect];
-    int err = mailfolder_check(_folder);
+    int err = mailfolder_check(folder);
     
     if (err != MAILSMTP_NO_ERROR) {
         NSLog(@"%s:%d", __FUNCTION__, __LINE__);
@@ -494,8 +484,8 @@ err:
 
     [self connect];
     
-    if (!_connected) {
-        debug(@"Could not connect for folder %@", _path);
+    if (!connected) {
+        debug(@"Could not connect for folder %@", path);
         return nil;
     }
     
@@ -546,7 +536,7 @@ err:
 
     env_list = NULL;
     r = uid_list_to_env_list(fetch_result, &env_list, [self folderSession], imap_message_driver);
-    r = mailfolder_get_envelopes_list(_folder, env_list);
+    r = mailfolder_get_envelopes_list(folder, env_list);
     if (r != MAIL_NO_ERROR) {
         if ( env_list != NULL ) {
             mailmessage_list_free(env_list);
@@ -698,7 +688,7 @@ err:
 - (void)expunge {
     
     [self connect];
-    int err = mailfolder_expunge(_folder);
+    int err = mailfolder_expunge(folder);
     
     if (err != MAILSMTP_NO_ERROR) {
         NSLog(@"%s:%d", __FUNCTION__, __LINE__);
@@ -709,12 +699,11 @@ err:
     //IfTrue_RaiseException(err != MAILIMAP_NO_ERROR, LBUnknownError, [NSString stringWithFormat:@"Error number: %d",err]);   
 }
 
-- (void)copyMessageWithUID:(NSString *)uid toFolderWithPath:(NSString *)path {
+- (void)copyMessageWithUID:(NSString *)uid toFolderWithPath:(NSString *)toFolderPath {
     [self connect];
 
-    const char *mbPath = [path cStringUsingEncoding:NSUTF8StringEncoding];
     NSUInteger uidnum = (unsigned int)[[[uid componentsSeparatedByString:@"-"] objectAtIndex:1] doubleValue];
-    int err = mailsession_copy_message([self folderSession], uidnum, mbPath);
+    int err = mailsession_copy_message([self folderSession], uidnum, [toFolderPath cStringUsingEncoding:NSUTF8StringEncoding]);
     
     if (err != MAILSMTP_NO_ERROR) {
         NSLog(@"%s:%d", __FUNCTION__, __LINE__);
@@ -731,7 +720,7 @@ err:
     unsigned int junk;
     
     [self connect];
-    int err = mailfolder_status(_folder, &junk, &junk, &unseenCount);
+    int err = mailfolder_status(folder, &junk, &junk, &unseenCount);
     
     if (err != MAILSMTP_NO_ERROR) {
         NSLog(@"%s:%d", __FUNCTION__, __LINE__);
@@ -751,7 +740,7 @@ err:
 
 
 - (mailsession *)folderSession; {
-    return _folder->fld_session;
+    return folder->fld_session;
 }
 
 

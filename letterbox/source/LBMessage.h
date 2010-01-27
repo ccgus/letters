@@ -44,13 +44,13 @@
 @class LBFolder, LBAddress, LBAttachment, LBMIME;
 
 @interface LBMessage : NSObject {
-    struct mailmessage *_message;
-    struct mailimf_single_fields *_fields;
-    LBMIME *_parsedMIME;
-    NSUInteger _sequenceNumber;
+    struct mailmessage *message;
+    struct mailimf_single_fields *fields;
+    LBMIME *parsedMIME;
+    NSUInteger sequenceNumber;
     
-    NSString *_messageId;
-    NSString *_bodyCache;
+    NSString *messageId;
+    NSString *bodyCache;
 }
 
 @property (retain) LBMIME *mime;

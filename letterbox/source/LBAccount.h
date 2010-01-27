@@ -34,21 +34,7 @@
 @class LBServer;
 
 @interface LBAccount : NSObject {
-    NSString *_username;
-    NSString *_password;
-    NSString *_imapServer;
-    NSString *_fromAddress;
-    
-    int       _authType;
-    int       _imapPort;
-    int       _connectionType;
-    
-    NSString *_smtpServer;    // this doesn't belong here.  Instead, we need a pointer to a preferred one from a list.
-    
-    LBServer *_server;
-    
-    BOOL     _isActive; // we might have an account, that's temporarily turned off for some reason.
-    
+    LBServer *server;
 }
 
 + (id) accountWithDictionary:(NSDictionary*)d;
