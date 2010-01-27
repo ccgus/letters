@@ -9,6 +9,7 @@
 #import "LAAppDelegate.h"
 #import "LAMailViewController.h"
 #import "LAActivityViewer.h"
+#import "LADocument.h"
 #import <AddressBook/AddressBook.h>
 
 @interface LAAppDelegate ()
@@ -47,6 +48,7 @@
 - (id) init {
 	self = [super init];
 	if (self != nil) {
+		[[NSAppleEventManager sharedAppleEventManager] setEventHandler:self andSelector:@selector(handleAppleEvent:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
         _mailViews = [[NSMutableArray array] retain];
         _accounts  = [[NSMutableArray array] retain];
 	}
@@ -222,6 +224,47 @@
 
 - (NSArray *)accounts {
     return _accounts;
+}
+
+- (NSDictionary*)parametersForQueryString:(NSString*)queryString {
+	NSMutableDictionary* params = [NSMutableDictionary dictionary];
+	NSArray* keyValuePairs = [queryString componentsSeparatedByString:@"&"];
+	for( NSString* pair in keyValuePairs ) {
+		NSArray* pieces = [pair componentsSeparatedByString:@"="];
+		NSString* key   = [pieces objectAtIndex:0];
+		NSString* value = [[pieces objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
+        [params setObject:value forKey:key];        
+	}
+    return params;	
+}
+
+- (void)handleAppleEvent:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent {
+	if( [event numberOfItems] == 2 ) {
+		NSString* mailtoURL = [[event descriptorAtIndex:1] stringValue];
+		if( [mailtoURL hasPrefix:@"mailto://"] ) {
+			NSURL* urlForm = [NSURL URLWithString:mailtoURL];            
+            // The user+host portion might actually contain multiple addresses, with user containing the 1st name and host containing everything else
+            NSString* toAddresses = [[urlForm user] stringByAppendingString:[urlForm host]];
+
+            // The rest of the parameters are in this dictionary
+            NSDictionary* params = [self parametersForQueryString:[urlForm query]];
+			
+			NSDocumentController *dc = [NSDocumentController sharedDocumentController];
+			NSError *err = nil;
+			LADocument *doc = [dc openUntitledDocumentAndDisplay:YES error:&err];
+			
+			LBAccount *account = [[appDelegate accounts] lastObject];
+			
+			[doc setFromList:[account fromAddress]];
+			[doc setToList:toAddresses];
+            
+            [doc setSubject:[params objectForKey:@"subject"]];
+            [doc setMessage:[params objectForKey:@"body"]];
+                        
+			[doc updateChangeCount:NSChangeDone];
+		}
+	}
 }
 
 @end

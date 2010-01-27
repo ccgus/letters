@@ -78,11 +78,6 @@
 	LAAccountImportController* importController = [[LAAccountImportController alloc] initWithWindowNibName:@"AccountImport"];
 	[[importController window] center];
 	[[importController window] makeKeyAndOrderFront:self];
-<<<<<<< HEAD
-	
-	[[self window] close];
-=======
->>>>>>> 69ba902a6f4e5a293c8dbb6a4d1a52998f80b74c
 }
 
 - (void)accountUpdated:(NSNotification*)note {
