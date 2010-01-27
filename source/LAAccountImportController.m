@@ -17,8 +17,7 @@
 
 @implementation LAAccountImportController
 
-- (id)initWithWindowNibName:(NSString *)windowNibName {
-    
+- (id)initWithWindowNibName:(NSString *)windowNibName {    
 	self = [super initWithWindowNibName:windowNibName];
 	if (self != nil) {
 		[self loadMailAccounts];
@@ -48,8 +47,7 @@
 }
 
 - (void)loadMailAccounts {
-	_mailAccounts = [[NSMutableArray alloc] init];
-	
+	_mailAccounts = [[NSMutableArray alloc] init];	
 	NSDictionary* mailDict = [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"com.apple.mail"];
 	NSArray* imapAccounts = [mailDict objectForKey:@"MailAccounts"];
 	imapAccounts = [imapAccounts filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT (AccountType IN %@)", [NSArray arrayWithObjects:@"LocalAccount", @"RSSAccount", @"MailCalDAVAccount", nil]]];
@@ -140,5 +138,4 @@
 	}
 	return proposedSelectionIndexes;
 }
-
 @end
