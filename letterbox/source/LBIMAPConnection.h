@@ -15,10 +15,10 @@
 @class LBAccount;
 
 @interface LBIMAPConnection : NSObject <LBActivity> {
-    struct mailstorage  *_storage;
-    BOOL                _connected;
-    BOOL                _shouldCancelActivity;
-    NSString            *_activityStatus;
+    struct mailstorage  *storage;
+    BOOL                connected;
+    
+    NSString            *activityStatus;
 }
 
 @property (assign) BOOL shouldCancelActivity;

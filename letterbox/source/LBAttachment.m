@@ -34,10 +34,10 @@
 
 
 @implementation LBAttachment
-@synthesize data=_data;
+@synthesize data;
 
 - (id)initWithContentsOfFile:(NSString *)path {
-    NSData *data = [NSData dataWithContentsOfFile:path];
+    NSData *junkData = [NSData dataWithContentsOfFile:path];
     NSString *filePathExt = [path pathExtension];
     
     NSString *contentType = nil;
@@ -50,8 +50,10 @@
                 break;
             }
         }
-        if (contentType != nil)
+        
+        if (contentType != nil) {
             break;
+        }
     }
     
     // We couldn't find a content-type, set it to something generic
@@ -60,14 +62,13 @@
     }
     
     NSString *filename = [path lastPathComponent];
-    return [self initWithData:data contentType:contentType filename:filename];
+    return [self initWithData:junkData contentType:contentType filename:filename];
 }
 
-- (id)initWithData:(NSData *)data contentType:(NSString *)contentType 
-        filename:(NSString *)filename {
+- (id)initWithData:(NSData *)d contentType:(NSString *)contentType filename:(NSString *)filename {
     self = [super init];
     if (self) {
-        self.data = data;
+        self.data = d;
         self.contentType = contentType;
         self.filename = filename;
     }
@@ -75,11 +76,11 @@
 }
 
 - (BOOL)writeToFile:(NSString *)path {
-    return [_data writeToFile:path atomically:YES];
+    return [data writeToFile:path atomically:YES];
 }
 
 - (void)dealloc {
-    [_data release];
+    [data release];
     [super dealloc];
 }
 @end

@@ -36,9 +36,7 @@
 
 //TODO Document me
 @interface LBBareAttachment : NSObject {
-    LBMIME_SinglePart *_MIMEPart;
-    NSString *_filename;
-    NSString *_contentType;
+    LBMIME_SinglePart *MIMEPart;
 }
 @property(retain) NSString *filename;
 @property(retain) NSString *contentType;

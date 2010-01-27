@@ -32,7 +32,8 @@
 #import "LBBareMessage.h"
 
 @implementation LBBareMessage
-@synthesize uid=_uid, flags=mFlags;
+@synthesize uid;
+@synthesize flags;
 
 - (id)init {
     self = [super init];

@@ -15,17 +15,17 @@
 #import "LetterBoxUtilities.h"
 
 @implementation LBIMAPConnection
-@synthesize shouldCancelActivity=_shouldCancelActivity;
+@synthesize shouldCancelActivity;
 
 - (id) init {
     
 	self = [super init];
 	if (self != nil) {
 		
-        _connected          = NO;
-        _storage            = mailstorage_new(NULL);
+        connected          = NO;
+        storage            = mailstorage_new(NULL);
         
-        assert(_storage != NULL);
+        assert(storage != NULL);
 	}
     
 	return self;
@@ -34,14 +34,14 @@
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    mailstorage_disconnect(_storage);
-    mailstorage_free(_storage);
+    mailstorage_disconnect(storage);
+    mailstorage_free(storage);
     [super dealloc];
 }
 
 
 - (BOOL)isConnected {
-    return _connected;
+    return connected;
 }
 
 - (BOOL) connectWithAccount:(LBAccount*)account error:(NSError**)outErr {
@@ -54,7 +54,7 @@
         auth_type_to_pass = "CRAM-MD5";
     }
     
-    err = imap_mailstorage_init_sasl(_storage,
+    err = imap_mailstorage_init_sasl(storage,
                                      (char *)[[account imapServer] cStringUsingEncoding:NSUTF8StringEncoding],
                                      (uint16_t)[account imapPort],
                                      NULL,
@@ -74,7 +74,7 @@
         return NO;
     }
     
-    err = mailstorage_connect(_storage);
+    err = mailstorage_connect(storage);
     
     if (err == MAIL_ERROR_LOGIN) {
         LBQuickError(outErr, LBLoginError, err, LBLoginErrorDesc);
@@ -85,15 +85,15 @@
         return NO;
     }
     
-    _connected = YES;
+    connected = YES;
     
-    return _connected;
+    return connected;
 }
 
 
 - (void) disconnect {
-    _connected = NO;
-    mailstorage_disconnect(_storage);
+    connected = NO;
+    mailstorage_disconnect(storage);
 }
 
 - (LBFolder *)folderWithPath:(NSString *)path {
@@ -108,7 +108,7 @@
     struct imap_session_state_data * data;
     mailsession *session;
     
-    session = _storage->sto_session;
+    session = storage->sto_session;
     if(session == nil) {
         return nil;
     }
@@ -124,7 +124,7 @@
 
 
 - (struct mailstorage *)storageStruct {
-    return _storage;
+    return storage;
 }
 
 
@@ -212,13 +212,13 @@
 }
 
 - (void)setActivityStatusAndNotifiy:(NSString *)value {
-    if (_activityStatus != value) {
+    if (activityStatus != value) {
         
-        BOOL isNew  = (value && !_activityStatus);
-        BOOL isOver = (!value) && _activityStatus;
+        BOOL isNew  = (value && !activityStatus);
+        BOOL isOver = (!value) && activityStatus;
         
-        [_activityStatus release];
-        _activityStatus = [value retain];
+        [activityStatus release];
+        activityStatus = [value retain];
         
         dispatch_async(dispatch_get_main_queue(),^ {
             
@@ -248,11 +248,11 @@
 
 
 - (NSString*) activityStatus {
-    return _activityStatus;
+    return activityStatus;
 }
 
 - (void) cancelActivity {
-    _shouldCancelActivity = YES;
+    shouldCancelActivity = YES;
     [self setActivityStatusAndNotifiy:NSLocalizedString(@"Canceling…", @"Canceling…")];
 }
 

@@ -61,27 +61,7 @@ void LetterBoxDisableLogging() {
     mailstream_logger = nil;
 }
 
-/*
-void IfFalse_RaiseException(bool value, NSString *exceptionName, NSString *exceptionDesc) {
-    if (!value)
-        RaiseException(exceptionName, exceptionDesc);
-}
 
-
-void IfTrue_RaiseException(bool value, NSString *exceptionName, NSString *exceptionDesc) {
-    if (value)
-        RaiseException(exceptionName, exceptionDesc);
-}
-
-
-void RaiseException(NSString *exceptionName, NSString *exceptionDesc) {
-    NSException *exception = [NSException
-                exceptionWithName:exceptionName
-                reason:exceptionDesc
-                userInfo:nil];
-    [exception raise];
-}
-*/
 // From Gabor
 BOOL StringStartsWith(NSString *string, NSString *subString) {
     if([string length] < [subString length]) {

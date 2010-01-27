@@ -26,11 +26,11 @@ NSString *LBActivityUpdatedNotification = @"LBActivityUpdatedNotification";
 NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 
 @implementation LBServer
-@synthesize account=_account;
-@synthesize baseCacheURL=_baseCacheURL;
-@synthesize accountCacheURL=_accountCacheURL;
-@synthesize foldersCache=_foldersCache;
-@synthesize foldersList=_foldersList;
+@synthesize account;
+@synthesize baseCacheURL;
+@synthesize accountCacheURL;
+@synthesize foldersCache;
+@synthesize foldersList;
 
 - (id) initWithAccount:(LBAccount*)anAccount usingCacheFolder:(NSURL*)cacheFileURL {
     
@@ -39,10 +39,10 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 		self.account        = anAccount;
         self.baseCacheURL   = cacheFileURL;
         
-        _inactiveIMAPConnections = [[NSMutableArray array] retain];
-        _activeIMAPConnections = [[NSMutableArray array] retain];
-        _foldersCache = [[NSMutableDictionary dictionary] retain];
-        _foldersList  = [[NSArray array] retain];
+        inactiveIMAPConnections = [[NSMutableArray array] retain];
+        activeIMAPConnections = [[NSMutableArray array] retain];
+        foldersCache = [[NSMutableDictionary dictionary] retain];
+        foldersList  = [[NSArray array] retain];
 	}
     
 	return self;
@@ -52,13 +52,13 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    [_account release];
-    [_baseCacheURL release];
-    [_accountCacheURL release];
-    [_cacheDB release];
+    [account release];
+    [baseCacheURL release];
+    [accountCacheURL release];
+    [cacheDB release];
     
-    [_inactiveIMAPConnections release];
-    [_activeIMAPConnections release];
+    [inactiveIMAPConnections release];
+    [activeIMAPConnections release];
     
     [super dealloc];
 }
@@ -73,7 +73,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     
     // FIXME: need to set an upper limit on these guys.
     
-    LBIMAPConnection *conn = [_inactiveIMAPConnections lastObject];
+    LBIMAPConnection *conn = [inactiveIMAPConnections lastObject];
     
     if (!conn) {
         // FIXME: what about a second connection that hasn't been connected yet?
@@ -81,7 +81,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         conn = [[[LBIMAPConnection alloc] init] autorelease];
     }
     
-    [_activeIMAPConnections addObject:conn];
+    [activeIMAPConnections addObject:conn];
     
     return conn;
 }
@@ -97,8 +97,8 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     
     [conn setShouldCancelActivity:NO];
     
-    [_inactiveIMAPConnections addObject:conn];
-    [_activeIMAPConnections removeObject:conn];
+    [inactiveIMAPConnections addObject:conn];
+    [activeIMAPConnections removeObject:conn];
     [conn setActivityStatusAndNotifiy:nil];
 }
 
@@ -190,7 +190,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
             
             dispatch_async(dispatch_get_main_queue(),^ {
                 
-                [_foldersCache setObject:messages forKey:folderPath];
+                [foldersCache setObject:messages forKey:folderPath];
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:LBServerSubjectsUpdatedNotification
                                                                     object:self
@@ -232,14 +232,14 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 }
 
 - (NSArray*) messageListForPath:(NSString*)folderPath {
-    return [_foldersCache objectForKey:folderPath];
+    return [foldersCache objectForKey:folderPath];
 }
 
 
 - (void) makeCacheFolders {
     
     NSError *err = nil;
-    BOOL madeDir = [[NSFileManager defaultManager] createDirectoryAtPath:[_accountCacheURL path]
+    BOOL madeDir = [[NSFileManager defaultManager] createDirectoryAtPath:[accountCacheURL path]
                                              withIntermediateDirectories:YES
                                                               attributes:nil
                                                                    error:&err];
@@ -251,35 +251,35 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 
 - (void) loadCache {
     
-    assert(_baseCacheURL);
-    assert(_account);
+    assert(baseCacheURL);
+    assert(account);
     
     
-    NSString *cacheFolder = [NSString stringWithFormat:@"imap-%@@%@.letterbox", [_account username], [_account imapServer]];
+    NSString *cacheFolder = [NSString stringWithFormat:@"imap-%@@%@.letterbox", [account username], [account imapServer]];
     
-    self.accountCacheURL  = [_baseCacheURL URLByAppendingPathComponent:cacheFolder];
+    self.accountCacheURL  = [baseCacheURL URLByAppendingPathComponent:cacheFolder];
     
-    if (![[NSFileManager defaultManager] fileExistsAtPath:[_accountCacheURL path]]) {
+    if (![[NSFileManager defaultManager] fileExistsAtPath:[accountCacheURL path]]) {
         [self makeCacheFolders];
     }
     
-    NSString *databasePath = [[_accountCacheURL URLByAppendingPathComponent:@"letterscache.db"] path];
+    NSString *databasePath = [[accountCacheURL URLByAppendingPathComponent:@"letterscache.db"] path];
     
     debug(@"databasePath: %@", databasePath);
     
-    _cacheDB = [[FMDatabase databaseWithPath:databasePath] retain];
+    cacheDB = [[FMDatabase databaseWithPath:databasePath] retain];
     
-    if (![_cacheDB open]) {
+    if (![cacheDB open]) {
         NSLog(@"Can't open the %@!", cacheFolder);
         // FIXME: do something nice here for the user.
-        [_cacheDB release];
-        _cacheDB = nil;
+        [cacheDB release];
+        cacheDB = nil;
         return;
     }
     
     // now we setup some tables.
     
-    FMResultSet *rs = [_cacheDB executeQuery:@"select name from SQLITE_MASTER where name = 'letters_meta'"];
+    FMResultSet *rs = [cacheDB executeQuery:@"select name from SQLITE_MASTER where name = 'letters_meta'"];
     
     
     if (![rs next]) {
@@ -289,19 +289,19 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         
         int schemaVersion = 1;
         
-        [_cacheDB beginTransaction];
+        [cacheDB beginTransaction];
         
         // simple key value stuff, for config info.  The type is the value type.  Eventually i'll add something like:
         // - (void) setDBProperty:(id)obj forKey:(NSString*)key
         // - (id) dbPropertyForKey:(NSString*)key
         // which just figures out what the type is, and stores it appropriately.
         
-        [_cacheDB executeUpdate:@"create table letters_meta ( name text, type text, value blob )"];
+        [cacheDB executeUpdate:@"create table letters_meta ( name text, type text, value blob )"];
         
-        [_cacheDB executeUpdate:@"insert into letters_meta (name, type, value) values (?,?,?)", @"schemaVersion", @"int", [NSNumber numberWithInt:schemaVersion]];
+        [cacheDB executeUpdate:@"insert into letters_meta (name, type, value) values (?,?,?)", @"schemaVersion", @"int", [NSNumber numberWithInt:schemaVersion]];
         
         // this table obviously isn't going to cut it.  It needs multiple to's and other nice things.
-        [_cacheDB executeUpdate:@"create table message ( messageid text primary key,\n\
+        [cacheDB executeUpdate:@"create table message ( messageid text primary key,\n\
                                                    folder text,\n\
                                                    subject text,\n\
                                                    fromAddress text, \n\
@@ -311,32 +311,32 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
                                                  )"];
         
         // um... do we need anything else?
-        [_cacheDB executeUpdate:@"create table folder ( folder text, subscribed int )"];
+        [cacheDB executeUpdate:@"create table folder ( folder text, subscribed int )"];
         
-        [_cacheDB commit];
+        [cacheDB commit];
     }
 }
 
 - (void) saveMessagesToCache:(NSSet*)messages forFolder:(NSString*)folderName {
 
 #ifdef LBUSECACHE
-    [_cacheDB beginTransaction];
+    [cacheDB beginTransaction];
     
     // FIXME - the dates are allllllll off.
     
     // this feels icky.
-    [_cacheDB executeUpdate:@"delete from message where folder = ?", folderName];
+    [cacheDB executeUpdate:@"delete from message where folder = ?", folderName];
     
     for (LBMessage *msg in messages) {
-        [_cacheDB executeUpdate:@"insert into message ( messageid, folder, subject, fromAddress, toAddress, receivedDate, sendDate) values (?, ?, ?, ?, ?, ?, ?)",
+        [cacheDB executeUpdate:@"insert into message ( messageid, folder, subject, fromAddress, toAddress, receivedDate, sendDate) values (?, ?, ?, ?, ?, ?, ?)",
                                 [msg messageId], folderName, [msg subject], [[[msg from] anyObject] email], [[[msg to] anyObject] email], [NSDate distantFuture], [NSDate distantPast]];
     }
     
-    [_cacheDB commit];
+    [cacheDB commit];
     
     // we do this outside the transaction so that we don't hold up the db.
     
-    NSURL *folderURL = [_accountCacheURL URLByAppendingPathComponent:folderName];
+    NSURL *folderURL = [accountCacheURL URLByAppendingPathComponent:folderName];
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:[folderURL path]]) {
         NSError *err = nil;
@@ -370,16 +370,16 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     
 #ifdef LBUSECACHE
     
-    [_cacheDB beginTransaction];
+    [cacheDB beginTransaction];
     
     // this is pretty lame.
-    [_cacheDB executeUpdate:@"delete from folder"];
+    [cacheDB executeUpdate:@"delete from folder"];
     
     for (NSString *folder in messages) {
-        [_cacheDB executeUpdate:@"insert into folder (folder, subscribed) values (?,1)", folder];
+        [cacheDB executeUpdate:@"insert into folder (folder, subscribed) values (?,1)", folder];
     }
     
-    [_cacheDB commit];
+    [cacheDB commit];
 #endif
 
 }
@@ -395,7 +395,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     
     NSMutableArray *array = [NSMutableArray array];
     
-    FMResultSet *rs = [_cacheDB executeQuery:@"select folder from folder"];
+    FMResultSet *rs = [cacheDB executeQuery:@"select folder from folder"];
     while ([rs next]) {
         [array addObject:[rs stringForColumnIndex:0]];
     }
@@ -413,14 +413,14 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     
     NSMutableArray *messageArray = [NSMutableArray array];
     
-    FMResultSet *rs = [_cacheDB executeQuery:@"select messageid, receivedDate from message where folder = ? order by receivedDate", folder];
+    FMResultSet *rs = [cacheDB executeQuery:@"select messageid, receivedDate from message where folder = ? order by receivedDate", folder];
     while ([rs next]) {
         
         NSString *messageFile = [NSString stringWithFormat:@"%@.letterboxmsg", [rs stringForColumnIndex:0]];
         
         // FIXME: check for the existence of the file...
         
-        NSURL *messageCacheURL = [[_accountCacheURL URLByAppendingPathComponent:folder] URLByAppendingPathComponent:messageFile];
+        NSURL *messageCacheURL = [[accountCacheURL URLByAppendingPathComponent:folder] URLByAppendingPathComponent:messageFile];
         
         LBMessage *message = [[[LBMessage alloc] init] autorelease];
         

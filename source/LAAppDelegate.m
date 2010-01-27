@@ -261,7 +261,7 @@
             
             [doc setSubject:[params objectForKey:@"subject"]];
             [doc setMessage:[params objectForKey:@"body"]];
-                        
+            
 			[doc updateChangeCount:NSChangeDone];
 		}
 	}
