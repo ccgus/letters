@@ -261,11 +261,9 @@ NSString *FRewrapLines(NSString *s, int len) {
     if ([[self window] firstResponder] == mailboxMessageList) {
         [[self window] makeFirstResponder:foldersList];
     }
-    
 }
 
 - (void)moveRight:(id)sender {
-    
     if ([[self window] firstResponder] == foldersList) {
         [[self window] makeFirstResponder:mailboxMessageList];
     }
@@ -274,7 +272,6 @@ NSString *FRewrapLines(NSString *s, int len) {
 
 
 - (void) replyToSelectedMessage:(id)sender {
-    
     
     NSInteger selectedRow = [mailboxMessageList selectedRow];
     
