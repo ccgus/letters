@@ -12,11 +12,11 @@
 @interface LAActivityViewer : NSWindowController <NSTableViewDataSource,NSTableViewDelegate> {
     IBOutlet NSTableView *activitiesTable;
     
-    NSMutableArray *_runningActivities;
+    NSMutableArray *runningActivities;
 }
 
-+ (id) sharedActivityViewer;
++ (id)sharedActivityViewer;
 
-- (void) cancelAllActivities:(id)sender;
+- (void)cancelAllActivities:(id)sender;
 
 @end

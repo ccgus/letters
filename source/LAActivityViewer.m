@@ -16,7 +16,7 @@
 
 @implementation LAActivityViewer
 
-+ (id) sharedActivityViewer {
++ (id)sharedActivityViewer {
     static LAActivityViewer *me = nil;
     
     if (!me) {
@@ -29,25 +29,32 @@
     return me;
 }
 
-- (id) initWithWindowNibName:(NSString*)nibName {
+- (id)initWithWindowNibName:(NSString*)nibName {
     
-	self = [super initWithWindowNibName:nibName];
-	if (self != nil) {
-		_runningActivities = [[NSMutableArray array] retain];
-	}
+    self = [super initWithWindowNibName:nibName];
+    if (self != nil) {
+        runningActivities = [[NSMutableArray array] retain];
+    }
     
-	return self;
+    return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [runningActivities release];
+    [super dealloc];
 }
 
 - (void)awakeFromNib {
     [activitiesTable setDataSource:self];
     [activitiesTable setDelegate:self];
     
-	[self registerForNotifications];
+    [self registerForNotifications];
 }
 
 
-- (void) registerForNotifications {
+- (void)registerForNotifications {
     
     
     
@@ -59,7 +66,7 @@
          
          id activity = [[note userInfo] objectForKey:@"activity"];
          if (activity) {
-             [_runningActivities addObject:activity];
+             [runningActivities addObject:activity];
              [activitiesTable reloadData];
          }
      }];
@@ -77,42 +84,34 @@
                                                        queue:nil
                                                   usingBlock:^(NSNotification *note)
      {
-         
          id activity = [[note userInfo] objectForKey:@"activity"];
          if (activity) {
-             [_runningActivities removeObject:activity];
+             [runningActivities removeObject:activity];
              [activitiesTable reloadData];
          }
      }];
 }
 
 
-- (void) cancelAllActivities:(id)sender {
+- (void)cancelAllActivities:(id)sender {
     
-    for (id <LBActivity> activity in _runningActivities) {
+    for (id <LBActivity> activity in runningActivities) {
         [activity cancelActivity];
     }
     
 }
 
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    [_runningActivities release];
-    [super dealloc];
-}
-
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView {
-	return [_runningActivities count];
+    return [runningActivities count];
 }
 
 - (id)tableView:(NSTableView *)aTableView
-	objectValueForTableColumn:(NSTableColumn *)aTableColumn
+    objectValueForTableColumn:(NSTableColumn *)aTableColumn
             row:(NSInteger)rowIndex 
 {
-	id <LBActivity>activity = [_runningActivities objectAtIndex:rowIndex];
-	return [activity activityStatus];
+    id <LBActivity>activity = [runningActivities objectAtIndex:rowIndex];
+    return [activity activityStatus];
 }
 
 

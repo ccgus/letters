@@ -18,27 +18,27 @@
 @implementation LAAccountImportController
 
 - (id)initWithWindowNibName:(NSString *)windowNibName {    
-	self = [super initWithWindowNibName:windowNibName];
-	if (self != nil) {
-		[self loadMailAccounts];
-	}
+    self = [super initWithWindowNibName:windowNibName];
+    if (self != nil) {
+        [self loadMailAccounts];
+    }
     
-	return self;
+    return self;
 }
 
 - (void)dealloc {
     
-	[_mailAccounts release];
-    _mailAccounts = nil;
-	
-    [_smtpAccounts release];
-    _smtpAccounts = nil;
-	
+    [mailAccounts release];
+    mailAccounts = nil;
+    
+    [smtpAccounts release];
+    smtpAccounts = nil;
+    
     [super dealloc];
 }
 
 - (void)awakeFromNib {
-	[tableView setDoubleAction:@selector(importSelectedAccount:)];
+    [tableView setDoubleAction:@selector(importSelectedAccount:)];
 }
 
 
@@ -47,95 +47,95 @@
 }
 
 - (void)loadMailAccounts {
-	_mailAccounts = [[NSMutableArray alloc] init];	
-	NSDictionary* mailDict = [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"com.apple.mail"];
-	NSArray* imapAccounts = [mailDict objectForKey:@"MailAccounts"];
-	imapAccounts = [imapAccounts filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT (AccountType IN %@)", [NSArray arrayWithObjects:@"LocalAccount", @"RSSAccount", @"MailCalDAVAccount", nil]]];
-	
-	for( NSDictionary* account in imapAccounts ) {
-		NSMutableDictionary* editableAccount = [account mutableCopy];
-		if( [[editableAccount objectForKey:@"AccountType"] isEqualToString:@"iToolsAccount"] ) {
-			[editableAccount setObject:@"mail.mac.com" forKey:@"Hostname"];
-		}
-		[_mailAccounts addObject:[editableAccount autorelease]];
-	}
-	
-	_smtpAccounts = [[NSMutableDictionary alloc] init];
-	for( NSDictionary* smtpAccount in [mailDict objectForKey:@"DeliveryAccounts"] ) {
-		NSString* key = [smtpAccount objectForKey:@"Hostname"];
-		if( [smtpAccount objectForKey:@"Username"] ) {
-			key = [key stringByAppendingFormat:@":%@", [smtpAccount objectForKey:@"Username"]];
-		}
-		[_smtpAccounts setObject:smtpAccount forKey:key];
-	}
+    mailAccounts = [[NSMutableArray alloc] init];  
+    NSDictionary* mailDict = [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"com.apple.mail"];
+    NSArray* imapAccounts = [mailDict objectForKey:@"MailAccounts"];
+    imapAccounts = [imapAccounts filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT (AccountType IN %@)", [NSArray arrayWithObjects:@"LocalAccount", @"RSSAccount", @"MailCalDAVAccount", nil]]];
+    
+    for (NSDictionary* account in imapAccounts) {
+        NSMutableDictionary* editableAccount = [account mutableCopy];
+        if ([[editableAccount objectForKey:@"AccountType"] isEqualToString:@"iToolsAccount"]) {
+            [editableAccount setObject:@"mail.mac.com" forKey:@"Hostname"];
+        }
+        [mailAccounts addObject:[editableAccount autorelease]];
+    }
+    
+    smtpAccounts = [[NSMutableDictionary alloc] init];
+    for (NSDictionary* smtpAccount in [mailDict objectForKey:@"DeliveryAccounts"]) {
+        NSString* key = [smtpAccount objectForKey:@"Hostname"];
+        if ([smtpAccount objectForKey:@"Username"]) {
+            key = [key stringByAppendingFormat:@":%@", [smtpAccount objectForKey:@"Username"]];
+        }
+        [smtpAccounts setObject:smtpAccount forKey:key];
+    }
 }
 
-- (void) importSelectedAccount:(id)sender {
-	[NSApp beginSheet:passwordSheet
-	   modalForWindow:[self window]
-		modalDelegate:self
-	   didEndSelector:@selector(passwordSheetDidEnd:returnCode:contextInfo:)
-		  contextInfo:nil];	
+- (void)importSelectedAccount:(id)sender {
+    [NSApp beginSheet:passwordSheet
+       modalForWindow:[self window]
+        modalDelegate:self
+       didEndSelector:@selector(passwordSheetDidEnd:returnCode:contextInfo:)
+          contextInfo:nil]; 
 }
 
 - (void)passwordSheetCancelPressed:(id)sender {
-	[NSApp endSheet:passwordSheet returnCode:-1];
-	[passwordSheet close];
+    [NSApp endSheet:passwordSheet returnCode:-1];
+    [passwordSheet close];
 }
 
 - (void)passwordSheetOKPressed:(id)sender {
-	[NSApp endSheet:passwordSheet returnCode:0];
-	[passwordSheet close];
+    [NSApp endSheet:passwordSheet returnCode:0];
+    [passwordSheet close];
 }
 
 - (void)passwordSheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
-	if( returnCode != 0 ) { return; }
-	
-	NSUInteger indexOfSelectedAccount = [[tableView selectedRowIndexes] firstIndex];
-	NSDictionary* mailAccount = [_mailAccounts objectAtIndex:indexOfSelectedAccount];
+    if (returnCode != 0) { return; }
+    
+    NSUInteger indexOfSelectedAccount = [[tableView selectedRowIndexes] firstIndex];
+    NSDictionary* mailAccount = [mailAccounts objectAtIndex:indexOfSelectedAccount];
   
-	LBAccount *account = [[appDelegate accounts] lastObject];
+    LBAccount *account = [[appDelegate accounts] lastObject];
     
     assert(account);
-	    
-	[account setImapServer:[mailAccount objectForKey:@"Hostname"]];
-	
-	NSDictionary* smtpServerInfo = [_smtpAccounts objectForKey:[mailAccount objectForKey:@"SMTPIdentifier"]];
-	[account setSmtpServer:[smtpServerInfo objectForKey:@"Hostname"]];
-    	
-	NSArray* addresses = [mailAccount objectForKey:@"EmailAddresses"];
-	[account setFromAddress:[addresses objectAtIndex:0]];
-	[account setImapPort:[[mailAccount objectForKey:@"PortNumber"] intValue]];
-	
-	[account setUsername:[mailAccount objectForKey:@"Username"]];
-	[account setPassword:[passwordField stringValue]];
+        
+    [account setImapServer:[mailAccount objectForKey:@"Hostname"]];
+    
+    NSDictionary* smtpServerInfo = [smtpAccounts objectForKey:[mailAccount objectForKey:@"SMTPIdentifier"]];
+    [account setSmtpServer:[smtpServerInfo objectForKey:@"Hostname"]];
+        
+    NSArray* addresses = [mailAccount objectForKey:@"EmailAddresses"];
+    [account setFromAddress:[addresses objectAtIndex:0]];
+    [account setImapPort:[[mailAccount objectForKey:@"PortNumber"] intValue]];
+    
+    [account setUsername:[mailAccount objectForKey:@"Username"]];
+    [account setPassword:[passwordField stringValue]];
     
     [account setConnectionType:[[mailAccount objectForKey:@"SSLEnabled"] boolValue] ? CONNECTION_TYPE_TLS : CONNECTION_TYPE_PLAIN];
 
     // maybe there should be an updateAccount: or addAccount: or somethen'
     [appDelegate saveAccounts];
-	
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"NewAccountCreated" object:nil];
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"AccountUpdated" object:nil];
-	
-	[[self window] close];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"NewAccountCreated" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"AccountUpdated" object:nil];
+    
+    [[self window] close];
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-	return [_mailAccounts count];
+    return [mailAccounts count];
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
-	return [[_mailAccounts objectAtIndex:row] objectForKey:@"Username"];
+    return [[mailAccounts objectAtIndex:row] objectForKey:@"Username"];
 }
 
 - (NSIndexSet *)tableView:(NSTableView *)tableView selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes {
-	if( [proposedSelectionIndexes count] == 0) {
-		[importButton setEnabled:NO];
-	}
+    if( [proposedSelectionIndexes count] == 0) {
+        [importButton setEnabled:NO];
+    }
     else {
-		[importButton setEnabled:YES];
-	}
-	return proposedSelectionIndexes;
+        [importButton setEnabled:YES];
+    }
+    return proposedSelectionIndexes;
 }
 @end

@@ -12,21 +12,20 @@
 #define appDelegate (LAAppDelegate*)[[NSApplication sharedApplication] delegate]
 
 @interface LAAppDelegate : NSObject {
-    NSMutableArray *_mailViews;
     
-    NSMutableArray *_accounts;
+    NSMutableArray *accounts;
     
-    LAPrefsWindowController *_prefsWindowController;
+    LAPrefsWindowController *prefsWindowController;
     
-    NSTimer *_periodicMailCheckTimer;
+    NSTimer *periodicMailCheckTimer;
 }
 
 @property (retain) NSMutableArray *mailViews;
 
 
-- (void) openNewMailView:(id)sender;
-- (void) openPreferences:(id)sender;
-- (void) saveAccounts;
+- (void)openNewMailView:(id)sender;
+- (void)openPreferences:(id)sender;
+- (void)saveAccounts;
 
 - (NSArray*) accounts;
 

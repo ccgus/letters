@@ -19,13 +19,13 @@
 
 
 @implementation LAAppDelegate
-@synthesize mailViews=_mailViews;
+@synthesize mailViews;
 
 
-+ (void) initialize {
++ (void)initialize {
     
-	NSMutableDictionary *defaultValues 	= [NSMutableDictionary dictionary];
-    NSUserDefaults      *defaults 	 	= [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary *defaultValues  = [NSMutableDictionary dictionary];
+    NSUserDefaults      *defaults       = [NSUserDefaults standardUserDefaults];
     
     
     // this will eventually be taken out.
@@ -45,20 +45,25 @@
     [[NSUserDefaultsController sharedUserDefaultsController] setInitialValues:defaultValues];
 }
 
-- (id) init {
-	self = [super init];
-	if (self != nil) {
-		[[NSAppleEventManager sharedAppleEventManager] setEventHandler:self andSelector:@selector(handleAppleEvent:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
-        _mailViews = [[NSMutableArray array] retain];
-        _accounts  = [[NSMutableArray array] retain];
-	}
-	return self;
+- (id)init {
+    self = [super init];
+    if (self != nil) {
+        
+        [[NSAppleEventManager sharedAppleEventManager] setEventHandler:self
+                                                           andSelector:@selector(handleAppleEvent:withReplyEvent:)
+                                                         forEventClass:kInternetEventClass
+                                                            andEventID:kAEGetURL];
+        
+        mailViews = [[NSMutableArray array] retain];
+        accounts  = [[NSMutableArray array] retain];
+    }
+    return self;
 }
 
 - (void)dealloc {
-    [_mailViews release];
-    [_accounts release];
-    [_prefsWindowController release];
+    [mailViews release];
+    [accounts release];
+    [prefsWindowController release];
     [super dealloc];
 }
 
@@ -91,7 +96,7 @@
     
     [self loadAccounts];
     
-    if ([_accounts count]) {
+    if ([accounts count]) {
         [self connectToDefaultServerAndPullMail];
     }
     else {
@@ -100,7 +105,7 @@
         // I'm just going to stick one on there, and only display one for now.  THIS IS TEMPORARY.
         
         LBAccount *account = [[LBAccount alloc] init];
-        [_accounts addObject:account];
+        [accounts addObject:account];
         
         if ([[LAPrefs stringForKey:@"iToolsMember"] length] > 0) {
             account.imapServer      = @"mail.me.com";
@@ -128,7 +133,7 @@
                                                   }];
 }
 
-- (void) loadAccounts {
+- (void)loadAccounts {
     
     for (NSDictionary *d in [LAPrefs objectForKey:@"accounts"]) {
         
@@ -136,15 +141,15 @@
         
         LBAccount *account = [LBAccount accountWithDictionary:d];
         
-        [_accounts addObject:account];
+        [accounts addObject:account];
     }    
 }
 
-- (void) saveAccounts {
+- (void)saveAccounts {
     
     NSMutableArray *accountsToSave = [NSMutableArray array];
     
-    for (LBAccount *acct in _accounts) {
+    for (LBAccount *acct in accounts) {
         [accountsToSave addObject:[acct dictionaryRepresentation]];
     }
     
@@ -154,7 +159,7 @@
     
 }
 
-- (void) openNewMailView:(id)sender {
+- (void)openNewMailView:(id)sender {
     LAMailViewController *mailView = [LAMailViewController openNewMailViewController];
     
     
@@ -164,20 +169,20 @@
     //[[mailView window] center];
     [[mailView window] makeKeyAndOrderFront:self];
     
-    [_mailViews addObject:mailView];
+    [mailViews addObject:mailView];
     
 }
 
-- (void) openPreferences:(id)sender {
-    if (!_prefsWindowController) {
-        _prefsWindowController = [[LAPrefsWindowController alloc] initWithWindowNibName:@"Prefs"];
-        [[_prefsWindowController window] center];
+- (void)openPreferences:(id)sender {
+    if (!prefsWindowController) {
+        prefsWindowController = [[LAPrefsWindowController alloc] initWithWindowNibName:@"Prefs"];
+        [[prefsWindowController window] center];
     }
     
-    [[_prefsWindowController window] makeKeyAndOrderFront:self];
+    [[prefsWindowController window] makeKeyAndOrderFront:self];
 }
 
-- (void) pullTimerHit:(NSTimer*)t {
+- (void)pullTimerHit:(NSTimer*)t {
     
     for (LBAccount *acct in [self accounts]) {
         if ([acct isActive]) {
@@ -186,7 +191,7 @@
     }
 }
 
-- (void) connectToDefaultServerAndPullMail {
+- (void)connectToDefaultServerAndPullMail {
     
     for (LBAccount *acct in [self accounts]) {
         
@@ -209,62 +214,78 @@
         }
     }
     
-    if (!_periodicMailCheckTimer) {
+    if (!periodicMailCheckTimer) {
         NSTimeInterval checkTimeInSeconds = 120; // FIMXE: hidden pref?
         
-        _periodicMailCheckTimer = [[NSTimer scheduledTimerWithTimeInterval:checkTimeInSeconds
-                                                                    target:self
-                                                                  selector:@selector(pullTimerHit:)
-                                                                  userInfo:nil
-                                                                   repeats:YES] retain];
+        periodicMailCheckTimer = [[NSTimer scheduledTimerWithTimeInterval:checkTimeInSeconds
+                                                                   target:self
+                                                                 selector:@selector(pullTimerHit:)
+                                                                 userInfo:nil
+                                                                  repeats:YES] retain];
     }
     
 }
 
 
 - (NSArray *)accounts {
-    return _accounts;
+    return accounts;
 }
 
 - (NSDictionary*)parametersForQueryString:(NSString*)queryString {
-	NSMutableDictionary* params = [NSMutableDictionary dictionary];
-	NSArray* keyValuePairs = [queryString componentsSeparatedByString:@"&"];
-	for( NSString* pair in keyValuePairs ) {
-		NSArray* pieces = [pair componentsSeparatedByString:@"="];
-		NSString* key   = [pieces objectAtIndex:0];
-		NSString* value = [[pieces objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    NSArray* keyValuePairs = [queryString componentsSeparatedByString:@"&"];
+    
+    for (NSString* pair in keyValuePairs) {
+        NSArray* pieces = [pair componentsSeparatedByString:@"="];
+        NSString* key   = [pieces objectAtIndex:0];
+        NSString* value = [[pieces objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         
         [params setObject:value forKey:key];        
-	}
-    return params;	
+    }
+    
+    return params;
 }
 
+// mailto://test@test.com?subject=hello&body=nice+one
+// mailto:test@test.com?subject=hello&body=nice+one
+
 - (void)handleAppleEvent:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent {
-	if( [event numberOfItems] == 2 ) {
-		NSString* mailtoURL = [[event descriptorAtIndex:1] stringValue];
-		if( [mailtoURL hasPrefix:@"mailto://"] ) {
-			NSURL* urlForm = [NSURL URLWithString:mailtoURL];            
+    
+    if ([event numberOfItems] == 2) {
+        
+        NSString* mailtoURL = [[event descriptorAtIndex:1] stringValue];
+        
+        if ([mailtoURL hasPrefix:@"mailto:"]) {
+            
+            // NSURL really likes it's //'s.
+            if (![mailtoURL hasPrefix:@"mailto://"]) {
+                mailtoURL = [NSString stringWithFormat:@"mailto://%@", [mailtoURL substringFromIndex:7]];
+            }
+            
+            NSURL* urlForm = [NSURL URLWithString:mailtoURL];            
+            
             // The user+host portion might actually contain multiple addresses, with user containing the 1st name and host containing everything else
             NSString* toAddresses = [[urlForm user] stringByAppendingString:[urlForm host]];
-
+            
             // The rest of the parameters are in this dictionary
             NSDictionary* params = [self parametersForQueryString:[urlForm query]];
-			
-			NSDocumentController *dc = [NSDocumentController sharedDocumentController];
-			NSError *err = nil;
-			LADocument *doc = [dc openUntitledDocumentAndDisplay:YES error:&err];
-			
-			LBAccount *account = [[appDelegate accounts] lastObject];
-			
-			[doc setFromList:[account fromAddress]];
-			[doc setToList:toAddresses];
+            
+            NSDocumentController *dc = [NSDocumentController sharedDocumentController];
+            NSError *err = nil;
+            LADocument *doc = [dc openUntitledDocumentAndDisplay:YES error:&err];
+            
+            LBAccount *account = [[appDelegate accounts] lastObject];
+            
+            [doc setFromList:[account fromAddress]];
+            [doc setToList:toAddresses];
             
             [doc setSubject:[params objectForKey:@"subject"]];
             [doc setMessage:[params objectForKey:@"body"]];
             
-			[doc updateChangeCount:NSChangeDone];
-		}
-	}
+            [doc updateChangeCount:NSChangeDone];
+        }
+    }
 }
 
 @end

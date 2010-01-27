@@ -23,6 +23,6 @@
     IBOutlet NSButton *tlsButton;
 }
 
-- (void) saveAccountSettings:(id)sender;
-- (void) importMailAccount:(id)sender;
+- (void)saveAccountSettings:(id)sender;
+- (void)importMailAccount:(id)sender;
 @end
