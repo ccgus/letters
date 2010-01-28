@@ -27,7 +27,7 @@
 - (void)openPreferences:(id)sender;
 - (void)openPreferences:(id)sender selectTabId:(LAPrefsPaneTabId)tabId;
 - (void)saveAccounts;
-
+- (void)checkForMail:(id)sender;
 - (NSArray*) accounts;
 
 @end

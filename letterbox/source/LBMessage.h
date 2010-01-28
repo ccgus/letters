@@ -231,14 +231,6 @@
 */
 - (NSString *)render;
 
-// FIXME: document
-
-- (NSDictionary*) propertyListRepresentation;
-- (void) loadPropertyListRepresentation:(NSDictionary*)propList;
-- (void) writePropertyListRepresentationToURL:(NSURL*)fileURL;
-- (void) loadPropertyListRepresentationFromURL:(NSURL*)fileURL;
-
-- (BOOL) messageDownloaded;
 
 /* Intended for advanced use only */
 - (struct mailmessage *)messageStruct;

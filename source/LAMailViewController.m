@@ -121,12 +121,10 @@
             
             LBMessage *msg = [messageList objectAtIndex:selectedRow];
             
-            NSString *message = nil;
+            NSString *message = [msg body];
             
-            if ([msg messageDownloaded]) {
-                message = [msg body];
-            }
-            else {
+            
+            if (!message) {
                 message = NSLocalizedString(@"This message has not been downloaded from the server yet.", @"This message has not been downloaded from the server yet.");
             }
             
@@ -243,11 +241,6 @@
     NSArray *messageList = [[currentAccount server] messageListForPath:[self selectedFolderPath]];
     
     LBMessage *msg = [messageList objectAtIndex:selectedRow];
-    
-    if (![msg messageDownloaded]) {
-        // FIXME: validate for this case as well.
-        return;
-    }
     
     NSDocumentController *dc = [NSDocumentController sharedDocumentController];
     NSError *err = nil;

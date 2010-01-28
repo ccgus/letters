@@ -208,6 +208,10 @@
     }
 }
 
+- (void)checkForMail:(id)sender {
+    [self pullTimerHit:nil];
+}
+
 - (void)connectToDefaultServerAndPullMail {
     
     for (LBAccount *acct in [self accounts]) {
@@ -224,7 +228,7 @@
                     NSLog(@"error: %@", error);
                 }
                 else {
-                    [[acct server] checkForMail];
+                    //[[acct server] checkForMail];
                 }
             
             }];
