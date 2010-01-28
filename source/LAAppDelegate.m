@@ -15,6 +15,7 @@
 @interface LAAppDelegate ()
 - (void) connectToDefaultServerAndPullMail;
 - (void) loadAccounts;
+- (void)scheduleMailCheckTimer;
 @end
 
 
@@ -25,7 +26,7 @@
 + (void)initialize {
     
     NSMutableDictionary *defaultValues  = [NSMutableDictionary dictionary];
-    NSUserDefaults      *defaults       = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults      *defaults       = LAPrefs;
     
     
     // this will eventually be taken out.
@@ -38,6 +39,7 @@
     }
     
     [defaultValues setValue:@"~/Library/Letters/" forKey:@"cacheStoreFolder"];
+    [defaultValues setValue:[NSNumber numberWithDouble:2] forKey:@"mailAutoCheckTimeIntervalInMinutes"];
     
     // other defaults would go here.
     
@@ -126,7 +128,7 @@
         
         [self saveAccounts];
         
-        [self openPreferences:self];
+        [self openPreferences:self selectTabId:LAPrefsPaneTabIdAccounts];
     }
     
     [[NSNotificationCenter defaultCenter] addObserverForName:@"NewAccountCreated"
@@ -135,6 +137,12 @@
                                                   usingBlock:^(NSNotification *arg1) {
                                                       [self connectToDefaultServerAndPullMail];
                                                   }];
+    
+    // Observe changes in the mail check timer interval
+    [[NSUserDefaults standardUserDefaults] addObserver:self
+                                            forKeyPath:@"mailAutoCheckTimeIntervalInMinutes"
+                                               options:0
+                                               context:NULL];
 }
 
 - (void)loadAccounts {
@@ -178,13 +186,18 @@
 }
 
 - (void)openPreferences:(id)sender {
+    [self openPreferences:sender selectTabId:LAPrefsPaneTabIdUnknown];
+}
+
+- (void)openPreferences:(id)sender selectTabId:(LAPrefsPaneTabId)tabId {
     if (!prefsWindowController) {
         prefsWindowController = [[LAPrefsWindowController alloc] initWithWindowNibName:@"Prefs"];
-        [[prefsWindowController window] center];
     }
-    
+    [prefsWindowController selectTabWithId:tabId];
     [[prefsWindowController window] makeKeyAndOrderFront:self];
 }
+
+
 
 - (void)pullTimerHit:(NSTimer*)t {
     
@@ -193,6 +206,10 @@
             [[acct server] checkForMail];
         }
     }
+}
+
+- (void)checkForMail:(id)sender {
+    [self pullTimerHit:nil];
 }
 
 - (void)connectToDefaultServerAndPullMail {
@@ -211,29 +228,47 @@
                     NSLog(@"error: %@", error);
                 }
                 else {
-                    [[acct server] checkForMail];
+                    //[[acct server] checkForMail];
                 }
             
             }];
         }
     }
     
-    if (!periodicMailCheckTimer) {
-        NSTimeInterval checkTimeInSeconds = 120; // FIMXE: hidden pref?
-        
-        periodicMailCheckTimer = [[NSTimer scheduledTimerWithTimeInterval:checkTimeInSeconds
+    [self scheduleMailCheckTimer];
+}
+
+- (void)scheduleMailCheckTimer {
+    // If the check time is zero, the user wants to check manually
+    NSTimeInterval checkTimeInMinutes = [LAPrefs doubleForKey:@"mailAutoCheckTimeIntervalInMinutes"];
+    //NSLog (@"Scheduling to %0.2f", checkTimeInMinutes);
+    
+    // Remove any existing timer
+    [periodicMailCheckTimer invalidate];
+    [periodicMailCheckTimer release];
+    periodicMailCheckTimer = nil;
+    
+    // An interval of zero means the user wants to check manually
+    if (checkTimeInMinutes > 0) {
+        periodicMailCheckTimer = [[NSTimer scheduledTimerWithTimeInterval:checkTimeInMinutes * 60.0f
                                                                    target:self
                                                                  selector:@selector(pullTimerHit:)
                                                                  userInfo:nil
                                                                   repeats:YES] retain];
     }
-    
 }
-
 
 - (NSArray *)accounts {
     return accounts;
 }
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"mailAutoCheckTimeIntervalInMinutes"]) {
+        [self scheduleMailCheckTimer];
+    }
+}
+
+
 
 - (NSDictionary*)parametersForQueryString:(NSString*)queryString {
     

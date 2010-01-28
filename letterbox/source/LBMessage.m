@@ -91,8 +91,7 @@ char * etpan_encode_mime_header(char * phrase)
 }
 
 - (id)initWithString:(NSString *)msgData {
-    struct mailmessage *msg = data_message_init((char *)[msgData cStringUsingEncoding:NSUTF8StringEncoding], 
-                                    [msgData lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
+    struct mailmessage *msg = data_message_init((char *)[msgData cStringUsingEncoding:NSUTF8StringEncoding],  [msgData lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
     int err;
     struct mailmime *dummyMime;
     /* mailmessage_get_bodystructure will fill the mailmessage struct for us */
@@ -247,6 +246,8 @@ char * etpan_encode_mime_header(char * phrase)
 
 - (NSString *)subject {
     if (fields->fld_subject == NULL) {
+        debug(@"subject is nil.");
+        debug(@"fields: %d", fields);
         return @"";
     }
         
@@ -611,104 +612,6 @@ char * etpan_encode_mime_header(char * phrase)
     free(decodedSubject);
     return result;
 }
-
-NSString *LBMessageToPropertKey             = @"toAddress";
-NSString *LBMessageFromPropertKey           = @"fromAddress";
-NSString *LBMessageSenderPropertKey         = @"senderAddress";
-NSString *LBMessageSubjectPropertKey        = @"subject";
-NSString *LBMessageMessageIDPropertKey      = @"messageid";
-NSString *LBMessageRecievedDatePropertKey   = @"receivedDate";
-NSString *LBMessageSendDatePropertKey       = @"sendDate";
-NSString *LBMessageBodyTextPropertKey       = @"bodyTextThisNeedsToGoAwayASAP";
-
-// FIXME: use an encoder instead?
-
-- (NSDictionary*) propertyListRepresentation {
-    
-    NSMutableDictionary *props = [NSMutableDictionary dictionary];
-    
-    NSString *firstFrom = [[[self from] anyObject] email];
-    NSString *firstTo   = [[[self from] anyObject] email];
-    
-    [props setValue:firstFrom               forKey:LBMessageFromPropertKey];
-    [props setValue:firstTo                 forKey:LBMessageToPropertKey];
-    [props setValue:[self messageId]        forKey:LBMessageMessageIDPropertKey];
-    
-    [props setValue:[self subject]          forKey:LBMessageSubjectPropertKey];
-    [props setValue:[[self sender] email]   forKey:LBMessageSenderPropertKey];
-    
-    // FIXME: find out the diff between sender and from
-    
-    
-    [props setValue:[self body] forKey:LBMessageBodyTextPropertKey];
-    
-    return props;
-}
-
-- (void) loadPropertyListRepresentation:(NSDictionary*)propList {
-    
-    NSString *from = [propList objectForKey:LBMessageFromPropertKey];
-    if (from) {
-        [self setFrom:[NSSet setWithObject:[LBAddress addressWithName:@"" email:from]]];
-    }
-    
-    NSString *to = [propList objectForKey:LBMessageToPropertKey];
-    if (to) {
-        [self setFrom:[NSSet setWithObject:[LBAddress addressWithName:@"" email:to]]];
-    }
-   
-    messageId = [[propList objectForKey:LBMessageMessageIDPropertKey] retain];
-    bodyCache = [[propList objectForKey:LBMessageBodyTextPropertKey] retain];
-    
-    if ([propList objectForKey:LBMessageSubjectPropertKey]) {
-        [self setSubject:[propList objectForKey:LBMessageSubjectPropertKey]];
-    }
-    
-    
-}
-
-- (void) writePropertyListRepresentationToURL:(NSURL*)fileURL {
-    
-    NSDictionary *propList  = [self propertyListRepresentation];
-    NSError *err            = nil;
-    NSString *errString     = nil;
-    NSData *data            = [NSPropertyListSerialization dataFromPropertyList:propList format:NSPropertyListBinaryFormat_v1_0 errorDescription:&errString];
-    
-    if (errString) {
-        NSLog(@"errString: %@", errString);
-        return;
-    }
-    
-    assert(data);
-    
-    if (![data writeToURL:fileURL options:NSDataWritingAtomic error:&err]) {
-        NSLog(@"Could not write to %@", [fileURL path]);
-        NSLog(@"err: %@", err);
-    }
-}
-
-- (void) loadPropertyListRepresentationFromURL:(NSURL*)fileURL {
-    
-    NSString *error = nil;
-    NSDictionary *d = [NSPropertyListSerialization propertyListFromData:[NSData dataWithContentsOfURL:fileURL]
-                                                       mutabilityOption:NSPropertyListImmutable
-                                                                 format:nil
-                                                       errorDescription:&error];
-    
-    if (error) {
-        NSLog(@"error loading %@", fileURL);
-        NSLog(@"error: %@", error);
-    }
-    
-    assert(d);
-    
-    [self loadPropertyListRepresentation:d];
-}
-
-- (BOOL) messageDownloaded {
-    return bodyCache != nil;
-}
-
 
 
 @end
