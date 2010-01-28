@@ -10,11 +10,13 @@
 #import "LAMailViewController.h"
 #import "LAActivityViewer.h"
 #import "LADocument.h"
+#import "LAPrefsWindowController.h"
+
 #import <AddressBook/AddressBook.h>
 
 @interface LAAppDelegate ()
-- (void) connectToDefaultServerAndPullMail;
-- (void) loadAccounts;
+- (void)connectToDefaultServerAndPullMail;
+- (void)loadAccounts;
 - (void)scheduleMailCheckTimer;
 @end
 
@@ -65,7 +67,6 @@
 - (void)dealloc {
     [mailViews release];
     [accounts release];
-    [prefsWindowController release];
     [super dealloc];
 }
 
@@ -127,8 +128,8 @@
         }
         
         [self saveAccounts];
-        
-        [self openPreferences:self selectTabId:LAPrefsPaneTabIdAccounts];
+
+        [self openPreferences:self selectModuleWithId:@"LAPrefsAccountsModule"];
     }
     
     [[NSNotificationCenter defaultCenter] addObserverForName:@"NewAccountCreated"
@@ -186,18 +187,14 @@
 }
 
 - (void)openPreferences:(id)sender {
-    [self openPreferences:sender selectTabId:LAPrefsPaneTabIdUnknown];
+	[[LAPrefsWindowController sharedController] showWindow:sender];
 }
 
-- (void)openPreferences:(id)sender selectTabId:(LAPrefsPaneTabId)tabId {
-    if (!prefsWindowController) {
-        prefsWindowController = [[LAPrefsWindowController alloc] initWithWindowNibName:@"Prefs"];
-    }
-    [prefsWindowController selectTabWithId:tabId];
-    [[prefsWindowController window] makeKeyAndOrderFront:self];
+- (void)openPreferences:(id)sender selectModuleWithId:(NSString *)moduleId {
+	LAPrefsWindowController *prefsCtrl = [LAPrefsWindowController sharedController];
+	[prefsCtrl selectModuleWithIdentifier:moduleId];
+	[prefsCtrl showWindow:sender];
 }
-
-
 
 - (void)pullTimerHit:(NSTimer*)t {
     
