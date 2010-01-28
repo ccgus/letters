@@ -25,6 +25,14 @@ NSString *LBActivityStartedNotification = @"LBActivityStartedNotification";
 NSString *LBActivityUpdatedNotification = @"LBActivityUpdatedNotification";
 NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 
+@interface LBServer ()
+- (void)loadCache;
+- (NSArray*)cachedMessagesForFolder:(NSString *)folder;
+- (void)saveMessageToCache:(LBMessage*)message body:(NSString*)body forFolder:(NSString*)folderName;
+- (void)saveFoldersToCache:(NSArray*)messages;
+@end
+
+
 @implementation LBServer
 @synthesize account;
 @synthesize baseCacheURL;
@@ -32,7 +40,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 @synthesize foldersCache;
 @synthesize foldersList;
 
-- (id) initWithAccount:(LBAccount*)anAccount usingCacheFolder:(NSURL*)cacheFileURL {
+- (id)initWithAccount:(LBAccount*)anAccount usingCacheFolder:(NSURL*)cacheFileURL {
     
 	self = [super init];
 	if (self != nil) {
@@ -43,6 +51,8 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         activeIMAPConnections = [[NSMutableArray array] retain];
         foldersCache = [[NSMutableDictionary dictionary] retain];
         foldersList  = [[NSArray array] retain];
+        
+        [self loadCache];
 	}
     
 	return self;
@@ -63,7 +73,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     [super dealloc];
 }
 
-- (LBIMAPConnection*) checkoutIMAPConnection {
+- (LBIMAPConnection*)checkoutIMAPConnection {
     
     // FIXME: this method isn't thread safe
     if (![[NSThread currentThread] isMainThread]) {
@@ -130,6 +140,11 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 - (void)checkForMail {
     // weeeeeee
     
+    if (YES) {
+        return;
+    }
+    
+    
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
@@ -156,7 +171,9 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
             return;
         }
         
-        self.foldersList = list;
+        [self setFoldersList:list];
+        
+        [self saveFoldersToCache:foldersList];
         
         dispatch_async(dispatch_get_main_queue(),^ {
             [[NSNotificationCenter defaultCenter] postNotificationName:LBServerFolderUpdatedNotification
@@ -209,7 +226,19 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
                 NSString *status = NSLocalizedString(@"Loading message %d of %d messages in '%@'", @"Loading message %d of %d messages in '%@'");
                 [conn setActivityStatusAndNotifiy:[NSString stringWithFormat:status, idx, [messages count], folderPath]];
                 
-                [msg body]; // pull down the body.
+                char *result;
+                size_t messageLen;
+                int err = mailmessage_fetch([msg messageStruct], &result, &messageLen);
+                if (err) {
+                    debug(@"error with mailmessage_fetch %d", err);
+                    continue;
+                }
+                
+                debug(@"msg: %@", [msg uid]);
+                NSString *content = [[NSString alloc] initWithBytes:result length:messageLen encoding:NSASCIIStringEncoding];
+                
+                [self saveMessageToCache:msg body:content forFolder:folderPath];
+                
             }
             
             dispatch_async(dispatch_get_main_queue(),^ {
@@ -231,7 +260,17 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     
 }
 
-- (NSArray*) messageListForPath:(NSString*)folderPath {
+- (NSArray*)messageListForPath:(NSString*)folderPath {
+    
+    
+    if (![foldersCache objectForKey:folderPath]) {
+        
+        NSArray *msgList = [self cachedMessagesForFolder:folderPath];
+        
+        [foldersCache setObject:msgList forKey:folderPath];
+    }
+    
+    
     return [foldersCache objectForKey:folderPath];
 }
 
@@ -343,7 +382,6 @@ static struct mailimap_set * setFromArray(NSArray * array)
     assert(baseCacheURL);
     assert(account);
     
-    
     NSString *cacheFolder = [NSString stringWithFormat:@"imap-%@@%@.letterbox", [account username], [account imapServer]];
     
     self.accountCacheURL  = [baseCacheURL URLByAppendingPathComponent:cacheFolder];
@@ -369,7 +407,6 @@ static struct mailimap_set * setFromArray(NSArray * array)
     // now we setup some tables.
     
     FMResultSet *rs = [cacheDB executeQuery:@"select name from SQLITE_MASTER where name = 'letters_meta'"];
-    
     
     if (![rs next]) {
         debug(@"setting up new tables.");
@@ -404,29 +441,30 @@ static struct mailimap_set * setFromArray(NSArray * array)
         
         [cacheDB commit];
     }
-}
-
-- (void)saveMessagesToCache:(NSSet*)messages forFolder:(NSString*)folderName {
-
-#ifdef LBUSECACHE
-    [cacheDB beginTransaction];
+    [rs close];
     
-    // FIXME - the dates are allllllll off.
+    NSMutableArray *newFolders = [NSMutableArray array];
     
-    // this feels icky.
-    [cacheDB executeUpdate:@"delete from message where folder = ?", folderName];
-    
-    for (LBMessage *msg in messages) {
-        [cacheDB executeUpdate:@"insert into message ( messageid, folder, subject, fromAddress, toAddress, receivedDate, sendDate) values (?, ?, ?, ?, ?, ?, ?)",
-                                [msg messageId], folderName, [msg subject], [[[msg from] anyObject] email], [[[msg to] anyObject] email], [NSDate distantFuture], [NSDate distantPast]];
+    rs = [cacheDB executeQuery:@"select folder from folder"];
+    while ([rs next]) {
+        [newFolders addObject:[rs stringForColumnIndex:0]];
     }
     
-    [cacheDB commit];
+    [self setFoldersList:[newFolders sortedArrayUsingSelector:@selector(localizedStandardCompare:)]];
     
-    // we do this outside the transaction so that we don't hold up the db.
+    [[NSNotificationCenter defaultCenter] postNotificationName:LBServerFolderUpdatedNotification
+                                                        object:self
+                                                      userInfo:nil];
+    
+    
+    
+}
+
+- (void)saveMessageToCache:(LBMessage*)message body:(NSString*)body forFolder:(NSString*)folderName {
     
     NSURL *folderURL = [accountCacheURL URLByAppendingPathComponent:folderName];
     
+    // FIXME: we really shouldn't do this every time, it's slow.
     if (![[NSFileManager defaultManager] fileExistsAtPath:[folderURL path]]) {
         NSError *err = nil;
         BOOL madeDir = [[NSFileManager defaultManager] createDirectoryAtPath:[folderURL path]
@@ -439,25 +477,35 @@ static struct mailimap_set * setFromArray(NSArray * array)
         }
     }
     
-    for (LBMessage *msg in messages) {
-        
-        // FIXME: some way to fail gracefully?
-        
-        NSString *messageFile = [NSString stringWithFormat:@"%@.letterboxmsg", [msg messageId]];
-        
-        NSURL *messageCacheURL = [folderURL URLByAppendingPathComponent:messageFile];
-        
-        [msg writePropertyListRepresentationToURL:messageCacheURL];
+    NSString *messageFile = [NSString stringWithFormat:@"%@.letterboxmsg", [message messageId]];
+    
+    NSURL *messageCacheURL = [folderURL URLByAppendingPathComponent:messageFile];
+    
+    NSError *err = nil;
+    
+    if (![body writeToURL:messageCacheURL atomically:YES encoding:NSUTF8StringEncoding error:&err]) {
+        NSLog(@"Could not write to %@", messageCacheURL);
+        NSLog(@"err: %@", err);
     }
-#endif
+    
+    // FIXME: the dates are allllllll wrong.
+    // FIXME: we'd probably get better perf. with batches.
+    
+    [cacheDB beginTransaction];
+    
+    // this feels icky.
+    [cacheDB executeUpdate:@"delete from message where messageId = ?", [message messageId]];
+    
+    [cacheDB executeUpdate:@"insert into message ( messageid, folder, subject, fromAddress, toAddress, receivedDate, sendDate) values (?, ?, ?, ?, ?, ?, ?)",
+                                [message messageId], folderName, [message subject], [[[message from] anyObject] email], [[[message to] anyObject] email], [NSDate distantFuture], [NSDate distantPast]];
+    
+    [cacheDB commit];
+    
+    
 }
 
 // FIXME: need to setup a way to differentiate between subscribed and non subscribed.
 - (void)saveFoldersToCache:(NSArray*)messages {
-    
-    // I'm just going to turn this off for now.  It's stupidly incomplete
-    
-#ifdef LBUSECACHE
     
     [cacheDB beginTransaction];
     
@@ -469,36 +517,10 @@ static struct mailimap_set * setFromArray(NSArray * array)
     }
     
     [cacheDB commit];
-#endif
-
+    
 }
 
-// FIXME: why am I returning strings here and not a LBFolder of some sort?
-
-- (NSArray*) cachedFolders {
-    
-    // I'm just going to turn this off for now.  It's stupidly incomplete
-    return [NSArray array];
-    
-#ifdef LBUSECACHE
-    
-    NSMutableArray *array = [NSMutableArray array];
-    
-    FMResultSet *rs = [cacheDB executeQuery:@"select folder from folder"];
-    while ([rs next]) {
-        [array addObject:[rs stringForColumnIndex:0]];
-    }
-    
-    return [array sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
-#endif
-}
-
-- (NSArray*) cachedMessagesForFolder:(NSString *)folder {
-    
-    // I'm just going to turn this off for now.  It's stupidly incomplete
-    return [NSArray array];
-    
-#ifdef LBUSECACHE
+- (NSArray*)cachedMessagesForFolder:(NSString *)folder {
     
     NSMutableArray *messageArray = [NSMutableArray array];
     
@@ -513,21 +535,16 @@ static struct mailimap_set * setFromArray(NSArray * array)
         
         LBMessage *message = [[[LBMessage alloc] init] autorelease];
         
-        // FIXME: this isn't thread safe. (the file manager)
-        if ([[NSFileManager defaultManager] fileExistsAtPath:[messageCacheURL path]]) {
-            
-            [message loadPropertyListRepresentationFromURL:messageCacheURL];
-            
-            [messageArray addObject:message];
-        }
-        else {
-            // FIXME: make a list of messages to remove from the cache, as the FS rep isn't around.
-        }
+        [messageArray addObject:message];
+        
+        #warning actually load up the message or something...
+        
+        debug(@"accountCacheURL: %@", accountCacheURL);
         
     }
     
     return messageArray;
-#endif
+    
 }
 
 

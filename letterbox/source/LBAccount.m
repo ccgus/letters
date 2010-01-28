@@ -99,7 +99,7 @@
     }
     
     if ([d objectForKey:@"authType"]) {
-        acct.authType = [[d objectForKey:@"username"] intValue];
+        acct.authType = [[d objectForKey:@"authType"] intValue];
     }
     
     if ([d objectForKey:@"imapPort"]) {
