@@ -9,6 +9,15 @@
 #import "LAPrefsGeneralModule.h"
 
 
+@interface LAPrefsGeneralModule ()
+- (void)setupEmailAppsPopup;
+- (void)didSelectEmailApp:(id)sender;
+@end
+
+
+#pragma mark -
+
+
 @implementation LAPrefsGeneralModule
 
 - (id)init {
@@ -28,7 +37,63 @@
 }
 
 - (void)willSelect {
+    
     // Load the popup menu with email-capable apps and select the preferred email client.
+    [self setupEmailAppsPopup];
+}
+
+
+// ----------------------------------------------------------------------------
+   #pragma mark -
+   #pragma mark Private Methods
+// ----------------------------------------------------------------------------
+
+- (void)setupEmailAppsPopup {
+    
+    // Collect information about installed email handlers
+    CFStringRef mailtoScheme = CFSTR ("mailto");
+    NSArray *appIds = (NSArray *)LSCopyAllHandlersForURLScheme (mailtoScheme);
+    NSString *emailAppId = (NSString *)LSCopyDefaultHandlerForURLScheme (mailtoScheme);
+    
+    // Build the menu for the popup
+    NSMenu *menu = [[NSMenu alloc] init];
+    [menu setAutoenablesItems:NO];
+    
+    for (NSString *appId in appIds) {
+        
+        CFStringRef appNameRef;
+        CFURLRef    appURLRef = (CFURLRef)[[NSWorkspace sharedWorkspace] URLForApplicationWithBundleIdentifier:appId];
+        LSCopyDisplayNameForURL (appURLRef, &appNameRef);
+        
+        // Get the 16 x 16 app icon
+        NSImage *icon = [[NSWorkspace sharedWorkspace] iconForFile:[(NSURL *)appURLRef path]];
+        [icon setSize:NSMakeSize (16, 16)];
+        
+        // Make the menu item
+        NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:(NSString *)appNameRef action:@selector (didSelectEmailApp:) keyEquivalent:@""];
+        [item setTarget:self];
+        [item setImage:icon];
+        [item setRepresentedObject:appId];
+        [item setState:([appId isEqualToString:emailAppId] ? NSOnState : NSOffState)];
+        
+        [menu addItem:item];
+        CFRelease (appNameRef);
+        [item release];
+    }
+    
+    // Attach menu, and make sure the popup can contain the content
+    [emailAppsPopup setMenu:menu];
+    [emailAppsPopup sizeToFit];
+    
+    // Clean up
+    [menu release];
+    [emailAppId release];
+    [appIds release];
+}
+
+- (void)didSelectEmailApp:(id)sender {
+    // User chose an app from the popup menu, register the email handler with Launch Services.
+    LSSetDefaultHandlerForURLScheme (CFSTR ("mailto"), (CFStringRef)[sender representedObject]);
 }
 
 @end
