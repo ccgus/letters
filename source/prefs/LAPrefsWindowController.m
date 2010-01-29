@@ -115,16 +115,16 @@ LAPrefsWindowController *singleton = nil;
     [[window toolbar] setSelectedItemIdentifier:[module identifier]];
     [window setTitle:[module title]];
     
-    // Give the module a chance to lazy-load its stuff
-    if ([(NSObject *)module respondsToSelector:@selector (willSelect)]) {
-        [module willSelect];
-    }
-    
     // Show the new view, make sure it stretches horizontally to fill the prefs pane
     frame = [view bounds];
     frame.size.width = LA_PREFS_WINDOW_WIDTH;
     [view setFrame:frame];
     [[window contentView] addSubview:view];
+    
+    // Give the module a chance to lazy-load its stuff
+    if ([(NSObject *)module respondsToSelector:@selector (willSelect)]) {
+        [module willSelect];
+    }
     
     // Persist selection
     [LAPrefs setObject:[module identifier] forKey:@"LAPrefsWindowSelectedModule"];

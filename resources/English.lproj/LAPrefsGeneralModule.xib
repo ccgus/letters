@@ -143,8 +143,8 @@
 					</object>
 					<object class="NSPopUpButton" id="448342909">
 						<reference key="NSNextResponder" ref="52175010"/>
-						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{153, 51}, {147, 26}}</string>
+						<int key="NSvFlags">266</int>
+						<string key="NSFrame">{{153, 51}, {242, 26}}</string>
 						<reference key="NSSuperview" ref="52175010"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSPopUpButtonCell" key="NSCell" id="844662516">
@@ -192,7 +192,7 @@
 						</object>
 					</object>
 				</object>
-				<string key="NSFrameSize">{317, 94}</string>
+				<string key="NSFrameSize">{412, 94}</string>
 				<reference key="NSSuperview"/>
 			</object>
 			<object class="NSUserDefaultsController" id="1018488084">
@@ -399,7 +399,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{63, 571}, {317, 94}}</string>
+					<string>{{63, 571}, {412, 94}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>

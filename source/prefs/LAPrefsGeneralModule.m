@@ -81,9 +81,16 @@
         [item release];
     }
     
-    // Attach menu, and make sure the popup can contain the content
     [emailAppsPopup setMenu:menu];
+    
+    // Make sure the popup can contain the content within the frame of the panel.
+    // The popup currently takes up the maximum width (because of its IB autosizing).
+    NSRect maxFrame = [emailAppsPopup frame];
     [emailAppsPopup sizeToFit];
+    if ([emailAppsPopup bounds].size.width > maxFrame.size.width) {
+        // Popup is now too wide after autosizing, revert to max width
+        [emailAppsPopup setFrame:maxFrame];
+    }
     
     // Clean up
     [menu release];
