@@ -33,8 +33,8 @@
 
 @interface LAPrefsWindowController : NSWindowController <NSToolbarDelegate> {
     
-	NSMutableArray    *modules; // Currently loaded modules
-	id<LAPrefsModule>  selectedModule; // The currently selected module
+    NSMutableArray    *modules; // Currently loaded modules
+    id<LAPrefsModule>  selectedModule; // The currently selected module
 }
 
 + (LAPrefsWindowController *)sharedController;

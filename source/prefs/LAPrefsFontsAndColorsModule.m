@@ -12,24 +12,24 @@
 @implementation LAPrefsFontsAndColorsModule
 
 - (id)init {
-	return [super initWithNibName:@"LAPrefsFontsAndColorsModule" bundle:nil];
+    return [super initWithNibName:@"LAPrefsFontsAndColorsModule" bundle:nil];
 }
 
 - (NSString *)identifier {
-	return @"LAPrefsFontsAndColorsModule";
+    return @"LAPrefsFontsAndColorsModule";
 }
 
 - (NSString *)title {
-	return NSLocalizedString (@"Fonts & Colors", @"Title for the Fonts & Color toolbar button in the Preferences panel");
+    return NSLocalizedString (@"Fonts & Colors", @"Title for the Fonts & Color toolbar button in the Preferences panel");
 }
 
 - (NSImage *)image {
-	return [NSImage imageNamed:@"NSFontPanel"];
+    return [NSImage imageNamed:@"NSFontPanel"];
 }
 
 /*
 - (void)willSelect {
-	// 
+    // 
 }
  */
 

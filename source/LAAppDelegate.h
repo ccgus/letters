@@ -22,7 +22,7 @@
 - (void)openPreferences:(id)sender;
 - (void)openPreferences:(id)sender selectModuleWithId:(NSString *)moduleId;
 - (void)saveAccounts;
-
+- (void)checkForMail:(id)sender;
 - (NSArray*) accounts;
 
 @end

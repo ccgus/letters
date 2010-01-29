@@ -10,7 +10,7 @@
 
 
 @interface LAPrefsAccountsModule : NSViewController <LAPrefsModule> {
-	
+    
     IBOutlet NSTextField   *serverField;
     IBOutlet NSTextField   *usernameField;
     IBOutlet NSTextField   *passwordField;

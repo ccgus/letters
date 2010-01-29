@@ -12,23 +12,23 @@
 @implementation LAPrefsGeneralModule
 
 - (id)init {
-	return [super initWithNibName:@"LAPrefsGeneralModule" bundle:nil];
+    return [super initWithNibName:@"LAPrefsGeneralModule" bundle:nil];
 }
 
 - (NSString *)identifier {
-	return @"LAPrefsGeneralModule";
+    return @"LAPrefsGeneralModule";
 }
 
 - (NSString *)title {
-	return NSLocalizedString (@"General", @"Title for the General toolbar button in the Preferences panel");
+    return NSLocalizedString (@"General", @"Title for the General toolbar button in the Preferences panel");
 }
 
 - (NSImage *)image {
-	return [NSImage imageNamed:@"NSPreferencesGeneral"];
+    return [NSImage imageNamed:@"NSPreferencesGeneral"];
 }
 
 - (void)willSelect {
-	// Load the popup menu with email-capable apps and select the preferred email client.
+    // Load the popup menu with email-capable apps and select the preferred email client.
 }
 
 @end

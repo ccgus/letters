@@ -138,12 +138,6 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 #define CheckConnectionAndReturnIfCanceled(aConn) { if (aConn.shouldCancelActivity) { dispatch_async(dispatch_get_main_queue(),^ { [self checkInIMAPConnection:conn]; }); return; } }
 
 - (void)checkForMail {
-    // weeeeeee
-    
-    if (YES) {
-        return;
-    }
-    
     
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
     
@@ -477,7 +471,14 @@ static struct mailimap_set * setFromArray(NSArray * array)
         }
     }
     
-    NSString *messageFile = [NSString stringWithFormat:@"%@.letterboxmsg", [message messageId]];
+    if (![message uid]) {
+        debug(@"message: %@", [message subject]);
+    }
+    
+    NSString *fileName = [message uid];
+    assert(fileName); // what 
+    
+    NSString *messageFile = [NSString stringWithFormat:@"%@.letterboxmsg", fileName];
     
     NSURL *messageCacheURL = [folderURL URLByAppendingPathComponent:messageFile];
     
@@ -533,14 +534,12 @@ static struct mailimap_set * setFromArray(NSArray * array)
         
         NSURL *messageCacheURL = [[accountCacheURL URLByAppendingPathComponent:folder] URLByAppendingPathComponent:messageFile];
         
-        LBMessage *message = [[[LBMessage alloc] init] autorelease];
+        LBMessage *message = [[[LBMessage alloc] initWithFileAtPath:[messageCacheURL path]] autorelease];
+        
+        // parse the handy mime stuff.
+        [message fetchBody];
         
         [messageArray addObject:message];
-        
-        #warning actually load up the message or something...
-        
-        debug(@"accountCacheURL: %@", accountCacheURL);
-        
     }
     
     return messageArray;

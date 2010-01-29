@@ -187,13 +187,13 @@
 }
 
 - (void)openPreferences:(id)sender {
-	[[LAPrefsWindowController sharedController] showWindow:sender];
+    [[LAPrefsWindowController sharedController] showWindow:sender];
 }
 
 - (void)openPreferences:(id)sender selectModuleWithId:(NSString *)moduleId {
-	LAPrefsWindowController *prefsCtrl = [LAPrefsWindowController sharedController];
-	[prefsCtrl selectModuleWithIdentifier:moduleId];
-	[prefsCtrl showWindow:sender];
+    LAPrefsWindowController *prefsCtrl = [LAPrefsWindowController sharedController];
+    [prefsCtrl selectModuleWithIdentifier:moduleId];
+    [prefsCtrl showWindow:sender];
 }
 
 - (void)pullTimerHit:(NSTimer*)t {
@@ -203,6 +203,10 @@
             [[acct server] checkForMail];
         }
     }
+}
+
+- (void)checkForMail:(id)sender {
+    [self pullTimerHit:nil];
 }
 
 - (void)connectToDefaultServerAndPullMail {
@@ -221,7 +225,7 @@
                     NSLog(@"error: %@", error);
                 }
                 else {
-                    [[acct server] checkForMail];
+                    //[[acct server] checkForMail];
                 }
             
             }];

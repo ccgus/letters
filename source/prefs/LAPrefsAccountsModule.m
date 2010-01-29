@@ -23,23 +23,23 @@
 @implementation LAPrefsAccountsModule
 
 - (id)init {
-	return [super initWithNibName:@"LAPrefsAccountsModule" bundle:nil];
+    return [super initWithNibName:@"LAPrefsAccountsModule" bundle:nil];
 }
 
 - (NSString *)identifier {
-	return @"LAPrefsAccountsModule";
+    return @"LAPrefsAccountsModule";
 }
 
 - (NSString *)title {
-	return NSLocalizedString (@"Accounts", @"Title for the Accounts toolbar button in the Preferences panel");
+    return NSLocalizedString (@"Accounts", @"Title for the Accounts toolbar button in the Preferences panel");
 }
 
 - (NSImage *)image {
-	return [NSImage imageNamed:@"NSUser"];
+    return [NSImage imageNamed:@"NSUser"];
 }
 
 - (void)willSelect {
-	
+    
     if ([[appDelegate accounts] count]) {
         [self loadAccountSettings:[[appDelegate accounts] lastObject]];
     }
@@ -48,8 +48,8 @@
 }
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[super dealloc];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [super dealloc];
 }
 
 

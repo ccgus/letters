@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		29DCAB661112C517006DAF70 /* LAPrefsGeneralModule.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAB3474B1111964A00C270B4 /* LAPrefsGeneralModule.xib */; };
+		29DCAB671112C517006DAF70 /* LAPrefsAccountsModule.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAB3489F111211C600C270B4 /* LAPrefsAccountsModule.xib */; };
+		29DCAB681112C517006DAF70 /* LAPrefsFontsAndColorsModule.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAB347491111964200C270B4 /* LAPrefsFontsAndColorsModule.xib */; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		AAB3471511117A8800C270B4 /* LAPrefsGeneralModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB3471411117A8800C270B4 /* LAPrefsGeneralModule.m */; };
 		AAB34744111195D400C270B4 /* LAPrefsFontsAndColorsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB34743111195D400C270B4 /* LAPrefsFontsAndColorsModule.m */; };
-		AAB3474A1111964200C270B4 /* LAPrefsFontsAndColorsModule.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAB347491111964200C270B4 /* LAPrefsFontsAndColorsModule.xib */; };
-		AAB3474C1111964A00C270B4 /* LAPrefsGeneralModule.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAB3474B1111964A00C270B4 /* LAPrefsGeneralModule.xib */; };
 		AAB3489B1112118600C270B4 /* LAPrefsAccountsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB3489A1112118600C270B4 /* LAPrefsAccountsModule.m */; };
-		AAB348A0111211C600C270B4 /* LAPrefsAccountsModule.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAB3489F111211C600C270B4 /* LAPrefsAccountsModule.xib */; };
 		CC51746C110ACD9200C01407 /* libetpan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC51746B110ACD9200C01407 /* libetpan.framework */; };
 		CC517470110ACD9900C01407 /* LetterBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC51746F110ACD9900C01407 /* LetterBox.framework */; };
 		CC517487110ACDA800C01407 /* LetterBox.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CC51746F110ACD9900C01407 /* LetterBox.framework */; };
@@ -29,6 +29,9 @@
 		CCA5544D1106DF4D00CEEFF4 /* LAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA5544C1106DF4D00CEEFF4 /* LAAppDelegate.m */; };
 		CCA554541106E1BE00CEEFF4 /* LAMailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA554531106E1BE00CEEFF4 /* LAMailViewController.m */; };
 		CCA554841106EBBC00CEEFF4 /* LAPrefsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA554831106EBBC00CEEFF4 /* LAPrefsWindowController.m */; };
+		CCBF0EEE1111652C00B99B64 /* toolbar-getmail.png in Resources */ = {isa = PBXBuildFile; fileRef = CCBF0EED1111652C00B99B64 /* toolbar-getmail.png */; };
+		CCBF0EF0111165C000B99B64 /* toolbar-reply.png in Resources */ = {isa = PBXBuildFile; fileRef = CCBF0EEF111165C000B99B64 /* toolbar-reply.png */; };
+		CCBF0EF21111675A00B99B64 /* toolbar-new.png in Resources */ = {isa = PBXBuildFile; fileRef = CCBF0EF11111675A00B99B64 /* toolbar-new.png */; };
 		CCD9E1A511100A9D006F3C84 /* AccountImport.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCD9E1A311100A9D006F3C84 /* AccountImport.xib */; };
 		CCF4131F110D36D400401D5D /* LAActivityViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF4131E110D36D400401D5D /* LAActivityViewer.m */; };
 		CCF41324110D380800401D5D /* ActivityViewer.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCF41322110D380800401D5D /* ActivityViewer.xib */; };
@@ -109,6 +112,9 @@
 		CCA554821106EBBC00CEEFF4 /* LAPrefsWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LAPrefsWindowController.h; path = source/prefs/LAPrefsWindowController.h; sourceTree = "<group>"; };
 		CCA554831106EBBC00CEEFF4 /* LAPrefsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LAPrefsWindowController.m; path = source/prefs/LAPrefsWindowController.m; sourceTree = "<group>"; };
 		CCA554CD1106F2D600CEEFF4 /* LetterBox.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LetterBox.xcodeproj; path = letterbox/LetterBox.xcodeproj; sourceTree = "<group>"; };
+		CCBF0EED1111652C00B99B64 /* toolbar-getmail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar-getmail.png"; path = "resources/images/toolbar-getmail.png"; sourceTree = "<group>"; };
+		CCBF0EEF111165C000B99B64 /* toolbar-reply.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar-reply.png"; path = "resources/images/toolbar-reply.png"; sourceTree = "<group>"; };
+		CCBF0EF11111675A00B99B64 /* toolbar-new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar-new.png"; path = "resources/images/toolbar-new.png"; sourceTree = "<group>"; };
 		CCD9E1A411100A9D006F3C84 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = resources/English.lproj/AccountImport.xib; sourceTree = "<group>"; };
 		CCF4131D110D36D400401D5D /* LAActivityViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LAActivityViewer.h; path = source/LAActivityViewer.h; sourceTree = "<group>"; };
 		CCF4131E110D36D400401D5D /* LAActivityViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LAActivityViewer.m; path = source/LAActivityViewer.m; sourceTree = "<group>"; };
@@ -240,6 +246,9 @@
 		CC9C51EA11079A86008ED850 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				CCBF0EF11111675A00B99B64 /* toolbar-new.png */,
+				CCBF0EEF111165C000B99B64 /* toolbar-reply.png */,
+				CCBF0EED1111652C00B99B64 /* toolbar-getmail.png */,
 			);
 			name = images;
 			sourceTree = "<group>";
@@ -346,9 +355,12 @@
 				CC6D05F6110A491C00D900E9 /* MailView.xib in Resources */,
 				CCF41324110D380800401D5D /* ActivityViewer.xib in Resources */,
 				CCD9E1A511100A9D006F3C84 /* AccountImport.xib in Resources */,
-				AAB3474C1111964A00C270B4 /* LAPrefsGeneralModule.xib in Resources */,
-				AAB3474A1111964200C270B4 /* LAPrefsFontsAndColorsModule.xib in Resources */,
-				AAB348A0111211C600C270B4 /* LAPrefsAccountsModule.xib in Resources */,
+				CCBF0EEE1111652C00B99B64 /* toolbar-getmail.png in Resources */,
+				CCBF0EF0111165C000B99B64 /* toolbar-reply.png in Resources */,
+				CCBF0EF21111675A00B99B64 /* toolbar-new.png in Resources */,
+				29DCAB661112C517006DAF70 /* LAPrefsGeneralModule.xib in Resources */,
+				29DCAB671112C517006DAF70 /* LAPrefsAccountsModule.xib in Resources */,
+				29DCAB681112C517006DAF70 /* LAPrefsFontsAndColorsModule.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -471,12 +483,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					/builds/Debug,
-					"\"$(SRCROOT)/build/Debug\"",
-					"\"$(SRCROOT)/BWToolkit\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -494,12 +501,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					/builds/Debug,
-					"\"$(SRCROOT)/build/Debug\"",
-					"\"$(SRCROOT)/BWToolkit\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = source/Letters_Prefix.pch;
 				INFOPLIST_FILE = "resources/Letters-Info.plist";

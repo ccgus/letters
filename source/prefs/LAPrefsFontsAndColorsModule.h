@@ -10,7 +10,7 @@
 
 
 @interface LAPrefsFontsAndColorsModule : NSViewController <LAPrefsModule> {
-	
+    
     IBOutlet NSPopUpButton *emailAppsPopup;
 }
 

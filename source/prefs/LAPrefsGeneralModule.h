@@ -10,7 +10,7 @@
 
 
 @interface LAPrefsGeneralModule : NSViewController <LAPrefsModule> {
-	
+    
     IBOutlet NSPopUpButton *emailAppsPopup;
 }
 
