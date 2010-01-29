@@ -27,6 +27,16 @@ LAPrefsWindowController *singleton = nil;
 @end
 
 
+@implementation LAPrefsNonOpaqueView 
+
+// we do this, so the tab swaparoo fade in and out works out ok.
+// FIXME: for some reason, the blend in between the two goes away.  That's a bug.
+- (BOOL)isOpaque {
+    return NO;
+}
+
+@end
+
 #pragma mark -
 
 
@@ -47,7 +57,7 @@ LAPrefsWindowController *singleton = nil;
                                                   backing:NSBackingStoreBuffered
                                                     defer:YES];
     [panel setShowsToolbarButton:NO];
-    [self setWindow:panel];
+    [self setWindow:[panel autorelease]];
     
     [self loadModules];
     [self setupToolbar];
@@ -98,33 +108,55 @@ LAPrefsWindowController *singleton = nil;
         return;
     }
     
-    // Remove current view
-    [[selectedModule view] removeFromSuperview];
-    
+    NSView *oldView  = [selectedModule view];
     NSView   *view   = [module view];
     NSWindow *window = [self window];
     
     // Adjust panel height
-    NSRect frame = [window frame];
-    NSRect contentFrame = [window contentRectForFrameRect:frame];
-    CGFloat deltaHeight = NSHeight ([view bounds]) - contentFrame.size.height;
-    frame.origin.y -= deltaHeight;
-    frame.size.height += deltaHeight;
-    [window setFrame:frame display:YES animate:YES];
+    NSRect newWindowFrame       = [window frame];
+    NSRect contentFrame         = [window contentRectForFrameRect:newWindowFrame];
+    CGFloat deltaHeight         = NSHeight ([view bounds]) - contentFrame.size.height;
+    newWindowFrame.origin.y     -= deltaHeight;
+    newWindowFrame.size.height  += deltaHeight;
     
     [[window toolbar] setSelectedItemIdentifier:[module identifier]];
     [window setTitle:[module title]];
     
     // Show the new view, make sure it stretches horizontally to fill the prefs pane
-    frame = [view bounds];
-    frame.size.width = LA_PREFS_WINDOW_WIDTH;
-    [view setFrame:frame];
+    NSRect newViewFrame = [view bounds];
+    newViewFrame.size.width = LA_PREFS_WINDOW_WIDTH;
+    [view setFrame:newViewFrame];
+    
     [[window contentView] addSubview:view];
     
     // Give the module a chance to lazy-load its stuff
     if ([(NSObject *)module respondsToSelector:@selector (willSelect)]) {
         [module willSelect];
     }
+    
+    // get the standard fade in and out.
+    NSDictionary *windowResize = [NSDictionary dictionaryWithObjectsAndKeys:window, NSViewAnimationTargetKey,
+                                                                            [NSValue valueWithRect: newWindowFrame], NSViewAnimationEndFrameKey, nil];
+    
+    NSDictionary *newFadeIn = [NSDictionary dictionaryWithObjectsAndKeys:view, NSViewAnimationTargetKey,
+                                                                         NSViewAnimationFadeInEffect, NSViewAnimationEffectKey, nil];
+    
+    NSDictionary *oldFadeOut = nil;
+    
+    if (oldView) {
+        oldFadeOut = [NSDictionary dictionaryWithObjectsAndKeys:oldView, NSViewAnimationTargetKey,
+                                                                NSViewAnimationFadeOutEffect, NSViewAnimationEffectKey, nil];
+    }
+    
+    NSViewAnimation *animation = [[NSViewAnimation alloc] initWithViewAnimations: [NSArray arrayWithObjects:windowResize, newFadeIn, oldFadeOut, nil]];
+    
+    [animation setAnimationBlockingMode:NSAnimationBlocking];
+    [animation setDuration: (([NSEvent modifierFlags] & NSShiftKeyMask) != 0) ? 2.0 : 0.2];
+    [animation startAnimation];
+    [animation release];
+    
+    // Remove current view
+    [oldView removeFromSuperview];
     
     // Persist selection
     [LAPrefs setObject:[module identifier] forKey:@"LAPrefsWindowSelectedModule"];

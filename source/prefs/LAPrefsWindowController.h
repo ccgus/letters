@@ -28,6 +28,12 @@
 @end
 
 
+@interface LAPrefsNonOpaqueView : NSView {
+    
+}
+
+@end
+
 #pragma mark -
 
 
