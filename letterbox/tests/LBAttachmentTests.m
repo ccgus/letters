@@ -65,4 +65,17 @@
 	STAssertTrue([attach data] != nil, @"Data should not have been nil");
 	[attach release];
 }
+
+- (void)testCreationMethods {
+	NSString *path = [NSString stringWithFormat:@"%@%@",filePrefix,@"TestData/DSC_6202.png"];
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    LBAttachment *attach = [[LBAttachment alloc] initWithData:data contentType:@"image/png" filename:@"DSC_6202.png"];
+	LBAttachment *attach2 = [[LBAttachment alloc] initWithContentsOfFile:path];
+    STAssertTrue([[attach contentType] isEqual:@"image/png"], @"The content-type should have been image/png");
+    STAssertTrue([[attach data] isEqual:data], @"The data stored in LBAttachment changed");
+    STAssertTrue([[attach2 data] isEqual:data], @"The data stored in LBAttachment via -initWithData and -initWithContentsOfFile are not identical.");
+    [attach release];
+    [attach2 release];
+}
+
 @end

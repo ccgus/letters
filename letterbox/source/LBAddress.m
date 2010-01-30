@@ -89,18 +89,63 @@
     [super dealloc];
 }
 
+// RFC 2047 "Encoded Word" Decoder
+// http://tools.ietf.org/html/rfc2047
+//
 -(NSString*)decodedName {
-    // added by Gabor
-    // FIXME: Why not use hasPrefix: here?
-    if (StringStartsWith(self.name, @"=?ISO-8859-1?Q?")) {
-        NSString* newName = [self.name substringFromIndex:[@"=?ISO-8859-1?Q?" length]];
-        newName = [newName stringByReplacingOccurrencesOfString:@"?=" withString:@""];
-        newName = [newName stringByReplacingOccurrencesOfString:@"__" withString:@" "];
-        newName = [newName stringByReplacingOccurrencesOfString:@"=" withString:@"%"];      
-        newName = [newName stringByReplacingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
-        return newName;
+    NSString *encodedWord;
+    NSString *encodedSubWord;
+    NSRange encodedWordStart = [name rangeOfString:@"=?"];
+    NSRange encodedWordEnd = [name rangeOfString:@"?="];
+    NSRange encodedWordRange = NSUnionRange(encodedWordStart, encodedWordEnd);
+
+    if ( ! encodedWordRange.length ) {
+        // If there are no encoded words, return the name as we have it.
+        return name;
     }
-    return self.name;
+
+    NSString *decodedName = [[NSString alloc] initWithString:name];
+
+    while ( encodedWordRange.length ) {
+        encodedWord = [decodedName substringWithRange:encodedWordRange];
+        encodedSubWord = [encodedWord substringFromIndex:2];
+        encodedSubWord = [encodedSubWord substringToIndex:[encodedSubWord length] -2];
+
+        NSRange characterSetStart = {0,0};
+        NSRange characterSetEnd = [encodedSubWord rangeOfString:@"?"];
+        characterSetEnd.length = characterSetEnd.length - 1;
+        NSRange characterSetRange = NSUnionRange(characterSetStart, characterSetEnd);
+        NSString *characterSet = [encodedSubWord substringWithRange:characterSetRange];
+        encodedSubWord = [encodedSubWord substringFromIndex:characterSetEnd.location + 1];
+
+        if ( [encodedSubWord hasPrefix:@"Q"] || [encodedSubWord hasPrefix:@"q"] ){
+            NSString *encodingType = [encodedSubWord substringToIndex:1];
+            NSString *decodedWord = [encodedSubWord substringFromIndex:2];
+            decodedWord = [decodedWord stringByReplacingOccurrencesOfString:@"_" withString:@" "];
+            decodedWord = [decodedWord stringByReplacingOccurrencesOfString:@"=" withString:@"%"];
+            if ( [characterSet isCaseInsensitiveLike:@"ISO-8859-1"] ) {
+                decodedWord = [decodedWord stringByReplacingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
+            } else if ( [characterSet isCaseInsensitiveLike:@"UTF-8"] ) {
+                decodedWord = [decodedWord stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            } else if ( [characterSet isCaseInsensitiveLike:@"ISO-8859-2"] ) {
+                decodedWord = [decodedWord stringByReplacingPercentEscapesUsingEncoding:NSISOLatin2StringEncoding];
+            } else if ( [characterSet isCaseInsensitiveLike:@"ISO-8859-15"] ) {
+                // FIXME : jasonrm - This isn't an exactly correct conversion, but it's close for most cases. See "Changes from ISO-8859-1" at http://en.wikipedia.org/wiki/ISO/IEC_8859-15
+                decodedWord = [decodedWord stringByReplacingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
+            } else {
+                // FIXME : jasonrm - Only the most common (for someone in the US) encodings are supported, everything else is treated like ISO-8859-1
+                decodedWord = [decodedWord stringByReplacingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
+            }
+            decodedName = [decodedName stringByReplacingOccurrencesOfString:encodedWord withString:decodedWord];
+            encodedWordStart = [decodedName rangeOfString:@"=?"];
+            encodedWordEnd = [decodedName rangeOfString:@"?="];
+            encodedWordRange = NSUnionRange(encodedWordStart, encodedWordEnd);
+        } else if ( [encodedSubWord hasPrefix:@"B"] || [encodedSubWord hasPrefix:@"b"] ) {
+            // FIXME : jasonrm - Base64 encoded words need to be supported.
+            return @"Base64 Not Supported";
+        }
+    }
+    return [decodedName autorelease];
 }
 
 

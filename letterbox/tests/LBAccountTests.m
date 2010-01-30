@@ -46,7 +46,7 @@
 	[accountTestInfo setObject:@"Aefooci7se6ooy@lettersapp.com" forKey:@"fromAddress"];
 
 	[accountTestInfo setObject:@"imap.pool.lettersapp.com" forKey:@"imapServer"];
-	[accountTestInfo setObject:[NSNumber numberWithInt:993] forKey:@"imapPort"];
+	[accountTestInfo setObject:[NSNumber numberWithInt:1515] forKey:@"imapPort"];
 	[accountTestInfo setObject:@"smtp.pool.lettersapp.com" forKey:@"smtpServer"];
 
 	[accountTestInfo setObject:[NSNumber numberWithInt:CONNECTION_TYPE_TLS] forKey:@"authType"];
@@ -59,7 +59,6 @@
     [accountTestInfo release];
 }
 
-
 - (void)testAccountWithDictionary {
 	LBAccount *account = [LBAccount accountWithDictionary:accountTestInfo];
 	STAssertEqualObjects([account className], @"LBAccount", @": testAccountWithDictionary - Expected class of 'LBAccount', got '%@'", [account className]);
@@ -67,15 +66,13 @@
 
 - (void)testDictionaryRepresentation {
 	LBAccount *account = [LBAccount accountWithDictionary:accountTestInfo];
-	NSDictionary *testDict = [account dictionaryRepresentation];
-	STAssertEqualObjects([testDict objectForKey:@"username"], [accountTestInfo objectForKey:@"username"], @": testDictionaryRepresentation -  username should not have been modified.");
-	STAssertEqualObjects([testDict objectForKey:@"password"], [accountTestInfo objectForKey:@"password"], @": testDictionaryRepresentation -  password should not have been modified.");
-	STAssertEqualObjects([testDict objectForKey:@"fromAddress"], [accountTestInfo objectForKey:@"fromAddress"], @": testDictionaryRepresentation -  fromAddress should not have been modified.");
-	STAssertEqualObjects([testDict objectForKey:@"imapServer"], [accountTestInfo objectForKey:@"imapServer"], @": testDictionaryRepresentation - imapServer should not have been modified.");
-	STAssertEqualObjects([testDict objectForKey:@"imapPort"], [accountTestInfo objectForKey:@"imapPort"], @": testDictionaryRepresentation - imapPort should not have been modified.");
-	STAssertEqualObjects([testDict objectForKey:@"smtpServer"], [accountTestInfo objectForKey:@"smtpServer"], @": testDictionaryRepresentation - smtpServer should not have been modified.");
-	STAssertEqualObjects([testDict objectForKey:@"authType"], [accountTestInfo objectForKey:@"authType"], @": testDictionaryRepresentation - authType should not have been modified.");
-	STAssertEqualObjects([testDict objectForKey:@"isActive"], [accountTestInfo objectForKey:@"isActive"], @": testDictionaryRepresentation - isActive should not have been modified.");
+	NSDictionary *accountDict = [account dictionaryRepresentation];
+
+    STAssertEquals([accountDict count], [accountTestInfo count], @": testDictionaryRepresentation - %d objects were to be tested, however %d items were in the returned LBAccount.", [accountTestInfo count], [accountDict count]);
+
+    for (id key in accountDict) {
+        STAssertEqualObjects([accountDict objectForKey:key], [accountTestInfo objectForKey:key], @": testDictionaryRepresentation -  %@ was modified during LBAccount creation (or there was not a matching key).", [key description]);
+    }
 }
 
 - (void)testIsActive {
@@ -88,5 +85,12 @@
 	STAssertEquals(YES, [account isActive], nil);
 }
 
+- (void)testServer {
+    LBAccount *account = [LBAccount accountWithDictionary:accountTestInfo];
+    LBServer *server = [account server];
+    STAssertNotNil(server, @": testServer - Creation of LBServer failed.");
+    LBServer *serverTwo = [account server];
+    STAssertTrue([server isEqual:serverTwo], @": testServer - Creation of a second server should not create a new instance if one already exists, rather it should return the existing one.");
+}
 
 @end
