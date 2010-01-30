@@ -65,20 +65,23 @@
         CFURLRef    appURLRef = (CFURLRef)[[NSWorkspace sharedWorkspace] URLForApplicationWithBundleIdentifier:appId];
         LSCopyDisplayNameForURL (appURLRef, &appNameRef);
         
-        // Get the 16 x 16 app icon
-        NSImage *icon = [[NSWorkspace sharedWorkspace] iconForFile:[(NSURL *)appURLRef path]];
-        [icon setSize:NSMakeSize (16, 16)];
-        
-        // Make the menu item
-        NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:(NSString *)appNameRef action:@selector (didSelectEmailApp:) keyEquivalent:@""];
-        [item setTarget:self];
-        [item setImage:icon];
-        [item setRepresentedObject:appId];
-        [item setState:([appId isEqualToString:emailAppId] ? NSOnState : NSOffState)];
-        
-        [menu addItem:item];
-        CFRelease (appNameRef);
-        [item release];
+        // FIXME : jasonrm - This might not be the best place to check this.
+        if ( appURLRef != NULL ) {
+            // Get the 16 x 16 app icon
+            NSImage *icon = [[NSWorkspace sharedWorkspace] iconForFile:[(NSURL *)appURLRef path]];
+            [icon setSize:NSMakeSize (16, 16)];
+
+            // Make the menu item
+            NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:(NSString *)appNameRef action:@selector (didSelectEmailApp:) keyEquivalent:@""];
+            [item setTarget:self];
+            [item setImage:icon];
+            [item setRepresentedObject:appId];
+            [item setState:([appId isEqualToString:emailAppId] ? NSOnState : NSOffState)];
+
+            [menu addItem:item];
+            CFRelease (appNameRef);
+            [item release];
+        }
     }
     
     [emailAppsPopup setMenu:menu];
