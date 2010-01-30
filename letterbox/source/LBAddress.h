@@ -30,6 +30,8 @@
  */
 
 #import <Foundation/Foundation.h>
+#include <openssl/bio.h>
+#include <openssl/evp.h>
 
 /*!
     @class  @LBAddress
@@ -82,6 +84,13 @@
     @abstract Sets the e-mail.
 */
 - (void)setEmail:(NSString *)aValue;
+
+
+/*!
+    @abstract Given a base64 encoded NSString return it decoded as data
+ */
++ (NSData *)dataByDecodingBase64String:(NSString *)encodedString;
+
 
 /*!
     @abstract Works like the typical isEqual: method

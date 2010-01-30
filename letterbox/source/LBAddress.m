@@ -130,8 +130,8 @@
             } else if ( [characterSet isCaseInsensitiveLike:@"ISO-8859-2"] ) {
                 decodedWord = [decodedWord stringByReplacingPercentEscapesUsingEncoding:NSISOLatin2StringEncoding];
             } else if ( [characterSet isCaseInsensitiveLike:@"ISO-8859-15"] ) {
-                // FIXME : jasonrm - This isn't an exactly correct conversion, but it's close for most cases. See "Changes from ISO-8859-1" at http://en.wikipedia.org/wiki/ISO/IEC_8859-15
-                decodedWord = [decodedWord stringByReplacingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
+                // FIXME : jasonrm - Is this even allowed? From lists of encodings 15 looks to match ISO-8859-15 but I don't like hardcoding a number here.
+                decodedWord = [decodedWord stringByReplacingPercentEscapesUsingEncoding:15];
             } else {
                 // FIXME : jasonrm - Only the most common (for someone in the US) encodings are supported, everything else is treated like ISO-8859-1
                 decodedWord = [decodedWord stringByReplacingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
@@ -141,14 +141,56 @@
             encodedWordEnd = [decodedName rangeOfString:@"?="];
             encodedWordRange = NSUnionRange(encodedWordStart, encodedWordEnd);
         } else if ( [encodedSubWord hasPrefix:@"B"] || [encodedSubWord hasPrefix:@"b"] ) {
-            // FIXME : jasonrm - Base64 encoded words need to be supported.
-            return @"Base64 Not Supported";
+            NSString *encodingType = [encodedSubWord substringToIndex:1];
+            NSString *encodedWord = [encodedSubWord substringFromIndex:2];
+            NSString *decodedWord;
+
+            // FIXME : jasonrm - Something about this doesn't seem right...
+            NSData *decodedData = [LBAddress dataByDecodingBase64String:encodedWord];
+
+            if ( [characterSet isCaseInsensitiveLike:@"ISO-8859-1"] ) {
+                decodedWord = [[NSString alloc] initWithData:decodedData encoding:NSISOLatin1StringEncoding];
+            } else if ( [characterSet isCaseInsensitiveLike:@"UTF-8"] ) {
+                decodedWord = [[NSString alloc] initWithData:decodedData encoding:NSUTF8StringEncoding];
+            } else if ( [characterSet isCaseInsensitiveLike:@"ISO-8859-2"] ) {
+                decodedWord = [[NSString alloc] initWithData:decodedData encoding:NSISOLatin2StringEncoding];
+            } else if ( [characterSet isCaseInsensitiveLike:@"ISO-8859-8"] ) {
+                decodedWord = [[NSString alloc] initWithData:decodedData encoding:-2147483128];
+            } else if ( [characterSet isCaseInsensitiveLike:@"ISO-8859-15"] ) {
+                // FIXME : jasonrm - Is this even allowed? From lists of encodings 15 looks to match ISO-8859-15 but I don't like hardcoding a number here.
+                decodedWord = [[NSString alloc] initWithData:decodedData encoding:15];
+            } else {
+                // FIXME : jasonrm - Only the most common (for someone in the US) encodings are supported, everything else is treated like ISO-8859-1
+                decodedWord = [[NSString alloc] initWithData:decodedData encoding:NSISOLatin1StringEncoding];
+            }
+            return [decodedWord autorelease];
         }
     }
     return [decodedName autorelease];
 }
 
++ (NSData *)dataByDecodingBase64String:(NSString *)encodedString {
+    if ( ! [encodedString hasSuffix:@"\n"] ){
+        encodedString = [encodedString stringByAppendingString:@"\n"];
+    }
+    NSData *encodedData = [encodedString dataUsingEncoding:NSASCIIStringEncoding];
+    NSMutableData *decodedData = [NSMutableData data];
 
+    char buf[512];
+    uint bufLength;
+
+    BIO *b64coder = BIO_new(BIO_f_base64());
+    BIO *b64buffer = BIO_new_mem_buf((void *)[encodedData bytes], [encodedData length]);
+
+    b64buffer = BIO_push(b64coder, b64buffer);
+
+    while ( (bufLength = BIO_read(b64buffer, buf, 512)) > 0 ) {
+        [decodedData appendBytes:buf length:bufLength];
+    }
+    BIO_free_all(b64buffer);
+
+    return [[[NSData alloc] initWithData:decodedData] autorelease];
+}
 
 - (BOOL)isEqual:(id)object {
     if (![object isKindOfClass:[LBAddress class]]) {

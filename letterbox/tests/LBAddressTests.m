@@ -59,8 +59,12 @@
     STAssertTrue([[addr decodedName] isEqual:@"André Pirard"], @"Decoding failed. Result was [%@]", [addr decodedName]);
 
     [addr setName:@"=?iso-8859-8?b?7eXs+SDv4SDp7Oj08A==?="]; // RFC 2047 Example
-    // FIXME: jasonrm - I don't know what the correct decoded string is... yet.
-    STAssertTrue([[addr decodedName] isEqual:@"Unknown"], @"Decoding failed. Result was [%@]", [addr decodedName]);
+    // FIXME: jasonrm - This is my best guess as to the correct decoding...
+    STAssertTrue([[addr decodedName] isEqual:@"םולש ןב ילטפנ"], @"Decoding failed. Result was [%@]", [addr decodedName]);
+
+    [addr setName:@"=?utf-8?B?zpHOu86tzr7Osc69zrTPgc6/z4IgzqDOv860zqzPgc6xz4I=?="]; // Custom Example
+    // FIXME: jasonrm - This is my best guess as to the correct decoding...
+    STAssertTrue([[addr decodedName] isEqual:@"Αλέξανδρος Ποδάρας"], @"Decoding failed. Result was [%@]", [addr decodedName]);
 
     [addr setName:@"=?ISO-8859-1?Q?a?="]; // RFC 2047 Example
     STAssertTrue([[addr decodedName] isEqual:@"a"], @"Decoding failed. Result was [%@]", [addr decodedName]);
