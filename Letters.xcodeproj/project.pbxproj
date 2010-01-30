@@ -11,6 +11,7 @@
 		29DCAB671112C517006DAF70 /* LAPrefsAccountsModule.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAB3489F111211C600C270B4 /* LAPrefsAccountsModule.xib */; };
 		29DCAB681112C517006DAF70 /* LAPrefsFontsAndColorsModule.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAB347491111964200C270B4 /* LAPrefsFontsAndColorsModule.xib */; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
+		96D9712C11142FB100EBE2FE /* Letters.icns in Resources */ = {isa = PBXBuildFile; fileRef = 96D9712B11142FAE00EBE2FE /* Letters.icns */; };
 		AAB3471511117A8800C270B4 /* LAPrefsGeneralModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB3471411117A8800C270B4 /* LAPrefsGeneralModule.m */; };
 		AAB34744111195D400C270B4 /* LAPrefsFontsAndColorsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB34743111195D400C270B4 /* LAPrefsFontsAndColorsModule.m */; };
 		AAB3489B1112118600C270B4 /* LAPrefsAccountsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB3489A1112118600C270B4 /* LAPrefsAccountsModule.m */; };
@@ -83,6 +84,7 @@
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D15AC370486D014006FF6A4 /* CrashyEmailApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CrashyEmailApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		96D9712B11142FAE00EBE2FE /* Letters.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Letters.icns; path = resources/images/Letters.icns; sourceTree = "<group>"; };
 		AAB3471311117A8800C270B4 /* LAPrefsGeneralModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LAPrefsGeneralModule.h; path = source/prefs/LAPrefsGeneralModule.h; sourceTree = "<group>"; };
 		AAB3471411117A8800C270B4 /* LAPrefsGeneralModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LAPrefsGeneralModule.m; path = source/prefs/LAPrefsGeneralModule.m; sourceTree = "<group>"; };
 		AAB3471A11117FA700C270B4 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = resources/English.lproj/LAPrefsGeneralModule.xib; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 		CC9C51EA11079A86008ED850 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				96D9712B11142FAE00EBE2FE /* Letters.icns */,
 				CCBF0EF11111675A00B99B64 /* toolbar-new.png */,
 				CCBF0EEF111165C000B99B64 /* toolbar-reply.png */,
 				CCBF0EED1111652C00B99B64 /* toolbar-getmail.png */,
@@ -349,6 +352,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96D9712C11142FB100EBE2FE /* Letters.icns in Resources */,
 				CCA5542B1106DDF800CEEFF4 /* Credits.rtf in Resources */,
 				CCA5542D1106DDF800CEEFF4 /* LADocument.xib in Resources */,
 				CCA5542E1106DDF800CEEFF4 /* MainMenu.xib in Resources */,
