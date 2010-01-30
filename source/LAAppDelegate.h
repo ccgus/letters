@@ -7,17 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "LAPrefsWindowController.h"
 
 #define appDelegate (LAAppDelegate*)[[NSApplication sharedApplication] delegate]
 
 @interface LAAppDelegate : NSObject {
-    
     NSMutableArray *accounts;
-    
-    LAPrefsWindowController *prefsWindowController;
-    
-    NSTimer *periodicMailCheckTimer;
+    NSTimer        *periodicMailCheckTimer;
 }
 
 @property (retain) NSMutableArray *mailViews;
@@ -25,7 +20,7 @@
 
 - (void)openNewMailView:(id)sender;
 - (void)openPreferences:(id)sender;
-- (void)openPreferences:(id)sender selectTabId:(LAPrefsPaneTabId)tabId;
+- (void)openPreferences:(id)sender selectModuleWithId:(NSString *)moduleId;
 - (void)saveAccounts;
 - (void)checkForMail:(id)sender;
 - (NSArray*) accounts;
