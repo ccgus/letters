@@ -41,10 +41,12 @@
 
 - (void)willSelect {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountUpdated:) name:@"AccountUpdated" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newAccountCreated:) name:@"NewAccountCreated" object:nil];
 }
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [createAccountController release];
     [super dealloc];
 }
 
@@ -154,14 +156,22 @@
 }
 
 - (void)accountUpdated:(NSNotification*)note {
-//    [self loadAccountSettings:[[appDelegate accounts] lastObject]];
 }
 
 - (IBAction)addAccount:(id)sender {
-    [appDelegate addAccount];
-    
+    [createAccountController release];
+    createAccountController = [[LAPrefsCreateAccountController alloc] initWithWindowNibName:@"CreateAccount"];    
+    [NSApp beginSheet:createAccountController.window modalForWindow:[[self view] window] modalDelegate:self didEndSelector:@selector(addAccountSheetDidEnd:returnCode:contextInfo:) contextInfo:nil];
+}
+
+- (void)addAccountSheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
+    [sheet orderOut:self];
+}
+
+- (void)newAccountCreated:(NSNotification*)note {
     [accountList reloadData];
     [accountList selectRowIndexes:[NSIndexSet indexSetWithIndex:[[appDelegate accounts] count]-1] byExtendingSelection:NO];
+    [self loadAccountSettings:[[appDelegate accounts] count]-1];
 }
 
 - (IBAction)deleteAccount:(id)sender {

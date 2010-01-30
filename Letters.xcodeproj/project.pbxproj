@@ -35,6 +35,8 @@
 		CCD9E1A511100A9D006F3C84 /* AccountImport.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCD9E1A311100A9D006F3C84 /* AccountImport.xib */; };
 		CCF4131F110D36D400401D5D /* LAActivityViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF4131E110D36D400401D5D /* LAActivityViewer.m */; };
 		CCF41324110D380800401D5D /* ActivityViewer.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCF41322110D380800401D5D /* ActivityViewer.xib */; };
+		CE3B37AE1113FC740073E972 /* LAPrefsCreateAccountController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3B37AD1113FC740073E972 /* LAPrefsCreateAccountController.m */; };
+		CE3B37B71113FCFE0073E972 /* CreateAccount.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE3B37B51113FCFE0073E972 /* CreateAccount.xib */; };
 		CE753691110EAC50002993E5 /* LAAccountImportController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE753690110EAC50002993E5 /* LAAccountImportController.m */; };
 /* End PBXBuildFile section */
 
@@ -119,6 +121,9 @@
 		CCF4131D110D36D400401D5D /* LAActivityViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LAActivityViewer.h; path = source/LAActivityViewer.h; sourceTree = "<group>"; };
 		CCF4131E110D36D400401D5D /* LAActivityViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LAActivityViewer.m; path = source/LAActivityViewer.m; sourceTree = "<group>"; };
 		CCF41323110D380800401D5D /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = resources/English.lproj/ActivityViewer.xib; sourceTree = "<group>"; };
+		CE3B37AC1113FC740073E972 /* LAPrefsCreateAccountController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LAPrefsCreateAccountController.h; sourceTree = "<group>"; };
+		CE3B37AD1113FC740073E972 /* LAPrefsCreateAccountController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LAPrefsCreateAccountController.m; sourceTree = "<group>"; };
+		CE3B37B61113FCFE0073E972 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = ../letters/resources/English.lproj/CreateAccount.xib; sourceTree = SOURCE_ROOT; };
 		CE75368F110EAC50002993E5 /* LAAccountImportController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LAAccountImportController.h; path = source/LAAccountImportController.h; sourceTree = "<group>"; };
 		CE753690110EAC50002993E5 /* LAAccountImportController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LAAccountImportController.m; path = source/LAAccountImportController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -237,6 +242,8 @@
 				AAB3471411117A8800C270B4 /* LAPrefsGeneralModule.m */,
 				AAB348991112118600C270B4 /* LAPrefsAccountsModule.h */,
 				AAB3489A1112118600C270B4 /* LAPrefsAccountsModule.m */,
+				CE3B37AC1113FC740073E972 /* LAPrefsCreateAccountController.h */,
+				CE3B37AD1113FC740073E972 /* LAPrefsCreateAccountController.m */,
 				AAB34742111195D400C270B4 /* LAPrefsFontsAndColorsModule.h */,
 				AAB34743111195D400C270B4 /* LAPrefsFontsAndColorsModule.m */,
 			);
@@ -256,6 +263,7 @@
 		CCA554581106E20500CEEFF4 /* xib */ = {
 			isa = PBXGroup;
 			children = (
+				CE3B37B51113FCFE0073E972 /* CreateAccount.xib */,
 				CCD9E1A311100A9D006F3C84 /* AccountImport.xib */,
 				CCF41322110D380800401D5D /* ActivityViewer.xib */,
 				CCA554271106DDF800CEEFF4 /* LADocument.xib */,
@@ -361,6 +369,7 @@
 				29DCAB661112C517006DAF70 /* LAPrefsGeneralModule.xib in Resources */,
 				29DCAB671112C517006DAF70 /* LAPrefsAccountsModule.xib in Resources */,
 				29DCAB681112C517006DAF70 /* LAPrefsFontsAndColorsModule.xib in Resources */,
+				CE3B37B71113FCFE0073E972 /* CreateAccount.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,6 +390,7 @@
 				AAB3471511117A8800C270B4 /* LAPrefsGeneralModule.m in Sources */,
 				AAB34744111195D400C270B4 /* LAPrefsFontsAndColorsModule.m in Sources */,
 				AAB3489B1112118600C270B4 /* LAPrefsAccountsModule.m in Sources */,
+				CE3B37AE1113FC740073E972 /* LAPrefsCreateAccountController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,6 +483,14 @@
 				CCF41323110D380800401D5D /* English */,
 			);
 			name = ActivityViewer.xib;
+			sourceTree = "<group>";
+		};
+		CE3B37B51113FCFE0073E972 /* CreateAccount.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CE3B37B61113FCFE0073E972 /* English */,
+			);
+			name = CreateAccount.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

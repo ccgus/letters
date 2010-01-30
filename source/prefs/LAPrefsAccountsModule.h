@@ -7,7 +7,7 @@
 //
 
 #import "LAPrefsWindowController.h"
-
+#import "LAPrefsCreateAccountController.h"
 
 @interface LAPrefsAccountsModule : NSViewController <LAPrefsModule, NSTableViewDataSource> {    
     IBOutlet NSTableView   *accountList;
@@ -28,6 +28,8 @@
     
     IBOutlet NSView        *accountInformationView;
     IBOutlet NSTextField   *blankLabel;
+    
+    LAPrefsCreateAccountController* createAccountController;    
 }
 - (IBAction)saveAccount:(id)sender;
 - (IBAction)importMailAccount:(id)sender;
