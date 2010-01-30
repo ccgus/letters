@@ -13,7 +13,8 @@
 
 
 @interface LAPrefsAccountsModule ()
-- (void) loadAccountSettings:(LBAccount*)account;
+- (void) loadAccountSettings:(NSUInteger)accountIndex;
+- (void) saveAccountSettings:(NSUInteger)accountIndex;
 @end
 
 
@@ -39,11 +40,6 @@
 }
 
 - (void)willSelect {
-    
-    if ([[appDelegate accounts] count]) {
-        [self loadAccountSettings:[[appDelegate accounts] lastObject]];
-    }
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountUpdated:) name:@"AccountUpdated" object:nil];
 }
 
@@ -52,13 +48,59 @@
     [super dealloc];
 }
 
+// ----------------------------------------------------------------------------
+#pragma mark -
+#pragma mark Delegate Methods
+// ----------------------------------------------------------------------------
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
+    return [[appDelegate accounts] count];
+}
+- (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+    LBAccount* account = [[appDelegate accounts] objectAtIndex:row];
+    return [account username];
+}
+- (NSIndexSet *)tableView:(NSTableView *)tableView selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes {
+    if( [proposedSelectionIndexes count] == 0 ) {
+        [deleteAccountButton setEnabled:NO];
+        [accountInformationView setHidden:YES];
+        [blankLabel setHidden:NO];
+    } else {
+        [deleteAccountButton setEnabled:YES];
+        [blankLabel setHidden:YES];
+        [accountInformationView setHidden:NO];
+    }
+    
+    NSInteger existingSelectionIndex = -1;
+    if( [[tableView selectedRowIndexes] count] > 0 ) {
+        existingSelectionIndex = [[tableView selectedRowIndexes] firstIndex];
+    }
+    
+    NSInteger proposedIndex = -1;
+    if( [proposedSelectionIndexes count] > 0 ) {
+        proposedIndex = [proposedSelectionIndexes firstIndex];
+    }
+    
+    if( existingSelectionIndex >= 0 ) {
+        [self saveAccountSettings:existingSelectionIndex];
+    }
+    
+    if( proposedIndex >= 0 ) {
+        [self loadAccountSettings:proposedIndex];
+    }
+    
+    return proposedSelectionIndexes;
+}
+
+
 
 // ----------------------------------------------------------------------------
    #pragma mark -
    #pragma mark Private Methods
 // ----------------------------------------------------------------------------
 
-- (void)loadAccountSettings:(LBAccount*)account {
+- (void)loadAccountSettings:(NSUInteger)accountIndex {
+    LBAccount* account = [[appDelegate accounts] objectAtIndex:accountIndex];
     
     assert(account);
     
@@ -76,9 +118,8 @@
     [tlsButton setState:[account connectionType] == CONNECTION_TYPE_TLS ? NSOnState : NSOffState];
 }
 
-- (void)saveAccountSettings:(id)sender {
-    
-    LBAccount *account = [[appDelegate accounts] lastObject];
+- (void)saveAccountSettings:(NSUInteger)accountIndex {
+    LBAccount *account = [[appDelegate accounts] objectAtIndex:accountIndex];
     
     assert(account);
     
@@ -98,7 +139,12 @@
     // maybe there should be an updateAccount: or addAccount: or somethen'
     [appDelegate saveAccounts];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"NewAccountCreated" object:nil];
+    //[[NSNotificationCenter defaultCenter] postNotificationName:@"NewAccountCreated" object:nil];
+}
+
+- (IBAction)saveAccount:(id)sender {
+    NSInteger selectedIndex = [[accountList selectedRowIndexes] firstIndex];
+    [self saveAccountSettings:selectedIndex];
 }
 
 - (IBAction)importMailAccount:(id)sender {
@@ -108,7 +154,21 @@
 }
 
 - (void)accountUpdated:(NSNotification*)note {
-    [self loadAccountSettings:[[appDelegate accounts] lastObject]];
+//    [self loadAccountSettings:[[appDelegate accounts] lastObject]];
+}
+
+- (IBAction)addAccount:(id)sender {
+    [appDelegate addAccount];
+    
+    [accountList reloadData];
+    [accountList selectRowIndexes:[NSIndexSet indexSetWithIndex:[[appDelegate accounts] count]-1] byExtendingSelection:NO];
+}
+
+- (IBAction)deleteAccount:(id)sender {
+    NSInteger accountIndex = [accountList selectedRow];
+    [appDelegate removeAccount:accountIndex];
+    [appDelegate saveAccounts];
+    [accountList reloadData];
 }
 
 @end

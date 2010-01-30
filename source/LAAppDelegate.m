@@ -259,6 +259,14 @@
     return accounts;
 }
 
+- (void)addAccount {
+    [accounts addObject:[[[LBAccount alloc] init] autorelease]];
+}
+
+- (void)removeAccount:(NSInteger)index {
+    [accounts removeObjectAtIndex:index];
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"mailAutoCheckTimeIntervalInMinutes"]) {
         [self scheduleMailCheckTimer];
@@ -323,5 +331,6 @@
         }
     }
 }
+
 
 @end

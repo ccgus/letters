@@ -24,5 +24,7 @@
 - (void)saveAccounts;
 - (void)checkForMail:(id)sender;
 - (NSArray*) accounts;
+- (void)addAccount;
+- (void)removeAccount:(NSInteger)index;
 
 @end
