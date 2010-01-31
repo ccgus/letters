@@ -10,6 +10,8 @@
 #import "LAAppDelegate.h"
 
 @interface LAPrefsCreateAccountController : NSWindowController {
+    IBOutlet NSTabView     *tabView;
+    
     IBOutlet NSTextField   *serverField;
     IBOutlet NSTextField   *usernameField;
     IBOutlet NSTextField   *passwordField;
@@ -19,9 +21,24 @@
     IBOutlet NSTextField   *smtpServerField;
     IBOutlet NSTextField   *smtpServerPortField;
     
-    IBOutlet NSButton      *tlsButton;    
+    IBOutlet NSButton      *tlsButton;   
+    
+    // Import
+    NSMutableArray         *mailAccounts;
+    NSMutableDictionary    *smtpAccounts;
+    IBOutlet NSButton      *importButton;
+    IBOutlet NSTableView   *importTableView;
+    IBOutlet NSSecureTextField* importPasswordField;
+    
+    IBOutlet NSWindow      *importPasswordWindow;
 }
 
-- (IBAction)importAccount:(id)sender;
+- (IBAction)switchToImportTab:(id)sender;
 - (IBAction)createAccount:(id)sender;
+
+- (IBAction)cancel:(id)sender;
+- (IBAction)importSelectedAccount:(id)sender;
+
+- (IBAction)cancelPassword:(id)sender;
+- (IBAction)okPassword:(id)sender;
 @end
