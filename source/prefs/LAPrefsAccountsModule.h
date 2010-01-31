@@ -32,7 +32,6 @@
     LAPrefsCreateAccountController* createAccountController;    
 }
 - (IBAction)saveAccount:(id)sender;
-- (IBAction)importMailAccount:(id)sender;
 - (IBAction)addAccount:(id)sender;
 - (IBAction)deleteAccount:(id)sender;    
 @end

@@ -8,7 +8,6 @@
 
 #import "LAPrefsAccountsModule.h"
 #import "LAAppDelegate.h"
-#import "LAAccountImportController.h"
 #import <LetterBox/LetterBox.h>
 
 
@@ -48,6 +47,12 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [createAccountController release];
     [super dealloc];
+}
+
+- (void)awakeFromNib {
+    if( [[appDelegate accounts] count] == 0 ) {
+        [self performSelector:@selector(addAccount:) withObject:nil afterDelay:0.1];
+    }
 }
 
 // ----------------------------------------------------------------------------
@@ -147,12 +152,6 @@
 - (IBAction)saveAccount:(id)sender {
     NSInteger selectedIndex = [[accountList selectedRowIndexes] firstIndex];
     [self saveAccountSettings:selectedIndex];
-}
-
-- (IBAction)importMailAccount:(id)sender {
-    LAAccountImportController* importController = [[LAAccountImportController alloc] initWithWindowNibName:@"AccountImport"];
-    [[importController window] center];
-    [[importController window] makeKeyAndOrderFront:self];
 }
 
 - (void)accountUpdated:(NSNotification*)note {
