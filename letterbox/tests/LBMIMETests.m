@@ -31,7 +31,7 @@
 
 #import "LBMIMETests.h"
 
-#import "LBMessage.h"
+#import "LBIMAPMessage.h"
 #import "LBMIME.h"
 #import <libetpan/libetpan.h>
 #import "LBMIMEFactory.h"
@@ -45,7 +45,7 @@ const NSString *filePrefix = @"/Users/jason/git-local/letters/letterbox/";
 
 @implementation LBMIMETests
 - (void)testMIMETextPart {
-	LBMessage *msg = [[LBMessage alloc] initWithFileAtPath:[NSString stringWithFormat:@"%@%@",filePrefix,@"TestData/kiwi-dev/1167196014.6158_0.theronge.com:2,Sab"]];
+	LBIMAPMessage *msg = [[LBIMAPMessage alloc] initWithFileAtPath:[NSString stringWithFormat:@"%@%@",filePrefix,@"TestData/kiwi-dev/1167196014.6158_0.theronge.com:2,Sab"]];
 	LBMIME *mime = [LBMIMEFactory createMIMEWithMIMEStruct:[msg messageStruct]->msg_mime forMessage:[msg messageStruct]];
 	STAssertTrue([mime isKindOfClass:[LBMIME_MessagePart class]],@"Outmost MIME type should be Message but it's not!");
 	STAssertTrue([[mime content] isKindOfClass:[LBMIME_MultiPart class]],@"Incorrect MIME structure found!");
@@ -66,7 +66,7 @@ const NSString *filePrefix = @"/Users/jason/git-local/letters/letterbox/";
 	NSString *str = [messagePart render];
 	[str writeToFile:@"/tmp/mailcore_test_output" atomically:NO encoding:NSASCIIStringEncoding error:NULL];
 	
-	LBMessage *msg = [[LBMessage alloc] initWithFileAtPath:@"/tmp/mailcore_test_output"];
+	LBIMAPMessage *msg = [[LBIMAPMessage alloc] initWithFileAtPath:@"/tmp/mailcore_test_output"];
 	LBMIME *mime = [LBMIMEFactory createMIMEWithMIMEStruct:[msg messageStruct]->msg_mime forMessage:[msg messageStruct]];
 	STAssertTrue([mime isKindOfClass:[LBMIME_MessagePart class]],@"Outmost MIME type should be Message but it's not!");
 	STAssertTrue([[mime content] isKindOfClass:[LBMIME_MultiPart class]],@"Incorrect MIME structure found!");
@@ -85,7 +85,7 @@ const NSString *filePrefix = @"/Users/jason/git-local/letters/letterbox/";
 	while ((file = [dirEnumerator nextObject])) {
 		if (!NSEqualRanges([file rangeOfString:@".svn"],notFound))
 			continue;
-		LBMessage *msg = [[LBMessage alloc] initWithFileAtPath:[NSString stringWithFormat:@"%@TestData/kiwi-dev/%@",filePrefix,file]];
+		LBIMAPMessage *msg = [[LBIMAPMessage alloc] initWithFileAtPath:[NSString stringWithFormat:@"%@TestData/kiwi-dev/%@",filePrefix,file]];
 		NSLog(@"%@",[msg subject]);
 		[msg fetchBody];
 		NSString *stuff = [msg body];
@@ -95,7 +95,7 @@ const NSString *filePrefix = @"/Users/jason/git-local/letters/letterbox/";
 }
 
 - (void)testImageJPEGAttachment {
-	LBMessage *msg = [[LBMessage alloc] initWithFileAtPath:[NSString stringWithFormat:@"%@%@",filePrefix,@"TestData/mime-tests/imagetest"]];
+	LBIMAPMessage *msg = [[LBIMAPMessage alloc] initWithFileAtPath:[NSString stringWithFormat:@"%@%@",filePrefix,@"TestData/mime-tests/imagetest"]];
 	LBMIME *mime = [LBMIMEFactory createMIMEWithMIMEStruct:[msg messageStruct]->msg_mime forMessage:[msg messageStruct]];
 	STAssertTrue([mime isKindOfClass:[LBMIME_MessagePart class]],@"Outmost MIME type should be Message but it's not!");
 	STAssertTrue([[mime content] isKindOfClass:[LBMIME_MultiPart class]],@"Incorrect MIME structure found!");
@@ -110,7 +110,7 @@ const NSString *filePrefix = @"/Users/jason/git-local/letters/letterbox/";
 }
 
 - (void)testImagePNGAttachment {
-	LBMessage *msg = [[LBMessage alloc] initWithFileAtPath:
+	LBIMAPMessage *msg = [[LBIMAPMessage alloc] initWithFileAtPath:
 				[NSString stringWithFormat:@"%@%@",filePrefix,@"TestData/mime-tests/png_attachment"]];
 	LBMIME *mime = [LBMIMEFactory createMIMEWithMIMEStruct:
 						[msg messageStruct]->msg_mime forMessage:[msg messageStruct]];
@@ -132,7 +132,7 @@ const NSString *filePrefix = @"/Users/jason/git-local/letters/letterbox/";
 }
 
 - (void)testEnumerator {
-	LBMessage *msg = [[LBMessage alloc] initWithFileAtPath:
+	LBIMAPMessage *msg = [[LBIMAPMessage alloc] initWithFileAtPath:
 				[NSString stringWithFormat:@"%@%@",filePrefix,@"TestData/mime-tests/png_attachment"]];
 	LBMIME *mime = [LBMIMEFactory createMIMEWithMIMEStruct:
 						[msg messageStruct]->msg_mime forMessage:[msg messageStruct]];

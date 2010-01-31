@@ -38,7 +38,7 @@
     the necessary server settings and LBSMTPConnection will send the message.
 */
 
-@class LBMessage, LBAddress;
+@class LBIMAPMessage, LBAddress;
 
 @interface LBSMTPConnection : NSObject {
 
@@ -54,6 +54,6 @@
     @param        useTLS Pass in YES, if you want to use SSL/TLS
     @param        useAuth Pass in YES if you would like to use SASL authentication
 */
-+ (void)sendMessage:(LBMessage *)message server:(NSString *)server username:(NSString *)username
++ (void)sendMessage:(LBIMAPMessage *)message server:(NSString *)server username:(NSString *)username
                     password:(NSString *)password port:(unsigned int)port useTLS:(BOOL)tls useAuth:(BOOL)auth;
 @end

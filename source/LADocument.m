@@ -7,6 +7,7 @@
 
 #import "LADocument.h"
 #import "LAAppDelegate.h"
+#import <LetterBox/LetterBox.h>
 
 @implementation LADocument
 @synthesize statusMessage;
@@ -104,7 +105,7 @@
     }
     
     
-    LBMessage *msg = [[LBMessage alloc] init];
+    LBIMAPMessage *msg = [[LBIMAPMessage alloc] init];
     [msg setTo:toSet];
     [msg setFrom:[NSSet setWithObject:[LBAddress addressWithName:@"" email:fromList]]];
     [msg setBody:[[message copy] autorelease]];

@@ -32,7 +32,7 @@
 #import "LBESMTP.h"
 
 #import "LBAddress.h"
-#import "LBMessage.h"
+#import "LBIMAPMessage.h"
 #import "LetterBoxTypes.h"
 
 #include <sys/types.h>

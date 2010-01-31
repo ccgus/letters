@@ -47,10 +47,10 @@
 		CC877CE7110ABC04005ECF65 /* LetterBox.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CD3110ABC04005ECF65 /* LetterBox.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC877CE8110ABC04005ECF65 /* LBServer.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CD4110ABC04005ECF65 /* LBServer.m */; };
 		CC877CE9110ABC04005ECF65 /* LBServer.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CD5110ABC04005ECF65 /* LBServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CC877CEA110ABC04005ECF65 /* LBMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CD6110ABC04005ECF65 /* LBMessage.m */; };
-		CC877CEB110ABC04005ECF65 /* LBMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CD7110ABC04005ECF65 /* LBMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CC877CEC110ABC04005ECF65 /* LBFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CD8110ABC04005ECF65 /* LBFolder.m */; };
-		CC877CED110ABC04005ECF65 /* LBFolder.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CD9110ABC04005ECF65 /* LBFolder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CC877CEA110ABC04005ECF65 /* LBIMAPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CD6110ABC04005ECF65 /* LBIMAPMessage.m */; };
+		CC877CEB110ABC04005ECF65 /* LBIMAPMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CD7110ABC04005ECF65 /* LBIMAPMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CC877CEC110ABC04005ECF65 /* LBIMAPFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CD8110ABC04005ECF65 /* LBIMAPFolder.m */; };
+		CC877CED110ABC04005ECF65 /* LBIMAPFolder.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CD9110ABC04005ECF65 /* LBIMAPFolder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC877CEE110ABC04005ECF65 /* LBBareMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CDA110ABC04005ECF65 /* LBBareMessage.m */; };
 		CC877CEF110ABC04005ECF65 /* LBBareMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CDB110ABC04005ECF65 /* LBBareMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC877CF0110ABC04005ECF65 /* LBBareAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CDC110ABC04005ECF65 /* LBBareAttachment.m */; };
@@ -63,8 +63,13 @@
 		CC877CF7110ABC04005ECF65 /* LBAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CE3110ABC04005ECF65 /* LBAccount.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC877CFA110ABC1D005ECF65 /* JRLog.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CF8110ABC1D005ECF65 /* JRLog.m */; };
 		CC877CFB110ABC1D005ECF65 /* JRLog.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CF9110ABC1D005ECF65 /* JRLog.h */; };
-		CCD58CD5110BD9A30077F572 /* LBIMAPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = CCD58CD3110BD9A30077F572 /* LBIMAPConnection.h */; };
+		CCADF2DA1114E94D00E4714F /* Python.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCADF2D91114E94D00E4714F /* Python.framework */; };
+		CCD58CD5110BD9A30077F572 /* LBIMAPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = CCD58CD3110BD9A30077F572 /* LBIMAPConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CCD58CD6110BD9A30077F572 /* LBIMAPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = CCD58CD4110BD9A30077F572 /* LBIMAPConnection.m */; };
+		CCD721831115257A003C14AC /* LBFolder.h in Headers */ = {isa = PBXBuildFile; fileRef = CCD721811115257A003C14AC /* LBFolder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CCD721841115257A003C14AC /* LBFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = CCD721821115257A003C14AC /* LBFolder.m */; };
+		CCD7218911152594003C14AC /* LBMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = CCD7218711152594003C14AC /* LBMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CCD7218A11152594003C14AC /* LBMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = CCD7218811152594003C14AC /* LBMessage.m */; };
 		CCF41348110D39F200401D5D /* LBActivity.h in Headers */ = {isa = PBXBuildFile; fileRef = CCF41346110D39F200401D5D /* LBActivity.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F82D7D1F0F48ACC700ADA65C /* LetterBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* LetterBox.framework */; };
 		F8483E4109CE7B9000B80440 /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8483E4009CE7B9000B80440 /* libssl.dylib */; };
@@ -163,10 +168,10 @@
 		CC877CD3110ABC04005ECF65 /* LetterBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LetterBox.h; path = source/LetterBox.h; sourceTree = "<group>"; };
 		CC877CD4110ABC04005ECF65 /* LBServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBServer.m; path = source/LBServer.m; sourceTree = "<group>"; };
 		CC877CD5110ABC04005ECF65 /* LBServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBServer.h; path = source/LBServer.h; sourceTree = "<group>"; };
-		CC877CD6110ABC04005ECF65 /* LBMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBMessage.m; path = source/LBMessage.m; sourceTree = "<group>"; };
-		CC877CD7110ABC04005ECF65 /* LBMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBMessage.h; path = source/LBMessage.h; sourceTree = "<group>"; };
-		CC877CD8110ABC04005ECF65 /* LBFolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBFolder.m; path = source/LBFolder.m; sourceTree = "<group>"; };
-		CC877CD9110ABC04005ECF65 /* LBFolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBFolder.h; path = source/LBFolder.h; sourceTree = "<group>"; };
+		CC877CD6110ABC04005ECF65 /* LBIMAPMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBIMAPMessage.m; path = source/LBIMAPMessage.m; sourceTree = "<group>"; };
+		CC877CD7110ABC04005ECF65 /* LBIMAPMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBIMAPMessage.h; path = source/LBIMAPMessage.h; sourceTree = "<group>"; };
+		CC877CD8110ABC04005ECF65 /* LBIMAPFolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBIMAPFolder.m; path = source/LBIMAPFolder.m; sourceTree = "<group>"; };
+		CC877CD9110ABC04005ECF65 /* LBIMAPFolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBIMAPFolder.h; path = source/LBIMAPFolder.h; sourceTree = "<group>"; };
 		CC877CDA110ABC04005ECF65 /* LBBareMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBBareMessage.m; path = source/LBBareMessage.m; sourceTree = "<group>"; };
 		CC877CDB110ABC04005ECF65 /* LBBareMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBBareMessage.h; path = source/LBBareMessage.h; sourceTree = "<group>"; };
 		CC877CDC110ABC04005ECF65 /* LBBareAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBBareAttachment.m; path = source/LBBareAttachment.m; sourceTree = "<group>"; };
@@ -193,8 +198,13 @@
 		CC877D3F110ABD32005ECF65 /* LBMIMETests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBMIMETests.m; path = tests/LBMIMETests.m; sourceTree = "<group>"; };
 		CCA553E01106DB6B00CEEFF4 /* Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Tests-Info.plist"; path = "resources/Tests-Info.plist"; sourceTree = "<group>"; };
 		CCA553E21106DB7100CEEFF4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = resources/Info.plist; sourceTree = "<group>"; };
+		CCADF2D91114E94D00E4714F /* Python.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python.framework; path = /System/Library/Frameworks/Python.framework; sourceTree = "<absolute>"; };
 		CCD58CD3110BD9A30077F572 /* LBIMAPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBIMAPConnection.h; path = source/LBIMAPConnection.h; sourceTree = "<group>"; };
 		CCD58CD4110BD9A30077F572 /* LBIMAPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBIMAPConnection.m; path = source/LBIMAPConnection.m; sourceTree = "<group>"; };
+		CCD721811115257A003C14AC /* LBFolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBFolder.h; path = source/LBFolder.h; sourceTree = "<group>"; };
+		CCD721821115257A003C14AC /* LBFolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBFolder.m; path = source/LBFolder.m; sourceTree = "<group>"; };
+		CCD7218711152594003C14AC /* LBMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBMessage.h; path = source/LBMessage.h; sourceTree = "<group>"; };
+		CCD7218811152594003C14AC /* LBMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBMessage.m; path = source/LBMessage.m; sourceTree = "<group>"; };
 		CCF41346110D39F200401D5D /* LBActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBActivity.h; path = source/LBActivity.h; sourceTree = "<group>"; };
 		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		F82D7C810F48AC8500ADA65C /* Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -218,6 +228,7 @@
 				F88804620B42018500D400E7 /* libsasl2.dylib in Frameworks */,
 				CC3D54381108EFE800EEEF77 /* libsqlite3.dylib in Frameworks */,
 				CC517468110ACD8400C01407 /* libetpan.framework in Frameworks */,
+				CCADF2DA1114E94D00E4714F /* Python.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,12 +301,16 @@
 				CC877CDC110ABC04005ECF65 /* LBBareAttachment.m */,
 				CC877CDB110ABC04005ECF65 /* LBBareMessage.h */,
 				CC877CDA110ABC04005ECF65 /* LBBareMessage.m */,
-				CC877CD9110ABC04005ECF65 /* LBFolder.h */,
-				CC877CD8110ABC04005ECF65 /* LBFolder.m */,
+				CCD721811115257A003C14AC /* LBFolder.h */,
+				CCD721821115257A003C14AC /* LBFolder.m */,
 				CCD58CD3110BD9A30077F572 /* LBIMAPConnection.h */,
 				CCD58CD4110BD9A30077F572 /* LBIMAPConnection.m */,
-				CC877CD7110ABC04005ECF65 /* LBMessage.h */,
-				CC877CD6110ABC04005ECF65 /* LBMessage.m */,
+				CC877CD9110ABC04005ECF65 /* LBIMAPFolder.h */,
+				CC877CD8110ABC04005ECF65 /* LBIMAPFolder.m */,
+				CC877CD7110ABC04005ECF65 /* LBIMAPMessage.h */,
+				CC877CD6110ABC04005ECF65 /* LBIMAPMessage.m */,
+				CCD7218711152594003C14AC /* LBMessage.h */,
+				CCD7218811152594003C14AC /* LBMessage.m */,
 				CC877CD5110ABC04005ECF65 /* LBServer.h */,
 				CC877CD4110ABC04005ECF65 /* LBServer.m */,
 				CC877CD3110ABC04005ECF65 /* LetterBox.h */,
@@ -309,6 +324,7 @@
 		1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CCADF2D91114E94D00E4714F /* Python.framework */,
 				CC517467110ACD8400C01407 /* libetpan.framework */,
 				F88804610B42018500D400E7 /* libsasl2.dylib */,
 				F8483E4B09CE7C2800B80440 /* libcrypto.dylib */,
@@ -438,8 +454,8 @@
 				CC877CE6110ABC04005ECF65 /* LetterBoxTypes.h in Headers */,
 				CC877CE7110ABC04005ECF65 /* LetterBox.h in Headers */,
 				CC877CE9110ABC04005ECF65 /* LBServer.h in Headers */,
-				CC877CEB110ABC04005ECF65 /* LBMessage.h in Headers */,
-				CC877CED110ABC04005ECF65 /* LBFolder.h in Headers */,
+				CC877CEB110ABC04005ECF65 /* LBIMAPMessage.h in Headers */,
+				CC877CED110ABC04005ECF65 /* LBIMAPFolder.h in Headers */,
 				CC877CEF110ABC04005ECF65 /* LBBareMessage.h in Headers */,
 				CC877CF1110ABC04005ECF65 /* LBBareAttachment.h in Headers */,
 				CC877CF3110ABC04005ECF65 /* LBAttachment.h in Headers */,
@@ -448,6 +464,8 @@
 				CC877CFB110ABC1D005ECF65 /* JRLog.h in Headers */,
 				CCD58CD5110BD9A30077F572 /* LBIMAPConnection.h in Headers */,
 				CCF41348110D39F200401D5D /* LBActivity.h in Headers */,
+				CCD721831115257A003C14AC /* LBFolder.h in Headers */,
+				CCD7218911152594003C14AC /* LBMessage.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -618,8 +636,8 @@
 				CC877CCE110ABBC7005ECF65 /* LBMIME_Enumerator.m in Sources */,
 				CC877CE4110ABC04005ECF65 /* LetterBoxUtilities.m in Sources */,
 				CC877CE8110ABC04005ECF65 /* LBServer.m in Sources */,
-				CC877CEA110ABC04005ECF65 /* LBMessage.m in Sources */,
-				CC877CEC110ABC04005ECF65 /* LBFolder.m in Sources */,
+				CC877CEA110ABC04005ECF65 /* LBIMAPMessage.m in Sources */,
+				CC877CEC110ABC04005ECF65 /* LBIMAPFolder.m in Sources */,
 				CC877CEE110ABC04005ECF65 /* LBBareMessage.m in Sources */,
 				CC877CF0110ABC04005ECF65 /* LBBareAttachment.m in Sources */,
 				CC877CF2110ABC04005ECF65 /* LBAttachment.m in Sources */,
@@ -627,6 +645,8 @@
 				CC877CF6110ABC04005ECF65 /* LBAccount.m in Sources */,
 				CC877CFA110ABC1D005ECF65 /* JRLog.m in Sources */,
 				CCD58CD6110BD9A30077F572 /* LBIMAPConnection.m in Sources */,
+				CCD721841115257A003C14AC /* LBFolder.m in Sources */,
+				CCD7218A11152594003C14AC /* LBMessage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
