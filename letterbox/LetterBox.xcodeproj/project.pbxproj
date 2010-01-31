@@ -8,16 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
-		9690524C110EE6880053E8C0 /* LBAccountTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D37110ABD32005ECF65 /* LBAccountTests.m */; };
-		96CB484E110E4D3900185A28 /* LBActivityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96CB484D110E4D3900185A28 /* LBActivityTests.m */; };
-		96CB4851110E4DD300185A28 /* LBFolderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96CB4850110E4DD300185A28 /* LBFolderTests.m */; };
-		96CB4888110E500400185A28 /* LBIMAPConnectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96CB4887110E500400185A28 /* LBIMAPConnectionTests.m */; };
-		96CB488B110E503500185A28 /* LBServerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96CB488A110E503500185A28 /* LBServerTests.m */; };
-		96FE05A8110D728D00B03DC3 /* LBMessageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D3D110ABD32005ECF65 /* LBMessageTests.m */; };
-		96FE05D7110D73CE00B03DC3 /* LBMIMETests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D3F110ABD32005ECF65 /* LBMIMETests.m */; };
-		96FE05E0110D745100B03DC3 /* LBBareMessageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D35110ABD32005ECF65 /* LBBareMessageTests.m */; };
-		96FE05E2110D745100B03DC3 /* LBAddressTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D39110ABD32005ECF65 /* LBAddressTests.m */; };
-		96FE05E3110D745100B03DC3 /* LBAttachmentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D3B110ABD32005ECF65 /* LBAttachmentTests.m */; };
+		964BA5381115A9AC001B8F82 /* GHUnit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 968D0E5C111525550044BE1D /* GHUnit.framework */; };
+		968D0EAF111526880044BE1D /* LetterBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* LetterBox.framework */; };
+		968D0ECB111526970044BE1D /* GHUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 968D0E5C111525550044BE1D /* GHUnit.framework */; };
+		968D0ED7111526CC0044BE1D /* GHUnitTestMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 968D0E7B1115258B0044BE1D /* GHUnitTestMain.m */; };
+		968D0ED9111526CC0044BE1D /* LBAccountTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D37110ABD32005ECF65 /* LBAccountTests.m */; };
+		968D0F43111528AB0044BE1D /* LBActivityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96CB484D110E4D3900185A28 /* LBActivityTests.m */; };
+		968D0F44111528AB0044BE1D /* LBAddressTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D39110ABD32005ECF65 /* LBAddressTests.m */; };
+		968D0F45111528AB0044BE1D /* LBAttachmentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D3B110ABD32005ECF65 /* LBAttachmentTests.m */; };
+		96B8B0FB11153F4200A36A36 /* LBBareMessageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D35110ABD32005ECF65 /* LBBareMessageTests.m */; };
+		96B8B0FC11153F4200A36A36 /* LBFolderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96CB4850110E4DD300185A28 /* LBFolderTests.m */; };
+		96B8B0FD11153F4200A36A36 /* LBIMAPConnectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96CB4887110E500400185A28 /* LBIMAPConnectionTests.m */; };
+		96B8B0FE11153F4200A36A36 /* LBMessageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D3D110ABD32005ECF65 /* LBMessageTests.m */; };
+		96B8B0FF11153F4200A36A36 /* LBMIMETests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D3F110ABD32005ECF65 /* LBMIMETests.m */; };
+		96B8B10011153F4200A36A36 /* LBServerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 96CB488A110E503500185A28 /* LBServerTests.m */; };
 		CC3D54231108E7F700EEEF77 /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = CC3D541D1108E7F700EEEF77 /* FMDatabase.h */; };
 		CC3D54241108E7F700EEEF77 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3D541E1108E7F700EEEF77 /* FMDatabase.m */; };
 		CC3D54251108E7F700EEEF77 /* FMDatabaseAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = CC3D541F1108E7F700EEEF77 /* FMDatabaseAdditions.h */; };
@@ -76,7 +80,6 @@
 		CCD7218911152594003C14AC /* LBMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = CCD7218711152594003C14AC /* LBMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CCD7218A11152594003C14AC /* LBMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = CCD7218811152594003C14AC /* LBMessage.m */; };
 		CCF41348110D39F200401D5D /* LBActivity.h in Headers */ = {isa = PBXBuildFile; fileRef = CCF41346110D39F200401D5D /* LBActivity.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F82D7D1F0F48ACC700ADA65C /* LetterBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* LetterBox.framework */; };
 		F8483E4109CE7B9000B80440 /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8483E4009CE7B9000B80440 /* libssl.dylib */; };
 		F8483E4309CE7B9C00B80440 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8483E4209CE7B9C00B80440 /* libiconv.dylib */; };
 		F8483E4C09CE7C2800B80440 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8483E4B09CE7C2800B80440 /* libcrypto.dylib */; };
@@ -85,6 +88,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		968D0EC91115268F0044BE1D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = LetterBox;
+		};
 		CC6D05E7110A488200D900E9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F890D38D10CEECD50039817C /* libetpan.xcodeproj */;
@@ -98,13 +108,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = C69AB10910546FE500F32FBD;
 			remoteInfo = "static libetpan";
-		};
-		F82D7D220F48ACDA00ADA65C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
-			remoteInfo = MailCore;
 		};
 		F890D39510CEECD50039817C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -123,6 +126,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		964BA5431115A9B5001B8F82 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				964BA5381115A9AC001B8F82 /* GHUnit.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F89614140A79D30A00F93E26 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -139,14 +152,17 @@
 		0867D6A5FE840307C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		8DC2EF5B0486A6940098B216 /* LetterBox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LetterBox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		96CB484C110E4D3900185A28 /* LBActivityTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBActivityTests.h; sourceTree = "<group>"; };
-		96CB484D110E4D3900185A28 /* LBActivityTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBActivityTests.m; sourceTree = "<group>"; };
-		96CB484F110E4DD300185A28 /* LBFolderTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBFolderTests.h; sourceTree = "<group>"; };
-		96CB4850110E4DD300185A28 /* LBFolderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBFolderTests.m; sourceTree = "<group>"; };
-		96CB4886110E500400185A28 /* LBIMAPConnectionTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBIMAPConnectionTests.h; sourceTree = "<group>"; };
-		96CB4887110E500400185A28 /* LBIMAPConnectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBIMAPConnectionTests.m; sourceTree = "<group>"; };
-		96CB4889110E503500185A28 /* LBServerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBServerTests.h; sourceTree = "<group>"; };
-		96CB488A110E503500185A28 /* LBServerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBServerTests.m; sourceTree = "<group>"; };
+		968D0E5C111525550044BE1D /* GHUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GHUnit.framework; sourceTree = "<group>"; };
+		968D0E7B1115258B0044BE1D /* GHUnitTestMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GHUnitTestMain.m; path = tests/GHUnitTestMain.m; sourceTree = "<group>"; };
+		968D0EA71115267D0044BE1D /* Tests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tests.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		96CB484C110E4D3900185A28 /* LBActivityTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBActivityTests.h; path = tests/LBActivityTests.h; sourceTree = "<group>"; };
+		96CB484D110E4D3900185A28 /* LBActivityTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBActivityTests.m; path = tests/LBActivityTests.m; sourceTree = "<group>"; };
+		96CB484F110E4DD300185A28 /* LBFolderTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBFolderTests.h; path = tests/LBFolderTests.h; sourceTree = "<group>"; };
+		96CB4850110E4DD300185A28 /* LBFolderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBFolderTests.m; path = tests/LBFolderTests.m; sourceTree = "<group>"; };
+		96CB4886110E500400185A28 /* LBIMAPConnectionTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBIMAPConnectionTests.h; path = tests/LBIMAPConnectionTests.h; sourceTree = "<group>"; };
+		96CB4887110E500400185A28 /* LBIMAPConnectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBIMAPConnectionTests.m; path = tests/LBIMAPConnectionTests.m; sourceTree = "<group>"; };
+		96CB4889110E503500185A28 /* LBServerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBServerTests.h; path = tests/LBServerTests.h; sourceTree = "<group>"; };
+		96CB488A110E503500185A28 /* LBServerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBServerTests.m; path = tests/LBServerTests.m; sourceTree = "<group>"; };
 		CC3D541D1108E7F700EEEF77 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabase.h; path = source/FMDatabase.h; sourceTree = "<group>"; };
 		CC3D541E1108E7F700EEEF77 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = source/FMDatabase.m; sourceTree = "<group>"; };
 		CC3D541F1108E7F700EEEF77 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = source/FMDatabaseAdditions.h; sourceTree = "<group>"; };
@@ -220,7 +236,6 @@
 		CCD7218811152594003C14AC /* LBMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBMessage.m; path = source/LBMessage.m; sourceTree = "<group>"; };
 		CCF41346110D39F200401D5D /* LBActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBActivity.h; path = source/LBActivity.h; sourceTree = "<group>"; };
 		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
-		F82D7C810F48AC8500ADA65C /* Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8483E4009CE7B9000B80440 /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.dylib; path = /usr/lib/libssl.dylib; sourceTree = "<absolute>"; };
 		F8483E4209CE7B9C00B80440 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = /usr/lib/libiconv.dylib; sourceTree = "<absolute>"; };
 		F8483E4B09CE7C2800B80440 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = /usr/lib/libcrypto.dylib; sourceTree = "<absolute>"; };
@@ -245,11 +260,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F82D7C7E0F48AC8500ADA65C /* Frameworks */ = {
+		968D0EA51115267D0044BE1D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F82D7D1F0F48ACC700ADA65C /* LetterBox.framework in Frameworks */,
+				968D0ECB111526970044BE1D /* GHUnit.framework in Frameworks */,
+				968D0EAF111526880044BE1D /* LetterBox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,7 +276,7 @@
 			isa = PBXGroup;
 			children = (
 				8DC2EF5B0486A6940098B216 /* LetterBox.framework */,
-				F82D7C810F48AC8500ADA65C /* Tests.octest */,
+				968D0EA71115267D0044BE1D /* Tests.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -338,6 +354,7 @@
 			isa = PBXGroup;
 			children = (
 				CCADF2D91114E94D00E4714F /* Python.framework */,
+				968D0E5C111525550044BE1D /* GHUnit.framework */,
 				CC517467110ACD8400C01407 /* libetpan.framework */,
 				F88804610B42018500D400E7 /* libsasl2.dylib */,
 				F8483E4B09CE7C2800B80440 /* libcrypto.dylib */,
@@ -418,6 +435,7 @@
 		F85A18AF09C7D8F200305C06 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				968D0E7B1115258B0044BE1D /* GHUnitTestMain.m */,
 				CC877D36110ABD32005ECF65 /* LBAccountTests.h */,
 				CC877D37110ABD32005ECF65 /* LBAccountTests.m */,
 				96CB484C110E4D3900185A28 /* LBActivityTests.h */,
@@ -517,24 +535,24 @@
 			productReference = 8DC2EF5B0486A6940098B216 /* LetterBox.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		F82D7C800F48AC8500ADA65C /* Tests */ = {
+		968D0EA61115267D0044BE1D /* Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F82D7C840F48ACA300ADA65C /* Build configuration list for PBXNativeTarget "Tests" */;
+			buildConfigurationList = 968D0EAC1115267E0044BE1D /* Build configuration list for PBXNativeTarget "Tests" */;
 			buildPhases = (
-				F82D7C7C0F48AC8500ADA65C /* Resources */,
-				F82D7C7D0F48AC8500ADA65C /* Sources */,
-				F82D7C7E0F48AC8500ADA65C /* Frameworks */,
-				F82D7C7F0F48AC8500ADA65C /* ShellScript */,
+				964BA5431115A9B5001B8F82 /* CopyFiles */,
+				968D0EA31115267D0044BE1D /* Resources */,
+				968D0EA41115267D0044BE1D /* Sources */,
+				968D0EA51115267D0044BE1D /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				F82D7D230F48ACDA00ADA65C /* PBXTargetDependency */,
+				968D0ECA1115268F0044BE1D /* PBXTargetDependency */,
 			);
 			name = Tests;
 			productName = Tests;
-			productReference = F82D7C810F48AC8500ADA65C /* Tests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productReference = 968D0EA71115267D0044BE1D /* Tests.app */;
+			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
@@ -556,7 +574,7 @@
 			projectRoot = ..;
 			targets = (
 				8DC2EF4F0486A6940098B216 /* LetterBox */,
-				F82D7C800F48AC8500ADA65C /* Tests */,
+				968D0EA61115267D0044BE1D /* Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -586,7 +604,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F82D7C7C0F48AC8500ADA65C /* Resources */ = {
+		968D0EA31115267D0044BE1D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -596,19 +614,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		F82D7C7F0F48AC8500ADA65C /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "## Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n\n# Exiting with an errorlevel of 1 is missleading as it increases the error count by one without good reason.\n# If there were problems while running the unit tests those will be passed through.\nexit 0\n\n## In the future we might use gcov to determine code coverage of the tests.\n# FRAMEWORK_OBJ_DIR=${OBJROOT}/LetterBox.build/${CONFIGURATION}/LetterBox.build/Objects-normal/${ARCHS}\n# echo $FRAMEWORK_OBJ_DIR\n# mkdir -p coverage\n# pushd coverage\n# find ${OBJROOT} -name *.gcno -exec gcov -o ${FRAMEWORK_OBJ_DIR} {} \\;\n# popd";
-		};
 		F848422D09CFACA000B80440 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -671,26 +676,32 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F82D7C7D0F48AC8500ADA65C /* Sources */ = {
+		968D0EA41115267D0044BE1D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9690524C110EE6880053E8C0 /* LBAccountTests.m in Sources */,
-				96CB484E110E4D3900185A28 /* LBActivityTests.m in Sources */,
-				96FE05E2110D745100B03DC3 /* LBAddressTests.m in Sources */,
-				96FE05E3110D745100B03DC3 /* LBAttachmentTests.m in Sources */,
-				96FE05E0110D745100B03DC3 /* LBBareMessageTests.m in Sources */,
-				96CB4851110E4DD300185A28 /* LBFolderTests.m in Sources */,
-				96CB4888110E500400185A28 /* LBIMAPConnectionTests.m in Sources */,
-				96FE05A8110D728D00B03DC3 /* LBMessageTests.m in Sources */,
-				96FE05D7110D73CE00B03DC3 /* LBMIMETests.m in Sources */,
-				96CB488B110E503500185A28 /* LBServerTests.m in Sources */,
+				968D0ED7111526CC0044BE1D /* GHUnitTestMain.m in Sources */,
+				968D0ED9111526CC0044BE1D /* LBAccountTests.m in Sources */,
+				968D0F43111528AB0044BE1D /* LBActivityTests.m in Sources */,
+				968D0F44111528AB0044BE1D /* LBAddressTests.m in Sources */,
+				968D0F45111528AB0044BE1D /* LBAttachmentTests.m in Sources */,
+				96B8B0FB11153F4200A36A36 /* LBBareMessageTests.m in Sources */,
+				96B8B0FC11153F4200A36A36 /* LBFolderTests.m in Sources */,
+				96B8B0FD11153F4200A36A36 /* LBIMAPConnectionTests.m in Sources */,
+				96B8B0FE11153F4200A36A36 /* LBMessageTests.m in Sources */,
+				96B8B0FF11153F4200A36A36 /* LBMIMETests.m in Sources */,
+				96B8B10011153F4200A36A36 /* LBServerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		968D0ECA1115268F0044BE1D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8DC2EF4F0486A6940098B216 /* LetterBox */;
+			targetProxy = 968D0EC91115268F0044BE1D /* PBXContainerItemProxy */;
+		};
 		CC6D05E8110A488200D900E9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = libetpan;
@@ -700,11 +711,6 @@
 			isa = PBXTargetDependency;
 			name = "static libetpan";
 			targetProxy = CC6D0620110A4A5D00D900E9 /* PBXContainerItemProxy */;
-		};
-		F82D7D230F48ACDA00ADA65C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8DC2EF4F0486A6940098B216 /* LetterBox */;
-			targetProxy = F82D7D220F48ACDA00ADA65C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -782,62 +788,66 @@
 			};
 			name = Release;
 		};
-		F82D7C820F48AC8500ADA65C /* Debug */ = {
+		968D0EAA1115267E0044BE1D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
+				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)\"";
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
 				INFOPLIST_FILE = "resources/Tests-Info.plist";
-				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"-framework",
-					Cocoa,
+					Foundation,
 					"-framework",
-					SenTestingKit,
+					AppKit,
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Tests;
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
 		};
-		F82D7C830F48AC8500ADA65C /* Release */ = {
+		968D0EAB1115267E0044BE1D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/OpenSourceProjects/libetpan-0.58/build-mac/build/Release\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
-				INFOPLIST_FILE = "Tests-Info.plist";
-				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "resources/Tests-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"-framework",
-					Cocoa,
+					Foundation,
 					"-framework",
-					SenTestingKit,
+					AppKit,
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Tests;
-				WRAPPER_EXTENSION = octest;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -863,11 +873,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F82D7C840F48ACA300ADA65C /* Build configuration list for PBXNativeTarget "Tests" */ = {
+		968D0EAC1115267E0044BE1D /* Build configuration list for PBXNativeTarget "Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F82D7C820F48AC8500ADA65C /* Debug */,
-				F82D7C830F48AC8500ADA65C /* Release */,
+				968D0EAA1115267E0044BE1D /* Debug */,
+				968D0EAB1115267E0044BE1D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

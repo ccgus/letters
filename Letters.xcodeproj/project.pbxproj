@@ -275,7 +275,7 @@
 			isa = PBXGroup;
 			children = (
 				CCA554D31106F2D600CEEFF4 /* LetterBox.framework */,
-				CCA554D51106F2D600CEEFF4 /* Tests.octest */,
+				CCA554D51106F2D600CEEFF4 /* Tests.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -338,10 +338,10 @@
 			remoteRef = CCA554D21106F2D600CEEFF4 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		CCA554D51106F2D600CEEFF4 /* Tests.octest */ = {
+		CCA554D51106F2D600CEEFF4 /* Tests.app */ = {
 			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = Tests.octest;
+			fileType = wrapper.application;
+			path = Tests.app;
 			remoteRef = CCA554D41106F2D600CEEFF4 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};

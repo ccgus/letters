@@ -29,12 +29,14 @@
  * SUCH DAMAGE.
  */
  
-#import <SenTestingKit/SenTestingKit.h>
+#import <GHUnit/GHUnit.h>
 #import "LBAttachment.h"
 #import "LBMIMETests.h"
 
-@interface LBAttachmentTests : SenTestCase {
+@interface LBAttachmentTests : GHTestCase {
 
 }
+
+@property (retain) NSString *filePrefix;
 
 @end

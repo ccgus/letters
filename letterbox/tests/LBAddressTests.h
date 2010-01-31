@@ -29,10 +29,10 @@
  * SUCH DAMAGE.
  */
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <GHUnit/GHUnit.h>
 #import "LBAddress.h"
 
-@interface LBAddressTests : SenTestCase {
+@interface LBAddressTests : GHTestCase {
 
 }
 

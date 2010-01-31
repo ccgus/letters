@@ -29,12 +29,14 @@
  * SUCH DAMAGE.
  */
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <GHUnit/GHUnit.h>
 #import "LBIMAPMessage.h"
 
-@interface LBMessageTests : SenTestCase {
+@interface LBMessageTests : GHTestCase {
 	LBIMAPMessage *myMsg; 
 	LBIMAPMessage *myRealMsg;
 }
+
+@property (retain) NSString *filePrefix;
 
 @end

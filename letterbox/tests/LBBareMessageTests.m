@@ -40,7 +40,7 @@
 	LBBareMessage *msg2 = [[LBBareMessage alloc] init];
 	msg2.uid = @"11111-11111";
 	msg2.flags = 2;	
-	STAssertTrue([msg1 isEqual:msg2], @"LBBareMessage should have been equal!");
+	GHAssertTrue([msg1 isEqual:msg2], @"LBBareMessage should have been equal!");
 	[msg1 release];
 	[msg2 release];
 }
@@ -52,10 +52,10 @@
 	LBBareMessage *msg2 = [[LBBareMessage alloc] init];
 	msg2.uid = @"11111-11111";
 	msg2.flags = 2;	
-	STAssertFalse([msg1 isEqual:msg2], @"LBBareMessage should have been not equal!");
+	GHAssertFalse([msg1 isEqual:msg2], @"LBBareMessage should have been not equal!");
 	msg1.flags = 2;
 	msg2.uid = @"";
-	STAssertFalse([msg1 isEqual:msg2], @"LBBareMessage should have been not equal!");
+	GHAssertFalse([msg1 isEqual:msg2], @"LBBareMessage should have been not equal!");
 	[msg1 release];
 	[msg2 release];
 }
@@ -67,7 +67,7 @@
 	LBBareMessage *msg2 = [[LBBareMessage alloc] init];
 	msg2.uid = @"11111-11111";
 	msg2.flags = 2;
-	STAssertTrue([msg1 hash] == [msg2 hash], @"LBBareMessage hashes should have been equal!");
+	GHAssertTrue([msg1 hash] == [msg2 hash], @"LBBareMessage hashes should have been equal!");
 	[msg1 release];
 	[msg2 release];
 }

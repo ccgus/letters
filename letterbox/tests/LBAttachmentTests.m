@@ -33,36 +33,44 @@
 
 
 @implementation LBAttachmentTests
+
+@synthesize filePrefix;
+
+- (void)setUp {
+    filePrefix = @"../../letterbox/";
+}
+
 - (void)testJPEG {
 	NSString *path = [NSString stringWithFormat:@"%@%@",filePrefix,@"TestData/DSC_6201.jpg"];
 	LBAttachment *attach = [[LBAttachment alloc] initWithContentsOfFile:path];
-	STAssertEqualObjects(@"image/jpeg", [attach contentType], @"The content-type should have been image/jpeg");
-	STAssertTrue([attach data] != nil, @"Data should not have been nil");
+    GHTestLog(@"%@", attach);
+	GHAssertEqualObjects(@"image/jpeg", [[attach contentType] lowercaseString], @"The content-type should have been image/jpeg");
+	GHAssertTrue([attach data] != nil, @"Data should not have been nil");
 	[attach release];
 }
 
 - (void)testPNG {
 	NSString *path = [NSString stringWithFormat:@"%@%@",filePrefix,@"TestData/DSC_6202.png"];
-	LBAttachment *attach = [[LBAttachment alloc] initWithContentsOfFile:path];
-	STAssertEqualObjects(@"image/png", [attach contentType], @"The content-type should have been image/png");
-	STAssertTrue([attach data] != nil, @"Data should not have been nil");
+	LBAttachment *attach = [[[LBAttachment alloc] initWithContentsOfFile:path] retain];
+	GHAssertEqualObjects(@"image/png", [[attach contentType] lowercaseString], @"The content-type should have been image/png");
+	GHAssertTrue(([attach data] != nil), @"Data should not have been nil");
 	[attach release];
 }
 
 - (void)testTIFF {
 	NSString *path = [NSString stringWithFormat:@"%@%@",filePrefix,@"TestData/DSC_6193.tif"];
 	LBAttachment *attach = [[LBAttachment alloc] initWithContentsOfFile:path];
-	STAssertEqualObjects(@"image/tiff", [attach contentType], @"The content-type should have been image/TIFF");
-	STAssertTrue([attach data] != nil, @"Data should not have been nil");
+	GHAssertEqualObjects(@"image/tiff", [[attach contentType] lowercaseString], @"The content-type should have been image/TIFF");
+	GHAssertTrue([attach data] != nil, @"Data should not have been nil");
 	[attach release];
 }
 
 - (void)testNEF {
 	NSString *path = [NSString stringWithFormat:@"%@%@",filePrefix,@"TestData/DSC_6204.NEF"];
 	LBAttachment *attach = [[LBAttachment alloc] initWithContentsOfFile:path];
-	STAssertEqualObjects(@"application/octet-stream", [attach contentType], 
+	GHAssertEqualObjects(@"application/octet-stream", [[attach contentType] lowercaseString], 
 		@"The content-type should have been application/octet-stream");
-	STAssertTrue([attach data] != nil, @"Data should not have been nil");
+    GHAssertTrue( ([attach data] != nil) , @"Data (from %@) should not have been nil (data was [%@]", [attach data], path);
 	[attach release];
 }
 
@@ -71,9 +79,9 @@
     NSData *data = [NSData dataWithContentsOfFile:path];
     LBAttachment *attach = [[LBAttachment alloc] initWithData:data contentType:@"image/png" filename:@"DSC_6202.png"];
 	LBAttachment *attach2 = [[LBAttachment alloc] initWithContentsOfFile:path];
-    STAssertTrue([[attach contentType] isEqual:@"image/png"], @"The content-type should have been image/png");
-    STAssertTrue([[attach data] isEqual:data], @"The data stored in LBAttachment changed");
-    STAssertTrue([[attach2 data] isEqual:data], @"The data stored in LBAttachment via -initWithData and -initWithContentsOfFile are not identical.");
+    GHAssertEqualObjects(@"image/png", [[attach contentType] lowercaseString], @"The content-type should have been image/png");
+    GHAssertTrue([[attach data] isEqual:data], @"The data stored in LBAttachment changed");
+    GHAssertTrue([[attach2 data] isEqual:data], @"The data stored in LBAttachment via -initWithData and -initWithContentsOfFile are not identical.");
     [attach release];
     [attach2 release];
 }

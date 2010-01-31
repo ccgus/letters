@@ -61,36 +61,36 @@
 
 - (void)testAccountWithDictionary {
 	LBAccount *account = [LBAccount accountWithDictionary:accountTestInfo];
-	STAssertEqualObjects([account className], @"LBAccount", @": testAccountWithDictionary - Expected class of 'LBAccount', got '%@'", [account className]);
+	GHAssertEqualObjects([account className], @"LBAccount", @": testAccountWithDictionary - Expected class of 'LBAccount', got '%@'", [account className]);
 }
 
 - (void)testDictionaryRepresentation {
 	LBAccount *account = [LBAccount accountWithDictionary:accountTestInfo];
 	NSDictionary *accountDict = [account dictionaryRepresentation];
 
-    STAssertEquals([accountDict count], [accountTestInfo count], @": testDictionaryRepresentation - %d objects were to be tested, however %d items were in the returned LBAccount.", [accountTestInfo count], [accountDict count]);
+    GHAssertEquals([accountDict count], [accountTestInfo count], @": testDictionaryRepresentation - %d objects were to be tested, however %d items were in the returned LBAccount.", [accountTestInfo count], [accountDict count]);
 
     for (id key in accountDict) {
-        STAssertEqualObjects([accountDict objectForKey:key], [accountTestInfo objectForKey:key], @": testDictionaryRepresentation -  %@ was modified during LBAccount creation (or there was not a matching key).", [key description]);
+        GHAssertEqualObjects([accountDict objectForKey:key], [accountTestInfo objectForKey:key], @": testDictionaryRepresentation -  %@ was modified during LBAccount creation (or there was not a matching key).", [key description]);
     }
 }
 
 - (void)testIsActive {
 	// TODO: jasonrm - Unless the isActive switch becomes more complex than a synthesized varible, this is a rather silly test.
 	LBAccount *account = [LBAccount accountWithDictionary:accountTestInfo];
-    STAssertEquals(YES, [account isActive], nil);
+    GHAssertEquals(YES, [account isActive], nil);
     account.isActive = NO;
-    STAssertEquals(NO, [account isActive], nil);
+    GHAssertEquals(NO, [account isActive], nil);
     account.isActive = YES;
-	STAssertEquals(YES, [account isActive], nil);
+	GHAssertEquals(YES, [account isActive], nil);
 }
 
 - (void)testServer {
     LBAccount *account = [LBAccount accountWithDictionary:accountTestInfo];
     LBServer *server = [account server];
-    STAssertNotNil(server, @": testServer - Creation of LBServer failed.");
+    GHAssertNotNil(server, @": testServer - Creation of LBServer failed.");
     LBServer *serverTwo = [account server];
-    STAssertTrue([server isEqual:serverTwo], @": testServer - Creation of a second server should not create a new instance if one already exists, rather it should return the existing one.");
+    GHAssertTrue([server isEqual:serverTwo], @": testServer - Creation of a second server should not create a new instance if one already exists, rather it should return the existing one.");
 }
 
 @end

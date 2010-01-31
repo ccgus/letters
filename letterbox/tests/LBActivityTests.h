@@ -1,14 +1,17 @@
 //
-//  LBIMAPConnectionTests.m
+//  LBActivityTests.h
 //  LetterBox
 //
 //  Created by Jason McNeil on 1/25/10.
 //  Copyright 2010 Jason R. McNeil. All rights reserved.
 //
 
-#import "LBIMAPConnectionTests.h"
 
+#import <GHUnit/GHUnit.h>
+#import "LBActivity.h"
 
-@implementation LBIMAPConnectionTests
+@interface LBActivityTests : GHTestCase {
+
+}
 
 @end

@@ -16,7 +16,7 @@ extern NSString *LBServerBodiesUpdatedNotification;
 @class LBAccount;
 @class LBIMAPFolder;
 @class FMDatabase;
-
+@class LBIMAPConnection;
 
 @interface LBServer : NSObject {
     

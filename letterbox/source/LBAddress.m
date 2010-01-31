@@ -119,7 +119,6 @@
         encodedSubWord = [encodedSubWord substringFromIndex:characterSetEnd.location + 1];
 
         if ( [encodedSubWord hasPrefix:@"Q"] || [encodedSubWord hasPrefix:@"q"] ){
-            NSString *encodingType = [encodedSubWord substringToIndex:1];
             NSString *decodedWord = [encodedSubWord substringFromIndex:2];
             decodedWord = [decodedWord stringByReplacingOccurrencesOfString:@"_" withString:@" "];
             decodedWord = [decodedWord stringByReplacingOccurrencesOfString:@"=" withString:@"%"];
@@ -141,7 +140,6 @@
             encodedWordEnd = [decodedName rangeOfString:@"?="];
             encodedWordRange = NSUnionRange(encodedWordStart, encodedWordEnd);
         } else if ( [encodedSubWord hasPrefix:@"B"] || [encodedSubWord hasPrefix:@"b"] ) {
-            NSString *encodingType = [encodedSubWord substringToIndex:1];
             NSString *encodedWord = [encodedSubWord substringFromIndex:2];
             NSString *decodedWord;
 
@@ -163,10 +161,10 @@
                 // FIXME : jasonrm - Only the most common (for someone in the US) encodings are supported, everything else is treated like ISO-8859-1
                 decodedWord = [[NSString alloc] initWithData:decodedData encoding:NSISOLatin1StringEncoding];
             }
-            return [decodedWord autorelease];
+            return decodedWord;
         }
     }
-    return [decodedName autorelease];
+    return decodedName;
 }
 
 + (NSData *)dataByDecodingBase64String:(NSString *)encodedString {

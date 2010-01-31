@@ -41,19 +41,24 @@
 #import "LBMIME_TextPart.h"
 #import "LBMIME_Enumerator.h"
 
-// FIXME: jasonrm - This may or may not work for everyone, but for now it's better than trying to use an absolute path.
-const NSString *filePrefix = @"../../letters/letterbox/";
-
 @implementation LBMIMETests
+
+@synthesize filePrefix;
+
+- (void)setUp {
+    filePrefix = @"../../letterbox/";
+    NSLog(@"filePrefix: %@", filePrefix);
+}
+/*
 - (void)testMIMETextPart {
 	LBIMAPMessage *msg = [[LBIMAPMessage alloc] initWithFileAtPath:[NSString stringWithFormat:@"%@%@",filePrefix,@"TestData/kiwi-dev/1167196014.6158_0.theronge.com:2,Sab"]];
 	LBMIME *mime = [LBMIMEFactory createMIMEWithMIMEStruct:[msg messageStruct]->msg_mime forMessage:[msg messageStruct]];
-	STAssertTrue([mime isKindOfClass:[LBMIME_MessagePart class]],@"Outmost MIME type should be Message but it's not!");
-	STAssertTrue([[mime content] isKindOfClass:[LBMIME_MultiPart class]],@"Incorrect MIME structure found!");
+	GHAssertTrue([mime isKindOfClass:[LBMIME_MessagePart class]],@"Outmost MIME type should be Message but it's not!");
+	GHAssertTrue([[mime content] isKindOfClass:[LBMIME_MultiPart class]],@"Incorrect MIME structure found!");
 	NSArray *multiPartContent = [[mime content] content];
-	STAssertTrue([multiPartContent count] == 2, @"Incorrect MIME structure found!");
-	STAssertTrue([[multiPartContent objectAtIndex:0] isKindOfClass:[LBMIME_TextPart class]], @"Incorrect MIME structure found!");
-	STAssertTrue([[multiPartContent objectAtIndex:1] isKindOfClass:[LBMIME_TextPart class]], @"Incorrect MIME structure found!");	
+	GHAssertTrue([multiPartContent count] == 2, @"Incorrect MIME structure found!");
+	GHAssertTrue([[multiPartContent objectAtIndex:0] isKindOfClass:[LBMIME_TextPart class]], @"Incorrect MIME structure found!");
+	GHAssertTrue([[multiPartContent objectAtIndex:1] isKindOfClass:[LBMIME_TextPart class]], @"Incorrect MIME structure found!");	
 	[msg release];
 }
 
@@ -69,12 +74,12 @@ const NSString *filePrefix = @"../../letters/letterbox/";
 	
 	LBIMAPMessage *msg = [[LBIMAPMessage alloc] initWithFileAtPath:@"/tmp/mailcore_test_output"];
 	LBMIME *mime = [LBMIMEFactory createMIMEWithMIMEStruct:[msg messageStruct]->msg_mime forMessage:[msg messageStruct]];
-	STAssertTrue([mime isKindOfClass:[LBMIME_MessagePart class]],@"Outmost MIME type should be Message but it's not!");
-	STAssertTrue([[mime content] isKindOfClass:[LBMIME_MultiPart class]],@"Incorrect MIME structure found!");
+	GHAssertTrue([mime isKindOfClass:[LBMIME_MessagePart class]],@"Outmost MIME type should be Message but it's not!");
+	GHAssertTrue([[mime content] isKindOfClass:[LBMIME_MultiPart class]],@"Incorrect MIME structure found!");
 	NSArray *multiPartContent = [[mime content] content];	
-	STAssertTrue([multiPartContent count] == 2, @"Incorrect MIME structure found!");
-	STAssertTrue([[multiPartContent objectAtIndex:0] isKindOfClass:[LBMIME_TextPart class]], @"Incorrect MIME structure found!");
-	STAssertTrue([[multiPartContent objectAtIndex:1] isKindOfClass:[LBMIME_TextPart class]], @"Incorrect MIME structure found!");
+	GHAssertTrue([multiPartContent count] == 2, @"Incorrect MIME structure found!");
+	GHAssertTrue([[multiPartContent objectAtIndex:0] isKindOfClass:[LBMIME_TextPart class]], @"Incorrect MIME structure found!");
+	GHAssertTrue([[multiPartContent objectAtIndex:1] isKindOfClass:[LBMIME_TextPart class]], @"Incorrect MIME structure found!");
 	[msg release];
 }
 
@@ -98,15 +103,15 @@ const NSString *filePrefix = @"../../letters/letterbox/";
 - (void)testImageJPEGAttachment {
 	LBIMAPMessage *msg = [[LBIMAPMessage alloc] initWithFileAtPath:[NSString stringWithFormat:@"%@%@",filePrefix,@"TestData/mime-tests/imagetest"]];
 	LBMIME *mime = [LBMIMEFactory createMIMEWithMIMEStruct:[msg messageStruct]->msg_mime forMessage:[msg messageStruct]];
-	STAssertTrue([mime isKindOfClass:[LBMIME_MessagePart class]],@"Outmost MIME type should be Message but it's not!");
-	STAssertTrue([[mime content] isKindOfClass:[LBMIME_MultiPart class]],@"Incorrect MIME structure found!");
+	GHAssertTrue([mime isKindOfClass:[LBMIME_MessagePart class]],@"Outmost MIME type should be Message but it's not!");
+	GHAssertTrue([[mime content] isKindOfClass:[LBMIME_MultiPart class]],@"Incorrect MIME structure found!");
 	NSArray *multiPartContent = [[mime content] content];	
-	STAssertTrue([multiPartContent count] == 3, @"Incorrect MIME structure found!");
-	STAssertTrue([[multiPartContent objectAtIndex:0] isKindOfClass:[LBMIME_TextPart class]], @"Incorrect MIME structure found!");
-	STAssertTrue([[multiPartContent objectAtIndex:1] isKindOfClass:[LBMIME_SinglePart class]], @"Incorrect MIME structure found!");
-	LBMIME_SinglePart *img = [multiPartContent objectAtIndex:1];	
-	STAssertTrue(img.attached == FALSE, @"Image is should be inline");
-	STAssertEqualObjects(img.filename, @"mytestimage.jpg", @"Filename of inline image not correct");
+	GHAssertTrue([multiPartContent count] == 3, @"Incorrect MIME structure found!");
+	GHAssertTrue([[multiPartContent objectAtIndex:0] isKindOfClass:[LBMIME_TextPart class]], @"Incorrect MIME structure found!");
+	GHAssertTrue([[multiPartContent objectAtIndex:1] isKindOfClass:[LBMIME_SinglePart class]], @"Incorrect MIME structure found!");
+	LBMIME_SinglePart *img = [multiPartContent objectAtIndex:1];
+	GHAssertTrue(img.attached == FALSE, @"Image is should be inline");
+	GHAssertEqualObjects(img.filename, @"mytestimage.jpg", @"Filename of inline image not correct");
 	[msg release];
 }
 
@@ -115,20 +120,20 @@ const NSString *filePrefix = @"../../letters/letterbox/";
 				[NSString stringWithFormat:@"%@%@",filePrefix,@"TestData/mime-tests/png_attachment"]];
 	LBMIME *mime = [LBMIMEFactory createMIMEWithMIMEStruct:
 						[msg messageStruct]->msg_mime forMessage:[msg messageStruct]];
-	STAssertTrue([mime isKindOfClass:[LBMIME_MessagePart class]],
+	GHAssertTrue([mime isKindOfClass:[LBMIME_MessagePart class]],
 					@"Outmost MIME type should be Message but it's not!");
-	STAssertTrue([[mime content] isKindOfClass:[LBMIME_MultiPart class]],
+	GHAssertTrue([[mime content] isKindOfClass:[LBMIME_MultiPart class]],
 					@"Incorrect MIME structure found!");
 	NSArray *multiPartContent = [[mime content] content];	
-	STAssertTrue([multiPartContent count] == 2, 
+	GHAssertTrue([multiPartContent count] == 2, 
 					@"Incorrect MIME structure found!");
-	STAssertTrue([[multiPartContent objectAtIndex:0] isKindOfClass:[LBMIME_TextPart class]], 
+	GHAssertTrue([[multiPartContent objectAtIndex:0] isKindOfClass:[LBMIME_TextPart class]], 
 					@"Incorrect MIME structure found!");
-	STAssertTrue([[multiPartContent objectAtIndex:1] isKindOfClass:[LBMIME_SinglePart class]], 
+	GHAssertTrue([[multiPartContent objectAtIndex:1] isKindOfClass:[LBMIME_SinglePart class]], 
 					@"Incorrect MIME structure found!");
 	LBMIME_SinglePart *img = [multiPartContent objectAtIndex:1];	
-	STAssertTrue(img.attached == TRUE, @"Image is should be attached");
-	STAssertEqualObjects(img.filename, @"Picture 1.png", @"Filename of inline image not correct");
+	GHAssertTrue(img.attached == TRUE, @"Image is should be attached");
+	GHAssertEqualObjects(img.filename, @"Picture 1.png", @"Filename of inline image not correct");
 	[msg release];
 }
 
@@ -139,40 +144,40 @@ const NSString *filePrefix = @"../../letters/letterbox/";
 						[msg messageStruct]->msg_mime forMessage:[msg messageStruct]];
 	LBMIME_Enumerator *enumerator = [mime mimeEnumerator];
 	NSArray *allObjects = [enumerator allObjects];
-	STAssertTrue([[allObjects objectAtIndex:0] isKindOfClass:[LBMIME_MessagePart class]], 
+	GHAssertTrue([[allObjects objectAtIndex:0] isKindOfClass:[LBMIME_MessagePart class]], 
 					@"Incorrect MIME structure found!");
-	STAssertEqualObjects([[allObjects objectAtIndex:0] contentType], @"message/rfc822",
+	GHAssertEqualObjects([[allObjects objectAtIndex:0] contentType], @"message/rfc822",
 							@"found incorrect contentType");
-	STAssertTrue([[allObjects objectAtIndex:1] isKindOfClass:[LBMIME_MultiPart class]], 
+	GHAssertTrue([[allObjects objectAtIndex:1] isKindOfClass:[LBMIME_MultiPart class]], 
 					@"Incorrect MIME structure found!");
-	STAssertEqualObjects([[allObjects objectAtIndex:1] contentType], @"multipart/mixed",
+	GHAssertEqualObjects([[allObjects objectAtIndex:1] contentType], @"multipart/mixed",
 							@"found incorrect contentType");					
-	STAssertTrue([[allObjects objectAtIndex:2] isKindOfClass:[LBMIME_TextPart class]], 
+	GHAssertTrue([[allObjects objectAtIndex:2] isKindOfClass:[LBMIME_TextPart class]], 
 					@"Incorrect MIME structure found!");
-	STAssertEqualObjects([[allObjects objectAtIndex:2] contentType], @"text/plain",
+	GHAssertEqualObjects([[allObjects objectAtIndex:2] contentType], @"text/plain",
 							@"found incorrect contentType");					
-	STAssertTrue([[allObjects objectAtIndex:3] isKindOfClass:[LBMIME_SinglePart class]], 
+	GHAssertTrue([[allObjects objectAtIndex:3] isKindOfClass:[LBMIME_SinglePart class]], 
 					@"Incorrect MIME structure found!");
-	STAssertEqualObjects([[allObjects objectAtIndex:3] contentType], @"image/png",
+	GHAssertEqualObjects([[allObjects objectAtIndex:3] contentType], @"image/png",
 							@"found incorrect contentType");															
-	STAssertTrue([enumerator nextObject] == nil, @"Should have been nil");
+	GHAssertTrue([enumerator nextObject] == nil, @"Should have been nil");
 	NSArray *fullAllObjects = allObjects;
 	
 	enumerator = [[mime content] mimeEnumerator];
 	allObjects = [enumerator allObjects];
-	STAssertTrue([[allObjects objectAtIndex:0] isKindOfClass:[LBMIME_MultiPart class]], 
+	GHAssertTrue([[allObjects objectAtIndex:0] isKindOfClass:[LBMIME_MultiPart class]], 
 					@"Incorrect MIME structure found!");
-	STAssertTrue([[allObjects objectAtIndex:1] isKindOfClass:[LBMIME_TextPart class]], 
+	GHAssertTrue([[allObjects objectAtIndex:1] isKindOfClass:[LBMIME_TextPart class]], 
 					@"Incorrect MIME structure found!");
-	STAssertTrue([[allObjects objectAtIndex:2] isKindOfClass:[LBMIME_SinglePart class]], 
+	GHAssertTrue([[allObjects objectAtIndex:2] isKindOfClass:[LBMIME_SinglePart class]], 
 					@"Incorrect MIME structure found!");										
-	STAssertTrue([enumerator nextObject] == nil, @"Should have been nil");
+	GHAssertTrue([enumerator nextObject] == nil, @"Should have been nil");
 	
 	enumerator = [[[[mime content] content] objectAtIndex:0] mimeEnumerator];
 	allObjects = [enumerator allObjects];
-	STAssertTrue([[allObjects objectAtIndex:0] isKindOfClass:[LBMIME_TextPart class]], 
+	GHAssertTrue([[allObjects objectAtIndex:0] isKindOfClass:[LBMIME_TextPart class]], 
 					@"Incorrect MIME structure found!");	
-	STAssertTrue([enumerator nextObject] == nil, @"Should have been nil");
+	GHAssertTrue([enumerator nextObject] == nil, @"Should have been nil");
 	
 	enumerator = [mime mimeEnumerator];
 	NSMutableArray *objects = [NSMutableArray array];
@@ -180,6 +185,7 @@ const NSString *filePrefix = @"../../letters/letterbox/";
 	while ((obj = [enumerator nextObject])) {
 		[objects addObject:obj];
 	}
-	STAssertEqualObjects(objects, fullAllObjects, @"nextObject isn't iterating over the same objects ast allObjects");
+	GHAssertEqualObjects(objects, fullAllObjects, @"nextObject isn't iterating over the same objects ast allObjects");
 }
+*/
 @end
