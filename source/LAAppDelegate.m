@@ -112,25 +112,26 @@
         // OK, instead of having a fancy + button in the prefs where we load a new account template,
         // I'm just going to stick one on there, and only display one for now.  THIS IS TEMPORARY.
         
-        LBAccount *account = [[LBAccount alloc] init];
-        [accounts addObject:account];
-        
-        if ([[LAPrefs stringForKey:@"iToolsMember"] length] > 0) {
-            account.imapServer      = @"mail.me.com";
-            account.imapPort        = 993;
-            account.username        = [LAPrefs stringForKey:@"iToolsMember"];
-            account.connectionType  = CONNECTION_TYPE_TLS;
-            account.authType        = IMAP_AUTH_TYPE_PLAIN;
-            
-            
-            // FIXME: need to setup some preferred smtp servers here.
-            account.smtpServer      = @"smtp.me.com";
-            
-        }
-        
-        [self saveAccounts];
-
+//        LBAccount *account = [[LBAccount alloc] init];
+//        [accounts addObject:account];
+//        
+//        if ([[LAPrefs stringForKey:@"iToolsMember"] length] > 0) {
+//            account.imapServer      = @"mail.me.com";
+//            account.imapPort        = 993;
+//            account.username        = [LAPrefs stringForKey:@"iToolsMember"];
+//            account.connectionType  = CONNECTION_TYPE_TLS;
+//            account.authType        = IMAP_AUTH_TYPE_PLAIN;
+//            
+//            
+//            // FIXME: need to setup some preferred smtp servers here.
+//            account.smtpServer      = @"smtp.me.com";
+//            
+//        }
+//        
+//        [self saveAccounts];
+//
         [self openPreferences:self selectModuleWithId:@"LAPrefsAccountsModule"];
+
     }
     
     [[NSNotificationCenter defaultCenter] addObserverForName:@"NewAccountCreated"
@@ -260,6 +261,14 @@
     return accounts;
 }
 
+- (void)addAccount {
+    [accounts addObject:[[[LBAccount alloc] init] autorelease]];
+}
+
+- (void)removeAccount:(NSInteger)index {
+    [accounts removeObjectAtIndex:index];
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"mailAutoCheckTimeIntervalInMinutes"]) {
         [self scheduleMailCheckTimer];
@@ -324,5 +333,6 @@
         }
     }
 }
+
 
 @end
