@@ -30,11 +30,11 @@
  */
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "LBMessage.h"
+#import "LBIMAPMessage.h"
 
 @interface LBMessageTests : SenTestCase {
-	LBMessage *myMsg; 
-	LBMessage *myRealMsg;
+	LBIMAPMessage *myMsg; 
+	LBIMAPMessage *myRealMsg;
 }
 
 @end

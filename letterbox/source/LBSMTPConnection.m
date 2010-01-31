@@ -32,7 +32,7 @@
 #import "LBSMTPConnection.h"
 #import <libetpan/libetpan.h>
 #import "LBAddress.h"
-#import "LBMessage.h"
+#import "LBIMAPMessage.h"
 #import "LetterBoxTypes.h"
 
 #import "LBSMTP.h"
@@ -40,7 +40,7 @@
 
 //TODO Add more descriptive error messages using mailsmtp_strerror
 @implementation LBSMTPConnection
-+ (void)sendMessage:(LBMessage *)message server:(NSString *)server username:(NSString *)username
++ (void)sendMessage:(LBIMAPMessage *)message server:(NSString *)server username:(NSString *)username
                     password:(NSString *)password port:(unsigned int)port useTLS:(BOOL)tls useAuth:(BOOL)auth {
       mailsmtp *smtp = NULL;
     smtp = mailsmtp_new(0, NULL);

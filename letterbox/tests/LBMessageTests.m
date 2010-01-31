@@ -37,8 +37,8 @@
 
 @implementation LBMessageTests
 - (void)setUp {
-	myMsg = [[LBMessage alloc] init];
-	myRealMsg = [[LBMessage alloc] initWithFileAtPath:[NSString stringWithFormat:@"%@%@",filePrefix,@"testdata/kiwi-dev/1167196014.6158_0.theronge.com:2,Sab"]];
+	myMsg = [[LBIMAPMessage alloc] init];
+	myRealMsg = [[LBIMAPMessage alloc] initWithFileAtPath:[NSString stringWithFormat:@"%@%@",filePrefix,@"testdata/kiwi-dev/1167196014.6158_0.theronge.com:2,Sab"]];
 }
 
 - (void)tearDown {
@@ -78,7 +78,7 @@
 }
 
 - (void)testSubjectOnData {
-	LBMessage *msg = [[LBMessage alloc] initWithFileAtPath:[NSString stringWithFormat:@"%@%@",filePrefix,@"testdata/kiwi-dev/1167196014.6158_0.theronge.com:2,Sab"]];
+	LBIMAPMessage *msg = [[LBIMAPMessage alloc] initWithFileAtPath:[NSString stringWithFormat:@"%@%@",filePrefix,@"testdata/kiwi-dev/1167196014.6158_0.theronge.com:2,Sab"]];
 	[msg fetchBody];
 	STAssertEqualObjects(@"[Kiwi-dev] Revision 16", [msg subject], @"");
 	NSRange notFound = NSMakeRange(NSNotFound, 0);
@@ -87,7 +87,7 @@
 }
 
 - (void)testRender {
-	LBMessage *msg = [[LBMessage alloc] init];
+	LBIMAPMessage *msg = [[LBIMAPMessage alloc] init];
 	[msg setBody:@"test"];
 	NSString *str = [msg render];
 	/* Do a few sanity checks on the str */
@@ -101,7 +101,7 @@
 }
 
 - (void)testRenderWithToField {
-	LBMessage *msg = [[LBMessage alloc] init];
+	LBIMAPMessage *msg = [[LBIMAPMessage alloc] init];
 	[msg setBody:@"This is some kind of message."];
 	[msg setTo:[NSArray arrayWithObjects:[LBAddress addressWithName:@"Matt" email:@"test@test.com"],nil]];
 	NSString *str = [msg render];
@@ -126,7 +126,7 @@
 }
 
 - (void)testFromSpecialChar {
-	LBMessage *msg = [[LBMessage alloc] initWithFileAtPath:[NSString stringWithFormat:@"%@%@",filePrefix,@"testdata/kiwi-dev/1162094633.15211_0.randymail-mx2:2,RSab"]];
+	LBIMAPMessage *msg = [[LBIMAPMessage alloc] initWithFileAtPath:[NSString stringWithFormat:@"%@%@",filePrefix,@"testdata/kiwi-dev/1162094633.15211_0.randymail-mx2:2,RSab"]];
 	LBAddress *addr = [[msg from] anyObject];
 	STAssertEqualObjects(@"Joachim Mårtensson", [addr name], @"");
 	[msg release];
@@ -161,14 +161,14 @@
 }
 
 - (void)testSettingFromTwice {
-	LBMessage *msg = [[LBMessage alloc] init];
+	LBIMAPMessage *msg = [[LBIMAPMessage alloc] init];
 	[msg setFrom:[NSSet setWithObject:[LBAddress addressWithName:@"Matt P" email:@"mattp@p.org"]]];
 	[msg setFrom:[NSSet setWithObject:[LBAddress addressWithName:@"Matt R" email:@"mattr@r.org"]]];
 	[msg release];
 }
 
 - (void)testAttachments {
-	LBMessage *msg = [[LBMessage alloc] initWithFileAtPath:
+	LBIMAPMessage *msg = [[LBIMAPMessage alloc] initWithFileAtPath:
 				[NSString stringWithFormat:@"%@%@",filePrefix,@"testdata/mime-tests/png_attachment"]];
 	[msg fetchBody];
 	NSArray *attachments = [msg attachments];

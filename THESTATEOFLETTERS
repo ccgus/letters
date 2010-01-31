@@ -1,0 +1,15 @@
+
+Jan 30, 2010
+So right now, Letters is no longer pulling data from an imap server.
+
+Instead, you'll need to run imapPull.py in the bin directory like so:
+
+imapPull.py username password imapserver
+
+It connects to port 993 by default via SSL, and downloads the messages to Letters's message cache.  The next time Crashy launches, it'll see the cached messages.  It'll still crash though.  I PROMISE!
+
+Your prefs in Crashy need to point to the same server as well, so it knows where to look in the message cache.
+
+If someone wants to stup up and take care of IMAP stuff, let me know.  I added some pyobjc code that crashy was bridging to, but GCD and blocks are out with this, which blows.  It's checked in, but it's not compiled in currently (LBPYIMAPConnection, IMAPFetcher.py)
+
+-gus

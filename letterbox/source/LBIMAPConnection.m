@@ -9,9 +9,9 @@
 #import "LBIMAPConnection.h"
 #import "LBAccount.h"
 #import "LetterBoxTypes.h"
-#import "LBFolder.h"
+#import "LBIMAPFolder.h"
 #import "LBAddress.h"
-#import "LBMessage.h"
+#import "LBIMAPMessage.h"
 #import "LetterBoxUtilities.h"
 
 @implementation LBIMAPConnection
@@ -96,8 +96,8 @@
     mailstorage_disconnect(storage);
 }
 
-- (LBFolder *)folderWithPath:(NSString *)path {
-    LBFolder *folder = [[LBFolder alloc] initWithPath:path inIMAPConnection:self];
+- (LBIMAPFolder *)folderWithPath:(NSString *)path {
+    LBIMAPFolder *folder = [[LBIMAPFolder alloc] initWithPath:path inIMAPConnection:self];
     return [folder autorelease];
 }
 
@@ -244,8 +244,6 @@
         
     }
 }
-
-
 
 - (NSString*) activityStatus {
     return activityStatus;

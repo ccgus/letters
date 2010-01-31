@@ -31,7 +31,7 @@
 
 #import "LBSMTP.h"
 #import "LBAddress.h"
-#import "LBMessage.h"
+#import "LBIMAPMessage.h"
 #import "LetterBoxTypes.h"
 
 @implementation LBSMTP
