@@ -11,7 +11,7 @@
 
 #import "LBActivity.h"
 
-@class LBFolder;
+@class LBIMAPFolder;
 @class LBAccount;
 
 @interface LBIMAPConnection : NSObject <LBActivity> {
@@ -40,7 +40,7 @@
  @param      path A NSString specifying the path of the folder to retrieve from the server.
  @result     Returns a LBFolder.
  */
-- (LBFolder *)folderWithPath:(NSString *)path;
+- (LBIMAPFolder *)folderWithPath:(NSString *)path;
 
 - (BOOL) connectWithAccount:(LBAccount*)account error:(NSError**)outErr;
 

@@ -76,8 +76,9 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     
-    #ifdef DEBUG
+    #ifdef xDEBUG
     
+    // defaults write com.lettersapp.CrashyEmailApp enableLogging 1
     if ([LAPrefs boolForKey:@"enableLogging"]) {
         LetterBoxEnableLogging();
     }

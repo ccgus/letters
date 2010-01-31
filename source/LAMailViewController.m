@@ -121,8 +121,7 @@
             
             LBMessage *msg = [messageList objectAtIndex:selectedRow];
             
-            NSString *message = [msg body];
-            
+            NSString *message = [msg messageBody];
             
             if (!message) {
                 message = NSLocalizedString(@"This message has not been downloaded from the server yet.", @"This message has not been downloaded from the server yet.");
@@ -249,10 +248,12 @@
     LBAccount *account = [[appDelegate accounts] lastObject];
     
     [doc setFromList:[account fromAddress]];
-    [doc setToList:[[msg sender] email]];
+    [doc setToList:[msg to]];
+    
+    #warning this is fucked
     
     // FIXME: - 72?  a hidden pref maybe?
-    [doc setMessage:LBWrapLines(LBQuote([msg body], @">"), 72)];
+    //[doc setMessage:LBWrapLines(LBQuote([msg body], @">"), 72)];
     
     NSString *subject = [msg subject];
     if (![[subject lowercaseString] hasPrefix:@"re: "]) {

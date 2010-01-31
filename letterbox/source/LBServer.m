@@ -9,11 +9,12 @@
 #import "LBServer.h"
 #import "LBAccount.h"
 #import "LetterBoxTypes.h"
-#import "LBFolder.h"
+#import "LBIMAPFolder.h"
 #import "LBAddress.h"
-#import "LBMessage.h"
+#import "LBIMAPMessage.h"
 #import "FMDatabase.h"
 #import "LBIMAPConnection.h"
+#import "LBMessage.h"
 
 
 NSString *LBServerFolderUpdatedNotification = @"LBServerFolderUpdatedNotification";
@@ -28,7 +29,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 @interface LBServer ()
 - (void)loadCache;
 - (NSArray*)cachedMessagesForFolder:(NSString *)folder;
-- (void)saveMessageToCache:(LBMessage*)message body:(NSString*)body forFolder:(NSString*)folderName;
+- (void)saveMessageToCache:(LBIMAPMessage*)message body:(NSString*)body forFolder:(NSString*)folderName;
 - (void)saveFoldersToCache:(NSArray*)messages;
 @end
 
@@ -113,6 +114,9 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 }
 
 - (void)connectUsingBlock:(void (^)(BOOL, NSError *))block {
+    
+#ifdef NONO
+    
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
@@ -131,6 +135,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
             });
         }
     });
+#endif
 }
 
 
@@ -138,7 +143,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 #define CheckConnectionAndReturnIfCanceled(aConn) { if (aConn.shouldCancelActivity) { dispatch_async(dispatch_get_main_queue(),^ { [self checkInIMAPConnection:conn]; }); return; } }
 
 - (void)checkForMail {
-    
+#ifdef NONO
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
@@ -251,7 +256,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         
         
     });
-    
+#endif
 }
 
 - (NSArray*)messageListForPath:(NSString*)folderPath {
@@ -421,7 +426,8 @@ static struct mailimap_set * setFromArray(NSArray * array)
         [cacheDB executeUpdate:@"insert into letters_meta (name, type, value) values (?,?,?)", @"schemaVersion", @"int", [NSNumber numberWithInt:schemaVersion]];
         
         // this table obviously isn't going to cut it.  It needs multiple to's and other nice things.
-        [cacheDB executeUpdate:@"create table message ( messageid text primary key,\n\
+        [cacheDB executeUpdate:@"create table message ( uuid text primary key,\n\
+                                                   messageid text,\n\
                                                    folder text,\n\
                                                    subject text,\n\
                                                    fromAddress text, \n\
@@ -454,7 +460,7 @@ static struct mailimap_set * setFromArray(NSArray * array)
     
 }
 
-- (void)saveMessageToCache:(LBMessage*)message body:(NSString*)body forFolder:(NSString*)folderName {
+- (void)saveMessageToCache:(LBIMAPMessage*)message body:(NSString*)body forFolder:(NSString*)folderName {
     
     NSURL *folderURL = [accountCacheURL URLByAppendingPathComponent:folderName];
     
@@ -525,19 +531,25 @@ static struct mailimap_set * setFromArray(NSArray * array)
     
     NSMutableArray *messageArray = [NSMutableArray array];
     
-    FMResultSet *rs = [cacheDB executeQuery:@"select messageid, receivedDate from message where folder = ? order by receivedDate", folder];
+    FMResultSet *rs = [cacheDB executeQuery:@"select uuid, messageid, subject, fromAddress, toAddress, receivedDate, sendDate from message where folder = ? order by receivedDate", folder];
     while ([rs next]) {
         
         NSString *messageFile = [NSString stringWithFormat:@"%@.letterboxmsg", [rs stringForColumnIndex:0]];
         
-        // FIXME: check for the existence of the file...
-        
         NSURL *messageCacheURL = [[accountCacheURL URLByAppendingPathComponent:folder] URLByAppendingPathComponent:messageFile];
         
-        LBMessage *message = [[[LBMessage alloc] initWithFileAtPath:[messageCacheURL path]] autorelease];
+        LBMessage *message = [[[LBMessage alloc] initWithURL:messageCacheURL] autorelease];
         
-        // parse the handy mime stuff.
-        [message fetchBody];
+        if (!message) {
+            NSLog(@"Could not load message at %@", messageCacheURL);
+            continue;
+        }
+        
+        message.uuid = [rs stringForColumnIndex:0];
+        message.messageId = [rs stringForColumnIndex:1];
+        message.subject = [rs stringForColumnIndex:2];
+        message.sender = [rs stringForColumnIndex:3];
+        message.to = [rs stringForColumnIndex:4];
         
         [messageArray addObject:message];
     }
