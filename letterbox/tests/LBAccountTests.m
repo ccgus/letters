@@ -36,26 +36,23 @@
 @synthesize accountTestInfo;
 
 - (void)setUp {
-	accountTestInfo = [NSMutableDictionary dictionary];
-	// FIXME: jasonrm - I'm not sure if a retain is really needed here.
-	[accountTestInfo retain];
+	accountTestInfo = [[NSMutableDictionary alloc] init];
 
-	[accountTestInfo setObject:@"Aefooci7se6ooy@lettersapp.com" forKey:@"username"];
-	[accountTestInfo setObject:@"wuree2Ei9Tu5ie"			forKey:@"password"];
+	[accountTestInfo setObject:@"Aefooci7se6ooy@lettersapp.com"     forKey:@"username"];
+	[accountTestInfo setObject:@"wuree2Ei9Tu5ie"                    forKey:@"password"];
 
-	[accountTestInfo setObject:@"Aefooci7se6ooy@lettersapp.com" forKey:@"fromAddress"];
+	[accountTestInfo setObject:@"Aefooci7se6ooy@lettersapp.com"     forKey:@"fromAddress"];
 
-	[accountTestInfo setObject:@"imap.pool.lettersapp.com" forKey:@"imapServer"];
-	[accountTestInfo setObject:[NSNumber numberWithInt:1515] forKey:@"imapPort"];
-	[accountTestInfo setObject:@"smtp.pool.lettersapp.com" forKey:@"smtpServer"];
+	[accountTestInfo setObject:@"imap.pool.lettersapp.com"          forKey:@"imapServer"];
+	[accountTestInfo setObject:[NSNumber numberWithInt:1515]        forKey:@"imapPort"];
+	[accountTestInfo setObject:@"smtp.pool.lettersapp.com"          forKey:@"smtpServer"];
 
-	[accountTestInfo setObject:[NSNumber numberWithInt:CONNECTION_TYPE_TLS] forKey:@"authType"];
-	[accountTestInfo setObject:[NSNumber numberWithInt:YES] forKey:@"isActive"];
-	[accountTestInfo setObject:[NSNumber numberWithInt:IMAP_AUTH_TYPE_PLAIN] forKey:@"connectionType"];
+	[accountTestInfo setObject:[NSNumber numberWithInt:CONNECTION_TYPE_TLS]     forKey:@"authType"];
+	[accountTestInfo setObject:[NSNumber numberWithInt:YES]                     forKey:@"isActive"];
+	[accountTestInfo setObject:[NSNumber numberWithInt:IMAP_AUTH_TYPE_PLAIN]    forKey:@"connectionType"];
 }
 
 - (void)tearDown {
-	// FIXME: jasonrm - If the above retain isn't needed, then -tearDown isn't needed either.
     [accountTestInfo release];
 }
 
