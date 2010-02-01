@@ -95,6 +95,13 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = LetterBox;
 		};
+		CC6B2E7F111682FE0099CFD1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F890D38D10CEECD50039817C /* libetpan.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C6DC660510829E8300FA050B /* libetpan-iphone.a */;
+			remoteInfo = "static libetpan iphone";
+		};
 		CC6D05E7110A488200D900E9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F890D38D10CEECD50039817C /* libetpan.xcodeproj */;
@@ -465,6 +472,7 @@
 			children = (
 				F890D39610CEECD50039817C /* libetpan.framework */,
 				F890D39810CEECD50039817C /* libetpan.a */,
+				CC6B2E80111682FE0099CFD1 /* libetpan-iphone.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -580,6 +588,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		CC6B2E80111682FE0099CFD1 /* libetpan-iphone.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libetpan-iphone.a";
+			remoteRef = CC6B2E7F111682FE0099CFD1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		F890D39610CEECD50039817C /* libetpan.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;

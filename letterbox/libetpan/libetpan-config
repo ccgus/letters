@@ -36,7 +36,7 @@ while test $# -gt 0; do
       echo $exec_prefix
       ;;
     --version)
-      echo 0.58-dev-20100104
+      echo 0.58-dev-20100131
       ;;
     --cflags)
       if test "${prefix}/include" = "/usr/include" ; then

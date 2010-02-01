@@ -1,3 +1,14 @@
+2010-01-17 - libetpan-0.58cvs17 - hoa
+
+	* build-mac/update.sh
+	* build-mac/libetpan.xcodeproj/project.pbxproj
+	    build mac with quota
+
+2010-01-14 - libetpan-0.58cvs16 - hoa
+
+	* src/low-level/imap/Makefile.am
+	    build with quota.
+
 2010-01-04 - libetpan-0.58cvs15 - hoa
 
 	* src/low-level/imap/mailimap_extension.c

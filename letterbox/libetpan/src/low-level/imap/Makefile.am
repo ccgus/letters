@@ -39,6 +39,7 @@ etpaninclude_HEADERS = \
 	annotatemore.h annotatemore_types.h \
 	acl.h acl_types.h \
 	uidplus.h uidplus_types.h \
+	quota.h quota_parser.h quota_sender.h quota_types.h \
 	idle.h
 
 AM_CPPFLAGS = -I$(top_builddir)/include \
@@ -69,4 +70,5 @@ libimap_la_SOURCES = \
 	uidplus_sender.h uidplus_sender.c \
 	uidplus_types.c \
 	uidplus_parser.h uidplus_parser.c \
-	idle.c
+	idle.c \
+	quota.c quota_parser.c quota_sender.c quota_types.c

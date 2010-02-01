@@ -138,10 +138,7 @@ DIST_COMMON = $(etpaninclude_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(top_srcdir)/rules.mk TODO
 subdir = src/low-level/imap
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
-	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
-	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
-	$(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -156,7 +153,8 @@ am_libimap_la_OBJECTS = mailimap_types.lo mailimap_types_helper.lo \
 	annotatemore.lo annotatemore_parser.lo annotatemore_sender.lo \
 	annotatemore_types.lo acl.lo acl_parser.lo acl_sender.lo \
 	acl_types.lo uidplus.lo uidplus_sender.lo uidplus_types.lo \
-	uidplus_parser.lo idle.lo
+	uidplus_parser.lo idle.lo quota.lo quota_parser.lo \
+	quota_sender.lo quota_types.lo
 libimap_la_OBJECTS = $(am_libimap_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -184,21 +182,21 @@ HEADERS = $(etpaninclude_HEADERS)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /Users/mronge/repo/mailcore/libetpan/missing --run aclocal-1.10
-AMTAR = ${SHELL} /Users/mronge/repo/mailcore/libetpan/missing --run tar
+ACLOCAL = ${SHELL} /Volumes/srv/Users/gus/Desktop/libetpan/missing --run aclocal-1.10
+AMTAR = ${SHELL} /Volumes/srv/Users/gus/Desktop/libetpan/missing --run tar
 API_COMPATIBILITY = 13
 API_CURRENT = 14
 API_REVISION = 3
 API_VERSION = 14:3:1
 AR = ar
 AS = as
-AUTOCONF = ${SHELL} /Users/mronge/repo/mailcore/libetpan/missing --run autoconf
-AUTOHEADER = ${SHELL} /Users/mronge/repo/mailcore/libetpan/missing --run autoheader
-AUTOMAKE = ${SHELL} /Users/mronge/repo/mailcore/libetpan/missing --run automake-1.10
-AWK = gawk
+AUTOCONF = ${SHELL} /Volumes/srv/Users/gus/Desktop/libetpan/missing --run autoconf
+AUTOHEADER = ${SHELL} /Volumes/srv/Users/gus/Desktop/libetpan/missing --run autoheader
+AUTOMAKE = ${SHELL} /Volumes/srv/Users/gus/Desktop/libetpan/missing --run automake-1.10
+AWK = awk
 BUILD_FILEVERSION = 0,58,0,0
 BUILD_REVISION = 0
-BUILD_TIMESTAMP = 2010-01-04T20:39-0500
+BUILD_TIMESTAMP = 2010-01-31T19:21-0800
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2 -O2 -g -W -Wall
@@ -239,7 +237,7 @@ LIPO = lipo
 LN_S = ln -s
 LTLIBOBJS = 
 MAINT = #
-MAKEINFO = ${SHELL} /Users/mronge/repo/mailcore/libetpan/missing --run makeinfo
+MAKEINFO = ${SHELL} /Volumes/srv/Users/gus/Desktop/libetpan/missing --run makeinfo
 MKDIR_P = ../../.././install-sh -c -d
 NM = /usr/bin/nm
 NMEDIT = nmedit
@@ -262,13 +260,13 @@ SET_MAKE =
 SHELL = /bin/sh
 SSLLIBS = -lssl -lcrypto 
 STRIP = strip
-VERSION = 0.58-dev-20100104
+VERSION = 0.58-dev-20100131
 VERSION_MAJOR = 0
 VERSION_MINOR = 58
-abs_builddir = /Users/mronge/repo/mailcore/libetpan/src/low-level/imap
-abs_srcdir = /Users/mronge/repo/mailcore/libetpan/src/low-level/imap
-abs_top_builddir = /Users/mronge/repo/mailcore/libetpan
-abs_top_srcdir = /Users/mronge/repo/mailcore/libetpan
+abs_builddir = /Volumes/srv/Users/gus/Desktop/libetpan/src/low-level/imap
+abs_srcdir = /Volumes/srv/Users/gus/Desktop/libetpan/src/low-level/imap
+abs_top_builddir = /Volumes/srv/Users/gus/Desktop/libetpan
+abs_top_srcdir = /Volumes/srv/Users/gus/Desktop/libetpan
 ac_ct_CC = gcc
 ac_ct_CXX = g++
 ac_ct_DUMPBIN = 
@@ -284,7 +282,7 @@ build_cpu = i386
 build_os = darwin10.2.0
 build_vendor = apple
 builddir = .
-cfg_files =  /Users/mronge/repo/mailcore/libetpan/libetpan-config /Users/mronge/repo/mailcore/libetpan/Makefile /Users/mronge/repo/mailcore/libetpan/build-windows/Makefile /Users/mronge/repo/mailcore/libetpan/include/Makefile /Users/mronge/repo/mailcore/libetpan/src/Makefile /Users/mronge/repo/mailcore/libetpan/src/bsd/Makefile /Users/mronge/repo/mailcore/libetpan/src/windows/Makefile /Users/mronge/repo/mailcore/libetpan/src/data-types/Makefile /Users/mronge/repo/mailcore/libetpan/src/low-level/Makefile /Users/mronge/repo/mailcore/libetpan/src/low-level/feed/Makefile /Users/mronge/repo/mailcore/libetpan/src/low-level/imap/Makefile /Users/mronge/repo/mailcore/libetpan/src/low-level/imf/Makefile /Users/mronge/repo/mailcore/libetpan/src/low-level/maildir/Makefile /Users/mronge/repo/mailcore/libetpan/src/low-level/mbox/Makefile /Users/mronge/repo/mailcore/libetpan/src/low-level/mh/Makefile /Users/mronge/repo/mailcore/libetpan/src/low-level/mime/Makefile /Users/mronge/repo/mailcore/libetpan/src/low-level/nntp/Makefile /Users/mronge/repo/mailcore/libetpan/src/low-level/pop3/Makefile /Users/mronge/repo/mailcore/libetpan/src/low-level/smtp/Makefile /Users/mronge/repo/mailcore/libetpan/src/driver/Makefile /Users/mronge/repo/mailcore/libetpan/src/driver/implementation/Makefile /Users/mronge/repo/mailcore/libetpan/src/driver/implementation/data-message/Makefile /Users/mronge/repo/mailcore/libetpan/src/driver/implementation/db/Makefile /Users/mronge/repo/mailcore/libetpan/src/driver/implementation/feed/Makefile /Users/mronge/repo/mailcore/libetpan/src/driver/implementation/hotmail/Makefile /Users/mronge/repo/mailcore/libetpan/src/driver/implementation/imap/Makefile /Users/mronge/repo/mailcore/libetpan/src/driver/implementation/maildir/Makefile /Users/mronge/repo/mailcore/libetpan/src/driver/implementation/mbox/Makefile /Users/mronge/repo/mailcore/libetpan/src/driver/implementation/mh/Makefile /Users/mronge/repo/mailcore/libetpan/src/driver/implementation/mime-message/Makefile /Users/mronge/repo/mailcore/libetpan/src/driver/implementation/nntp/Makefile /Users/mronge/repo/mailcore/libetpan/src/driver/implementation/pop3/Makefile /Users/mronge/repo/mailcore/libetpan/src/driver/interface/Makefile /Users/mronge/repo/mailcore/libetpan/src/driver/tools/Makefile /Users/mronge/repo/mailcore/libetpan/src/main/Makefile /Users/mronge/repo/mailcore/libetpan/src/main/libetpan_version.h /Users/mronge/repo/mailcore/libetpan/src/engine/Makefile /Users/mronge/repo/mailcore/libetpan/src/versioninfo.rc /Users/mronge/repo/mailcore/libetpan/doc/Makefile /Users/mronge/repo/mailcore/libetpan/tests/Makefile
+cfg_files =  /Volumes/srv/Users/gus/Desktop/libetpan/libetpan-config /Volumes/srv/Users/gus/Desktop/libetpan/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/build-windows/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/include/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/bsd/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/windows/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/data-types/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/low-level/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/low-level/feed/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/low-level/imap/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/low-level/imf/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/low-level/maildir/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/low-level/mbox/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/low-level/mh/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/low-level/mime/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/low-level/nntp/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/low-level/pop3/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/low-level/smtp/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/driver/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/driver/implementation/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/driver/implementation/data-message/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/driver/implementation/db/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/driver/implementation/feed/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/driver/implementation/hotmail/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/driver/implementation/imap/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/driver/implementation/maildir/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/driver/implementation/mbox/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/driver/implementation/mh/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/driver/implementation/mime-message/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/driver/implementation/nntp/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/driver/implementation/pop3/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/driver/interface/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/driver/tools/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/main/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/main/libetpan_version.h /Volumes/srv/Users/gus/Desktop/libetpan/src/engine/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/src/versioninfo.rc /Volumes/srv/Users/gus/Desktop/libetpan/doc/Makefile /Volumes/srv/Users/gus/Desktop/libetpan/tests/Makefile
 datadir = ${datarootdir}
 datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
@@ -298,7 +296,7 @@ host_vendor = apple
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = $(SHELL) /Users/mronge/repo/mailcore/libetpan/install-sh
+install_sh = $(SHELL) /Volumes/srv/Users/gus/Desktop/libetpan/install-sh
 libcurlconfig = /usr/bin/curl-config
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
@@ -339,6 +337,7 @@ etpaninclude_HEADERS = \
 	annotatemore.h annotatemore_types.h \
 	acl.h acl_types.h \
 	uidplus.h uidplus_types.h \
+	quota.h quota_parser.h quota_sender.h quota_types.h \
 	idle.h
 
 AM_CPPFLAGS = -I$(top_builddir)/include \
@@ -368,7 +367,8 @@ libimap_la_SOURCES = \
 	uidplus_sender.h uidplus_sender.c \
 	uidplus_types.c \
 	uidplus_parser.h uidplus_parser.c \
-	idle.c
+	idle.c \
+	quota.c quota_parser.c quota_sender.c quota_types.c
 
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -442,6 +442,10 @@ include ./$(DEPDIR)/mailimap_socket.Plo
 include ./$(DEPDIR)/mailimap_ssl.Plo
 include ./$(DEPDIR)/mailimap_types.Plo
 include ./$(DEPDIR)/mailimap_types_helper.Plo
+include ./$(DEPDIR)/quota.Plo
+include ./$(DEPDIR)/quota_parser.Plo
+include ./$(DEPDIR)/quota_sender.Plo
+include ./$(DEPDIR)/quota_types.Plo
 include ./$(DEPDIR)/uidplus.Plo
 include ./$(DEPDIR)/uidplus_parser.Plo
 include ./$(DEPDIR)/uidplus_sender.Plo

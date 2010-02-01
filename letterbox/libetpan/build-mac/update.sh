@@ -11,4 +11,3 @@ cd build-mac
 mkdir -p include/libetpan
 cp -r ../include/libetpan/ include/libetpan/
 cp ../config.h include
-cp ../libetpan-config.h include

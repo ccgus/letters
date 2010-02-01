@@ -17,11 +17,13 @@
 #define HAVE_CTYPE_H 1
 
 /* Define to use curl */
-//#define HAVE_CURL 0
+#define HAVE_CURL 1
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #define HAVE_DLFCN_H 1
 
+/* Define to use expat */
+#define HAVE_EXPAT 1
 
 /* Define to 1 if you have the <fcntl.h> header file. */
 #define HAVE_FCNTL_H 1
@@ -114,7 +116,7 @@
 #define LIBETPAN_REENTRANT 1
 
 /* Define this to the version of libEtPan */
-#define LIBETPAN_VERSION "0.58-dev-20091208"
+#define LIBETPAN_VERSION "0.58-dev-20100131"
 
 /* Define this to the major version of libEtPan */
 #define LIBETPAN_VERSION_MAJOR 0
