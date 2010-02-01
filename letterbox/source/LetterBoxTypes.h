@@ -39,12 +39,12 @@
 
 //TODO Turn these into extern's, not defines
 
-#define LBFlagNew            MAIL_FLAG_NEW
-#define LBFlagSeen            MAIL_FLAG_SEEN
-#define LBFlagFlagged        MAIL_FLAG_FLAGGED
-#define LBFlagDeleted        MAIL_FLAG_DELETED
-#define LBFlagAnswered        MAIL_FLAG_ANSWERED
-#define LBFlagForwarded        MAIL_FLAG_FORWARDED
+#define LBFlagNew           MAIL_FLAG_NEW
+#define LBFlagSeen          MAIL_FLAG_SEEN
+#define LBFlagFlagged       MAIL_FLAG_FLAGGED
+#define LBFlagDeleted       MAIL_FLAG_DELETED
+#define LBFlagAnswered      MAIL_FLAG_ANSWERED
+#define LBFlagForwarded     MAIL_FLAG_FORWARDED
 #define LBFlagCancelled     MAIL_FLAG_CANCELLED
 
 
@@ -55,49 +55,49 @@
 #define LBMIMEParseError            @"MIMEParserError"
 #define LBMIMEParseErrorDesc        @"An error occured during MIME parsing."
 
-#define LBMIMEUnknownError            @"MIMEUnknownError"
-#define LBMIMEUnknownErrorDesc        @"I don't know how to parse this MIME structure."
+#define LBMIMEUnknownError          @"MIMEUnknownError"
+#define LBMIMEUnknownErrorDesc      @"I don't know how to parse this MIME structure."
 
-#define LBMemoryError                   @"MemoryError"
-#define LBMemoryErrorDesc              @"Memory could not be allocated."
+#define LBMemoryError               @"MemoryError"
+#define LBMemoryErrorDesc           @"Memory could not be allocated."
                            
-#define LBLoginError                   @"LoginError"
-#define LBLoginErrorDesc               @"Error logging into account."
+#define LBLoginError                @"LoginError"
+#define LBLoginErrorDesc            @"Error logging into account."
                            
-#define LBUnknownError                   @"UnknownError"
+#define LBUnknownError              @"UnknownError"
 
-#define    LBMessageNotFound            @"MessageNotFound"
-#define    LBMessageNotFoundDesc        @"The message could not be found."
+#define LBMessageNotFound           @"MessageNotFound"
+#define LBMessageNotFoundDesc       @"The message could not be found."
 
-#define    LBNoSubscribedFolders        @"NoSubcribedFolders"
-#define    LBNoSubscribedFoldersDesc    @"There are not any subscribed folders."
+#define LBNoSubscribedFolders       @"NoSubcribedFolders"
+#define LBNoSubscribedFoldersDesc   @"There are not any subscribed folders."
 
-#define    LBNoFolders                    @"NoFolders"
-#define    LBNoFoldersDesc                @"There are not any folders on the server."
+#define LBNoFolders                 @"NoFolders"
+#define LBNoFoldersDesc             @"There are not any folders on the server."
 
-#define    LBFetchError                @"FetchError"
-#define    LBFetchErrorDesc            @"An error has occurred while fetching from the server."
+#define LBFetchError                @"FetchError"
+#define LBFetchErrorDesc            @"An error has occurred while fetching from the server."
 
-#define    LBSMTPError                    @"SMTPError"
-#define    LBSMTPErrorDesc                @"An error has occurred while attempting to send via SMTP."
+#define LBSMTPError                 @"SMTPError"
+#define LBSMTPErrorDesc             @"An error has occurred while attempting to send via SMTP."
 
-#define    LBSMTPSocket                @"SMTPSocket"
-#define    LBSMTPSocketDesc            @"An error has occurred while attempting to open an SMTP socket connection."
+#define LBSMTPSocket                @"SMTPSocket"
+#define LBSMTPSocketDesc            @"An error has occurred while attempting to open an SMTP socket connection."
 
-#define    LBSMTPHello                    @"SMTPHello"
-#define    LBSMTPHelloDesc                @"An error occured while introducing ourselves to the server with the ehlo, or helo command."
+#define LBSMTPHello                 @"SMTPHello"
+#define LBSMTPHelloDesc             @"An error occured while introducing ourselves to the server with the ehlo, or helo command."
 
-#define    LBSMTPTLS                    @"SMTPTLS"
-#define    LBSMTPTLSDesc                @"An error occured while attempting to setup a TLS connection with the server."
+#define LBSMTPTLS                   @"SMTPTLS"
+#define LBSMTPTLSDesc               @"An error occured while attempting to setup a TLS connection with the server."
 
-#define    LBSMTPLogin                    @"SMTPLogin"
-#define    LBSMTPLoginDesc                @"The password or username is invalid."
+#define LBSMTPLogin                 @"SMTPLogin"
+#define LBSMTPLoginDesc             @"The password or username is invalid."
 
-#define    LBSMTPFrom                    @"SMTPFrom"
-#define    LBSMTPFromDesc                @"An error occured while sending the from address."
+#define LBSMTPFrom                  @"SMTPFrom"
+#define LBSMTPFromDesc              @"An error occured while sending the from address."
 
-#define    LBSMTPRecipients            @"SMTPRecipients"
-#define    LBSMTPRecipientsDesc        @"An error occured while sending the recipient addresses."
+#define LBSMTPRecipients            @"SMTPRecipients"
+#define LBSMTPRecipientsDesc        @"An error occured while sending the recipient addresses."
 
-#define    LBSMTPData                    @"SMTPData"
-#define    LBSMTPDataDesc                @"An error occured while sending message data."
+#define LBSMTPData                  @"SMTPData"
+#define LBSMTPDataDesc              @"An error occured while sending message data."
