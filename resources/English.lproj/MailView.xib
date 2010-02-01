@@ -3,16 +3,16 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
 		<string key="IBDocument.SystemVersion">10C540</string>
-		<string key="IBDocument.InterfaceBuilderVersion">759</string>
+		<string key="IBDocument.InterfaceBuilderVersion">740</string>
 		<string key="IBDocument.AppKitVersion">1038.25</string>
 		<string key="IBDocument.HIToolboxVersion">458.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">759</string>
+			<string key="NS.object.0">740</string>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="23"/>
+			<integer value="18"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -521,7 +521,7 @@
 																			<object class="_NSCornerView" key="NSCornerView" id="476888251">
 																				<reference key="NSNextResponder" ref="55693222"/>
 																				<int key="NSvFlags">-2147483392</int>
-																				<string key="NSFrame">{{224, 0}, {16, 17}}</string>
+																				<string key="NSFrame">{{713, 0}, {16, 17}}</string>
 																				<reference key="NSSuperview" ref="55693222"/>
 																			</object>
 																			<object class="NSMutableArray" key="NSTableColumns">
@@ -558,7 +558,7 @@
 																				</object>
 																				<object class="NSTableColumn" id="552510824">
 																					<string key="NSIdentifier">subject</string>
-																					<double key="NSWidth">620</double>
+																					<double key="NSWidth">470</double>
 																					<double key="NSMinWidth">40</double>
 																					<double key="NSMaxWidth">1000</double>
 																					<object class="NSTableHeaderCell" key="NSHeaderCell">
@@ -570,6 +570,66 @@
 																						<reference key="NSTextColor" ref="943067071"/>
 																					</object>
 																					<object class="NSTextFieldCell" key="NSDataCell" id="544101645">
+																						<int key="NSCellFlags">337772096</int>
+																						<int key="NSCellFlags2">2048</int>
+																						<string key="NSContents">Text Cell</string>
+																						<reference key="NSSupport" ref="632416043"/>
+																						<reference key="NSControlView" ref="936832817"/>
+																						<reference key="NSBackgroundColor" ref="755145669"/>
+																						<reference key="NSTextColor" ref="460115262"/>
+																					</object>
+																					<int key="NSResizingMask">3</int>
+																					<bool key="NSIsResizeable">YES</bool>
+																					<bool key="NSIsEditable">YES</bool>
+																					<reference key="NSTableView" ref="936832817"/>
+																				</object>
+																				<object class="NSTableColumn" id="38853995">
+																					<string key="NSIdentifier">sendDate</string>
+																					<double key="NSWidth">70</double>
+																					<double key="NSMinWidth">40</double>
+																					<double key="NSMaxWidth">1000</double>
+																					<object class="NSTableHeaderCell" key="NSHeaderCell">
+																						<int key="NSCellFlags">75628096</int>
+																						<int key="NSCellFlags2">2048</int>
+																						<string key="NSContents">Date Sent</string>
+																						<reference key="NSSupport" ref="26"/>
+																						<object class="NSColor" key="NSBackgroundColor">
+																							<int key="NSColorSpace">3</int>
+																							<bytes key="NSWhite">MC4zMzMzMzI5ODU2AA</bytes>
+																						</object>
+																						<reference key="NSTextColor" ref="943067071"/>
+																					</object>
+																					<object class="NSTextFieldCell" key="NSDataCell" id="657474203">
+																						<int key="NSCellFlags">337772096</int>
+																						<int key="NSCellFlags2">2048</int>
+																						<string key="NSContents">Text Cell</string>
+																						<reference key="NSSupport" ref="632416043"/>
+																						<reference key="NSControlView" ref="936832817"/>
+																						<reference key="NSBackgroundColor" ref="755145669"/>
+																						<reference key="NSTextColor" ref="460115262"/>
+																					</object>
+																					<int key="NSResizingMask">3</int>
+																					<bool key="NSIsResizeable">YES</bool>
+																					<bool key="NSIsEditable">YES</bool>
+																					<reference key="NSTableView" ref="936832817"/>
+																				</object>
+																				<object class="NSTableColumn" id="371073865">
+																					<string key="NSIdentifier">receivedDate</string>
+																					<double key="NSWidth">74</double>
+																					<double key="NSMinWidth">40</double>
+																					<double key="NSMaxWidth">1000</double>
+																					<object class="NSTableHeaderCell" key="NSHeaderCell">
+																						<int key="NSCellFlags">75628096</int>
+																						<int key="NSCellFlags2">2048</int>
+																						<string key="NSContents">Date Received</string>
+																						<reference key="NSSupport" ref="26"/>
+																						<object class="NSColor" key="NSBackgroundColor">
+																							<int key="NSColorSpace">3</int>
+																							<bytes key="NSWhite">MC4zMzMzMzI5ODU2AA</bytes>
+																						</object>
+																						<reference key="NSTextColor" ref="943067071"/>
+																					</object>
+																					<object class="NSTextFieldCell" key="NSDataCell" id="556283154">
 																						<int key="NSCellFlags">337772096</int>
 																						<int key="NSCellFlags2">2048</int>
 																						<string key="NSContents">Text Cell</string>
@@ -609,22 +669,21 @@
 																<object class="NSScroller" id="755470184">
 																	<reference key="NSNextResponder" ref="55693222"/>
 																	<int key="NSvFlags">-2147483392</int>
-																	<string key="NSFrame">{{224, 17}, {15, 102}}</string>
+																	<string key="NSFrame">{{713, 17}, {15, 223}}</string>
 																	<reference key="NSSuperview" ref="55693222"/>
 																	<reference key="NSTarget" ref="55693222"/>
 																	<string key="NSAction">_doScroller:</string>
-																	<double key="NSCurValue">37</double>
-																	<double key="NSPercent">0.1947367936372757</double>
+																	<double key="NSPercent">0.93697478991596639</double>
 																</object>
 																<object class="NSScroller" id="887255980">
 																	<reference key="NSNextResponder" ref="55693222"/>
 																	<int key="NSvFlags">-2147483392</int>
-																	<string key="NSFrame">{{1, 75}, {142, 15}}</string>
+																	<string key="NSFrame">{{1, 240}, {727, 15}}</string>
 																	<reference key="NSSuperview" ref="55693222"/>
 																	<int key="NSsFlags">1</int>
 																	<reference key="NSTarget" ref="55693222"/>
 																	<string key="NSAction">_doScroller:</string>
-																	<double key="NSPercent">0.96598639455782309</double>
+																	<double key="NSPercent">0.96291390728476822</double>
 																</object>
 																<object class="NSClipView" id="109889369">
 																	<reference key="NSNextResponder" ref="55693222"/>
@@ -1060,6 +1119,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="528538703"/>
 							<reference ref="552510824"/>
+							<reference ref="38853995"/>
+							<reference ref="371073865"/>
 						</object>
 						<reference key="parent" ref="55693222"/>
 					</object>
@@ -1237,6 +1298,34 @@
 						<reference key="object" ref="651659399"/>
 						<reference key="parent" ref="40460912"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">67</int>
+						<reference key="object" ref="38853995"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="657474203"/>
+						</object>
+						<reference key="parent" ref="936832817"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">68</int>
+						<reference key="object" ref="657474203"/>
+						<reference key="parent" ref="38853995"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">69</int>
+						<reference key="object" ref="371073865"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="556283154"/>
+						</object>
+						<reference key="parent" ref="936832817"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">70</int>
+						<reference key="object" ref="556283154"/>
+						<reference key="parent" ref="371073865"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -1289,15 +1378,19 @@
 					<string>58.IBPluginDependency</string>
 					<string>60.IBPluginDependency</string>
 					<string>62.IBPluginDependency</string>
+					<string>67.IBPluginDependency</string>
+					<string>68.IBPluginDependency</string>
+					<string>69.IBPluginDependency</string>
+					<string>70.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{57, 315}, {934, 586}}</string>
+					<string>{{457, 524}, {934, 586}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{57, 315}, {934, 586}}</string>
+					<string>{{457, 524}, {934, 586}}</string>
 					<boolean value="NO"/>
 					<string>{196, 240}</string>
 					<string>{{357, 418}, {480, 270}}</string>
@@ -1338,6 +1431,10 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -1356,7 +1453,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">66</int>
+			<int key="maxID">70</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1950,7 +2047,6 @@
 			</object>
 		</object>
 		<int key="IBDocument.localizationMode">0</int>
-		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.macosx</string>
 			<integer value="1060" key="NS.object.0"/>
@@ -1962,20 +2058,5 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<string key="IBDocument.LastKnownRelativeProjectPath">../../Letters.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<bool key="EncodedWithXMLCoder">YES</bool>
-			<object class="NSArray" key="dict.sortedKeys">
-				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>toolbar-getmail</string>
-				<string>toolbar-new</string>
-				<string>toolbar-reply</string>
-			</object>
-			<object class="NSMutableArray" key="dict.values">
-				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>{32, 32}</string>
-				<string>{32, 32}</string>
-				<string>{25.6028, 25.6028}</string>
-			</object>
-		</object>
 	</data>
 </archive>

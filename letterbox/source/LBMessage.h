@@ -23,6 +23,8 @@
 @property (retain) NSString *to;
 @property (retain) NSString *messageBody;
 @property (retain) NSURL *messageURL;
+@property (retain) NSDate *receivedDate;
+@property (retain) NSDate *sendDate;
 
 - (void) parseHeaders;
 

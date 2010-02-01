@@ -9,6 +9,53 @@ import time
 import email
 import uuid
 from sqlite3 import dbapi2 as sqlite
+from dateutil.parser import *
+
+# From the python docs for determining the local time zone. http://docs.python.org/library/datetime.html#datetime-objects
+
+# A class capturing the platform's idea of local time.
+from datetime import tzinfo, timedelta, datetime
+
+ZERO = timedelta(0)
+
+import time as _time
+
+STDOFFSET = timedelta(seconds = -_time.timezone)
+if _time.daylight:
+    DSTOFFSET = timedelta(seconds = -_time.altzone)
+else:
+    DSTOFFSET = STDOFFSET
+
+DSTDIFF = DSTOFFSET - STDOFFSET
+
+class LocalTimezone(tzinfo):
+
+    def utcoffset(self, dt):
+        if self._isdst(dt):
+            return DSTOFFSET
+        else:
+            return STDOFFSET
+
+    def dst(self, dt):
+        if self._isdst(dt):
+            return DSTDIFF
+        else:
+            return ZERO
+
+    def tzname(self, dt):
+        return _time.tzname[self._isdst(dt)]
+
+    def _isdst(self, dt):
+        tt = (dt.year, dt.month, dt.day,
+              dt.hour, dt.minute, dt.second,
+              dt.weekday(), 0, -1)
+        stamp = _time.mktime(tt)
+        tt = _time.localtime(stamp)
+        return tt.tm_isdst > 0
+
+Local = LocalTimezone()
+
+# End of python doc code.
 
 uname = sys.argv[1]
 server = sys.argv[3]
@@ -56,6 +103,7 @@ for mbox in data:
 mailboxes.sort(key=str.lower)
 
 for mbox in mailboxes:
+    msg = None
     try:
         dbcursor.execute("insert into folder (folder, subscribed) values (?,?)", (mbox, '1'))
         dbcursor.execute("delete from message where folder = ?", (mbox,))
@@ -82,15 +130,37 @@ for mbox in mailboxes:
             f.close()
             
             print(path)
+            send = parse(msg.get("date"), fuzzy=True)
+            send = send.astimezone(Local)
+            # Apparently this loses fractional seconds. I'm pretty sure we don't care.
+            sendsinceepoch = time.mktime(send.timetuple())
+            
+            receivedsinceepoch = 0
+            if msg.has_key("Received"):
+                # Multiple received headers is crazy common.
+                receivedheaders = msg.get_all("Received")
+                for receivedheader in receivedheaders:
+                    # The bit after the ";" is the date-time stamp.
+                    datestring = receivedheader.partition(";")[2].strip()
+                    latestreceived = parse(datestring, fuzzy=True)
+                    # For whatever reason, sometimes we get a datetime without the timezone set.
+                    if None == latestreceived.tzinfo:
+                        latestreceived = latestreceived.replace(tzinfo=Local)
+                    latestreceived = latestreceived.astimezone(Local)
+                    latestreceivedsinceepoch = time.mktime(latestreceived.timetuple())
+                    if latestreceivedsinceepoch > receivedsinceepoch:
+                        receivedsinceepoch = latestreceivedsinceepoch
+            else:
+                # There's no guarantee of a received header. It would appear Apple Mail uses send in these cases.
+                receivedsinceepoch = sendsinceepoch
             
             dbcursor.execute("insert into message (uuid, messageid, folder, subject, fromAddress, toAddress, receivedDate, sendDate) values (?,?,?,?,?,?,?,?)",
-                             (uid, msg.get("Message-Id"), mbox, msg.get("Subject"), msg.get("From"), msg.get("To"), 0, 0))
+                             (uid, msg.get("Message-Id"), mbox, msg.get("Subject"), msg.get("From"), msg.get("To"), receivedsinceepoch, sendsinceepoch))
             
-            # Tue, 26 Jan 2010 16:28:43 -0800
-            
-        
     except Exception, e:
             print("Error in select: " + mbox)
+            if None != msg:
+                print("Last message: " + msg.as_string())
             print(e)
     
 sys.exit()

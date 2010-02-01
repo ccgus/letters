@@ -16,6 +16,8 @@
 @synthesize subject;
 @synthesize sender;
 @synthesize to;
+@synthesize receivedDate;
+@synthesize sendDate;
 
 - (id)initWithURL:(NSURL*)fileURL {
 	self = [super init];
@@ -35,6 +37,8 @@
     [subject release];
     [sender release];
     [to release];
+    [receivedDate release];
+    [sendDate release];
     
     [super dealloc];
 }
