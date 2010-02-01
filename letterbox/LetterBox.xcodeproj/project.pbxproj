@@ -99,7 +99,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = F890D38D10CEECD50039817C /* libetpan.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = C6DC660510829E8300FA050B /* libetpan-iphone.a */;
+			remoteGlobalIDString = C6DC660510829E8300FA050B;
 			remoteInfo = "static libetpan iphone";
 		};
 		CC6D05E7110A488200D900E9 /* PBXContainerItemProxy */ = {

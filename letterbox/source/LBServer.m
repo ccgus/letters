@@ -550,10 +550,8 @@ static struct mailimap_set * setFromArray(NSArray * array)
         message.subject = [rs stringForColumnIndex:2];
         message.sender = [rs stringForColumnIndex:3];
         message.to = [rs stringForColumnIndex:4];
-        NSTimeInterval receivedDateInterval = [rs doubleForColumnIndex:5];
-        message.receivedDate = [NSDate dateWithTimeIntervalSince1970:receivedDateInterval];
-        NSTimeInterval sendDateInterval = [rs doubleForColumnIndex:6];
-        message.sendDate = [NSDate dateWithTimeIntervalSince1970:sendDateInterval];
+        message.receivedDate = [rs dateForColumnIndex:5];
+        message.sendDate = [rs dateForColumnIndex:6];
         
         [messageArray addObject:message];
     }
