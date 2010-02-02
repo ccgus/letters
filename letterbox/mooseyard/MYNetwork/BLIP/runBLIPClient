@@ -1,0 +1,3 @@
+#!/bin/csh
+
+build/Debug/MYNetwork Test_BLIPConnection -Log YES -LogBLIP YES $*

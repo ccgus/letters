@@ -1,0 +1,13 @@
+These routines implement a method for encoding binary data into a sequence
+of words which can be spoken over the phone, for example, and converted
+back to data on the other side.
+
+For more information see http://www.tothink.com/mnemonic
+
+mnemonic.h	Header file
+mnemonic.c	Encoding/decoding and associated routines
+mn_wordlist.c	The word list itself
+mnencode.c	Sample program - encode data from stdin to stdout
+mndecode.c	Sample program - decode data from stdin to stdout
+
+Oren Tirosh <oren@hishome.net>

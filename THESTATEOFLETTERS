@@ -1,3 +1,20 @@
+Feb 2, 2010
+You still need imapPull.py to download all your messages and setup the cache.
+
+However, I've added an experimental imap client class to LetterBox (built on top of Jens Alfke's MYNetwork classes: http://bitbucket.org/snej/mynetwork ), which does a handful of things currently:
+
+Connect, login, list mailboxes, create mailbox, delete mailbox, subscribe, unsubscribe, select mailbox, and list messages in mailbox.
+
+If you hit the "get more mail" button, it'll print out a list of the mailboxes, but doesn't currently update anything.
+
+I'm thinking that it might be better if we write our own IMAP library, which has lots of hooks for GCD + blocks.  Of course, I say this only have written a fraction of what needs to be done so far.  Luckily, since the imap library is never exposed outside LetterBox, it's easy to swap in different implementations.
+
+The code is very very messy right now.  It's still just a big sketch of ideas floating around in my noggin.
+
+-gus
+
+
+
 
 Jan 30, 2010
 So right now, Letters is no longer pulling data from an imap server.

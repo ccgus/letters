@@ -48,6 +48,8 @@
     BOOL connected;
 }
 
+#ifdef NONO
+
 /*!
     @abstract   This method is used to initialize a folder. This method or the 
                 method in LBAccount folderWithPath can be used to setup a folder.
@@ -200,5 +202,7 @@
 - (mailimap *)imapSession;
 
 - (BOOL) connected;
+
+#endif
 
 @end

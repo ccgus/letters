@@ -220,9 +220,9 @@
         
         if ([acct isActive]) {
             
-            [[acct server] connectUsingBlock:^(BOOL success, NSError *error) {
+            [[acct server] connectUsingBlock:^(NSError *error) {
                 
-                if (!success) {
+                if (error) {
                     // FIXME: show a warning or something?
                     NSLog(@"error: %@", error);
                 }

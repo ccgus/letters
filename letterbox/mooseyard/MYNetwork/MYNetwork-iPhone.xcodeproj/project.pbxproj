@@ -1,0 +1,664 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		270E9AC00EE61113003F17CA /* IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AA20EE61113003F17CA /* IPAddress.m */; };
+		270E9AC10EE61113003F17CA /* TCPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AA50EE61113003F17CA /* TCPConnection.m */; };
+		270E9AC20EE61113003F17CA /* TCPEndpoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AA70EE61113003F17CA /* TCPEndpoint.m */; };
+		270E9AC30EE61113003F17CA /* TCPListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AA90EE61113003F17CA /* TCPListener.m */; };
+		270E9AC40EE61113003F17CA /* TCPStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AAB0EE61113003F17CA /* TCPStream.m */; };
+		270E9AC50EE61113003F17CA /* TCPWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AAD0EE61113003F17CA /* TCPWriter.m */; };
+		270E9AC60EE61113003F17CA /* BLIPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AB20EE61113003F17CA /* BLIPConnection.m */; };
+		270E9AC70EE61113003F17CA /* BLIPDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AB40EE61113003F17CA /* BLIPDispatcher.m */; };
+		270E9AC80EE61113003F17CA /* BLIPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AB60EE61113003F17CA /* BLIPMessage.m */; };
+		270E9AC90EE61113003F17CA /* BLIPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AB80EE61113003F17CA /* BLIPRequest.m */; };
+		270E9ACA0EE61113003F17CA /* BLIPProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9ABA0EE61113003F17CA /* BLIPProperties.m */; };
+		270E9ACB0EE61113003F17CA /* BLIPReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9ABC0EE61113003F17CA /* BLIPReader.m */; };
+		270E9ACC0EE61113003F17CA /* BLIPWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9ABE0EE61113003F17CA /* BLIPWriter.m */; };
+		270E9ADF0EE6111A003F17CA /* CollectionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AD10EE6111A003F17CA /* CollectionUtils.m */; };
+		270E9AE00EE6111A003F17CA /* ExceptionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AD30EE6111A003F17CA /* ExceptionUtils.m */; };
+		270E9AE10EE6111A003F17CA /* Logging.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AD50EE6111A003F17CA /* Logging.m */; };
+		270E9AE20EE6111A003F17CA /* Target.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AD70EE6111A003F17CA /* Target.m */; };
+		270E9AE30EE6111A003F17CA /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AD90EE6111A003F17CA /* Test.m */; };
+		270E9AE40EE6111A003F17CA /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9ADD0EE6111A003F17CA /* GTMNSData+zlib.m */; };
+		270E9AE90EE61167003F17CA /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 270E9AE80EE61167003F17CA /* libz.dylib */; };
+		270E9B4F0EE63F8F003F17CA /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 270E9B4E0EE63F8F003F17CA /* CFNetwork.framework */; };
+		270E9B950EE64B3C003F17CA /* HelloWorld.xib in Resources */ = {isa = PBXBuildFile; fileRef = 270E9B940EE64B3C003F17CA /* HelloWorld.xib */; };
+		270E9B990EE64B45003F17CA /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 270E9B960EE64B45003F17CA /* Default.png */; };
+		270E9B9A0EE64B45003F17CA /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 270E9B970EE64B45003F17CA /* Icon.png */; };
+		270E9BA10EE64B4E003F17CA /* HelloWorldAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9B9E0EE64B4E003F17CA /* HelloWorldAppDelegate.m */; };
+		270E9BA20EE64B4E003F17CA /* MyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9BA00EE64B4E003F17CA /* MyViewController.m */; };
+		2777C78D0F75E141007F8D30 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2777C78C0F75E141007F8D30 /* Security.framework */; };
+		278C1B2E0F9F865800954AE1 /* MYPortMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 278C1B2C0F9F865800954AE1 /* MYPortMapper.m */; };
+		278C1B2F0F9F865800954AE1 /* PortMapperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 278C1B2D0F9F865800954AE1 /* PortMapperTest.m */; };
+		278C1B350F9F86A100954AE1 /* MYUtilities_Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 278C1B330F9F86A100954AE1 /* MYUtilities_Debug.xcconfig */; };
+		278C1B360F9F86A100954AE1 /* MYUtilities_Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 278C1B340F9F86A100954AE1 /* MYUtilities_Release.xcconfig */; };
+		27C6A22B0FC5D92000EFF2A7 /* TCPEndpoint+Certs.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C6A22A0FC5D92000EFF2A7 /* TCPEndpoint+Certs.m */; };
+		27D915BF0FA8EABC002B0DEC /* MYDNSService.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915BC0FA8EABC002B0DEC /* MYDNSService.m */; };
+		27D915C00FA8EABC002B0DEC /* MYAddressLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915BE0FA8EABC002B0DEC /* MYAddressLookup.m */; };
+		27D915C90FA8EAD0002B0DEC /* MYBonjourBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915C20FA8EAD0002B0DEC /* MYBonjourBrowser.m */; };
+		27D915CA0FA8EAD0002B0DEC /* MYBonjourService.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915C40FA8EAD0002B0DEC /* MYBonjourService.m */; };
+		27D915CB0FA8EAD0002B0DEC /* MYBonjourQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915C60FA8EAD0002B0DEC /* MYBonjourQuery.m */; };
+		27D915CC0FA8EAD0002B0DEC /* MYBonjourRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915C80FA8EAD0002B0DEC /* MYBonjourRegistration.m */; };
+		280E754F0DD40C5E005A515E /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 280E754C0DD40C5E005A515E /* MainWindow.xib */; };
+		384A72AE0FB00523006A0B19 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		384A72AF0FB00523006A0B19 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 270E9B4E0EE63F8F003F17CA /* CFNetwork.framework */; };
+		384A72B00FB00523006A0B19 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 270E9AE80EE61167003F17CA /* libz.dylib */; };
+		384A72B10FB00523006A0B19 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		384A72B20FB00523006A0B19 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2777C78C0F75E141007F8D30 /* Security.framework */; };
+		384A72B70FB0062C006A0B19 /* ConcurrentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 384A72B60FB0062C006A0B19 /* ConcurrentOperation.m */; };
+		384A72B80FB006DF006A0B19 /* IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AA20EE61113003F17CA /* IPAddress.m */; };
+		384A72B90FB006DF006A0B19 /* TCPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AA50EE61113003F17CA /* TCPConnection.m */; };
+		384A72BA0FB006DF006A0B19 /* TCPEndpoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AA70EE61113003F17CA /* TCPEndpoint.m */; };
+		384A72BB0FB006DF006A0B19 /* TCPListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AA90EE61113003F17CA /* TCPListener.m */; };
+		384A72BC0FB006DF006A0B19 /* TCPStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AAB0EE61113003F17CA /* TCPStream.m */; };
+		384A72BD0FB006DF006A0B19 /* TCPWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AAD0EE61113003F17CA /* TCPWriter.m */; };
+		384A72BE0FB006DF006A0B19 /* BLIPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AB20EE61113003F17CA /* BLIPConnection.m */; };
+		384A72BF0FB006DF006A0B19 /* BLIPDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AB40EE61113003F17CA /* BLIPDispatcher.m */; };
+		384A72C00FB006DF006A0B19 /* BLIPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AB60EE61113003F17CA /* BLIPMessage.m */; };
+		384A72C10FB006DF006A0B19 /* BLIPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AB80EE61113003F17CA /* BLIPRequest.m */; };
+		384A72C20FB006DF006A0B19 /* BLIPProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9ABA0EE61113003F17CA /* BLIPProperties.m */; };
+		384A72C30FB006DF006A0B19 /* BLIPReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9ABC0EE61113003F17CA /* BLIPReader.m */; };
+		384A72C40FB006DF006A0B19 /* BLIPWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9ABE0EE61113003F17CA /* BLIPWriter.m */; };
+		384A72C50FB006DF006A0B19 /* CollectionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AD10EE6111A003F17CA /* CollectionUtils.m */; };
+		384A72C60FB006DF006A0B19 /* ExceptionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AD30EE6111A003F17CA /* ExceptionUtils.m */; };
+		384A72C70FB006DF006A0B19 /* Logging.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AD50EE6111A003F17CA /* Logging.m */; };
+		384A72C80FB006DF006A0B19 /* Target.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AD70EE6111A003F17CA /* Target.m */; };
+		384A72C90FB006DF006A0B19 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AD90EE6111A003F17CA /* Test.m */; };
+		384A72CA0FB006DF006A0B19 /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9ADD0EE6111A003F17CA /* GTMNSData+zlib.m */; };
+		384A72CB0FB006DF006A0B19 /* MYPortMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 278C1B2C0F9F865800954AE1 /* MYPortMapper.m */; };
+		384A72CC0FB006DF006A0B19 /* PortMapperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 278C1B2D0F9F865800954AE1 /* PortMapperTest.m */; };
+		384A72CD0FB006DF006A0B19 /* MYDNSService.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915BC0FA8EABC002B0DEC /* MYDNSService.m */; };
+		384A72CE0FB006DF006A0B19 /* MYAddressLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915BE0FA8EABC002B0DEC /* MYAddressLookup.m */; };
+		384A72CF0FB006DF006A0B19 /* MYBonjourBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915C20FA8EAD0002B0DEC /* MYBonjourBrowser.m */; };
+		384A72D00FB006DF006A0B19 /* MYBonjourService.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915C40FA8EAD0002B0DEC /* MYBonjourService.m */; };
+		384A72D10FB006DF006A0B19 /* MYBonjourQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915C60FA8EAD0002B0DEC /* MYBonjourQuery.m */; };
+		384A72D20FB006DF006A0B19 /* MYBonjourRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915C80FA8EAD0002B0DEC /* MYBonjourRegistration.m */; };
+		384A72D30FB006DF006A0B19 /* ConcurrentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 384A72B60FB0062C006A0B19 /* ConcurrentOperation.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		1D6058910D05DD3D006BFB54 /* BLIPEcho.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BLIPEcho.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		270E9AA10EE61113003F17CA /* IPAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPAddress.h; sourceTree = "<group>"; };
+		270E9AA20EE61113003F17CA /* IPAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPAddress.m; sourceTree = "<group>"; };
+		270E9AA40EE61113003F17CA /* TCPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPConnection.h; sourceTree = "<group>"; };
+		270E9AA50EE61113003F17CA /* TCPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCPConnection.m; sourceTree = "<group>"; };
+		270E9AA60EE61113003F17CA /* TCPEndpoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPEndpoint.h; sourceTree = "<group>"; };
+		270E9AA70EE61113003F17CA /* TCPEndpoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCPEndpoint.m; sourceTree = "<group>"; };
+		270E9AA80EE61113003F17CA /* TCPListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPListener.h; sourceTree = "<group>"; };
+		270E9AA90EE61113003F17CA /* TCPListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCPListener.m; sourceTree = "<group>"; };
+		270E9AAA0EE61113003F17CA /* TCPStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPStream.h; sourceTree = "<group>"; };
+		270E9AAB0EE61113003F17CA /* TCPStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCPStream.m; sourceTree = "<group>"; };
+		270E9AAC0EE61113003F17CA /* TCPWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPWriter.h; sourceTree = "<group>"; };
+		270E9AAD0EE61113003F17CA /* TCPWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCPWriter.m; sourceTree = "<group>"; };
+		270E9AAE0EE61113003F17CA /* TCP_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCP_Internal.h; sourceTree = "<group>"; };
+		270E9AB00EE61113003F17CA /* BLIP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIP.h; sourceTree = "<group>"; };
+		270E9AB10EE61113003F17CA /* BLIPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIPConnection.h; sourceTree = "<group>"; };
+		270E9AB20EE61113003F17CA /* BLIPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLIPConnection.m; sourceTree = "<group>"; };
+		270E9AB30EE61113003F17CA /* BLIPDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIPDispatcher.h; sourceTree = "<group>"; };
+		270E9AB40EE61113003F17CA /* BLIPDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLIPDispatcher.m; sourceTree = "<group>"; };
+		270E9AB50EE61113003F17CA /* BLIPMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIPMessage.h; sourceTree = "<group>"; };
+		270E9AB60EE61113003F17CA /* BLIPMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLIPMessage.m; sourceTree = "<group>"; };
+		270E9AB70EE61113003F17CA /* BLIPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIPRequest.h; sourceTree = "<group>"; };
+		270E9AB80EE61113003F17CA /* BLIPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLIPRequest.m; sourceTree = "<group>"; };
+		270E9AB90EE61113003F17CA /* BLIPProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIPProperties.h; sourceTree = "<group>"; };
+		270E9ABA0EE61113003F17CA /* BLIPProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLIPProperties.m; sourceTree = "<group>"; };
+		270E9ABB0EE61113003F17CA /* BLIPReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIPReader.h; sourceTree = "<group>"; };
+		270E9ABC0EE61113003F17CA /* BLIPReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLIPReader.m; sourceTree = "<group>"; };
+		270E9ABD0EE61113003F17CA /* BLIPWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIPWriter.h; sourceTree = "<group>"; };
+		270E9ABE0EE61113003F17CA /* BLIPWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLIPWriter.m; sourceTree = "<group>"; };
+		270E9ABF0EE61113003F17CA /* BLIP_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIP_Internal.h; sourceTree = "<group>"; };
+		270E9ACE0EE6111A003F17CA /* MYUtilitiesTest_main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYUtilitiesTest_main.m; sourceTree = "<group>"; };
+		270E9ACF0EE6111A003F17CA /* MYUtilities_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYUtilities_Prefix.pch; sourceTree = "<group>"; };
+		270E9AD00EE6111A003F17CA /* CollectionUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionUtils.h; sourceTree = "<group>"; };
+		270E9AD10EE6111A003F17CA /* CollectionUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionUtils.m; sourceTree = "<group>"; };
+		270E9AD20EE6111A003F17CA /* ExceptionUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExceptionUtils.h; sourceTree = "<group>"; };
+		270E9AD30EE6111A003F17CA /* ExceptionUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExceptionUtils.m; sourceTree = "<group>"; };
+		270E9AD40EE6111A003F17CA /* Logging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logging.h; sourceTree = "<group>"; };
+		270E9AD50EE6111A003F17CA /* Logging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Logging.m; sourceTree = "<group>"; };
+		270E9AD60EE6111A003F17CA /* Target.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Target.h; sourceTree = "<group>"; };
+		270E9AD70EE6111A003F17CA /* Target.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Target.m; sourceTree = "<group>"; };
+		270E9AD80EE6111A003F17CA /* Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Test.h; sourceTree = "<group>"; };
+		270E9AD90EE6111A003F17CA /* Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test.m; sourceTree = "<group>"; };
+		270E9ADB0EE6111A003F17CA /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDefines.h; sourceTree = "<group>"; };
+		270E9ADC0EE6111A003F17CA /* GTMNSData+zlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSData+zlib.h"; sourceTree = "<group>"; };
+		270E9ADD0EE6111A003F17CA /* GTMNSData+zlib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSData+zlib.m"; sourceTree = "<group>"; };
+		270E9AE80EE61167003F17CA /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		270E9B4E0EE63F8F003F17CA /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		270E9B940EE64B3C003F17CA /* HelloWorld.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HelloWorld.xib; sourceTree = "<group>"; };
+		270E9B960EE64B45003F17CA /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		270E9B970EE64B45003F17CA /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		270E9B9D0EE64B4E003F17CA /* HelloWorldAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelloWorldAppDelegate.h; sourceTree = "<group>"; };
+		270E9B9E0EE64B4E003F17CA /* HelloWorldAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelloWorldAppDelegate.m; sourceTree = "<group>"; };
+		270E9B9F0EE64B4E003F17CA /* MyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyViewController.h; sourceTree = "<group>"; };
+		270E9BA00EE64B4E003F17CA /* MyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyViewController.m; sourceTree = "<group>"; };
+		2777C78C0F75E141007F8D30 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		278C1B2B0F9F865800954AE1 /* MYPortMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYPortMapper.h; sourceTree = "<group>"; };
+		278C1B2C0F9F865800954AE1 /* MYPortMapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYPortMapper.m; sourceTree = "<group>"; };
+		278C1B2D0F9F865800954AE1 /* PortMapperTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PortMapperTest.m; sourceTree = "<group>"; };
+		278C1B330F9F86A100954AE1 /* MYUtilities_Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = MYUtilities_Debug.xcconfig; sourceTree = "<group>"; };
+		278C1B340F9F86A100954AE1 /* MYUtilities_Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = MYUtilities_Release.xcconfig; sourceTree = "<group>"; };
+		27C6A22A0FC5D92000EFF2A7 /* TCPEndpoint+Certs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TCPEndpoint+Certs.m"; sourceTree = "<group>"; };
+		27D915BB0FA8EABC002B0DEC /* MYDNSService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MYDNSService.h; path = PortMapper/MYDNSService.h; sourceTree = "<group>"; };
+		27D915BC0FA8EABC002B0DEC /* MYDNSService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MYDNSService.m; path = PortMapper/MYDNSService.m; sourceTree = "<group>"; };
+		27D915BD0FA8EABC002B0DEC /* MYAddressLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MYAddressLookup.h; path = Bonjour/MYAddressLookup.h; sourceTree = "<group>"; };
+		27D915BE0FA8EABC002B0DEC /* MYAddressLookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MYAddressLookup.m; path = Bonjour/MYAddressLookup.m; sourceTree = "<group>"; };
+		27D915C10FA8EAD0002B0DEC /* MYBonjourBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MYBonjourBrowser.h; path = Bonjour/MYBonjourBrowser.h; sourceTree = "<group>"; };
+		27D915C20FA8EAD0002B0DEC /* MYBonjourBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MYBonjourBrowser.m; path = Bonjour/MYBonjourBrowser.m; sourceTree = "<group>"; };
+		27D915C30FA8EAD0002B0DEC /* MYBonjourService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MYBonjourService.h; path = Bonjour/MYBonjourService.h; sourceTree = "<group>"; };
+		27D915C40FA8EAD0002B0DEC /* MYBonjourService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MYBonjourService.m; path = Bonjour/MYBonjourService.m; sourceTree = "<group>"; };
+		27D915C50FA8EAD0002B0DEC /* MYBonjourQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MYBonjourQuery.h; path = Bonjour/MYBonjourQuery.h; sourceTree = "<group>"; };
+		27D915C60FA8EAD0002B0DEC /* MYBonjourQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MYBonjourQuery.m; path = Bonjour/MYBonjourQuery.m; sourceTree = "<group>"; };
+		27D915C70FA8EAD0002B0DEC /* MYBonjourRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MYBonjourRegistration.h; path = Bonjour/MYBonjourRegistration.h; sourceTree = "<group>"; };
+		27D915C80FA8EAD0002B0DEC /* MYBonjourRegistration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MYBonjourRegistration.m; path = Bonjour/MYBonjourRegistration.m; sourceTree = "<group>"; };
+		280E754C0DD40C5E005A515E /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = iPhone/main.m; sourceTree = "<group>"; };
+		384A72A90FB0050B006A0B19 /* libMYNetwork.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMYNetwork.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		384A72B50FB0062C006A0B19 /* ConcurrentOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConcurrentOperation.h; sourceTree = "<group>"; };
+		384A72B60FB0062C006A0B19 /* ConcurrentOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConcurrentOperation.m; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1D60588F0D05DD3D006BFB54 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
+				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
+				270E9AE90EE61167003F17CA /* libz.dylib in Frameworks */,
+				270E9B4F0EE63F8F003F17CA /* CFNetwork.framework in Frameworks */,
+				2777C78D0F75E141007F8D30 /* Security.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		384A72A70FB0050B006A0B19 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				384A72AE0FB00523006A0B19 /* Foundation.framework in Frameworks */,
+				384A72AF0FB00523006A0B19 /* CFNetwork.framework in Frameworks */,
+				384A72B00FB00523006A0B19 /* libz.dylib in Frameworks */,
+				384A72B10FB00523006A0B19 /* UIKit.framework in Frameworks */,
+				384A72B20FB00523006A0B19 /* Security.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1D6058910D05DD3D006BFB54 /* BLIPEcho.app */,
+				384A72A90FB0050B006A0B19 /* libMYNetwork.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		270E9A9B0EE61091003F17CA /* iPhone */ = {
+			isa = PBXGroup;
+			children = (
+				270E9B9C0EE64B4E003F17CA /* Classes */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+			);
+			path = iPhone;
+			sourceTree = "<group>";
+			tabWidth = 4;
+		};
+		270E9AA00EE61113003F17CA /* MYNetwork */ = {
+			isa = PBXGroup;
+			children = (
+				27D915B90FA8EA85002B0DEC /* Addressing */,
+				278C1B2A0F9F865800954AE1 /* PortMapper */,
+				27D915BA0FA8EA98002B0DEC /* Bonjour */,
+				270E9AA30EE61113003F17CA /* TCP */,
+				270E9AAF0EE61113003F17CA /* BLIP */,
+			);
+			name = MYNetwork;
+			sourceTree = "<group>";
+		};
+		270E9AA30EE61113003F17CA /* TCP */ = {
+			isa = PBXGroup;
+			children = (
+				270E9AA40EE61113003F17CA /* TCPConnection.h */,
+				270E9AA50EE61113003F17CA /* TCPConnection.m */,
+				270E9AA60EE61113003F17CA /* TCPEndpoint.h */,
+				270E9AA70EE61113003F17CA /* TCPEndpoint.m */,
+				27C6A22A0FC5D92000EFF2A7 /* TCPEndpoint+Certs.m */,
+				270E9AA80EE61113003F17CA /* TCPListener.h */,
+				270E9AA90EE61113003F17CA /* TCPListener.m */,
+				270E9AAA0EE61113003F17CA /* TCPStream.h */,
+				270E9AAB0EE61113003F17CA /* TCPStream.m */,
+				270E9AAC0EE61113003F17CA /* TCPWriter.h */,
+				270E9AAD0EE61113003F17CA /* TCPWriter.m */,
+				270E9AAE0EE61113003F17CA /* TCP_Internal.h */,
+			);
+			path = TCP;
+			sourceTree = "<group>";
+		};
+		270E9AAF0EE61113003F17CA /* BLIP */ = {
+			isa = PBXGroup;
+			children = (
+				270E9AB00EE61113003F17CA /* BLIP.h */,
+				270E9AB10EE61113003F17CA /* BLIPConnection.h */,
+				270E9AB20EE61113003F17CA /* BLIPConnection.m */,
+				270E9AB30EE61113003F17CA /* BLIPDispatcher.h */,
+				270E9AB40EE61113003F17CA /* BLIPDispatcher.m */,
+				270E9AB50EE61113003F17CA /* BLIPMessage.h */,
+				270E9AB60EE61113003F17CA /* BLIPMessage.m */,
+				270E9AB70EE61113003F17CA /* BLIPRequest.h */,
+				270E9AB80EE61113003F17CA /* BLIPRequest.m */,
+				270E9AB90EE61113003F17CA /* BLIPProperties.h */,
+				270E9ABA0EE61113003F17CA /* BLIPProperties.m */,
+				270E9ABB0EE61113003F17CA /* BLIPReader.h */,
+				270E9ABC0EE61113003F17CA /* BLIPReader.m */,
+				270E9ABD0EE61113003F17CA /* BLIPWriter.h */,
+				270E9ABE0EE61113003F17CA /* BLIPWriter.m */,
+				270E9ABF0EE61113003F17CA /* BLIP_Internal.h */,
+			);
+			path = BLIP;
+			sourceTree = "<group>";
+		};
+		270E9ACD0EE6111A003F17CA /* MYUtilities */ = {
+			isa = PBXGroup;
+			children = (
+				384A72B50FB0062C006A0B19 /* ConcurrentOperation.h */,
+				384A72B60FB0062C006A0B19 /* ConcurrentOperation.m */,
+				270E9ACE0EE6111A003F17CA /* MYUtilitiesTest_main.m */,
+				270E9ACF0EE6111A003F17CA /* MYUtilities_Prefix.pch */,
+				270E9AD00EE6111A003F17CA /* CollectionUtils.h */,
+				270E9AD10EE6111A003F17CA /* CollectionUtils.m */,
+				270E9AD20EE6111A003F17CA /* ExceptionUtils.h */,
+				270E9AD30EE6111A003F17CA /* ExceptionUtils.m */,
+				270E9AD40EE6111A003F17CA /* Logging.h */,
+				270E9AD50EE6111A003F17CA /* Logging.m */,
+				270E9AD60EE6111A003F17CA /* Target.h */,
+				270E9AD70EE6111A003F17CA /* Target.m */,
+				270E9AD80EE6111A003F17CA /* Test.h */,
+				270E9AD90EE6111A003F17CA /* Test.m */,
+				278C1B330F9F86A100954AE1 /* MYUtilities_Debug.xcconfig */,
+				278C1B340F9F86A100954AE1 /* MYUtilities_Release.xcconfig */,
+				270E9ADA0EE6111A003F17CA /* GoogleToolboxSubset */,
+			);
+			name = MYUtilities;
+			sourceTree = MYUtilities;
+		};
+		270E9ADA0EE6111A003F17CA /* GoogleToolboxSubset */ = {
+			isa = PBXGroup;
+			children = (
+				270E9ADB0EE6111A003F17CA /* GTMDefines.h */,
+				270E9ADC0EE6111A003F17CA /* GTMNSData+zlib.h */,
+				270E9ADD0EE6111A003F17CA /* GTMNSData+zlib.m */,
+			);
+			path = GoogleToolboxSubset;
+			sourceTree = "<group>";
+		};
+		270E9B9C0EE64B4E003F17CA /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				270E9B9D0EE64B4E003F17CA /* HelloWorldAppDelegate.h */,
+				270E9B9E0EE64B4E003F17CA /* HelloWorldAppDelegate.m */,
+				270E9B9F0EE64B4E003F17CA /* MyViewController.h */,
+				270E9BA00EE64B4E003F17CA /* MyViewController.m */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		278C1B2A0F9F865800954AE1 /* PortMapper */ = {
+			isa = PBXGroup;
+			children = (
+				278C1B2B0F9F865800954AE1 /* MYPortMapper.h */,
+				278C1B2C0F9F865800954AE1 /* MYPortMapper.m */,
+				278C1B2D0F9F865800954AE1 /* PortMapperTest.m */,
+			);
+			path = PortMapper;
+			sourceTree = "<group>";
+		};
+		27D915B90FA8EA85002B0DEC /* Addressing */ = {
+			isa = PBXGroup;
+			children = (
+				270E9AA10EE61113003F17CA /* IPAddress.h */,
+				270E9AA20EE61113003F17CA /* IPAddress.m */,
+				27D915BB0FA8EABC002B0DEC /* MYDNSService.h */,
+				27D915BC0FA8EABC002B0DEC /* MYDNSService.m */,
+				27D915BD0FA8EABC002B0DEC /* MYAddressLookup.h */,
+				27D915BE0FA8EABC002B0DEC /* MYAddressLookup.m */,
+			);
+			name = Addressing;
+			sourceTree = "<group>";
+		};
+		27D915BA0FA8EA98002B0DEC /* Bonjour */ = {
+			isa = PBXGroup;
+			children = (
+				27D915C10FA8EAD0002B0DEC /* MYBonjourBrowser.h */,
+				27D915C20FA8EAD0002B0DEC /* MYBonjourBrowser.m */,
+				27D915C30FA8EAD0002B0DEC /* MYBonjourService.h */,
+				27D915C40FA8EAD0002B0DEC /* MYBonjourService.m */,
+				27D915C50FA8EAD0002B0DEC /* MYBonjourQuery.h */,
+				27D915C60FA8EAD0002B0DEC /* MYBonjourQuery.m */,
+				27D915C70FA8EAD0002B0DEC /* MYBonjourRegistration.h */,
+				27D915C80FA8EAD0002B0DEC /* MYBonjourRegistration.m */,
+			);
+			name = Bonjour;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				270E9AA00EE61113003F17CA /* MYNetwork */,
+				270E9ACD0EE6111A003F17CA /* MYUtilities */,
+				270E9A9B0EE61091003F17CA /* iPhone */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+				2777C78C0F75E141007F8D30 /* Security.framework */,
+			);
+			name = CustomTemplate;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				270E9B940EE64B3C003F17CA /* HelloWorld.xib */,
+				280E754C0DD40C5E005A515E /* MainWindow.xib */,
+				8D1107310486CEB800E47090 /* Info.plist */,
+				270E9B960EE64B45003F17CA /* Default.png */,
+				270E9B970EE64B45003F17CA /* Icon.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1D30AB110D05D00D00671497 /* Foundation.framework */,
+				270E9B4E0EE63F8F003F17CA /* CFNetwork.framework */,
+				270E9AE80EE61167003F17CA /* libz.dylib */,
+				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		384A72A50FB0050B006A0B19 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		1D6058900D05DD3D006BFB54 /* MYNetwork-iPhone */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "MYNetwork-iPhone" */;
+			buildPhases = (
+				1D60588D0D05DD3D006BFB54 /* Resources */,
+				1D60588E0D05DD3D006BFB54 /* Sources */,
+				1D60588F0D05DD3D006BFB54 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "MYNetwork-iPhone";
+			productName = "MYNetwork-iPhone";
+			productReference = 1D6058910D05DD3D006BFB54 /* BLIPEcho.app */;
+			productType = "com.apple.product-type.application";
+		};
+		384A72A80FB0050B006A0B19 /* MYNetwork */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 384A72B40FB00534006A0B19 /* Build configuration list for PBXNativeTarget "MYNetwork" */;
+			buildPhases = (
+				384A72A50FB0050B006A0B19 /* Headers */,
+				384A72A60FB0050B006A0B19 /* Sources */,
+				384A72A70FB0050B006A0B19 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MYNetwork;
+			productName = MYNetwork;
+			productReference = 384A72A90FB0050B006A0B19 /* libMYNetwork.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "MYNetwork-iPhone" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+				en,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1D6058900D05DD3D006BFB54 /* MYNetwork-iPhone */,
+				384A72A80FB0050B006A0B19 /* MYNetwork */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1D60588D0D05DD3D006BFB54 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				280E754F0DD40C5E005A515E /* MainWindow.xib in Resources */,
+				270E9B950EE64B3C003F17CA /* HelloWorld.xib in Resources */,
+				270E9B990EE64B45003F17CA /* Default.png in Resources */,
+				270E9B9A0EE64B45003F17CA /* Icon.png in Resources */,
+				278C1B350F9F86A100954AE1 /* MYUtilities_Debug.xcconfig in Resources */,
+				278C1B360F9F86A100954AE1 /* MYUtilities_Release.xcconfig in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1D60588E0D05DD3D006BFB54 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
+				270E9AC00EE61113003F17CA /* IPAddress.m in Sources */,
+				270E9AC10EE61113003F17CA /* TCPConnection.m in Sources */,
+				270E9AC20EE61113003F17CA /* TCPEndpoint.m in Sources */,
+				270E9AC30EE61113003F17CA /* TCPListener.m in Sources */,
+				270E9AC40EE61113003F17CA /* TCPStream.m in Sources */,
+				270E9AC50EE61113003F17CA /* TCPWriter.m in Sources */,
+				270E9AC60EE61113003F17CA /* BLIPConnection.m in Sources */,
+				270E9AC70EE61113003F17CA /* BLIPDispatcher.m in Sources */,
+				270E9AC80EE61113003F17CA /* BLIPMessage.m in Sources */,
+				270E9AC90EE61113003F17CA /* BLIPRequest.m in Sources */,
+				270E9ACA0EE61113003F17CA /* BLIPProperties.m in Sources */,
+				270E9ACB0EE61113003F17CA /* BLIPReader.m in Sources */,
+				270E9ACC0EE61113003F17CA /* BLIPWriter.m in Sources */,
+				270E9ADF0EE6111A003F17CA /* CollectionUtils.m in Sources */,
+				270E9AE00EE6111A003F17CA /* ExceptionUtils.m in Sources */,
+				270E9AE10EE6111A003F17CA /* Logging.m in Sources */,
+				270E9AE20EE6111A003F17CA /* Target.m in Sources */,
+				270E9AE30EE6111A003F17CA /* Test.m in Sources */,
+				270E9AE40EE6111A003F17CA /* GTMNSData+zlib.m in Sources */,
+				270E9BA10EE64B4E003F17CA /* HelloWorldAppDelegate.m in Sources */,
+				270E9BA20EE64B4E003F17CA /* MyViewController.m in Sources */,
+				278C1B2E0F9F865800954AE1 /* MYPortMapper.m in Sources */,
+				278C1B2F0F9F865800954AE1 /* PortMapperTest.m in Sources */,
+				27D915BF0FA8EABC002B0DEC /* MYDNSService.m in Sources */,
+				27D915C00FA8EABC002B0DEC /* MYAddressLookup.m in Sources */,
+				27D915C90FA8EAD0002B0DEC /* MYBonjourBrowser.m in Sources */,
+				27D915CA0FA8EAD0002B0DEC /* MYBonjourService.m in Sources */,
+				27D915CB0FA8EAD0002B0DEC /* MYBonjourQuery.m in Sources */,
+				27D915CC0FA8EAD0002B0DEC /* MYBonjourRegistration.m in Sources */,
+				384A72B70FB0062C006A0B19 /* ConcurrentOperation.m in Sources */,
+				27C6A22B0FC5D92000EFF2A7 /* TCPEndpoint+Certs.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		384A72A60FB0050B006A0B19 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				384A72B80FB006DF006A0B19 /* IPAddress.m in Sources */,
+				384A72B90FB006DF006A0B19 /* TCPConnection.m in Sources */,
+				384A72BA0FB006DF006A0B19 /* TCPEndpoint.m in Sources */,
+				384A72BB0FB006DF006A0B19 /* TCPListener.m in Sources */,
+				384A72BC0FB006DF006A0B19 /* TCPStream.m in Sources */,
+				384A72BD0FB006DF006A0B19 /* TCPWriter.m in Sources */,
+				384A72BE0FB006DF006A0B19 /* BLIPConnection.m in Sources */,
+				384A72BF0FB006DF006A0B19 /* BLIPDispatcher.m in Sources */,
+				384A72C00FB006DF006A0B19 /* BLIPMessage.m in Sources */,
+				384A72C10FB006DF006A0B19 /* BLIPRequest.m in Sources */,
+				384A72C20FB006DF006A0B19 /* BLIPProperties.m in Sources */,
+				384A72C30FB006DF006A0B19 /* BLIPReader.m in Sources */,
+				384A72C40FB006DF006A0B19 /* BLIPWriter.m in Sources */,
+				384A72C50FB006DF006A0B19 /* CollectionUtils.m in Sources */,
+				384A72C60FB006DF006A0B19 /* ExceptionUtils.m in Sources */,
+				384A72C70FB006DF006A0B19 /* Logging.m in Sources */,
+				384A72C80FB006DF006A0B19 /* Target.m in Sources */,
+				384A72C90FB006DF006A0B19 /* Test.m in Sources */,
+				384A72CA0FB006DF006A0B19 /* GTMNSData+zlib.m in Sources */,
+				384A72CB0FB006DF006A0B19 /* MYPortMapper.m in Sources */,
+				384A72CC0FB006DF006A0B19 /* PortMapperTest.m in Sources */,
+				384A72CD0FB006DF006A0B19 /* MYDNSService.m in Sources */,
+				384A72CE0FB006DF006A0B19 /* MYAddressLookup.m in Sources */,
+				384A72CF0FB006DF006A0B19 /* MYBonjourBrowser.m in Sources */,
+				384A72D00FB006DF006A0B19 /* MYBonjourService.m in Sources */,
+				384A72D10FB006DF006A0B19 /* MYBonjourQuery.m in Sources */,
+				384A72D20FB006DF006A0B19 /* MYBonjourRegistration.m in Sources */,
+				384A72D30FB006DF006A0B19 /* ConcurrentOperation.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1D6058940D05DD3E006BFB54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_C_LANGUAGE_STANDARD = c99;
+				INFOPLIST_FILE = iPhone/Info.plist;
+				PRODUCT_NAME = BLIPEcho;
+			};
+			name = Debug;
+		};
+		1D6058950D05DD3E006BFB54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = iPhone/Info.plist;
+				PRODUCT_NAME = BLIPEcho;
+			};
+			name = Release;
+		};
+		384A72AA0FB0050C006A0B19 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PREBINDING = NO;
+				PRODUCT_NAME = MYNetwork;
+			};
+			name = Debug;
+		};
+		384A72AB0FB0050C006A0B19 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PREBINDING = NO;
+				PRODUCT_NAME = MYNetwork;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 278C1B330F9F86A100954AE1 /* MYUtilities_Debug.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.framework *.gch *.xcode* (*) CVS .svn .hg";
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphonesimulator2.2.1;
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 278C1B340F9F86A100954AE1 /* MYUtilities_Release.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				SDKROOT = iphonesimulator2.2.1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "MYNetwork-iPhone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1D6058940D05DD3E006BFB54 /* Debug */,
+				1D6058950D05DD3E006BFB54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		384A72B40FB00534006A0B19 /* Build configuration list for PBXNativeTarget "MYNetwork" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				384A72AA0FB0050C006A0B19 /* Debug */,
+				384A72AB0FB0050C006A0B19 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "MYNetwork-iPhone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

@@ -1,0 +1,10 @@
+Improve the wordlist 
+
+  I am looking for comments on the wordlist from you.  Yes, you :-)
+
+Soundalike matching
+
+  I have given up on standard soundex techniques for this purpose.  
+  I am working on an ad-hoc solution which is more-or-less tailored to
+  this specific list.
+

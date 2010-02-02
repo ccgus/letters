@@ -125,8 +125,11 @@ err:
 }
 
 
-    
+
 @implementation LBIMAPFolder
+
+#ifdef NONONO
+
 - (id)initWithPath:(NSString *)apath inIMAPConnection:(LBIMAPConnection *)aConnection {
     struct mailstorage *storage = (struct mailstorage *)[aConnection storageStruct];
     self = [super init];
@@ -751,5 +754,5 @@ err:
     data = session->sess_data;
     return data->imap_session;  
 }
-
+#endif
 @end

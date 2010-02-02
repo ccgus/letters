@@ -72,7 +72,50 @@
 		CC877CF7110ABC04005ECF65 /* LBAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CE3110ABC04005ECF65 /* LBAccount.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC877CFA110ABC1D005ECF65 /* JRLog.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CF8110ABC1D005ECF65 /* JRLog.m */; };
 		CC877CFB110ABC1D005ECF65 /* JRLog.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CF9110ABC1D005ECF65 /* JRLog.h */; };
-		CCADF2DA1114E94D00E4714F /* Python.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCADF2D91114E94D00E4714F /* Python.framework */; };
+		CC8998DC1118C28A0024616B /* LBIMAPReader.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998DA1118C28A0024616B /* LBIMAPReader.h */; };
+		CC8998DD1118C28A0024616B /* LBIMAPReader.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998DB1118C28A0024616B /* LBIMAPReader.m */; };
+		CC8998FE1118C2A30024616B /* MYAddressLookup.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998E11118C2A30024616B /* MYAddressLookup.h */; };
+		CC8998FF1118C2A30024616B /* MYAddressLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998E21118C2A30024616B /* MYAddressLookup.m */; };
+		CC8999001118C2A30024616B /* MYBonjourBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998E31118C2A30024616B /* MYBonjourBrowser.h */; };
+		CC8999011118C2A30024616B /* MYBonjourBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998E41118C2A30024616B /* MYBonjourBrowser.m */; };
+		CC8999021118C2A30024616B /* MYBonjourQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998E51118C2A30024616B /* MYBonjourQuery.h */; };
+		CC8999031118C2A30024616B /* MYBonjourQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998E61118C2A30024616B /* MYBonjourQuery.m */; };
+		CC8999041118C2A30024616B /* MYBonjourRegistration.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998E71118C2A30024616B /* MYBonjourRegistration.h */; };
+		CC8999051118C2A30024616B /* MYBonjourRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998E81118C2A30024616B /* MYBonjourRegistration.m */; };
+		CC8999061118C2A30024616B /* MYBonjourService.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998E91118C2A30024616B /* MYBonjourService.h */; };
+		CC8999071118C2A30024616B /* MYBonjourService.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998EA1118C2A30024616B /* MYBonjourService.m */; };
+		CC8999081118C2A30024616B /* MYDNSService.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998EC1118C2A30024616B /* MYDNSService.h */; };
+		CC8999091118C2A30024616B /* MYDNSService.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998ED1118C2A30024616B /* MYDNSService.m */; };
+		CC89990A1118C2A30024616B /* MYPortMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998EE1118C2A30024616B /* MYPortMapper.h */; };
+		CC89990B1118C2A30024616B /* MYPortMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998EF1118C2A30024616B /* MYPortMapper.m */; };
+		CC89990C1118C2A30024616B /* PortMapperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998F01118C2A30024616B /* PortMapperTest.m */; };
+		CC89990D1118C2A30024616B /* TCP_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998F21118C2A30024616B /* TCP_Internal.h */; };
+		CC89990E1118C2A30024616B /* TCPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998F31118C2A30024616B /* TCPConnection.h */; };
+		CC89990F1118C2A30024616B /* TCPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998F41118C2A30024616B /* TCPConnection.m */; };
+		CC8999101118C2A30024616B /* TCPEndpoint+Certs.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998F51118C2A30024616B /* TCPEndpoint+Certs.m */; };
+		CC8999111118C2A30024616B /* TCPEndpoint.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998F61118C2A30024616B /* TCPEndpoint.h */; };
+		CC8999121118C2A30024616B /* TCPEndpoint.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998F71118C2A30024616B /* TCPEndpoint.m */; };
+		CC8999131118C2A30024616B /* TCPListener.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998F81118C2A30024616B /* TCPListener.h */; };
+		CC8999141118C2A30024616B /* TCPListener.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998F91118C2A30024616B /* TCPListener.m */; };
+		CC8999151118C2A30024616B /* TCPStream.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998FA1118C2A30024616B /* TCPStream.h */; };
+		CC8999161118C2A30024616B /* TCPStream.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998FB1118C2A30024616B /* TCPStream.m */; };
+		CC8999171118C2A30024616B /* TCPWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998FC1118C2A30024616B /* TCPWriter.h */; };
+		CC8999181118C2A30024616B /* TCPWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998FD1118C2A30024616B /* TCPWriter.m */; };
+		CC8999231118C2D20024616B /* CollectionUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8999191118C2D20024616B /* CollectionUtils.h */; };
+		CC8999241118C2D20024616B /* CollectionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CC89991A1118C2D20024616B /* CollectionUtils.m */; };
+		CC8999251118C2D20024616B /* ConcurrentOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = CC89991B1118C2D20024616B /* ConcurrentOperation.h */; };
+		CC8999261118C2D20024616B /* ConcurrentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = CC89991C1118C2D20024616B /* ConcurrentOperation.m */; };
+		CC8999271118C2D20024616B /* ExceptionUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = CC89991D1118C2D20024616B /* ExceptionUtils.h */; };
+		CC8999281118C2D20024616B /* ExceptionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CC89991E1118C2D20024616B /* ExceptionUtils.m */; };
+		CC8999291118C2D20024616B /* Logging.h in Headers */ = {isa = PBXBuildFile; fileRef = CC89991F1118C2D20024616B /* Logging.h */; };
+		CC89992A1118C2D20024616B /* Logging.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8999201118C2D20024616B /* Logging.m */; };
+		CC89992B1118C2D20024616B /* Test.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8999211118C2D20024616B /* Test.h */; };
+		CC89992C1118C2D20024616B /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8999221118C2D20024616B /* Test.m */; };
+		CC89992F1118C2DD0024616B /* IPAddress.h in Headers */ = {isa = PBXBuildFile; fileRef = CC89992D1118C2DD0024616B /* IPAddress.h */; };
+		CC8999301118C2DD0024616B /* IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = CC89992E1118C2DD0024616B /* IPAddress.m */; };
+		CC8999391118C2F80024616B /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC8999361118C2F80024616B /* CoreServices.framework */; };
+		CC89993A1118C2F80024616B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC8999371118C2F80024616B /* Security.framework */; };
+		CC89993B1118C2F80024616B /* SecurityInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC8999381118C2F80024616B /* SecurityInterface.framework */; };
 		CCD58CD5110BD9A30077F572 /* LBIMAPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = CCD58CD3110BD9A30077F572 /* LBIMAPConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CCD58CD6110BD9A30077F572 /* LBIMAPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = CCD58CD4110BD9A30077F572 /* LBIMAPConnection.m */; };
 		CCD721831115257A003C14AC /* LBFolder.h in Headers */ = {isa = PBXBuildFile; fileRef = CCD721811115257A003C14AC /* LBFolder.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -232,9 +275,52 @@
 		CC877D3D110ABD32005ECF65 /* LBMessageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBMessageTests.m; path = tests/LBMessageTests.m; sourceTree = "<group>"; };
 		CC877D3E110ABD32005ECF65 /* LBMIMETests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBMIMETests.h; path = tests/LBMIMETests.h; sourceTree = "<group>"; };
 		CC877D3F110ABD32005ECF65 /* LBMIMETests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBMIMETests.m; path = tests/LBMIMETests.m; sourceTree = "<group>"; };
+		CC8998DA1118C28A0024616B /* LBIMAPReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBIMAPReader.h; path = source/LBIMAPReader.h; sourceTree = "<group>"; };
+		CC8998DB1118C28A0024616B /* LBIMAPReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBIMAPReader.m; path = source/LBIMAPReader.m; sourceTree = "<group>"; };
+		CC8998E11118C2A30024616B /* MYAddressLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYAddressLookup.h; sourceTree = "<group>"; };
+		CC8998E21118C2A30024616B /* MYAddressLookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYAddressLookup.m; sourceTree = "<group>"; };
+		CC8998E31118C2A30024616B /* MYBonjourBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYBonjourBrowser.h; sourceTree = "<group>"; };
+		CC8998E41118C2A30024616B /* MYBonjourBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYBonjourBrowser.m; sourceTree = "<group>"; };
+		CC8998E51118C2A30024616B /* MYBonjourQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYBonjourQuery.h; sourceTree = "<group>"; };
+		CC8998E61118C2A30024616B /* MYBonjourQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYBonjourQuery.m; sourceTree = "<group>"; };
+		CC8998E71118C2A30024616B /* MYBonjourRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYBonjourRegistration.h; sourceTree = "<group>"; };
+		CC8998E81118C2A30024616B /* MYBonjourRegistration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYBonjourRegistration.m; sourceTree = "<group>"; };
+		CC8998E91118C2A30024616B /* MYBonjourService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYBonjourService.h; sourceTree = "<group>"; };
+		CC8998EA1118C2A30024616B /* MYBonjourService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYBonjourService.m; sourceTree = "<group>"; };
+		CC8998EC1118C2A30024616B /* MYDNSService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYDNSService.h; sourceTree = "<group>"; };
+		CC8998ED1118C2A30024616B /* MYDNSService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYDNSService.m; sourceTree = "<group>"; };
+		CC8998EE1118C2A30024616B /* MYPortMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYPortMapper.h; sourceTree = "<group>"; };
+		CC8998EF1118C2A30024616B /* MYPortMapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYPortMapper.m; sourceTree = "<group>"; };
+		CC8998F01118C2A30024616B /* PortMapperTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PortMapperTest.m; sourceTree = "<group>"; };
+		CC8998F21118C2A30024616B /* TCP_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCP_Internal.h; sourceTree = "<group>"; };
+		CC8998F31118C2A30024616B /* TCPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPConnection.h; sourceTree = "<group>"; };
+		CC8998F41118C2A30024616B /* TCPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCPConnection.m; sourceTree = "<group>"; };
+		CC8998F51118C2A30024616B /* TCPEndpoint+Certs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TCPEndpoint+Certs.m"; sourceTree = "<group>"; };
+		CC8998F61118C2A30024616B /* TCPEndpoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPEndpoint.h; sourceTree = "<group>"; };
+		CC8998F71118C2A30024616B /* TCPEndpoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCPEndpoint.m; sourceTree = "<group>"; };
+		CC8998F81118C2A30024616B /* TCPListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPListener.h; sourceTree = "<group>"; };
+		CC8998F91118C2A30024616B /* TCPListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCPListener.m; sourceTree = "<group>"; };
+		CC8998FA1118C2A30024616B /* TCPStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPStream.h; sourceTree = "<group>"; };
+		CC8998FB1118C2A30024616B /* TCPStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCPStream.m; sourceTree = "<group>"; };
+		CC8998FC1118C2A30024616B /* TCPWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPWriter.h; sourceTree = "<group>"; };
+		CC8998FD1118C2A30024616B /* TCPWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCPWriter.m; sourceTree = "<group>"; };
+		CC8999191118C2D20024616B /* CollectionUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CollectionUtils.h; path = mooseyard/MYUtilities/CollectionUtils.h; sourceTree = "<group>"; };
+		CC89991A1118C2D20024616B /* CollectionUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CollectionUtils.m; path = mooseyard/MYUtilities/CollectionUtils.m; sourceTree = "<group>"; };
+		CC89991B1118C2D20024616B /* ConcurrentOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConcurrentOperation.h; path = mooseyard/MYUtilities/ConcurrentOperation.h; sourceTree = "<group>"; };
+		CC89991C1118C2D20024616B /* ConcurrentOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConcurrentOperation.m; path = mooseyard/MYUtilities/ConcurrentOperation.m; sourceTree = "<group>"; };
+		CC89991D1118C2D20024616B /* ExceptionUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExceptionUtils.h; path = mooseyard/MYUtilities/ExceptionUtils.h; sourceTree = "<group>"; };
+		CC89991E1118C2D20024616B /* ExceptionUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExceptionUtils.m; path = mooseyard/MYUtilities/ExceptionUtils.m; sourceTree = "<group>"; };
+		CC89991F1118C2D20024616B /* Logging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Logging.h; path = mooseyard/MYUtilities/Logging.h; sourceTree = "<group>"; };
+		CC8999201118C2D20024616B /* Logging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Logging.m; path = mooseyard/MYUtilities/Logging.m; sourceTree = "<group>"; };
+		CC8999211118C2D20024616B /* Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Test.h; path = mooseyard/MYUtilities/Test.h; sourceTree = "<group>"; };
+		CC8999221118C2D20024616B /* Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Test.m; path = mooseyard/MYUtilities/Test.m; sourceTree = "<group>"; };
+		CC89992D1118C2DD0024616B /* IPAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IPAddress.h; path = mooseyard/MYNetwork/IPAddress.h; sourceTree = "<group>"; };
+		CC89992E1118C2DD0024616B /* IPAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IPAddress.m; path = mooseyard/MYNetwork/IPAddress.m; sourceTree = "<group>"; };
+		CC8999361118C2F80024616B /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
+		CC8999371118C2F80024616B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		CC8999381118C2F80024616B /* SecurityInterface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityInterface.framework; path = System/Library/Frameworks/SecurityInterface.framework; sourceTree = SDKROOT; };
 		CCA553E01106DB6B00CEEFF4 /* Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Tests-Info.plist"; path = "resources/Tests-Info.plist"; sourceTree = "<group>"; };
 		CCA553E21106DB7100CEEFF4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = resources/Info.plist; sourceTree = "<group>"; };
-		CCADF2D91114E94D00E4714F /* Python.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python.framework; path = /System/Library/Frameworks/Python.framework; sourceTree = "<absolute>"; };
 		CCD58CD3110BD9A30077F572 /* LBIMAPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBIMAPConnection.h; path = source/LBIMAPConnection.h; sourceTree = "<group>"; };
 		CCD58CD4110BD9A30077F572 /* LBIMAPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBIMAPConnection.m; path = source/LBIMAPConnection.m; sourceTree = "<group>"; };
 		CCD721811115257A003C14AC /* LBFolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBFolder.h; path = source/LBFolder.h; sourceTree = "<group>"; };
@@ -263,7 +349,9 @@
 				F88804620B42018500D400E7 /* libsasl2.dylib in Frameworks */,
 				CC3D54381108EFE800EEEF77 /* libsqlite3.dylib in Frameworks */,
 				CC517468110ACD8400C01407 /* libetpan.framework in Frameworks */,
-				CCADF2DA1114E94D00E4714F /* Python.framework in Frameworks */,
+				CC8999391118C2F80024616B /* CoreServices.framework in Frameworks */,
+				CC89993A1118C2F80024616B /* Security.framework in Frameworks */,
+				CC89993B1118C2F80024616B /* SecurityInterface.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,6 +411,7 @@
 		08FB77AEFE84172EC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				CC8998D11118C2200024616B /* MooseYard */,
 				CC3D541C1108E7AC00EEEF77 /* FMDB */,
 				F81E26810C6ED57400B3FBAC /* SMTP */,
 				F81E26720C6ED56000B3FBAC /* MIME */,
@@ -341,6 +430,8 @@
 				CCD721821115257A003C14AC /* LBFolder.m */,
 				CCD58CD3110BD9A30077F572 /* LBIMAPConnection.h */,
 				CCD58CD4110BD9A30077F572 /* LBIMAPConnection.m */,
+				CC8998DA1118C28A0024616B /* LBIMAPReader.h */,
+				CC8998DB1118C28A0024616B /* LBIMAPReader.m */,
 				CC877CD9110ABC04005ECF65 /* LBIMAPFolder.h */,
 				CC877CD8110ABC04005ECF65 /* LBIMAPFolder.m */,
 				CC877CD7110ABC04005ECF65 /* LBIMAPMessage.h */,
@@ -360,7 +451,9 @@
 		1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CCADF2D91114E94D00E4714F /* Python.framework */,
+				CC8999361118C2F80024616B /* CoreServices.framework */,
+				CC8999371118C2F80024616B /* Security.framework */,
+				CC8999381118C2F80024616B /* SecurityInterface.framework */,
 				968D0E5C111525550044BE1D /* GHUnit.framework */,
 				CC517467110ACD8400C01407 /* libetpan.framework */,
 				F88804610B42018500D400E7 /* libsasl2.dylib */,
@@ -403,6 +496,79 @@
 				CC3D54221108E7F700EEEF77 /* FMResultSet.m */,
 			);
 			name = FMDB;
+			sourceTree = "<group>";
+		};
+		CC8998D11118C2200024616B /* MooseYard */ = {
+			isa = PBXGroup;
+			children = (
+				CC8998E01118C2A30024616B /* Bonjour */,
+				CC8999191118C2D20024616B /* CollectionUtils.h */,
+				CC89991A1118C2D20024616B /* CollectionUtils.m */,
+				CC89991B1118C2D20024616B /* ConcurrentOperation.h */,
+				CC89991C1118C2D20024616B /* ConcurrentOperation.m */,
+				CC89991D1118C2D20024616B /* ExceptionUtils.h */,
+				CC89991E1118C2D20024616B /* ExceptionUtils.m */,
+				CC89992D1118C2DD0024616B /* IPAddress.h */,
+				CC89992E1118C2DD0024616B /* IPAddress.m */,
+				CC89991F1118C2D20024616B /* Logging.h */,
+				CC8999201118C2D20024616B /* Logging.m */,
+				CC8998EB1118C2A30024616B /* PortMapper */,
+				CC8998F11118C2A30024616B /* TCP */,
+				CC8999211118C2D20024616B /* Test.h */,
+				CC8999221118C2D20024616B /* Test.m */,
+			);
+			name = MooseYard;
+			sourceTree = "<group>";
+		};
+		CC8998E01118C2A30024616B /* Bonjour */ = {
+			isa = PBXGroup;
+			children = (
+				CC8998E11118C2A30024616B /* MYAddressLookup.h */,
+				CC8998E21118C2A30024616B /* MYAddressLookup.m */,
+				CC8998E31118C2A30024616B /* MYBonjourBrowser.h */,
+				CC8998E41118C2A30024616B /* MYBonjourBrowser.m */,
+				CC8998E51118C2A30024616B /* MYBonjourQuery.h */,
+				CC8998E61118C2A30024616B /* MYBonjourQuery.m */,
+				CC8998E71118C2A30024616B /* MYBonjourRegistration.h */,
+				CC8998E81118C2A30024616B /* MYBonjourRegistration.m */,
+				CC8998E91118C2A30024616B /* MYBonjourService.h */,
+				CC8998EA1118C2A30024616B /* MYBonjourService.m */,
+			);
+			name = Bonjour;
+			path = mooseyard/MYNetwork/Bonjour;
+			sourceTree = "<group>";
+		};
+		CC8998EB1118C2A30024616B /* PortMapper */ = {
+			isa = PBXGroup;
+			children = (
+				CC8998EC1118C2A30024616B /* MYDNSService.h */,
+				CC8998ED1118C2A30024616B /* MYDNSService.m */,
+				CC8998EE1118C2A30024616B /* MYPortMapper.h */,
+				CC8998EF1118C2A30024616B /* MYPortMapper.m */,
+				CC8998F01118C2A30024616B /* PortMapperTest.m */,
+			);
+			name = PortMapper;
+			path = mooseyard/MYNetwork/PortMapper;
+			sourceTree = "<group>";
+		};
+		CC8998F11118C2A30024616B /* TCP */ = {
+			isa = PBXGroup;
+			children = (
+				CC8998F21118C2A30024616B /* TCP_Internal.h */,
+				CC8998F31118C2A30024616B /* TCPConnection.h */,
+				CC8998F41118C2A30024616B /* TCPConnection.m */,
+				CC8998F51118C2A30024616B /* TCPEndpoint+Certs.m */,
+				CC8998F61118C2A30024616B /* TCPEndpoint.h */,
+				CC8998F71118C2A30024616B /* TCPEndpoint.m */,
+				CC8998F81118C2A30024616B /* TCPListener.h */,
+				CC8998F91118C2A30024616B /* TCPListener.m */,
+				CC8998FA1118C2A30024616B /* TCPStream.h */,
+				CC8998FB1118C2A30024616B /* TCPStream.m */,
+				CC8998FC1118C2A30024616B /* TCPWriter.h */,
+				CC8998FD1118C2A30024616B /* TCPWriter.m */,
+			);
+			name = TCP;
+			path = mooseyard/MYNetwork/TCP;
 			sourceTree = "<group>";
 		};
 		F81E26720C6ED56000B3FBAC /* MIME */ = {
@@ -513,6 +679,26 @@
 				CCF41348110D39F200401D5D /* LBActivity.h in Headers */,
 				CCD721831115257A003C14AC /* LBFolder.h in Headers */,
 				CCD7218911152594003C14AC /* LBMessage.h in Headers */,
+				CC8998DC1118C28A0024616B /* LBIMAPReader.h in Headers */,
+				CC8998FE1118C2A30024616B /* MYAddressLookup.h in Headers */,
+				CC8999001118C2A30024616B /* MYBonjourBrowser.h in Headers */,
+				CC8999021118C2A30024616B /* MYBonjourQuery.h in Headers */,
+				CC8999041118C2A30024616B /* MYBonjourRegistration.h in Headers */,
+				CC8999061118C2A30024616B /* MYBonjourService.h in Headers */,
+				CC8999081118C2A30024616B /* MYDNSService.h in Headers */,
+				CC89990A1118C2A30024616B /* MYPortMapper.h in Headers */,
+				CC89990D1118C2A30024616B /* TCP_Internal.h in Headers */,
+				CC89990E1118C2A30024616B /* TCPConnection.h in Headers */,
+				CC8999111118C2A30024616B /* TCPEndpoint.h in Headers */,
+				CC8999131118C2A30024616B /* TCPListener.h in Headers */,
+				CC8999151118C2A30024616B /* TCPStream.h in Headers */,
+				CC8999171118C2A30024616B /* TCPWriter.h in Headers */,
+				CC8999231118C2D20024616B /* CollectionUtils.h in Headers */,
+				CC8999251118C2D20024616B /* ConcurrentOperation.h in Headers */,
+				CC8999271118C2D20024616B /* ExceptionUtils.h in Headers */,
+				CC8999291118C2D20024616B /* Logging.h in Headers */,
+				CC89992B1118C2D20024616B /* Test.h in Headers */,
+				CC89992F1118C2DD0024616B /* IPAddress.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -688,6 +874,27 @@
 				CCD58CD6110BD9A30077F572 /* LBIMAPConnection.m in Sources */,
 				CCD721841115257A003C14AC /* LBFolder.m in Sources */,
 				CCD7218A11152594003C14AC /* LBMessage.m in Sources */,
+				CC8998DD1118C28A0024616B /* LBIMAPReader.m in Sources */,
+				CC8998FF1118C2A30024616B /* MYAddressLookup.m in Sources */,
+				CC8999011118C2A30024616B /* MYBonjourBrowser.m in Sources */,
+				CC8999031118C2A30024616B /* MYBonjourQuery.m in Sources */,
+				CC8999051118C2A30024616B /* MYBonjourRegistration.m in Sources */,
+				CC8999071118C2A30024616B /* MYBonjourService.m in Sources */,
+				CC8999091118C2A30024616B /* MYDNSService.m in Sources */,
+				CC89990B1118C2A30024616B /* MYPortMapper.m in Sources */,
+				CC89990C1118C2A30024616B /* PortMapperTest.m in Sources */,
+				CC89990F1118C2A30024616B /* TCPConnection.m in Sources */,
+				CC8999101118C2A30024616B /* TCPEndpoint+Certs.m in Sources */,
+				CC8999121118C2A30024616B /* TCPEndpoint.m in Sources */,
+				CC8999141118C2A30024616B /* TCPListener.m in Sources */,
+				CC8999161118C2A30024616B /* TCPStream.m in Sources */,
+				CC8999181118C2A30024616B /* TCPWriter.m in Sources */,
+				CC8999241118C2D20024616B /* CollectionUtils.m in Sources */,
+				CC8999261118C2D20024616B /* ConcurrentOperation.m in Sources */,
+				CC8999281118C2D20024616B /* ExceptionUtils.m in Sources */,
+				CC89992A1118C2D20024616B /* Logging.m in Sources */,
+				CC89992C1118C2D20024616B /* Test.m in Sources */,
+				CC8999301118C2DD0024616B /* IPAddress.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

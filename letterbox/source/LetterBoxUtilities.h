@@ -46,3 +46,5 @@ NSString *LBQuote(NSString *body, NSString *prefix);
 
 NSString *LBWrapLines(NSString *body, int width);
 
+
+#define LBRelease(a)  { [a release]; a = nil; }

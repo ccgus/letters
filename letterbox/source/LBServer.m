@@ -15,6 +15,7 @@
 #import "FMDatabase.h"
 #import "LBIMAPConnection.h"
 #import "LBMessage.h"
+#import "IPAddress.h"
 
 
 NSString *LBServerFolderUpdatedNotification = @"LBServerFolderUpdatedNotification";
@@ -49,7 +50,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         self.baseCacheURL   = cacheFileURL;
         
         inactiveIMAPConnections = [[NSMutableArray array] retain];
-        activeIMAPConnections = [[NSMutableArray array] retain];
+        activeIMAPConnections   = [[NSMutableArray array] retain];
         foldersCache = [[NSMutableDictionary dictionary] retain];
         foldersList  = [[NSArray array] retain];
         
@@ -89,7 +90,11 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     if (!conn) {
         // FIXME: what about a second connection that hasn't been connected yet?
         // should we worry about that?
-        conn = [[[LBIMAPConnection alloc] init] autorelease];
+        IPAddress *addr = [IPAddress addressWithHostname:[[self account] imapServer] port:[[self account] imapPort]];
+        conn = [[[LBIMAPConnection alloc] initToAddress:addr] autorelease];
+        
+        [conn setDebugOutput:YES];
+        
     }
     
     [activeIMAPConnections addObject:conn];
@@ -99,9 +104,13 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 
 - (void)checkInIMAPConnection:(LBIMAPConnection*) conn {
     
-    // FIXME: aint' thread safe.
     if (![[NSThread currentThread] isMainThread]) {
-        NSLog(@"UH OH THIS IS BAD CHECKING IN ON A NON MAIN THREAD NOOO.");
+        
+        dispatch_sync(dispatch_get_main_queue(),^ {
+            [self checkInIMAPConnection:conn];
+        });
+        
+        return;
     }
     
     // Possible solution- only ever checkout / check in on main thread?
@@ -113,9 +122,12 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     [conn setActivityStatusAndNotifiy:nil];
 }
 
-- (void)connectUsingBlock:(void (^)(BOOL, NSError *))block {
-    
-#ifdef NONO
+
+
+#define CheckConnectionAndReturnIfCanceled(aConn) { if (aConn.shouldCancelActivity) { dispatch_async(dispatch_get_main_queue(),^ { [self checkInIMAPConnection:conn]; }); return; } }
+
+
+- (void)connectUsingBlock:(void (^)(NSError *))block {
     
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
     
@@ -123,44 +135,52 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         
         [conn setActivityStatusAndNotifiy:NSLocalizedString(@"Connecting", @"Connecting")];
         
-        NSError *err = nil;
-        BOOL success = [conn connectWithAccount:[self account] error:&err];
+        [conn connectUsingBlock:^(NSError *err) {
         
-        if (block) {
-            dispatch_async(dispatch_get_main_queue(),^ {
-                
-                block(success, err);
+            if (err) {
+                // FIXME: do something nice if we don't connect to the server.
+                NSLog(@"Could not connect to server");
+                NSBeep();
+                [self checkInIMAPConnection:conn];
+                return;
+            }
+            
+            [conn setActivityStatusAndNotifiy:NSLocalizedString(@"Logging in", @"Logging in")];
+            
+            [conn loginWithUsername:[[self account] username] password:[[self account] password] block:^(NSError *err) {
                 
                 [self checkInIMAPConnection:conn];
-            });
-        }
+                
+                block(err);
+            }];
+        }];
     });
-#endif
 }
 
 
-
-#define CheckConnectionAndReturnIfCanceled(aConn) { if (aConn.shouldCancelActivity) { dispatch_async(dispatch_get_main_queue(),^ { [self checkInIMAPConnection:conn]; }); return; } }
-
 - (void)checkForMail {
-#ifdef NONO
+    
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
         
-        if (![conn isConnected]) {
-            [conn setActivityStatusAndNotifiy:NSLocalizedString(@"Connecting", @"Connecting")];
-            NSError *err = nil;
-            if (![conn connectWithAccount:[self account] error:&err]) {
-                NSLog(@"err: %@", err);
-                // FIXME: remove / invalidate the connection so it isn't used again?
-                return;
-            }
-        }
+        // FIXME: check for a connected object.
         
         CheckConnectionAndReturnIfCanceled(conn);
         
         [conn setActivityStatusAndNotifiy:NSLocalizedString(@"Updating folder list", @"Updating folder list")];
+        
+        [conn listSubscribedMailboxesWithBock:^(NSError *err) {
+            
+            NSArray *mailboxes = [conn fetchedMailboxes];
+            
+            for (NSDictionary *mailboxInfo in mailboxes) {
+                NSString *name = [mailboxInfo objectForKey:@"mailboxName"];
+                debug(@"found mailbox: %@", name);
+            }
+        }];
+        
+        /*
         NSError *err    = nil;
         NSArray *list   = [conn subscribedFolderNames:&err];
         
@@ -250,13 +270,13 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
             
         }
         
-        dispatch_async(dispatch_get_main_queue(),^ {
-            [self checkInIMAPConnection:conn];
-        });
         
         
+        */
+        
+        [self checkInIMAPConnection:conn];
     });
-#endif
+    
 }
 
 - (NSArray*)messageListForPath:(NSString*)folderPath {

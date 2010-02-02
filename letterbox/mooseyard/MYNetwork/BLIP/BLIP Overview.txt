@@ -1,0 +1,66 @@
+BLIP OVERVIEW
+Jens Alfke <jens@mooseyard.com>
+Preliminary Draft 1 -- 21 May 2008
+
+
+BLIP is a generic application-layer network protocol that runs atop TCP. It was inspired by BEEP (in fact BLIP stands for "BEEP-LIke Protocol") but is deliberately simpler and somewhat more limited.
+
+DATA MODEL
+
+BLIP lets the two peers on either end of a TCP socket send requests and responses to each other.
+Each message and response is very much like a MIME body, as in email or HTTP: it consists of a blob of data of arbitrary length, plus a set of key/value pairs called "properties". The properties are mostly ignored by BLIP itself, but clients can use them for metadata about the body, and for delivery information (i.e. something like BEEP's "profiles".)
+
+Either peer can send a message at any time; there's no notion of "client" and "server" roles. Multiple messages can be transmitted simultaneously over the same connection, so a very long message does not block any other messages from being delivered. This means that message ordering is a bit looser than in BEEP or HTTP 1.1: the receiver will see the beginnings of messages in the same order in which the sender posted them, but they might not end in that same order. (For example, a long message will take longer to be delivered, so it may finish after messages that were begun after it.)
+
+The sender can indicate whether a message needs to be replied to; the response is tagged with the identity of the original message, to make it easy for the sender to recognize. This makes it straighforward to implement RPC-style (or REST-style) request/response interactions. (Replies cannot be replied to again, however.)
+
+A message can be flagged as "urgent". Urgent messages are pushed ahead in the outgoing queue and get a higher fraction of the available bandwidth.
+
+A message can be flagged as "compressed". This runs its body through the gzip algorithm, ideally making it faster to transmit. (Common markup-based data formats like XML and JSON compress extremely well, at ratios up to 10::1.) The message is decompressed on the receiving end, invisibly to client code.
+
+WIRE FORMAT
+
+All multi-byte numbers are encoded in network byte-order (big-endian).
+
+Each message is first packed into a series of bytes consisting of the properties followed by the body. The properties are encoded as a 16-bit byte-count followed by a series of NUL-terminated C strings alternating keys and values.
+
+The message is then broken up into "frames", usually 4k to 12k bytes. Each frame is prefixed with a 12-byte header containing its length in bytes, message number, and some flags.
+
+Each of the two unidirectional TCP streams carries a sequence of these frames, and nothing else. If multiple messages are queued up at the sender, their frames will be interleaved, so that one message doesn't block the rest. The ordering is primarily round-robin, except that urgent messages are scheduled more often than regular ones; the scheduler tries to alternate urgent and regular frames, and lets the urgent frames be larger. It's rather like a thread scheduler, really.
+
+When one peer wants to close the connection, it finishes sending all pending frames and then closes its outgoing (write) stream. The other peer detects this and goes into closing mode as well, sending its pending frames and then closing the other stream, which closes the socket. On the other hand, if a peer's writing stream is closed unexpectedly, or its reading stream closes in mid-frame, this indicates a broken connection.
+
+  Frame header:
+    UInt32           magic;         // magic number (kBLIPFrameHeaderMagicNumber)
+    UInt32           number;        // serial number of MSG (starts at 1)
+    BLIPMessageFlags flags;         // encodes frame type, "more" flag, and other delivery options
+    UInt16           size;          // total size of frame, _including_ this header
+
+  Flags:
+    kBLIP_TypeMask  = 0x000F,       // bits reserved for storing message type
+    kBLIP_Compressed= 0x0010,       // data is gzipped
+    kBLIP_Urgent    = 0x0020,       // please send sooner/faster
+    kBLIP_NoReply   = 0x0040,       // no RPY needed
+    kBLIP_MoreComing= 0x0080,       // More frames of this message coming
+    // all other bits reserved
+
+  Message types:
+    kBLIP_MSG = 0,                  // initiating message
+    kBLIP_RPY = 1,                  // response to a MSG
+    kBLIP_ERR = 2                   // error response to a MSG
+    // values 3-15 reserved
+
+
+LIMITATIONS
+
+Compared to BEEP, the BLIP protocol has:
+* No channels. (It's as though every message/response were sent on a separate channel.)
+* No ANS style responses (multiple answers)
+* No proocol for "tuning" the session by negotiating encryption (SSL) or authentication (SASL, etc.)
+* No negotiation of closing the connection (a peer can't veto a close)
+
+Some currently missing features that will likely be added are:
+* Flow control (i.e. "windows" to throttle the sender so the listener can keep up)
+* Ability to enforce one-at-a-time ordering of a set of requests and responses, so a message isn't sent until the previous message is complete (as in a BEEP channel)
+* A more stream-like API for requests and responses, so their bodies can be sent and received incrementally. (The protocol and implementation already support this.)
+* Ability to stop an incoming message partway through (e.g. to interrupt a file transfer)

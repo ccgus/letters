@@ -37,7 +37,7 @@ extern NSString *LBServerBodiesUpdatedNotification;
 
 - (id)initWithAccount:(LBAccount*)anAccount usingCacheFolder:(NSURL*)cacheFileURL;
 
-- (void)connectUsingBlock:(void (^)(BOOL, NSError *))block;
+- (void)connectUsingBlock:(void (^)(NSError *))block;
 
 - (void)checkForMail;
 

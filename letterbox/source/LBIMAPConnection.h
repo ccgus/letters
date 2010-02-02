@@ -1,65 +1,56 @@
-//
-//  LBIMAPConnection.h
-//  LetterBox
-//
-//  Created by August Mueller on 1/23/10.
-//  Copyright 2010 Flying Meat Inc. All rights reserved.
-//
-
-#import <Cocoa/Cocoa.h>
-#import <libetpan/libetpan.h>
-
+#import <Foundation/Foundation.h>
 #import "LBActivity.h"
+#import "TCPConnection.h"
+#import "TCPWriter.h"
 
-@class LBIMAPFolder;
-@class LBAccount;
+@class LBIMAPReader;
 
-@interface LBIMAPConnection : NSObject <LBActivity> {
-    struct mailstorage  *storage;
-    BOOL                connected;
+typedef void (^LBResponseBlock)(NSError *);
+
+@interface LBIMAPConnection : TCPConnection <TCPConnectionDelegate, LBActivity> {
     
-    NSString            *activityStatus;
+    void (^responseBlock)(NSError *);
+    
+    NSInteger   commandCount;
+    
+    NSInteger   bytesRead;
+    
+    NSString    *currentCommand;
+    
+    NSInteger   currentFetchingMessageSize;
+    NSString    *currentFetchingMessageHeader;
+    
+    NSString    *activityStatus;
 }
 
+@property (assign) BOOL debugOutput;
+@property (retain) NSMutableData *responseBytes;
 @property (assign) BOOL shouldCancelActivity;
 
-/*!
- @abstract   Retrieves the list of all the available folders from the server.
- @result     Returns a NSSet which contains NSStrings of the folders pathnames.
- */
-- (NSArray *)allFolders;
+- (void)connectUsingBlock:(LBResponseBlock)block;
+- (void)loginWithUsername:(NSString *)username password:(NSString *)password block:(LBResponseBlock)block;
+- (void)canRead:(LBIMAPReader*)reader;
+- (void)selectMailbox:(NSString*)mailbox block:(LBResponseBlock)block;
+- (void)listMessagesWithBlock:(LBResponseBlock)block;
+- (void)listSubscribedMailboxesWithBock:(LBResponseBlock)block;
+- (void)logoutWithBlock:(LBResponseBlock)block;
 
-/*!
- @abstract   Retrieves a list of only the subscribed folders from the server.
- @result     Returns an ordered NSArray which contains NSStrings of the folders pathnames.
- */
-- (NSArray *) subscribedFolderNames:(NSError**)outErr;
+- (void)createMailbox:(NSString*)mailboxName withBlock:(LBResponseBlock)block;
+- (void)deleteMailbox:(NSString*)mailboxName withBlock:(LBResponseBlock)block;
 
-/*!
- @abstract   If you have the path of a folder on the server use this method to retrieve just the one folder.
- @param      path A NSString specifying the path of the folder to retrieve from the server.
- @result     Returns a LBFolder.
- */
-- (LBIMAPFolder *)folderWithPath:(NSString *)path;
+- (void)subscribeToMailbox:(NSString*)mailboxName withBlock:(LBResponseBlock)block;
+- (void)unsubscribeToMailbox:(NSString*)mailboxName withBlock:(LBResponseBlock)block;
 
-- (BOOL) connectWithAccount:(LBAccount*)account error:(NSError**)outErr;
+- (void)fetchMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block;
 
-/*!
- @abstract   This method returns the current connection status.
- @result     Returns YES or NO as the status of the connection.
- */
+// this will parse the last LSUB command.  You better have done a listSubscribedMailboxesWithBock: right before this.
+- (NSArray*)fetchedMailboxes;
+
+- (NSArray*)searchedResultSet;
+
 - (BOOL)isConnected;
 
-/*!
- @abstract   Terminates the connection. If you terminate this connection it will also affect the
- connectivity of LBFolders and LBMessages that rely on this account.
- */
-- (void)disconnect;
-
-/* Intended for advanced use only */
-- (mailimap *)session;
-- (struct mailstorage *)storageStruct;
-
-
 - (void)setActivityStatusAndNotifiy:(NSString *)value;
+
+
 @end
