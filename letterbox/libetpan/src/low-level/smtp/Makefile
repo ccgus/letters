@@ -189,7 +189,7 @@ AUTOMAKE = ${SHELL} /Volumes/srv/Users/gus/Desktop/libetpan/missing --run automa
 AWK = awk
 BUILD_FILEVERSION = 0,58,0,0
 BUILD_REVISION = 0
-BUILD_TIMESTAMP = 2010-01-31T19:21-0800
+BUILD_TIMESTAMP = 2010-02-02T12:20-0800
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2 -O2 -g -W -Wall
@@ -253,7 +253,7 @@ SET_MAKE =
 SHELL = /bin/sh
 SSLLIBS = -lssl -lcrypto 
 STRIP = strip
-VERSION = 0.58-dev-20100131
+VERSION = 0.58
 VERSION_MAJOR = 0
 VERSION_MINOR = 58
 abs_builddir = /Volumes/srv/Users/gus/Desktop/libetpan/src/low-level/smtp

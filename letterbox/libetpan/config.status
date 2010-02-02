@@ -658,7 +658,7 @@ fi
 
 
     PACKAGE='libetpan'
-    VERSION='0.58-dev-20100131'
+    VERSION='0.58'
     TIMESTAMP=''
     RM='rm -f'
     ofile='libtool'
@@ -816,7 +816,7 @@ s,@INSTALL_DATA@,|#_!!_#|${INSTALL} -m 644,g
 s,@am__isrc@,|#_!!_#|,g
 s,@CYGPATH_W@,|#_!!_#|echo,g
 s,@PACKAGE@,|#_!!_#|libetpan,g
-s,@VERSION@,|#_!!_#|0.58-dev-20100131,g
+s,@VERSION@,|#_!!_#|0.58,g
 s,@ACLOCAL@,|#_!!_#|${SHELL} /Volumes/srv/Users/gus/Desktop/libetpan/missing --run aclocal-1.10,g
 s,@AUTOCONF@,|#_!!_#|${SHELL} /Volumes/srv/Users/gus/Desktop/libetpan/missing --run autoconf,g
 s,@AUTOMAKE@,|#_!!_#|${SHELL} /Volumes/srv/Users/gus/Desktop/libetpan/missing --run automake-1.10,g
@@ -848,7 +848,7 @@ s,@API_COMPATIBILITY@,|#_!!_#|13,g
 s,@API_REVISION@,|#_!!_#|3,g
 s,@API_VERSION@,|#_!!_#|14:3:1,g
 s,@BUILD_REVISION@,|#_!!_#|0,g
-s,@BUILD_TIMESTAMP@,|#_!!_#|2010-01-31T19:21-0800,g
+s,@BUILD_TIMESTAMP@,|#_!!_#|2010-02-02T12:20-0800,g
 s,@BUILD_FILEVERSION@,|#_!!_#|0\,58\,0\,0,g
 s,@HAVE_MINGW32_SYSTEM_TRUE@,|#_!!_#|#,g
 s,@HAVE_MINGW32_SYSTEM_FALSE@,|#_!!_#|,g
@@ -1230,7 +1230,7 @@ b
 :def
 s,^\([	 #]*\)[^	 ]*\([	 ]*HAVE_CURL\)[	 (].*,\1define\2 1 ,
 s,^\([	 #]*\)[^	 ]*\([	 ]*HAVE_EXPAT\)[	 (].*,\1define\2 1 ,
-s,^\([	 #]*\)[^	 ]*\([	 ]*LIBETPAN_VERSION\)[	 (].*,\1define\2 "0.58-dev-20100131" ,
+s,^\([	 #]*\)[^	 ]*\([	 ]*LIBETPAN_VERSION\)[	 (].*,\1define\2 "0.58" ,
 s/ $//
 s,^[	 #]*u.*,/* & */,
 CEOF
