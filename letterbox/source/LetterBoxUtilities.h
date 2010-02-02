@@ -48,3 +48,4 @@ NSString *LBWrapLines(NSString *body, int width);
 
 
 #define LBRelease(a)  { [a release]; a = nil; }
+#define LBPrefs [NSUserDefaults standardUserDefaults]

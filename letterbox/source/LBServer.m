@@ -16,7 +16,7 @@
 #import "LBIMAPConnection.h"
 #import "LBMessage.h"
 #import "IPAddress.h"
-
+#import "LetterBoxUtilities.h"
 
 NSString *LBServerFolderUpdatedNotification = @"LBServerFolderUpdatedNotification";
 NSString *LBServerSubjectsUpdatedNotification = @"LBServerSubjectsUpdatedNotification";
@@ -92,10 +92,9 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         // should we worry about that?
         IPAddress *addr = [IPAddress addressWithHostname:[[self account] imapServer] port:[[self account] imapPort]];
         conn = [[[LBIMAPConnection alloc] initToAddress:addr] autorelease];
-        
-        [conn setDebugOutput:YES];
-        
     }
+    
+    [conn setDebugOutput:[LBPrefs boolForKey:@"debugIMAPMessages"]];
     
     [activeIMAPConnections addObject:conn];
     
@@ -157,6 +156,58 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     });
 }
 
+- (void)checkForMailInMailboxList:(NSMutableArray*)mailboxList {
+    
+    if (![mailboxList count]) {
+        // hey, we're all done!
+        
+        [mailboxList autorelease];
+        return;
+    }
+    
+    LBIMAPConnection *conn = [self checkoutIMAPConnection];
+    
+    // start at the top.
+    NSString *mailbox = [mailboxList objectAtIndex:0];
+    [mailboxList removeObjectAtIndex:0];
+    
+    [conn selectMailbox:mailbox block:^(NSError *err) {
+        
+        if (err) {
+            NSLog(@"Could not select mailbox %@", mailbox);
+            NSLog(@"%@", err);
+            [self checkInIMAPConnection:conn];
+            [self checkForMailInMailboxList:mailboxList];
+            return;
+        }
+        
+        [conn listMessagesWithBlock:^(NSError *err) {
+            if (err) {
+                NSLog(@"Could not list messages mailbox %@", mailbox);
+                NSLog(@"%@", err);
+                [self checkInIMAPConnection:conn];
+                [self checkForMailInMailboxList:mailboxList];
+                return;
+            }
+            
+            // yea, I'm going to have to think about how to do this...
+            
+            NSArray *messages = [conn searchedResultSet];
+            
+            if ([messages count]) {
+                
+                NSString *firstId = [messages objectAtIndex:0];
+                
+            }
+            
+            [self checkInIMAPConnection:conn];
+            [self checkForMailInMailboxList:mailboxList];
+            
+        }];
+    }];
+    
+    debug(@"refreshing mailbox: %@", mailbox);
+}
 
 - (void)checkForMail {
     
@@ -172,33 +223,43 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         
         [conn listSubscribedMailboxesWithBock:^(NSError *err) {
             
+            NSMutableArray *mailboxNames = [NSMutableArray array];
             NSArray *mailboxes = [conn fetchedMailboxes];
             
             for (NSDictionary *mailboxInfo in mailboxes) {
                 NSString *name = [mailboxInfo objectForKey:@"mailboxName"];
-                debug(@"found mailbox: %@", name);
+                [mailboxNames addObject:name];
             }
+            
+            [mailboxNames sortUsingSelector:@selector(localizedStandardCompare:)];
+            
+            [self setFoldersList:mailboxNames];
+            
+            [self saveFoldersToCache:foldersList];
+            
+            CheckConnectionAndReturnIfCanceled(conn);
+            
+            dispatch_async(dispatch_get_main_queue(),^ {
+                
+                [self checkInIMAPConnection:conn];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:LBServerFolderUpdatedNotification
+                                                                    object:self
+                                                                  userInfo:nil];
+                
+                // we'll release this guy when we're it's down to zilch.
+                [self checkForMailInMailboxList:[mailboxNames mutableCopy]];
+            });
         }];
         
+        
+        
+        
+        
+        
+        
+        
         /*
-        NSError *err    = nil;
-        NSArray *list   = [conn subscribedFolderNames:&err];
-        
-        if (err) {
-            // do something nice with this.
-            NSLog(@"err: %@", err);
-            return;
-        }
-        
-        [self setFoldersList:list];
-        
-        [self saveFoldersToCache:foldersList];
-        
-        dispatch_async(dispatch_get_main_queue(),^ {
-            [[NSNotificationCenter defaultCenter] postNotificationName:LBServerFolderUpdatedNotification
-                                                                object:self
-                                                              userInfo:nil];
-        });
         
         
         for (NSString *folderPath in list) {
@@ -274,7 +335,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         
         */
         
-        [self checkInIMAPConnection:conn];
+        
     });
     
 }
