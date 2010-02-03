@@ -413,9 +413,6 @@ static NSString *LBFETCH = @"FETCH";
     }
     
     // 1486
-    debug(@"currentFetchingMessageSize: %ld", currentFetchingMessageSize);
-    debug(@"currentFetchingMessageHeader: '%@'", currentFetchingMessageHeader);
-    
     NSInteger headerLen = [currentFetchingMessageHeader length] + 2; // + 2 for crlf.
     
     if ([responseBytes length] < (headerLen + currentFetchingMessageSize)) {

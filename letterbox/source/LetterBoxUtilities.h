@@ -37,6 +37,7 @@ NSString *LBQuote(NSString *body, NSString *prefix);
 
 NSString *LBWrapLines(NSString *body, int width);
 
+NSDictionary* LBSimpleMesageHeaderSliceAndDice(NSData *msgData);
 
 #define LBRelease(a)  { [a release]; a = nil; }
 #define LBPrefs [NSUserDefaults standardUserDefaults]

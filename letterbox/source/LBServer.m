@@ -30,7 +30,8 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 @interface LBServer ()
 - (void)loadCache;
 - (NSArray*)cachedMessagesForFolder:(NSString *)folder;
-- (void)saveMessageToCache:(LBIMAPMessage*)message body:(NSString*)body forFolder:(NSString*)folderName;
+- (void)saveMessageToCache:(NSData*)messageData forMailbox:(NSString*)mailboxName;
+- (void)checkForMailInMailboxList:(NSMutableArray*)mailboxList;
 - (void)saveFoldersToCache:(NSArray*)messages;
 @end
 
@@ -156,20 +157,86 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     });
 }
 
+- (void)pullMessageFromServerFromList:(NSMutableArray*)messageList mailbox:(NSString*)mailbox mailboxList:(NSMutableArray*)mailboxList {
+    
+    // FIXME: should we check first to see if we've got the right box selected?
+    
+    if (![messageList count]) {
+        // hey, we're all done!
+        
+        dispatch_async(dispatch_get_main_queue(),^ {
+        
+            [foldersCache removeObjectForKey:mailbox];
+        
+            [[NSNotificationCenter defaultCenter] postNotificationName:LBServerSubjectsUpdatedNotification
+                                                                object:self
+                                                              userInfo:[NSDictionary dictionaryWithObject:mailbox forKey:@"folderPath"]];
+        });
+        
+        [messageList autorelease];
+        
+        [self checkForMailInMailboxList:mailboxList];
+        
+        return;
+    }
+    
+    LBIMAPConnection *conn = [self checkoutIMAPConnection];
+    
+    // take one down, pass it around.  Ninety nine messages on the wall.
+    NSString *firstId = [[[messageList objectAtIndex:0] retain] autorelease];
+    [messageList removeObjectAtIndex:0];
+    
+    
+    NSString *status = NSLocalizedString(@"%ld bottles of beer on the wall.  %ld bottles to go. (%@)", @"%ld bottles of beer on the wall.  %ld bottles to go. (%@)");
+    [conn setActivityStatusAndNotifiy:[NSString stringWithFormat:status, [messageList count], [messageList count], mailbox]];
+    
+    
+    [conn fetchMessages:firstId withBlock:^(NSError *err) {
+        
+        NSData *d = [conn lastFetchedMessage];
+        
+        [self saveMessageToCache:d forMailbox:mailbox ];
+        
+        //NSString *s = [[[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding] autorelease];
+        
+        [self checkInIMAPConnection:conn];
+        [self pullMessageFromServerFromList:messageList mailbox:mailbox mailboxList:mailboxList];
+    }];
+}
+
 - (void)checkForMailInMailboxList:(NSMutableArray*)mailboxList {
     
     if (![mailboxList count]) {
         // hey, we're all done!
-        
         [mailboxList autorelease];
         return;
     }
     
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
     
+    
+    
     // start at the top.
-    NSString *mailbox = [mailboxList objectAtIndex:0];
+    NSString *mailbox = [[[mailboxList objectAtIndex:0] retain] autorelease];
     [mailboxList removeObjectAtIndex:0];
+    
+    NSString *status = NSLocalizedString(@"Finding messages in '%@'", @"Finding messages in '%@'");
+    [conn setActivityStatusAndNotifiy:[NSString stringWithFormat:status, mailbox]];
+    
+    NSURL *mailboxURL = [accountCacheURL URLByAppendingPathComponent:mailbox];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:[mailboxURL path]]) {
+        NSError *err = nil;
+        BOOL madeDir = [[NSFileManager defaultManager] createDirectoryAtPath:[mailboxURL path]
+                                                 withIntermediateDirectories:YES
+                                                                  attributes:nil
+                                                                       error:&err];
+        if (err || !madeDir) {
+            // FIXME: do something sensible with this.
+            NSLog(@"Error creating cache folder: %@ %@", [mailboxURL path], err);
+        }
+    }
+    
     
     [conn selectMailbox:mailbox block:^(NSError *err) {
         
@@ -182,38 +249,22 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         }
         
         [conn listMessagesWithBlock:^(NSError *err) {
+            
+            [self checkInIMAPConnection:conn];
+            
             if (err) {
                 NSLog(@"Could not list messages mailbox %@", mailbox);
                 NSLog(@"%@", err);
-                [self checkInIMAPConnection:conn];
                 [self checkForMailInMailboxList:mailboxList];
                 return;
             }
             
-            // yea, I'm going to have to think about how to do this...
-            
             NSArray *messages = [conn searchedResultSet];
             
             if ([messages count]) {
-                
-                NSString *firstId = [messages objectAtIndex:0];
-                
-                [conn fetchMessages:firstId withBlock:^(NSError *err) {
-                
-                    NSData *d = [conn lastFetchedMessage];
-                    
-                    NSString *s = [[[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding] autorelease];
-                    
-                    debug(@"s: '%@'", s);
-                    
-                    [self checkInIMAPConnection:conn];
-                    [self checkForMailInMailboxList:mailboxList];
-                    
-                }];
+                [self pullMessageFromServerFromList:[messages mutableCopy] mailbox:mailbox mailboxList:mailboxList];
             }
             else {
-                // we seem to be typing this code a lot.  refactor?
-                [self checkInIMAPConnection:conn];
                 [self checkForMailInMailboxList:mailboxList];
             }
         }];
@@ -264,12 +315,6 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
                 [self checkForMailInMailboxList:[mailboxNames mutableCopy]];
             });
         }];
-        
-        
-        
-        
-        
-        
         
         
         /*
@@ -520,37 +565,30 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     
 }
 
-- (void)saveMessageToCache:(LBIMAPMessage*)message body:(NSString*)body forFolder:(NSString*)folderName {
+- (void)saveMessageToCache:(NSData*)messageData forMailbox:(NSString*)mailboxName {
     
-    NSURL *folderURL = [accountCacheURL URLByAppendingPathComponent:folderName];
+    NSURL *folderURL = [accountCacheURL URLByAppendingPathComponent:mailboxName];
     
-    // FIXME: we really shouldn't do this every time, it's slow.
-    if (![[NSFileManager defaultManager] fileExistsAtPath:[folderURL path]]) {
-        NSError *err = nil;
-        BOOL madeDir = [[NSFileManager defaultManager] createDirectoryAtPath:[folderURL path]
-                                                 withIntermediateDirectories:YES
-                                                                  attributes:nil
-                                                                       error:&err];
-        if (err || !madeDir) {
-            // FIXME: do something sensible with this.
-            NSLog(@"Error creating cache folder: %@ %@", [folderURL path], err);
-        }
+    NSDictionary *simpleHeaders = LBSimpleMesageHeaderSliceAndDice(messageData);
+    
+    NSString *msgId = [[simpleHeaders objectForKey:@"message-id"] lastObject];
+    
+    if (!msgId) {
+        // FIXME: do something nicer here.
+        NSLog(@"There's no message id for this message.");
+        
+        debug(@"messageData: %@", [[[NSString alloc] initWithData:messageData encoding:NSUTF8StringEncoding] autorelease]);
+        
+        return;
     }
     
-    if (![message uid]) {
-        debug(@"message: %@", [message subject]);
-    }
-    
-    NSString *fileName = [message uid];
-    assert(fileName); // what 
-    
-    NSString *messageFile = [NSString stringWithFormat:@"%@.letterboxmsg", fileName];
+    NSString *messageFile = [NSString stringWithFormat:@"%s.letterboxmsg", [msgId fileSystemRepresentation]];
     
     NSURL *messageCacheURL = [folderURL URLByAppendingPathComponent:messageFile];
     
     NSError *err = nil;
     
-    if (![body writeToURL:messageCacheURL atomically:YES encoding:NSUTF8StringEncoding error:&err]) {
+    if (![messageData writeToURL:messageCacheURL options:0 error:&err]) {
         NSLog(@"Could not write to %@", messageCacheURL);
         NSLog(@"err: %@", err);
     }
@@ -558,17 +596,19 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     // FIXME: the dates are allllllll wrong.
     // FIXME: we'd probably get better perf. with batches.
     
+    NSString *subject   = [[simpleHeaders objectForKey:@"subject"] lastObject];
+    NSString *from      = [[simpleHeaders objectForKey:@"from"] lastObject];
+    NSString *to        = [[simpleHeaders objectForKey:@"to"] lastObject];
+    
     [cacheDB beginTransaction];
     
     // this feels icky.
-    [cacheDB executeUpdate:@"delete from message where messageId = ?", [message messageId]];
+    [cacheDB executeUpdate:@"delete from message where messageId = ?", msgId];
     
     [cacheDB executeUpdate:@"insert into message ( messageid, folder, subject, fromAddress, toAddress, receivedDate, sendDate) values (?, ?, ?, ?, ?, ?, ?)",
-                                [message messageId], folderName, [message subject], [[[message from] anyObject] email], [[[message to] anyObject] email], [NSDate distantFuture], [NSDate distantPast]];
+                                msgId, mailboxName, subject, from, to, [NSDate distantFuture], [NSDate distantPast]];
     
     [cacheDB commit];
-    
-    
 }
 
 // FIXME: need to setup a way to differentiate between subscribed and non subscribed.
@@ -594,7 +634,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     FMResultSet *rs = [cacheDB executeQuery:@"select uuid, messageid, subject, fromAddress, toAddress, receivedDate, sendDate from message where folder = ? order by receivedDate", folder];
     while ([rs next]) {
         
-        NSString *messageFile = [NSString stringWithFormat:@"%@.letterboxmsg", [rs stringForColumnIndex:0]];
+        NSString *messageFile = [NSString stringWithFormat:@"%s.letterboxmsg", [[rs stringForColumnIndex:1] fileSystemRepresentation]];
         
         NSURL *messageCacheURL = [[accountCacheURL URLByAppendingPathComponent:folder] URLByAppendingPathComponent:messageFile];
         

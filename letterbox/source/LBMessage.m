@@ -71,7 +71,17 @@
     if (!messageBody) {
         NSUInteger usedEncoding;
         NSError *err = nil;
-        messageBody = [[NSString stringWithContentsOfURL:messageURL usedEncoding:&usedEncoding error:&err] retain];
+        
+        NSString *fullMessage = [NSString stringWithContentsOfURL:messageURL usedEncoding:&usedEncoding error:&err];
+        
+        NSRange r = [fullMessage rangeOfString:@"\r\n\r\n"];
+        
+        if (r.location == NSNotFound) {
+            messageBody = [fullMessage retain];
+        }
+        else {
+            messageBody = [[fullMessage substringFromIndex:NSMaxRange(r)] retain];
+        }
         
         if (!messageBody) {
             NSLog(@"err: %@", err);

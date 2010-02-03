@@ -137,5 +137,63 @@ NSString *LBWrapLines(NSString *body, int width) {
 }
 
 
-
+NSDictionary* LBSimpleMesageHeaderSliceAndDice(NSData *msgData) {
+    
+    NSMutableDictionary *headers = [NSMutableDictionary dictionary];
+    
+    NSUInteger len          = [msgData length];
+    NSUInteger idx          = 0;
+    char *cdata             = (char *)[msgData bytes];
+    NSUInteger lineStart    = 0;
+    
+    while (idx < len - 2) {
+        
+        if (cdata[idx] == '\r' && cdata[idx+1] == '\n') { // CRLF
+            
+            // get rid of the encountered lf, and the ending crlf
+            NSRange r = NSMakeRange(lineStart, idx - (lineStart));
+            NSData *subData = [msgData subdataWithRange:r];
+            NSString *junk = [[[NSString alloc] initWithBytes:[subData bytes] length:[subData length] encoding:NSUTF8StringEncoding] autorelease];
+            
+            if ([junk hasPrefix:@" "] || [junk hasPrefix:@"\t"]) {
+                // it's a continuation whatsname!
+                // for now, we're just ignoring it.  This function all only cares about the simple stuff.
+            }
+            else {
+                
+                NSRange r = [junk rangeOfString:@":"];
+                
+                if (r.location == NSNotFound || ([junk length] < r.location + 2)) {
+                    debug(@"Could not find marker in: '%@'", junk);
+                    idx += 2;
+                    continue;
+                }
+                
+                NSString *name = [[junk substringToIndex:r.location] lowercaseString];
+                NSString *res  = [junk substringFromIndex:NSMaxRange(r) + 1];
+                
+                NSMutableArray *l = [headers objectForKey:name];
+                if (!l) {
+                    l = [NSMutableArray array];
+                    [headers setObject:l forKey:name];
+                }
+                
+                [l addObject:res];
+            }
+            
+            lineStart = idx + 2;
+            
+            if (cdata[idx+2] == '\r') {
+                // it's an empty line, we're done!
+                break;
+            }
+            
+            idx++; // jumpity mick jump over the \r, and then the \n below
+        }
+        
+        idx++;
+    }
+    
+    return headers;
+}
 
