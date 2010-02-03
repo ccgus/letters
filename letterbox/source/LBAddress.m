@@ -104,7 +104,7 @@
         return name;
     }
 
-    NSString *decodedName = [[NSString alloc] initWithString:name];
+    NSString *decodedName = [NSString stringWithString:name];
 
     while ( encodedWordRange.length ) {
         encodedWord = [decodedName substringWithRange:encodedWordRange];
@@ -161,7 +161,7 @@
                 // FIXME : jasonrm - Only the most common (for someone in the US) encodings are supported, everything else is treated like ISO-8859-1
                 decodedWord = [[NSString alloc] initWithData:decodedData encoding:NSISOLatin1StringEncoding];
             }
-            return decodedWord;
+            return [decodedWord autorelease];
         }
     }
     return decodedName;

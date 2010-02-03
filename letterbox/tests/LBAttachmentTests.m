@@ -51,7 +51,7 @@
 
 - (void)testPNG {
 	NSString *path = [NSString stringWithFormat:@"%@%@",filePrefix,@"TestData/DSC_6202.png"];
-	LBAttachment *attach = [[[LBAttachment alloc] initWithContentsOfFile:path] retain];
+	LBAttachment *attach = [[LBAttachment alloc] initWithContentsOfFile:path];
 	GHAssertEqualObjects(@"image/png", [[attach contentType] lowercaseString], @"The content-type should have been image/png");
 	GHAssertTrue(([attach data] != nil), @"Data should not have been nil");
 	[attach release];
