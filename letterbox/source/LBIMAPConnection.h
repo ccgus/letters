@@ -43,6 +43,8 @@ typedef void (^LBResponseBlock)(NSError *);
 
 - (void)fetchMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block;
 
+- (void)idleWithBlock:(LBResponseBlock)block;
+
 // this will parse the last LSUB command.  You better have done a listSubscribedMailboxesWithBock: right before this.
 - (NSArray*)fetchedMailboxes;
 
@@ -54,5 +56,6 @@ typedef void (^LBResponseBlock)(NSError *);
 
 - (void)setActivityStatusAndNotifiy:(NSString *)value;
 
+- (NSString*) responseAsString;
 
 @end

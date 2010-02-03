@@ -1,3 +1,11 @@
+Feb 3, 2010
+Crashy will now download messages to it's cache, so you don't need to use the python script to load it up.
+
+Right now, SSL support isn't working.  It'd be great if someone could look through the TCPConnection classes and figure out how to hook it up.
+
+-gus
+
+
 Feb 2, 2010
 You still need imapPull.py to download all your messages and setup the cache.
 

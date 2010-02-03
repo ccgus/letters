@@ -1,6 +1,7 @@
 #import "LBIMAPConnection.h"
 #import "LBIMAPReader.h"
 #import "LetterBoxUtilities.h"
+#import "TCP_Internal.h"
 
 static NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
 static NSString *LBLOGIN = @"LOGIN";
@@ -13,8 +14,14 @@ static NSString *LBSUBSCRIBE = @"SUBSCRIBE";
 static NSString *LBUNSUBSCRIBE = @"UNSUBSCRIBE";
 static NSString *LBSEARCH = @"SEARCH";
 static NSString *LBFETCH = @"FETCH";
+static NSString *LBIDLE = @"IDLE";
+static NSString *LBDONE = @"DONE";
 
 #define CRLF "\r\n"
+
+@interface LBIMAPConnection ()
+- (void)endIDLE;
+@end
 
 @implementation LBIMAPConnection
 @synthesize responseBytes;
@@ -51,19 +58,39 @@ static NSString *LBFETCH = @"FETCH";
 
 - (void)connectUsingBlock:(LBResponseBlock)block {
     
-    responseBlock = [block copy];
+    responseBlock       = [block copy];
     
-    self.delegate = self;
+    self.delegate       = self;
     
     currentCommand      = LBCONNECTING;
     bytesRead           = 0;
     self.responseBytes  = [NSMutableData data];
     
+    /*
+    NSMutableDictionary *sslProps = [NSMutableDictionary dictionary];
+    
+    [sslProps setObject:[NSNumber numberWithBool:YES] forKey:(id)kTCPPropertySSLAllowsAnyRoot];
+    [sslProps setObject:[NSNull null] forKey:(id)kCFStreamSSLPeerName];
+    
+    [self setSSLProperties:sslProps];
+    */
+    
     [self open];
 }
 
 - (void) connectionDidOpen: (TCPConnection*)connection {
-    
+    debug(@"%s:%d", __FUNCTION__, __LINE__);
+}
+
+- (BOOL) connection: (TCPConnection*)connection authorizeSSLPeer: (SecCertificateRef)peerCert {
+    NSLog(@"** %@ authorizeSSLPeer: %@",self, [TCPEndpoint describeCert:peerCert]);
+    return peerCert != nil;
+}
+
+- (void)endIDLE {
+    if (currentCommand == LBIDLE) {
+        [self sendCommand:LBDONE withArguments:nil];
+    }
 }
 
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password block:(LBResponseBlock)block {
@@ -92,6 +119,13 @@ static NSString *LBFETCH = @"FETCH";
     responseBlock = [block copy];
     
     [self sendCommand:LBLSUB withArguments:@"\"\" \"*\""];
+}
+
+- (void)idleWithBlock:(LBResponseBlock)block {
+    
+    responseBlock = [block copy];
+    
+    [self sendCommand:LBIDLE withArguments:nil];
 }
 
 - (void)logoutWithBlock:(LBResponseBlock)block {

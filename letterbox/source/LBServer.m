@@ -95,6 +95,11 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         conn = [[[LBIMAPConnection alloc] initToAddress:addr] autorelease];
     }
     
+    if (!conn) {
+        NSLog(@"Could not connect to server");
+        return nil;
+    }
+    
     [conn setDebugOutput:[LBPrefs boolForKey:@"debugIMAPMessages"]];
     
     [activeIMAPConnections addObject:conn];
@@ -131,6 +136,17 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
     
+    
+    if (!conn) {
+        
+        NSError *err = nil;
+        
+        LBQuickError(&err, @"Conect", 0, NSLocalizedString(@"Could not connect to server.", @"Could not connect to server."));
+        
+        block(err);
+        return;
+    }
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
         
         [conn setActivityStatusAndNotifiy:NSLocalizedString(@"Connecting", @"Connecting")];
@@ -151,7 +167,25 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
                 
                 [self checkInIMAPConnection:conn];
                 
+                
                 block(err);
+                
+                /*
+                [conn selectMailbox:@"INBOX" block:^(NSError *err) {
+                    
+                    // FIXME: check to make sure the server says we can idle.
+                    
+                    [conn idleWithBlock:^(NSError *err) {
+                        
+                        debug(@"GOT AN IDLE WHATSNAME!");
+                        
+                        debug(@"conn: %@", [conn responseAsString]);
+                        
+                    }];
+                    
+                }];
+                
+                */
             }];
         }];
     });
