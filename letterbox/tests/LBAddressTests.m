@@ -49,6 +49,9 @@
 - (void)testDecodedName {
     LBAddress *addr = [[LBAddress alloc] init];
 
+    [addr setName:@"A User Name Like Mine (for example)"]; // No Encoding
+    GHAssertTrue([[addr decodedName] isEqual:@"A User Name Like Mine (for example)"], @"No changes to the test string should have been made. Result was [%@]", [addr decodedName]);
+
     [addr setName:@"=?ISO-8859-1?Q?Keld_J=F8rn_Simonsen?="]; // RFC 2047 Example
     GHAssertTrue([[addr decodedName] isEqual:@"Keld Jørn Simonsen"], @"Decoding failed. Result was [%@]", [addr decodedName]);
 

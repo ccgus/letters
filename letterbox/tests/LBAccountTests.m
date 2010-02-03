@@ -38,19 +38,19 @@
 - (void)setUp {
 	accountTestInfo = [[NSMutableDictionary alloc] init];
 
-	[accountTestInfo setObject:@"Aefooci7se6ooy@lettersapp.com"     forKey:@"username"];
-	[accountTestInfo setObject:@"wuree2Ei9Tu5ie"                    forKey:@"password"];
+	[accountTestInfo setObject:@"letters.app"                       forKey:@"username"];
+	[accountTestInfo setObject:@"letters.app"                       forKey:@"password"];
 
-	[accountTestInfo setObject:@"Aefooci7se6ooy@lettersapp.com"     forKey:@"fromAddress"];
+	[accountTestInfo setObject:@"letters.app@jasonrm.net"           forKey:@"fromAddress"];
 
-	[accountTestInfo setObject:@"imap.pool.lettersapp.com"          forKey:@"imapServer"];
+	[accountTestInfo setObject:@"jasonrm.net"                       forKey:@"imapServer"];
+    // We test using port 1515 below just to make sure that if we put in a different port than default we get back our custom port instead of the default, and they are the same it's hard to tell if it was correctly set or not.
 	[accountTestInfo setObject:[NSNumber numberWithInt:1515]        forKey:@"imapPort"];
-	[accountTestInfo setObject:@"smtp.pool.lettersapp.com"          forKey:@"smtpServer"];
+	[accountTestInfo setObject:@"jasonrm.net"                       forKey:@"smtpServer"];
 
-	[accountTestInfo setObject:[NSNumber numberWithInt:CONNECTION_TYPE_TLS]     forKey:@"authType"];
-	[accountTestInfo setObject:[NSNumber numberWithInt:YES]                     forKey:@"isActive"];
-	[accountTestInfo setObject:[NSNumber numberWithInt:IMAP_AUTH_TYPE_PLAIN]    forKey:@"connectionType"];
-}
+	[accountTestInfo setObject:[NSNumber numberWithInt:0]           forKey:@"authType"];
+	[accountTestInfo setObject:[NSNumber numberWithInt:YES]         forKey:@"isActive"];
+	[accountTestInfo setObject:[NSNumber numberWithInt:1]           forKey:@"connectionType"]; }
 
 - (void)tearDown {
     [accountTestInfo release];

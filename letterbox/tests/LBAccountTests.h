@@ -30,8 +30,6 @@
  */
 
 #import <GHUnit/GHUnit.h>
-#import "mailstorage_types.h"
-#import "imapdriver_types.h"
 #import "LBAccount.h"
 
 @interface LBCoreAccountTests : GHTestCase {
