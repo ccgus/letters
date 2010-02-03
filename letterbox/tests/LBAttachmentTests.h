@@ -31,7 +31,6 @@
  
 #import <GHUnit/GHUnit.h>
 #import "LBAttachment.h"
-#import "LBMIMETests.h"
 
 @interface LBAttachmentTests : GHTestCase {
 
