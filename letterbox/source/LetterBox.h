@@ -34,12 +34,10 @@
 #import "LBAddress.h"
 #import "LBFolder.h"
 #import "LBMessage.h"
-#import "LBIMAPFolder.h"
-#import "LBIMAPMessage.h"
-#import "LBSMTPConnection.h"
-#import "LBBareMessage.h"
+//#import "LBSMTPConnection.h"
+//#import "LBBareMessage.h"
 #import "LBActivity.h"
 #import "LetterBoxTypes.h"
 #import "LetterBoxUtilities.h"
 
-#import <libetpan/libetpan.h>
+//#import <libetpan/libetpan.h>

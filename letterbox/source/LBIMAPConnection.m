@@ -211,8 +211,6 @@ static NSString *LBFETCH = @"FETCH";
     while (idx < len) {
         
         if (cdata[idx] == '\r') {
-            debug(@"woot, found it.");
-            
             // get rid of the encountered lf, and the ending crlf
             NSRange r = NSMakeRange(0, idx);
             NSData *subData = [data subdataWithRange:r];
@@ -407,6 +405,29 @@ static NSString *LBFETCH = @"FETCH";
     return [list componentsSeparatedByString:@" "];
 }
 
+
+- (NSData*)lastFetchedMessage {
+    if (currentCommand != LBFETCH) {
+        NSLog(@"Error: you need to do a fetch command first!");
+        return nil;
+    }
+    
+    // 1486
+    debug(@"currentFetchingMessageSize: %ld", currentFetchingMessageSize);
+    debug(@"currentFetchingMessageHeader: '%@'", currentFetchingMessageHeader);
+    
+    NSInteger headerLen = [currentFetchingMessageHeader length] + 2; // + 2 for crlf.
+    
+    if ([responseBytes length] < (headerLen + currentFetchingMessageSize)) {
+        NSLog(@"There isn't enough data for the last message.  Are you calling too soon?");
+        return nil;
+    }
+    
+    NSData *data = [responseBytes subdataWithRange:NSMakeRange(headerLen, currentFetchingMessageSize)];
+    
+    return data;
+}
+
 - (void)canRead:(LBIMAPReader*)reader {
     
     // what's a good number here?
@@ -574,11 +595,9 @@ static NSString *LBFETCH = @"FETCH";
             
             NSString *len = [firstLine substringWithRange:NSMakeRange(NSMaxRange(startBracket), endBracket.location - NSMaxRange(startBracket))];
             
-            currentFetchingMessageSize = [len integerValue];
+            currentFetchingMessageSize      = [len integerValue];
             
-            debug(@"currentFetchingMessageSize: %d", currentFetchingMessageSize);
-            
-            currentFetchingMessageHeader = [firstLine retain];
+            currentFetchingMessageHeader    = [firstLine retain];
             
             // do we have our header, message, crlf, ), crlf, and an OK FETCH + something + CRLF?
             

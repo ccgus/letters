@@ -51,27 +51,6 @@ void letterbox_logger(int direction, const char * str, size_t size) {
 }
 
 
-void LetterBoxEnableLogging() {
-    mailstream_debug = 1;
-    mailstream_logger = letterbox_logger;
-}
-
-void LetterBoxDisableLogging() {
-    mailstream_debug = 0;
-    mailstream_logger = nil;
-}
-
-
-// From Gabor
-BOOL StringStartsWith(NSString *string, NSString *subString) {
-    if([string length] < [subString length]) {
-        return NO;
-    }
-    
-    NSString* comp = [string substringToIndex:[subString length]];
-    return [comp isEqualToString:subString];
-}
-
 void LBQuickError(NSError **err, NSString *domain, NSInteger code, NSString *description) {
     // fixme: add a com.lettersapp in front of the domain?
     if (err) {

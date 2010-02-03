@@ -48,6 +48,8 @@ typedef void (^LBResponseBlock)(NSError *);
 
 - (NSArray*)searchedResultSet;
 
+- (NSData*)lastFetchedMessage;
+
 - (BOOL)isConnected;
 
 - (void)setActivityStatusAndNotifiy:(NSString *)value;

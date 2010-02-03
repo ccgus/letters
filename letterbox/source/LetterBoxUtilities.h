@@ -30,15 +30,6 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <libetpan/libetpan.h>
-
-/*!
-    @abstract Enables logging of all streams, data is output to standard out.
-*/
-void LetterBoxEnableLogging();
-
-
-BOOL StringStartsWith(NSString *string, NSString *subString);
 
 void LBQuickError(NSError **err, NSString *domain, NSInteger code, NSString *description);
 

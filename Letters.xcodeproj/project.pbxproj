@@ -15,10 +15,8 @@
 		AAB3471511117A8800C270B4 /* LAPrefsGeneralModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB3471411117A8800C270B4 /* LAPrefsGeneralModule.m */; };
 		AAB34744111195D400C270B4 /* LAPrefsFontsAndColorsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB34743111195D400C270B4 /* LAPrefsFontsAndColorsModule.m */; };
 		AAB3489B1112118600C270B4 /* LAPrefsAccountsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB3489A1112118600C270B4 /* LAPrefsAccountsModule.m */; };
-		CC51746C110ACD9200C01407 /* libetpan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC51746B110ACD9200C01407 /* libetpan.framework */; };
 		CC517470110ACD9900C01407 /* LetterBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC51746F110ACD9900C01407 /* LetterBox.framework */; };
 		CC517487110ACDA800C01407 /* LetterBox.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CC51746F110ACD9900C01407 /* LetterBox.framework */; };
-		CC517488110ACDA800C01407 /* libetpan.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CC51746B110ACD9200C01407 /* libetpan.framework */; };
 		CC6D05F6110A491C00D900E9 /* MailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCA554551106E1FE00CEEFF4 /* MailView.xib */; };
 		CC9C527D1107A961008ED850 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC9C527C1107A961008ED850 /* AddressBook.framework */; };
 		CCA5542B1106DDF800CEEFF4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = CCA554231106DDF800CEEFF4 /* Credits.rtf */; };
@@ -71,7 +69,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				CC517487110ACDA800C01407 /* LetterBox.framework in Copy Frameworks */,
-				CC517488110ACDA800C01407 /* libetpan.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -94,7 +91,6 @@
 		AAB348991112118600C270B4 /* LAPrefsAccountsModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LAPrefsAccountsModule.h; path = source/prefs/LAPrefsAccountsModule.h; sourceTree = "<group>"; };
 		AAB3489A1112118600C270B4 /* LAPrefsAccountsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LAPrefsAccountsModule.m; path = source/prefs/LAPrefsAccountsModule.m; sourceTree = "<group>"; };
 		AAB3489D111211C000C270B4 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = resources/English.lproj/LAPrefsAccountsModule.xib; sourceTree = "<group>"; };
-		CC51746B110ACD9200C01407 /* libetpan.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libetpan.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC51746F110ACD9900C01407 /* LetterBox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LetterBox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC9C527C1107A961008ED850 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		CCA554241106DDF800CEEFF4 /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = resources/English.lproj/Credits.rtf; sourceTree = "<group>"; };
@@ -132,7 +128,6 @@
 			files = (
 				8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */,
 				CC9C527D1107A961008ED850 /* AddressBook.framework in Frameworks */,
-				CC51746C110ACD9200C01407 /* libetpan.framework in Frameworks */,
 				CC517470110ACD9900C01407 /* LetterBox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -144,7 +139,6 @@
 			isa = PBXGroup;
 			children = (
 				CC51746F110ACD9900C01407 /* LetterBox.framework */,
-				CC51746B110ACD9200C01407 /* libetpan.framework */,
 				1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */,
 				CC9C527C1107A961008ED850 /* AddressBook.framework */,
 			);

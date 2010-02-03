@@ -198,11 +198,24 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
                 
                 NSString *firstId = [messages objectAtIndex:0];
                 
+                [conn fetchMessages:firstId withBlock:^(NSError *err) {
+                
+                    NSData *d = [conn lastFetchedMessage];
+                    
+                    NSString *s = [[[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding] autorelease];
+                    
+                    debug(@"s: '%@'", s);
+                    
+                    [self checkInIMAPConnection:conn];
+                    [self checkForMailInMailboxList:mailboxList];
+                    
+                }];
             }
-            
-            [self checkInIMAPConnection:conn];
-            [self checkForMailInMailboxList:mailboxList];
-            
+            else {
+                // we seem to be typing this code a lot.  refactor?
+                [self checkInIMAPConnection:conn];
+                [self checkForMailInMailboxList:mailboxList];
+            }
         }];
     }];
     
@@ -354,40 +367,6 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     return [foldersCache objectForKey:folderPath];
 }
 
-static struct mailimap_set * setFromArray(NSArray * array)
-{
-    unsigned int currentIndex;
-    unsigned int currentFirst;
-    unsigned int currentValue;
-    unsigned int lastValue;
-    struct mailimap_set * imap_set;
-    
-    currentFirst = 0;
-    currentValue = 0;
-    lastValue = 0;
-    
-    imap_set = mailimap_set_new_empty();
-    
-	while (currentIndex < [array count]) {
-        currentValue = [[array objectAtIndex:currentIndex] unsignedLongValue];
-        if (currentFirst == 0) {
-            currentFirst = currentValue;
-        }
-        
-        if (lastValue != 0) {
-            if (currentValue != lastValue + 1) {
-                mailimap_set_add_interval(imap_set, currentFirst, lastValue);
-                currentFirst = 0;
-            }
-        }
-        else {
-            lastValue = currentValue;
-            currentValue ++;
-        }
-    }
-    
-    return imap_set;
-}
 
 - (void)moveMessages:(NSArray*)messageList inFolder:(NSString*)currentFolder toFolder:(NSString*)folder finshedBlock:(void (^)(BOOL, NSError *))block {
     

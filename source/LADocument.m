@@ -104,7 +104,7 @@
         [toSet addObject:[LBAddress addressWithName:@"" email:addr]];
     }
     
-    
+    /*
     LBIMAPMessage *msg = [[LBIMAPMessage alloc] init];
     [msg setTo:toSet];
     [msg setFrom:[NSSet setWithObject:[LBAddress addressWithName:@"" email:fromList]]];
@@ -134,6 +134,7 @@
         
         [msg release];
     });
+    */
 }
 
 @end

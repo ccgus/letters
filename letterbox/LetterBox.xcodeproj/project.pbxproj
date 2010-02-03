@@ -29,37 +29,12 @@
 		CC3D54271108E7F700EEEF77 /* FMResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = CC3D54211108E7F700EEEF77 /* FMResultSet.h */; };
 		CC3D54281108E7F700EEEF77 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3D54221108E7F700EEEF77 /* FMResultSet.m */; };
 		CC3D54381108EFE800EEEF77 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CC3D54371108EFE800EEEF77 /* libsqlite3.dylib */; };
-		CC517468110ACD8400C01407 /* libetpan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC517467110ACD8400C01407 /* libetpan.framework */; };
-		CC877CA6110ABBA2005ECF65 /* LBSMTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CA0110ABBA2005ECF65 /* LBSMTPConnection.m */; };
-		CC877CA7110ABBA2005ECF65 /* LBSMTPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CA1110ABBA2005ECF65 /* LBSMTPConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CC877CA8110ABBA2005ECF65 /* LBSMTP.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CA2110ABBA2005ECF65 /* LBSMTP.m */; };
-		CC877CA9110ABBA2005ECF65 /* LBSMTP.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CA3110ABBA2005ECF65 /* LBSMTP.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CC877CAA110ABBA2005ECF65 /* LBESMTP.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CA4110ABBA2005ECF65 /* LBESMTP.m */; };
-		CC877CAB110ABBA2005ECF65 /* LBESMTP.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CA5110ABBA2005ECF65 /* LBESMTP.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CC877CC2110ABBC7005ECF65 /* LBMIMEFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CB4110ABBC7005ECF65 /* LBMIMEFactory.m */; };
-		CC877CC3110ABBC7005ECF65 /* LBMIMEFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CB5110ABBC7005ECF65 /* LBMIMEFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CC877CC4110ABBC7005ECF65 /* LBMIME.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CB6110ABBC7005ECF65 /* LBMIME.m */; };
-		CC877CC5110ABBC7005ECF65 /* LBMIME.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CB7110ABBC7005ECF65 /* LBMIME.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CC877CC6110ABBC7005ECF65 /* LBMIME_TextPart.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CB8110ABBC7005ECF65 /* LBMIME_TextPart.m */; };
-		CC877CC7110ABBC7005ECF65 /* LBMIME_TextPart.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CB9110ABBC7005ECF65 /* LBMIME_TextPart.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CC877CC8110ABBC7005ECF65 /* LBMIME_SinglePart.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CBA110ABBC7005ECF65 /* LBMIME_SinglePart.m */; };
-		CC877CC9110ABBC7005ECF65 /* LBMIME_SinglePart.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CBB110ABBC7005ECF65 /* LBMIME_SinglePart.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CC877CCA110ABBC7005ECF65 /* LBMIME_MultiPart.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CBC110ABBC7005ECF65 /* LBMIME_MultiPart.m */; };
-		CC877CCB110ABBC7005ECF65 /* LBMIME_MultiPart.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CBD110ABBC7005ECF65 /* LBMIME_MultiPart.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CC877CCC110ABBC7005ECF65 /* LBMIME_MessagePart.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CBE110ABBC7005ECF65 /* LBMIME_MessagePart.m */; };
-		CC877CCD110ABBC7005ECF65 /* LBMIME_MessagePart.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CBF110ABBC7005ECF65 /* LBMIME_MessagePart.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CC877CCE110ABBC7005ECF65 /* LBMIME_Enumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CC0110ABBC7005ECF65 /* LBMIME_Enumerator.m */; };
-		CC877CCF110ABBC7005ECF65 /* LBMIME_Enumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CC1110ABBC7005ECF65 /* LBMIME_Enumerator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC877CE4110ABC04005ECF65 /* LetterBoxUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CD0110ABC04005ECF65 /* LetterBoxUtilities.m */; };
 		CC877CE5110ABC04005ECF65 /* LetterBoxUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CD1110ABC04005ECF65 /* LetterBoxUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC877CE6110ABC04005ECF65 /* LetterBoxTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CD2110ABC04005ECF65 /* LetterBoxTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC877CE7110ABC04005ECF65 /* LetterBox.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CD3110ABC04005ECF65 /* LetterBox.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC877CE8110ABC04005ECF65 /* LBServer.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CD4110ABC04005ECF65 /* LBServer.m */; };
 		CC877CE9110ABC04005ECF65 /* LBServer.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CD5110ABC04005ECF65 /* LBServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CC877CEA110ABC04005ECF65 /* LBIMAPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CD6110ABC04005ECF65 /* LBIMAPMessage.m */; };
-		CC877CEB110ABC04005ECF65 /* LBIMAPMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CD7110ABC04005ECF65 /* LBIMAPMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CC877CEC110ABC04005ECF65 /* LBIMAPFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CD8110ABC04005ECF65 /* LBIMAPFolder.m */; };
-		CC877CED110ABC04005ECF65 /* LBIMAPFolder.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CD9110ABC04005ECF65 /* LBIMAPFolder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC877CEE110ABC04005ECF65 /* LBBareMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CDA110ABC04005ECF65 /* LBBareMessage.m */; };
 		CC877CEF110ABC04005ECF65 /* LBBareMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CDB110ABC04005ECF65 /* LBBareMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC877CF0110ABC04005ECF65 /* LBBareAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CDC110ABC04005ECF65 /* LBBareAttachment.m */; };
@@ -127,7 +102,6 @@
 		F8483E4309CE7B9C00B80440 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8483E4209CE7B9C00B80440 /* libiconv.dylib */; };
 		F8483E4C09CE7C2800B80440 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8483E4B09CE7C2800B80440 /* libcrypto.dylib */; };
 		F88804620B42018500D400E7 /* libsasl2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F88804610B42018500D400E7 /* libsasl2.dylib */; };
-		F890D39F10CEED640039817C /* libetpan.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F890D39810CEECD50039817C /* libetpan.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -137,41 +111,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = LetterBox;
-		};
-		CC6B2E7F111682FE0099CFD1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F890D38D10CEECD50039817C /* libetpan.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C6DC660510829E8300FA050B;
-			remoteInfo = "static libetpan iphone";
-		};
-		CC6D05E7110A488200D900E9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F890D38D10CEECD50039817C /* libetpan.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
-			remoteInfo = libetpan;
-		};
-		CC6D0620110A4A5D00D900E9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F890D38D10CEECD50039817C /* libetpan.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C69AB10910546FE500F32FBD;
-			remoteInfo = "static libetpan";
-		};
-		F890D39510CEECD50039817C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F890D38D10CEECD50039817C /* libetpan.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
-			remoteInfo = libetpan;
-		};
-		F890D39710CEECD50039817C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F890D38D10CEECD50039817C /* libetpan.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C69AB10A10546FE500F32FBD;
-			remoteInfo = "static libetpan";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -220,37 +159,12 @@
 		CC3D54211108E7F700EEEF77 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = source/FMResultSet.h; sourceTree = "<group>"; };
 		CC3D54221108E7F700EEEF77 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = source/FMResultSet.m; sourceTree = "<group>"; };
 		CC3D54371108EFE800EEEF77 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		CC517467110ACD8400C01407 /* libetpan.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libetpan.framework; path = ../build/Debug/libetpan.framework; sourceTree = SOURCE_ROOT; };
-		CC877CA0110ABBA2005ECF65 /* LBSMTPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBSMTPConnection.m; path = source/LBSMTPConnection.m; sourceTree = "<group>"; };
-		CC877CA1110ABBA2005ECF65 /* LBSMTPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBSMTPConnection.h; path = source/LBSMTPConnection.h; sourceTree = "<group>"; };
-		CC877CA2110ABBA2005ECF65 /* LBSMTP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBSMTP.m; path = source/LBSMTP.m; sourceTree = "<group>"; };
-		CC877CA3110ABBA2005ECF65 /* LBSMTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBSMTP.h; path = source/LBSMTP.h; sourceTree = "<group>"; };
-		CC877CA4110ABBA2005ECF65 /* LBESMTP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBESMTP.m; path = source/LBESMTP.m; sourceTree = "<group>"; };
-		CC877CA5110ABBA2005ECF65 /* LBESMTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBESMTP.h; path = source/LBESMTP.h; sourceTree = "<group>"; };
-		CC877CB4110ABBC7005ECF65 /* LBMIMEFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBMIMEFactory.m; path = source/LBMIMEFactory.m; sourceTree = "<group>"; };
-		CC877CB5110ABBC7005ECF65 /* LBMIMEFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBMIMEFactory.h; path = source/LBMIMEFactory.h; sourceTree = "<group>"; };
-		CC877CB6110ABBC7005ECF65 /* LBMIME.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBMIME.m; path = source/LBMIME.m; sourceTree = "<group>"; };
-		CC877CB7110ABBC7005ECF65 /* LBMIME.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBMIME.h; path = source/LBMIME.h; sourceTree = "<group>"; };
-		CC877CB8110ABBC7005ECF65 /* LBMIME_TextPart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBMIME_TextPart.m; path = source/LBMIME_TextPart.m; sourceTree = "<group>"; };
-		CC877CB9110ABBC7005ECF65 /* LBMIME_TextPart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBMIME_TextPart.h; path = source/LBMIME_TextPart.h; sourceTree = "<group>"; };
-		CC877CBA110ABBC7005ECF65 /* LBMIME_SinglePart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBMIME_SinglePart.m; path = source/LBMIME_SinglePart.m; sourceTree = "<group>"; };
-		CC877CBB110ABBC7005ECF65 /* LBMIME_SinglePart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBMIME_SinglePart.h; path = source/LBMIME_SinglePart.h; sourceTree = "<group>"; };
-		CC877CBC110ABBC7005ECF65 /* LBMIME_MultiPart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBMIME_MultiPart.m; path = source/LBMIME_MultiPart.m; sourceTree = "<group>"; };
-		CC877CBD110ABBC7005ECF65 /* LBMIME_MultiPart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBMIME_MultiPart.h; path = source/LBMIME_MultiPart.h; sourceTree = "<group>"; };
-		CC877CBE110ABBC7005ECF65 /* LBMIME_MessagePart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBMIME_MessagePart.m; path = source/LBMIME_MessagePart.m; sourceTree = "<group>"; };
-		CC877CBF110ABBC7005ECF65 /* LBMIME_MessagePart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBMIME_MessagePart.h; path = source/LBMIME_MessagePart.h; sourceTree = "<group>"; };
-		CC877CC0110ABBC7005ECF65 /* LBMIME_Enumerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBMIME_Enumerator.m; path = source/LBMIME_Enumerator.m; sourceTree = "<group>"; };
-		CC877CC1110ABBC7005ECF65 /* LBMIME_Enumerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBMIME_Enumerator.h; path = source/LBMIME_Enumerator.h; sourceTree = "<group>"; };
 		CC877CD0110ABC04005ECF65 /* LetterBoxUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LetterBoxUtilities.m; path = source/LetterBoxUtilities.m; sourceTree = "<group>"; };
 		CC877CD1110ABC04005ECF65 /* LetterBoxUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LetterBoxUtilities.h; path = source/LetterBoxUtilities.h; sourceTree = "<group>"; };
 		CC877CD2110ABC04005ECF65 /* LetterBoxTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LetterBoxTypes.h; path = source/LetterBoxTypes.h; sourceTree = "<group>"; };
 		CC877CD3110ABC04005ECF65 /* LetterBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LetterBox.h; path = source/LetterBox.h; sourceTree = "<group>"; };
 		CC877CD4110ABC04005ECF65 /* LBServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBServer.m; path = source/LBServer.m; sourceTree = "<group>"; };
 		CC877CD5110ABC04005ECF65 /* LBServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBServer.h; path = source/LBServer.h; sourceTree = "<group>"; };
-		CC877CD6110ABC04005ECF65 /* LBIMAPMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBIMAPMessage.m; path = source/LBIMAPMessage.m; sourceTree = "<group>"; };
-		CC877CD7110ABC04005ECF65 /* LBIMAPMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBIMAPMessage.h; path = source/LBIMAPMessage.h; sourceTree = "<group>"; };
-		CC877CD8110ABC04005ECF65 /* LBIMAPFolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBIMAPFolder.m; path = source/LBIMAPFolder.m; sourceTree = "<group>"; };
-		CC877CD9110ABC04005ECF65 /* LBIMAPFolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBIMAPFolder.h; path = source/LBIMAPFolder.h; sourceTree = "<group>"; };
 		CC877CDA110ABC04005ECF65 /* LBBareMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBBareMessage.m; path = source/LBBareMessage.m; sourceTree = "<group>"; };
 		CC877CDB110ABC04005ECF65 /* LBBareMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBBareMessage.h; path = source/LBBareMessage.h; sourceTree = "<group>"; };
 		CC877CDC110ABC04005ECF65 /* LBBareAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBBareAttachment.m; path = source/LBBareAttachment.m; sourceTree = "<group>"; };
@@ -333,7 +247,6 @@
 		F8483E4209CE7B9C00B80440 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = /usr/lib/libiconv.dylib; sourceTree = "<absolute>"; };
 		F8483E4B09CE7C2800B80440 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = /usr/lib/libcrypto.dylib; sourceTree = "<absolute>"; };
 		F88804610B42018500D400E7 /* libsasl2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsasl2.dylib; path = /usr/lib/libsasl2.dylib; sourceTree = "<absolute>"; };
-		F890D38D10CEECD50039817C /* libetpan.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libetpan.xcodeproj; path = "libetpan/build-mac/libetpan.xcodeproj"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -341,14 +254,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F890D39F10CEED640039817C /* libetpan.a in Frameworks */,
 				8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */,
 				F8483E4109CE7B9000B80440 /* libssl.dylib in Frameworks */,
 				F8483E4309CE7B9C00B80440 /* libiconv.dylib in Frameworks */,
 				F8483E4C09CE7C2800B80440 /* libcrypto.dylib in Frameworks */,
 				F88804620B42018500D400E7 /* libsasl2.dylib in Frameworks */,
 				CC3D54381108EFE800EEEF77 /* libsqlite3.dylib in Frameworks */,
-				CC517468110ACD8400C01407 /* libetpan.framework in Frameworks */,
 				CC8999391118C2F80024616B /* CoreServices.framework in Frameworks */,
 				CC89993A1118C2F80024616B /* Security.framework in Frameworks */,
 				CC89993B1118C2F80024616B /* SecurityInterface.framework in Frameworks */,
@@ -379,7 +290,6 @@
 		0867D691FE84028FC02AAC07 /* MailCore */ = {
 			isa = PBXGroup;
 			children = (
-				F890D38D10CEECD50039817C /* libetpan.xcodeproj */,
 				F85A18AF09C7D8F200305C06 /* Tests */,
 				08FB77AEFE84172EC02AAC07 /* Classes */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
@@ -413,8 +323,6 @@
 			children = (
 				CC8998D11118C2200024616B /* MooseYard */,
 				CC3D541C1108E7AC00EEEF77 /* FMDB */,
-				F81E26810C6ED57400B3FBAC /* SMTP */,
-				F81E26720C6ED56000B3FBAC /* MIME */,
 				CC877CE3110ABC04005ECF65 /* LBAccount.h */,
 				CC877CE2110ABC04005ECF65 /* LBAccount.m */,
 				CCF41346110D39F200401D5D /* LBActivity.h */,
@@ -432,10 +340,6 @@
 				CCD58CD4110BD9A30077F572 /* LBIMAPConnection.m */,
 				CC8998DA1118C28A0024616B /* LBIMAPReader.h */,
 				CC8998DB1118C28A0024616B /* LBIMAPReader.m */,
-				CC877CD9110ABC04005ECF65 /* LBIMAPFolder.h */,
-				CC877CD8110ABC04005ECF65 /* LBIMAPFolder.m */,
-				CC877CD7110ABC04005ECF65 /* LBIMAPMessage.h */,
-				CC877CD6110ABC04005ECF65 /* LBIMAPMessage.m */,
 				CCD7218711152594003C14AC /* LBMessage.h */,
 				CCD7218811152594003C14AC /* LBMessage.m */,
 				CC877CD5110ABC04005ECF65 /* LBServer.h */,
@@ -455,7 +359,6 @@
 				CC8999371118C2F80024616B /* Security.framework */,
 				CC8999381118C2F80024616B /* SecurityInterface.framework */,
 				968D0E5C111525550044BE1D /* GHUnit.framework */,
-				CC517467110ACD8400C01407 /* libetpan.framework */,
 				F88804610B42018500D400E7 /* libsasl2.dylib */,
 				F8483E4B09CE7C2800B80440 /* libcrypto.dylib */,
 				F8483E4209CE7B9C00B80440 /* libiconv.dylib */,
@@ -571,40 +474,6 @@
 			path = mooseyard/MYNetwork/TCP;
 			sourceTree = "<group>";
 		};
-		F81E26720C6ED56000B3FBAC /* MIME */ = {
-			isa = PBXGroup;
-			children = (
-				CC877CB4110ABBC7005ECF65 /* LBMIMEFactory.m */,
-				CC877CB5110ABBC7005ECF65 /* LBMIMEFactory.h */,
-				CC877CB6110ABBC7005ECF65 /* LBMIME.m */,
-				CC877CB7110ABBC7005ECF65 /* LBMIME.h */,
-				CC877CB8110ABBC7005ECF65 /* LBMIME_TextPart.m */,
-				CC877CB9110ABBC7005ECF65 /* LBMIME_TextPart.h */,
-				CC877CBA110ABBC7005ECF65 /* LBMIME_SinglePart.m */,
-				CC877CBB110ABBC7005ECF65 /* LBMIME_SinglePart.h */,
-				CC877CBC110ABBC7005ECF65 /* LBMIME_MultiPart.m */,
-				CC877CBD110ABBC7005ECF65 /* LBMIME_MultiPart.h */,
-				CC877CBE110ABBC7005ECF65 /* LBMIME_MessagePart.m */,
-				CC877CBF110ABBC7005ECF65 /* LBMIME_MessagePart.h */,
-				CC877CC0110ABBC7005ECF65 /* LBMIME_Enumerator.m */,
-				CC877CC1110ABBC7005ECF65 /* LBMIME_Enumerator.h */,
-			);
-			name = MIME;
-			sourceTree = "<group>";
-		};
-		F81E26810C6ED57400B3FBAC /* SMTP */ = {
-			isa = PBXGroup;
-			children = (
-				CC877CA0110ABBA2005ECF65 /* LBSMTPConnection.m */,
-				CC877CA1110ABBA2005ECF65 /* LBSMTPConnection.h */,
-				CC877CA2110ABBA2005ECF65 /* LBSMTP.m */,
-				CC877CA3110ABBA2005ECF65 /* LBSMTP.h */,
-				CC877CA4110ABBA2005ECF65 /* LBESMTP.m */,
-				CC877CA5110ABBA2005ECF65 /* LBESMTP.h */,
-			);
-			name = SMTP;
-			sourceTree = "<group>";
-		};
 		F85A18AF09C7D8F200305C06 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -633,16 +502,6 @@
 			name = Tests;
 			sourceTree = "<group>";
 		};
-		F890D39010CEECD50039817C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				F890D39610CEECD50039817C /* libetpan.framework */,
-				F890D39810CEECD50039817C /* libetpan.a */,
-				CC6B2E80111682FE0099CFD1 /* libetpan-iphone.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -653,22 +512,10 @@
 				CC3D54231108E7F700EEEF77 /* FMDatabase.h in Headers */,
 				CC3D54251108E7F700EEEF77 /* FMDatabaseAdditions.h in Headers */,
 				CC3D54271108E7F700EEEF77 /* FMResultSet.h in Headers */,
-				CC877CA7110ABBA2005ECF65 /* LBSMTPConnection.h in Headers */,
-				CC877CA9110ABBA2005ECF65 /* LBSMTP.h in Headers */,
-				CC877CAB110ABBA2005ECF65 /* LBESMTP.h in Headers */,
-				CC877CC3110ABBC7005ECF65 /* LBMIMEFactory.h in Headers */,
-				CC877CC5110ABBC7005ECF65 /* LBMIME.h in Headers */,
-				CC877CC7110ABBC7005ECF65 /* LBMIME_TextPart.h in Headers */,
-				CC877CC9110ABBC7005ECF65 /* LBMIME_SinglePart.h in Headers */,
-				CC877CCB110ABBC7005ECF65 /* LBMIME_MultiPart.h in Headers */,
-				CC877CCD110ABBC7005ECF65 /* LBMIME_MessagePart.h in Headers */,
-				CC877CCF110ABBC7005ECF65 /* LBMIME_Enumerator.h in Headers */,
 				CC877CE5110ABC04005ECF65 /* LetterBoxUtilities.h in Headers */,
 				CC877CE6110ABC04005ECF65 /* LetterBoxTypes.h in Headers */,
 				CC877CE7110ABC04005ECF65 /* LetterBox.h in Headers */,
 				CC877CE9110ABC04005ECF65 /* LBServer.h in Headers */,
-				CC877CEB110ABC04005ECF65 /* LBIMAPMessage.h in Headers */,
-				CC877CED110ABC04005ECF65 /* LBIMAPFolder.h in Headers */,
 				CC877CEF110ABC04005ECF65 /* LBBareMessage.h in Headers */,
 				CC877CF1110ABC04005ECF65 /* LBBareAttachment.h in Headers */,
 				CC877CF3110ABC04005ECF65 /* LBAttachment.h in Headers */,
@@ -720,8 +567,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				CC6D05E8110A488200D900E9 /* PBXTargetDependency */,
-				CC6D0621110A4A5D00D900E9 /* PBXTargetDependency */,
 			);
 			name = LetterBox;
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -759,12 +604,6 @@
 			mainGroup = 0867D691FE84028FC02AAC07 /* MailCore */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = F890D39010CEECD50039817C /* Products */;
-					ProjectRef = F890D38D10CEECD50039817C /* libetpan.xcodeproj */;
-				},
-			);
 			projectRoot = ..;
 			targets = (
 				8DC2EF4F0486A6940098B216 /* LetterBox */,
@@ -772,30 +611,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		CC6B2E80111682FE0099CFD1 /* libetpan-iphone.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libetpan-iphone.a";
-			remoteRef = CC6B2E7F111682FE0099CFD1 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F890D39610CEECD50039817C /* libetpan.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = libetpan.framework;
-			remoteRef = F890D39510CEECD50039817C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F890D39810CEECD50039817C /* libetpan.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libetpan.a;
-			remoteRef = F890D39710CEECD50039817C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		8DC2EF520486A6940098B216 /* Resources */ = {
@@ -851,20 +666,8 @@
 				CC3D54241108E7F700EEEF77 /* FMDatabase.m in Sources */,
 				CC3D54261108E7F700EEEF77 /* FMDatabaseAdditions.m in Sources */,
 				CC3D54281108E7F700EEEF77 /* FMResultSet.m in Sources */,
-				CC877CA6110ABBA2005ECF65 /* LBSMTPConnection.m in Sources */,
-				CC877CA8110ABBA2005ECF65 /* LBSMTP.m in Sources */,
-				CC877CAA110ABBA2005ECF65 /* LBESMTP.m in Sources */,
-				CC877CC2110ABBC7005ECF65 /* LBMIMEFactory.m in Sources */,
-				CC877CC4110ABBC7005ECF65 /* LBMIME.m in Sources */,
-				CC877CC6110ABBC7005ECF65 /* LBMIME_TextPart.m in Sources */,
-				CC877CC8110ABBC7005ECF65 /* LBMIME_SinglePart.m in Sources */,
-				CC877CCA110ABBC7005ECF65 /* LBMIME_MultiPart.m in Sources */,
-				CC877CCC110ABBC7005ECF65 /* LBMIME_MessagePart.m in Sources */,
-				CC877CCE110ABBC7005ECF65 /* LBMIME_Enumerator.m in Sources */,
 				CC877CE4110ABC04005ECF65 /* LetterBoxUtilities.m in Sources */,
 				CC877CE8110ABC04005ECF65 /* LBServer.m in Sources */,
-				CC877CEA110ABC04005ECF65 /* LBIMAPMessage.m in Sources */,
-				CC877CEC110ABC04005ECF65 /* LBIMAPFolder.m in Sources */,
 				CC877CEE110ABC04005ECF65 /* LBBareMessage.m in Sources */,
 				CC877CF0110ABC04005ECF65 /* LBBareAttachment.m in Sources */,
 				CC877CF2110ABC04005ECF65 /* LBAttachment.m in Sources */,
@@ -924,16 +727,6 @@
 			target = 8DC2EF4F0486A6940098B216 /* LetterBox */;
 			targetProxy = 968D0EC91115268F0044BE1D /* PBXContainerItemProxy */;
 		};
-		CC6D05E8110A488200D900E9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = libetpan;
-			targetProxy = CC6D05E7110A488200D900E9 /* PBXContainerItemProxy */;
-		};
-		CC6D0621110A4A5D00D900E9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "static libetpan";
-			targetProxy = CC6D0620110A4A5D00D900E9 /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -983,7 +776,6 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "libetpan/build-mac/include/**";
 				LIBRARY_SEARCH_PATHS = "";
 				PREBINDING = NO;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
@@ -1002,7 +794,6 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "libetpan/build-mac/include/**";
 				LIBRARY_SEARCH_PATHS = "";
 				PREBINDING = NO;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";

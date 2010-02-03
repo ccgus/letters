@@ -30,7 +30,6 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <libetpan/libetpan.h>
 
 @class LBMIME_Enumerator;
 

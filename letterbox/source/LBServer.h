@@ -7,7 +7,6 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <libetpan/libetpan.h>
 
 extern NSString *LBServerFolderUpdatedNotification;
 extern NSString *LBServerSubjectsUpdatedNotification;

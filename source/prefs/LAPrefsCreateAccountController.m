@@ -47,7 +47,7 @@
     [account setUsername:[usernameField stringValue]];
     [account setPassword:[passwordField stringValue]];
     
-    [account setConnectionType:[tlsButton state] ? CONNECTION_TYPE_TLS : CONNECTION_TYPE_PLAIN];
+    //[account setConnectionType:[tlsButton state] ? CONNECTION_TYPE_TLS : CONNECTION_TYPE_PLAIN];
     
     // maybe there should be an updateAccount: or addAccount: or somethen'
     [appDelegate saveAccounts];
@@ -136,7 +136,7 @@
     [account setUsername:[mailAccount objectForKey:@"Username"]];
     [account setPassword:[importPasswordField stringValue]];
     
-    [account setConnectionType:[[mailAccount objectForKey:@"SSLEnabled"] boolValue] ? CONNECTION_TYPE_TLS : CONNECTION_TYPE_PLAIN];
+    //[account setConnectionType:[[mailAccount objectForKey:@"SSLEnabled"] boolValue] ? CONNECTION_TYPE_TLS : CONNECTION_TYPE_PLAIN];
     
     // maybe there should be an updateAccount: or addAccount: or somethen'
     [appDelegate saveAccounts];
