@@ -9,7 +9,7 @@
 @synthesize fromAddress;
 @synthesize authType;
 @synthesize imapPort;
-@synthesize connectionType;
+@synthesize imapTLS;
 @synthesize smtpServer;
 @synthesize isActive;
 
@@ -79,8 +79,8 @@
         acct.isActive = [[d objectForKey:@"isActive"] boolValue];
     }
     
-    if ([d objectForKey:@"connectionType"]) {
-        acct.connectionType = [[d objectForKey:@"connectionType"] intValue];
+    if ([d objectForKey:@"imapTLS"]) {
+        acct.imapTLS = [[d objectForKey:@"imapTLS"] boolValue];
     }
     
     if ([d objectForKey:@"smtpServer"]) {
@@ -106,7 +106,7 @@
     [d setObject:[NSNumber numberWithInt:imapPort] forKey:@"imapPort"];
     [d setObject:[NSNumber numberWithInt:isActive] forKey:@"isActive"];
     
-    [d setObject:[NSNumber numberWithInt:connectionType] forKey:@"connectionType"];
+    [d setObject:[NSNumber numberWithBool:imapTLS] forKey:@"imapTLS"];
     
     return d;
 }

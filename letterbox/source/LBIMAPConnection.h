@@ -3,7 +3,7 @@
 #import "TCPConnection.h"
 #import "TCPWriter.h"
 
-@class LBIMAPReader;
+@class LBIMAPReader, LBAccount;
 
 typedef void (^LBResponseBlock)(NSError *);
 
@@ -26,6 +26,8 @@ typedef void (^LBResponseBlock)(NSError *);
 @property (assign) BOOL debugOutput;
 @property (retain) NSMutableData *responseBytes;
 @property (assign) BOOL shouldCancelActivity;
+
+- (id)initWithAccount:(LBAccount*)account;
 
 - (void)connectUsingBlock:(LBResponseBlock)block;
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password block:(LBResponseBlock)block;

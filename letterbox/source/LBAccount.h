@@ -15,7 +15,7 @@
 @property (retain) NSString *fromAddress;
 @property (assign) int authType;
 @property (assign) int imapPort;
-@property (assign) int connectionType;
+@property (assign) BOOL imapTLS;
 @property (retain) NSString *smtpServer;
 @property (assign) BOOL isActive;
 

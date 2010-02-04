@@ -15,7 +15,6 @@
 #import "FMDatabase.h"
 #import "LBIMAPConnection.h"
 #import "LBMessage.h"
-#import "IPAddress.h"
 #import "LetterBoxUtilities.h"
 
 NSString *LBServerFolderUpdatedNotification = @"LBServerFolderUpdatedNotification";
@@ -91,8 +90,10 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     if (!conn) {
         // FIXME: what about a second connection that hasn't been connected yet?
         // should we worry about that?
-        IPAddress *addr = [IPAddress addressWithHostname:[[self account] imapServer] port:[[self account] imapPort]];
-        conn = [[[LBIMAPConnection alloc] initToAddress:addr] autorelease];
+        
+        conn = [[[LBIMAPConnection alloc] initWithAccount:account] autorelease];
+        
+        
     }
     
     if (!conn) {

@@ -122,9 +122,7 @@
     [portField           setIntValue:[account imapPort]];
     [smtpServerPortField setIntValue:25]; // TODO!
     
-    #warning I think we should just always do ssl.
-    
-    //[tlsButton setState:[account connectionType] == CONNECTION_TYPE_TLS ? NSOnState : NSOffState];
+    [tlsButton setState:[account imapTLS]];
 }
 
 - (void)saveAccountSettings:(NSUInteger)accountIndex {
@@ -143,7 +141,7 @@
     [account setUsername:[usernameField stringValue]];
     [account setPassword:[passwordField stringValue]];
     
-    //[account setConnectionType:[tlsButton state] ? CONNECTION_TYPE_TLS : CONNECTION_TYPE_PLAIN];
+    [account setImapTLS:[tlsButton state]];
     
     // maybe there should be an updateAccount: or addAccount: or somethen'
     [appDelegate saveAccounts];

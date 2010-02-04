@@ -2,6 +2,8 @@
 #import "LBIMAPReader.h"
 #import "LetterBoxUtilities.h"
 #import "TCP_Internal.h"
+#import "LBAccount.h"
+#import "IPAddress.h"
 
 static NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
 static NSString *LBLOGIN = @"LOGIN";
@@ -27,6 +29,29 @@ static NSString *LBDONE = @"DONE";
 @synthesize responseBytes;
 @synthesize debugOutput;
 @synthesize shouldCancelActivity;
+
+- (id)initWithAccount:(LBAccount*)account {
+    
+    IPAddress *addr = [IPAddress addressWithHostname:[account imapServer] port:[account imapPort]];
+    self = [self initToAddress:addr];
+    
+	if (self != nil) {
+            
+        if ([account imapTLS]) {
+            
+            NSMutableDictionary *sslProps = [NSMutableDictionary dictionary];
+            
+            [sslProps setObject:[NSNumber numberWithBool:YES] forKey:(id)kTCPPropertySSLAllowsAnyRoot];
+            [sslProps setObject:[NSNull null] forKey:(id)kCFStreamSSLPeerName];
+            [sslProps setObject:NSStreamSocketSecurityLevelTLSv1 forKey:(id)kCFStreamSSLLevel];
+            
+            [self setSSLProperties:sslProps];
+        }
+    }
+    
+    return self;
+}
+
 
 -(Class) readerClass   {return [LBIMAPReader class];}
 
@@ -65,15 +90,6 @@ static NSString *LBDONE = @"DONE";
     currentCommand      = LBCONNECTING;
     bytesRead           = 0;
     self.responseBytes  = [NSMutableData data];
-    
-    /*
-    NSMutableDictionary *sslProps = [NSMutableDictionary dictionary];
-    
-    [sslProps setObject:[NSNumber numberWithBool:YES] forKey:(id)kTCPPropertySSLAllowsAnyRoot];
-    [sslProps setObject:[NSNull null] forKey:(id)kCFStreamSSLPeerName];
-    
-    [self setSSLProperties:sslProps];
-    */
     
     [self open];
 }
@@ -533,9 +549,12 @@ static NSString *LBDONE = @"DONE";
     }
     else if (currentCommand == LBLSUB) {
         
-        NSString *expected = [NSString stringWithFormat:@"%d OK LSUB completed%s", commandCount, CRLF];
+        NSString *expected = [NSString stringWithFormat:@"%d OK", commandCount];
         
-        if ([self endOfData:responseBytes isEqualTo:expected]) {
+        NSString *lastLine = [self lastLineOfData:responseBytes];
+        
+        if ([lastLine hasPrefix:expected]) {
+            debug(@"yay?");
             // FIXME: check for correctness
             [self callBlockWithError:nil];
         }
