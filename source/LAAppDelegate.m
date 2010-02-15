@@ -11,6 +11,7 @@
 #import "LAActivityViewer.h"
 #import "LADocument.h"
 #import "LAPrefsWindowController.h"
+#import <LetterBox/LetterBox.h>
 
 #import <AddressBook/AddressBook.h>
 
@@ -332,6 +333,17 @@
             [doc updateChangeCount:NSChangeDone];
         }
     }
+}
+
+- (void) debugAction:(id)sender {
+    debug(@"%s:%d", __FUNCTION__, __LINE__);
+    
+    LBSMTPConnection *smtp = [[LBSMTPConnection alloc] init];
+    
+    [smtp test];
+    
+    debug(@"smtp: %@", smtp);
+    
 }
 
 

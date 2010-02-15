@@ -41,8 +41,6 @@
 		CC877CF7110ABC04005ECF65 /* LBAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CE3110ABC04005ECF65 /* LBAccount.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC877CFA110ABC1D005ECF65 /* JRLog.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CF8110ABC1D005ECF65 /* JRLog.m */; };
 		CC877CFB110ABC1D005ECF65 /* JRLog.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CF9110ABC1D005ECF65 /* JRLog.h */; };
-		CC8998DC1118C28A0024616B /* LBIMAPReader.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998DA1118C28A0024616B /* LBIMAPReader.h */; };
-		CC8998DD1118C28A0024616B /* LBIMAPReader.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998DB1118C28A0024616B /* LBIMAPReader.m */; };
 		CC8998FE1118C2A30024616B /* MYAddressLookup.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998E11118C2A30024616B /* MYAddressLookup.h */; };
 		CC8998FF1118C2A30024616B /* MYAddressLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998E21118C2A30024616B /* MYAddressLookup.m */; };
 		CC8999001118C2A30024616B /* MYBonjourBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998E31118C2A30024616B /* MYBonjourBrowser.h */; };
@@ -59,10 +57,10 @@
 		CC89990B1118C2A30024616B /* MYPortMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998EF1118C2A30024616B /* MYPortMapper.m */; };
 		CC89990C1118C2A30024616B /* PortMapperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998F01118C2A30024616B /* PortMapperTest.m */; };
 		CC89990D1118C2A30024616B /* TCP_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998F21118C2A30024616B /* TCP_Internal.h */; };
-		CC89990E1118C2A30024616B /* TCPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998F31118C2A30024616B /* TCPConnection.h */; };
+		CC89990E1118C2A30024616B /* TCPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998F31118C2A30024616B /* TCPConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC89990F1118C2A30024616B /* TCPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998F41118C2A30024616B /* TCPConnection.m */; };
 		CC8999101118C2A30024616B /* TCPEndpoint+Certs.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998F51118C2A30024616B /* TCPEndpoint+Certs.m */; };
-		CC8999111118C2A30024616B /* TCPEndpoint.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998F61118C2A30024616B /* TCPEndpoint.h */; };
+		CC8999111118C2A30024616B /* TCPEndpoint.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998F61118C2A30024616B /* TCPEndpoint.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC8999121118C2A30024616B /* TCPEndpoint.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998F71118C2A30024616B /* TCPEndpoint.m */; };
 		CC8999131118C2A30024616B /* TCPListener.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8998F81118C2A30024616B /* TCPListener.h */; };
 		CC8999141118C2A30024616B /* TCPListener.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8998F91118C2A30024616B /* TCPListener.m */; };
@@ -85,6 +83,12 @@
 		CC8999391118C2F80024616B /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC8999361118C2F80024616B /* CoreServices.framework */; };
 		CC89993A1118C2F80024616B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC8999371118C2F80024616B /* Security.framework */; };
 		CC89993B1118C2F80024616B /* SecurityInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC8999381118C2F80024616B /* SecurityInterface.framework */; };
+		CCA0E7E1112A0ADF00110E76 /* LBSMTPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = CCA0E7DF112A0ADF00110E76 /* LBSMTPConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CCA0E7E2112A0ADF00110E76 /* LBSMTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA0E7E0112A0ADF00110E76 /* LBSMTPConnection.m */; };
+		CCA0E821112A0F8B00110E76 /* LBTCPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = CCA0E81F112A0F8B00110E76 /* LBTCPConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CCA0E822112A0F8B00110E76 /* LBTCPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA0E820112A0F8B00110E76 /* LBTCPConnection.m */; };
+		CCA0E825112A0FD800110E76 /* LBTCPReader.h in Headers */ = {isa = PBXBuildFile; fileRef = CCA0E823112A0FD800110E76 /* LBTCPReader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CCA0E826112A0FD800110E76 /* LBTCPReader.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA0E824112A0FD800110E76 /* LBTCPReader.m */; };
 		CCD58CD5110BD9A30077F572 /* LBIMAPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = CCD58CD3110BD9A30077F572 /* LBIMAPConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CCD58CD6110BD9A30077F572 /* LBIMAPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = CCD58CD4110BD9A30077F572 /* LBIMAPConnection.m */; };
 		CCD721831115257A003C14AC /* LBFolder.h in Headers */ = {isa = PBXBuildFile; fileRef = CCD721811115257A003C14AC /* LBFolder.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -171,8 +175,6 @@
 		CC877D39110ABD32005ECF65 /* LBAddressTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBAddressTests.m; path = tests/LBAddressTests.m; sourceTree = "<group>"; };
 		CC877D3A110ABD32005ECF65 /* LBAttachmentTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBAttachmentTests.h; path = tests/LBAttachmentTests.h; sourceTree = "<group>"; };
 		CC877D3B110ABD32005ECF65 /* LBAttachmentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBAttachmentTests.m; path = tests/LBAttachmentTests.m; sourceTree = "<group>"; };
-		CC8998DA1118C28A0024616B /* LBIMAPReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBIMAPReader.h; path = source/LBIMAPReader.h; sourceTree = "<group>"; };
-		CC8998DB1118C28A0024616B /* LBIMAPReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBIMAPReader.m; path = source/LBIMAPReader.m; sourceTree = "<group>"; };
 		CC8998E11118C2A30024616B /* MYAddressLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYAddressLookup.h; sourceTree = "<group>"; };
 		CC8998E21118C2A30024616B /* MYAddressLookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYAddressLookup.m; sourceTree = "<group>"; };
 		CC8998E31118C2A30024616B /* MYBonjourBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYBonjourBrowser.h; sourceTree = "<group>"; };
@@ -215,6 +217,12 @@
 		CC8999361118C2F80024616B /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		CC8999371118C2F80024616B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		CC8999381118C2F80024616B /* SecurityInterface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityInterface.framework; path = System/Library/Frameworks/SecurityInterface.framework; sourceTree = SDKROOT; };
+		CCA0E7DF112A0ADF00110E76 /* LBSMTPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBSMTPConnection.h; path = source/LBSMTPConnection.h; sourceTree = "<group>"; };
+		CCA0E7E0112A0ADF00110E76 /* LBSMTPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBSMTPConnection.m; path = source/LBSMTPConnection.m; sourceTree = "<group>"; };
+		CCA0E81F112A0F8B00110E76 /* LBTCPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBTCPConnection.h; path = source/LBTCPConnection.h; sourceTree = "<group>"; };
+		CCA0E820112A0F8B00110E76 /* LBTCPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBTCPConnection.m; path = source/LBTCPConnection.m; sourceTree = "<group>"; };
+		CCA0E823112A0FD800110E76 /* LBTCPReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBTCPReader.h; path = source/LBTCPReader.h; sourceTree = "<group>"; };
+		CCA0E824112A0FD800110E76 /* LBTCPReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBTCPReader.m; path = source/LBTCPReader.m; sourceTree = "<group>"; };
 		CCA553E01106DB6B00CEEFF4 /* Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Tests-Info.plist"; path = "resources/Tests-Info.plist"; sourceTree = "<group>"; };
 		CCA553E21106DB7100CEEFF4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = resources/Info.plist; sourceTree = "<group>"; };
 		CCD58CD3110BD9A30077F572 /* LBIMAPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBIMAPConnection.h; path = source/LBIMAPConnection.h; sourceTree = "<group>"; };
@@ -320,16 +328,20 @@
 				CCD721821115257A003C14AC /* LBFolder.m */,
 				CCD58CD3110BD9A30077F572 /* LBIMAPConnection.h */,
 				CCD58CD4110BD9A30077F572 /* LBIMAPConnection.m */,
-				CC8998DA1118C28A0024616B /* LBIMAPReader.h */,
-				CC8998DB1118C28A0024616B /* LBIMAPReader.m */,
 				CCD7218711152594003C14AC /* LBMessage.h */,
 				CCD7218811152594003C14AC /* LBMessage.m */,
 				CC877CD5110ABC04005ECF65 /* LBServer.h */,
 				CC877CD4110ABC04005ECF65 /* LBServer.m */,
+				CCA0E7DF112A0ADF00110E76 /* LBSMTPConnection.h */,
+				CCA0E7E0112A0ADF00110E76 /* LBSMTPConnection.m */,
 				CC877CD3110ABC04005ECF65 /* LetterBox.h */,
 				CC877CD2110ABC04005ECF65 /* LetterBoxTypes.h */,
 				CC877CD1110ABC04005ECF65 /* LetterBoxUtilities.h */,
 				CC877CD0110ABC04005ECF65 /* LetterBoxUtilities.m */,
+				CCA0E823112A0FD800110E76 /* LBTCPReader.h */,
+				CCA0E824112A0FD800110E76 /* LBTCPReader.m */,
+				CCA0E81F112A0F8B00110E76 /* LBTCPConnection.h */,
+				CCA0E820112A0F8B00110E76 /* LBTCPConnection.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -496,7 +508,6 @@
 				CCF41348110D39F200401D5D /* LBActivity.h in Headers */,
 				CCD721831115257A003C14AC /* LBFolder.h in Headers */,
 				CCD7218911152594003C14AC /* LBMessage.h in Headers */,
-				CC8998DC1118C28A0024616B /* LBIMAPReader.h in Headers */,
 				CC8998FE1118C2A30024616B /* MYAddressLookup.h in Headers */,
 				CC8999001118C2A30024616B /* MYBonjourBrowser.h in Headers */,
 				CC8999021118C2A30024616B /* MYBonjourQuery.h in Headers */,
@@ -516,6 +527,9 @@
 				CC8999291118C2D20024616B /* Logging.h in Headers */,
 				CC89992B1118C2D20024616B /* Test.h in Headers */,
 				CC89992F1118C2DD0024616B /* IPAddress.h in Headers */,
+				CCA0E7E1112A0ADF00110E76 /* LBSMTPConnection.h in Headers */,
+				CCA0E821112A0F8B00110E76 /* LBTCPConnection.h in Headers */,
+				CCA0E825112A0FD800110E76 /* LBTCPReader.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -647,7 +661,6 @@
 				CCD58CD6110BD9A30077F572 /* LBIMAPConnection.m in Sources */,
 				CCD721841115257A003C14AC /* LBFolder.m in Sources */,
 				CCD7218A11152594003C14AC /* LBMessage.m in Sources */,
-				CC8998DD1118C28A0024616B /* LBIMAPReader.m in Sources */,
 				CC8998FF1118C2A30024616B /* MYAddressLookup.m in Sources */,
 				CC8999011118C2A30024616B /* MYBonjourBrowser.m in Sources */,
 				CC8999031118C2A30024616B /* MYBonjourQuery.m in Sources */,
@@ -668,6 +681,9 @@
 				CC89992A1118C2D20024616B /* Logging.m in Sources */,
 				CC89992C1118C2D20024616B /* Test.m in Sources */,
 				CC8999301118C2DD0024616B /* IPAddress.m in Sources */,
+				CCA0E7E2112A0ADF00110E76 /* LBSMTPConnection.m in Sources */,
+				CCA0E822112A0F8B00110E76 /* LBTCPConnection.m in Sources */,
+				CCA0E826112A0FD800110E76 /* LBTCPReader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,5 +1,5 @@
 #import "LBIMAPConnection.h"
-#import "LBIMAPReader.h"
+#import "LBTCPReader.h"
 #import "LetterBoxUtilities.h"
 #import "TCP_Internal.h"
 #import "LBAccount.h"
@@ -19,16 +19,13 @@ static NSString *LBFETCH = @"FETCH";
 static NSString *LBIDLE = @"IDLE";
 static NSString *LBDONE = @"DONE";
 
-#define CRLF "\r\n"
 
 @interface LBIMAPConnection ()
 - (void)endIDLE;
 @end
 
 @implementation LBIMAPConnection
-@synthesize responseBytes;
-@synthesize debugOutput;
-@synthesize shouldCancelActivity;
+
 
 - (id)initWithAccount:(LBAccount*)account {
     
@@ -53,8 +50,6 @@ static NSString *LBDONE = @"DONE";
 }
 
 
--(Class) readerClass   {return [LBIMAPReader class];}
-
 -(void) sendCommand:(NSString*)command withArguments:(NSString*)args {
     
     bytesRead           = 0;
@@ -73,7 +68,7 @@ static NSString *LBDONE = @"DONE";
     }
     
     
-    if (debugOutput) {
+    if (self.debugOutput) {
         NSLog(@"< %@", stringToSend);
     }
     
@@ -296,7 +291,7 @@ static NSString *LBDONE = @"DONE";
 }
 
 - (NSString*) responseAsString {
-    return [[[NSString alloc] initWithBytes:[responseBytes bytes] length:[responseBytes length] encoding:NSUTF8StringEncoding] autorelease];
+    return [[[NSString alloc] initWithBytes:[self.responseBytes bytes] length:[self.responseBytes length] encoding:NSUTF8StringEncoding] autorelease];
 }
 
 - (NSDictionary *)parseLSUBLine:(NSString*)line {
@@ -446,7 +441,7 @@ static NSString *LBDONE = @"DONE";
     
     list = [list substringFromIndex:9];
     
-    NSString *lastLine = [self lastLineOfData:responseBytes];
+    NSString *lastLine = [self lastLineOfData:self.responseBytes];
     
     // now, let's cut that last bit out.
     // the -4 is for the 2 crlf's in there.
@@ -465,17 +460,17 @@ static NSString *LBDONE = @"DONE";
     // 1486
     NSInteger headerLen = [currentFetchingMessageHeader length] + 2; // + 2 for crlf.
     
-    if ([responseBytes length] < (headerLen + currentFetchingMessageSize)) {
+    if ([self.responseBytes length] < (headerLen + currentFetchingMessageSize)) {
         NSLog(@"There isn't enough data for the last message.  Are you calling too soon?");
         return nil;
     }
     
-    NSData *data = [responseBytes subdataWithRange:NSMakeRange(headerLen, currentFetchingMessageSize)];
+    NSData *data = [self.responseBytes subdataWithRange:NSMakeRange(headerLen, currentFetchingMessageSize)];
     
     return data;
 }
 
-- (void)canRead:(LBIMAPReader*)reader {
+- (void)canRead:(LBTCPReader*)reader {
     
     // what's a good number here?
     #define MAX_BYTES_READ 2048
@@ -483,18 +478,18 @@ static NSString *LBDONE = @"DONE";
     NSMutableData *data         = [NSMutableData dataWithLength:MAX_BYTES_READ];
     NSInteger localBytesRead    = [reader read:[data mutableBytes] maxLength:MAX_BYTES_READ];
     
-    [responseBytes appendBytes:[data mutableBytes] length:localBytesRead];
+    [self.responseBytes appendBytes:[data mutableBytes] length:localBytesRead];
     
     bytesRead += localBytesRead;
     
-    if (debugOutput) {
+    if (self.debugOutput) {
         NSString *junk = [[[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSUTF8StringEncoding] autorelease];
         NSLog(@"> %@", junk);
     }
     
     if (currentCommand == LBCONNECTING) {
         
-        NSString *res = [self singleLineResponseFromData:responseBytes];
+        NSString *res = [self singleLineResponseFromData:self.responseBytes];
         
         if (!res) {
             debug(@"slow connection?");
@@ -506,7 +501,7 @@ static NSString *LBDONE = @"DONE";
     }
     else if (currentCommand == LBLOGIN) {
         
-        NSString *res = [self singleLineResponseFromData:responseBytes];
+        NSString *res = [self singleLineResponseFromData:self.responseBytes];
         
         if (!res) {
             debug(@"slow auth?");
@@ -527,7 +522,7 @@ static NSString *LBDONE = @"DONE";
     }
     else if (currentCommand == LBCREATE || currentCommand == LBDELETE || currentCommand == LBSUBSCRIBE || currentCommand == LBUNSUBSCRIBE) {
         
-        NSString *res = [self singleLineResponseFromData:responseBytes];
+        NSString *res = [self singleLineResponseFromData:self.responseBytes];
         
         if (!res) {
             return;
@@ -551,7 +546,7 @@ static NSString *LBDONE = @"DONE";
         
         NSString *expected = [NSString stringWithFormat:@"%d OK", commandCount];
         
-        NSString *lastLine = [self lastLineOfData:responseBytes];
+        NSString *lastLine = [self lastLineOfData:self.responseBytes];
         
         if ([lastLine hasPrefix:expected]) {
             debug(@"yay?");
@@ -564,7 +559,7 @@ static NSString *LBDONE = @"DONE";
         NSString *expected      = [NSString stringWithFormat:@"%d OK", commandCount];
         NSString *expectedErr   = [NSString stringWithFormat:@"%d NO", commandCount];
         NSString *expectedBad   = [NSString stringWithFormat:@"%d BAD", commandCount];
-        NSString *lastLine      = [self lastLineOfData:responseBytes];
+        NSString *lastLine      = [self lastLineOfData:self.responseBytes];
         
         if ([lastLine hasPrefix:expected]) {
             
@@ -593,7 +588,7 @@ static NSString *LBDONE = @"DONE";
         
         NSError *err = nil;
         
-        if (!([self endOfData:responseBytes isEqualTo:expected] || [self endOfData:responseBytes isEqualTo:expected2])) {
+        if (!([self endOfData:self.responseBytes isEqualTo:expected] || [self endOfData:self.responseBytes isEqualTo:expected2])) {
             NSString *junk = [NSString stringWithFormat:@"Could not Select mailbox: %@", [self responseAsString]];
             LBQuickError(&err, LBSELECT, 0, junk);
         }
@@ -603,7 +598,7 @@ static NSString *LBDONE = @"DONE";
     
     else if (currentCommand == LBLOGOUT) {
         
-        NSString *lastLine      = [self lastLineOfData:responseBytes];
+        NSString *lastLine      = [self lastLineOfData:self.responseBytes];
         NSString *expectedGood  = [NSString stringWithFormat:@"%d OK ", commandCount, CRLF];
         NSString *expectedBad   = [NSString stringWithFormat:@"%d BAD ", commandCount, CRLF];
         NSString *expectedErr   = [NSString stringWithFormat:@"%d NO ", commandCount, CRLF];
@@ -625,7 +620,7 @@ static NSString *LBDONE = @"DONE";
         [self callBlockWithError:err];
     }
     else if (currentCommand == LBFETCH) {
-        NSString *firstLine = [self firstLineOfData:responseBytes];
+        NSString *firstLine = [self firstLineOfData:self.responseBytes];
         
         if (firstLine) {
             
@@ -655,9 +650,9 @@ static NSString *LBDONE = @"DONE";
             NSInteger endMessageLength = [@"\r\n)\r\n1 OK FETCH\r\n" length];
             NSInteger atLeastLength    = [currentFetchingMessageHeader length] + currentFetchingMessageSize + endMessageLength;
             
-            if ([responseBytes length] > atLeastLength) {
+            if ([self.responseBytes length] > atLeastLength) {
                 
-                NSString *lastLine      = [self lastLineOfData:responseBytes];
+                NSString *lastLine      = [self lastLineOfData:self.responseBytes];
                 NSString *expectedGood  = [NSString stringWithFormat:@"%d OK FETCH", commandCount, CRLF];
                 //NSString *expectedNo    = [NSString stringWithFormat:@"%d NO", commandCount, CRLF];
                 //NSString *expectedBad   = [NSString stringWithFormat:@"%d BAD", commandCount, CRLF];
@@ -686,55 +681,6 @@ static NSString *LBDONE = @"DONE";
 - (BOOL)isConnected {
     return [self status] == kTCP_Open;
 }
-
-
-- (int) activityType {
-    return 0;
-}
-
-- (void)setActivityStatusAndNotifiy:(NSString *)value {
-    if (activityStatus != value) {
-        
-        BOOL isNew  = (value && !activityStatus);
-        BOOL isOver = (!value) && activityStatus;
-        
-        [activityStatus release];
-        activityStatus = [value retain];
-        
-        dispatch_async(dispatch_get_main_queue(),^ {
-            
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:self forKey:@"activity"];
-            
-            if (isNew) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:LBActivityStartedNotification
-                                                                    object:self
-                                                                  userInfo:userInfo];
-            }
-            else if (isOver) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:LBActivityEndedNotification
-                                                                    object:self
-                                                                  userInfo:userInfo];
-            }
-            else {
-                [[NSNotificationCenter defaultCenter] postNotificationName:LBActivityUpdatedNotification
-                                                                    object:self
-                                                                  userInfo:userInfo];
-            }
-            
-        });
-        
-    }
-}
-
-- (NSString*) activityStatus {
-    return activityStatus;
-}
-
-- (void) cancelActivity {
-    shouldCancelActivity = YES;
-    [self setActivityStatusAndNotifiy:NSLocalizedString(@"Canceling…", @"Canceling…")];
-}
-
 
 
 

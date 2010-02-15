@@ -1,15 +1,10 @@
 #import <Foundation/Foundation.h>
 #import "LBActivity.h"
-#import "TCPConnection.h"
-#import "TCPWriter.h"
+#import "LBTCPConnection.h"
 
-@class LBIMAPReader, LBAccount;
+@class LBAccount;
 
-typedef void (^LBResponseBlock)(NSError *);
-
-@interface LBIMAPConnection : TCPConnection <TCPConnectionDelegate, LBActivity> {
-    
-    void (^responseBlock)(NSError *);
+@interface LBIMAPConnection : LBTCPConnection {
     
     NSInteger   commandCount;
     
@@ -19,19 +14,14 @@ typedef void (^LBResponseBlock)(NSError *);
     
     NSInteger   currentFetchingMessageSize;
     NSString    *currentFetchingMessageHeader;
-    
-    NSString    *activityStatus;
 }
 
-@property (assign) BOOL debugOutput;
-@property (retain) NSMutableData *responseBytes;
-@property (assign) BOOL shouldCancelActivity;
+
 
 - (id)initWithAccount:(LBAccount*)account;
 
 - (void)connectUsingBlock:(LBResponseBlock)block;
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password block:(LBResponseBlock)block;
-- (void)canRead:(LBIMAPReader*)reader;
 - (void)selectMailbox:(NSString*)mailbox block:(LBResponseBlock)block;
 - (void)listMessagesWithBlock:(LBResponseBlock)block;
 - (void)listSubscribedMailboxesWithBock:(LBResponseBlock)block;
@@ -55,8 +45,6 @@ typedef void (^LBResponseBlock)(NSError *);
 - (NSData*)lastFetchedMessage;
 
 - (BOOL)isConnected;
-
-- (void)setActivityStatusAndNotifiy:(NSString *)value;
 
 - (NSString*) responseAsString;
 
