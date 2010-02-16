@@ -9,5 +9,6 @@
 }
 
 - (void) test;
+- (id)initWithAccount:(LBAccount*)account;
 
 @end

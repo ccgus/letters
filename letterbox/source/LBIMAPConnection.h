@@ -8,10 +8,6 @@
     
     NSInteger   commandCount;
     
-    NSInteger   bytesRead;
-    
-    NSString    *currentCommand;
-    
     NSInteger   currentFetchingMessageSize;
     NSString    *currentFetchingMessageHeader;
 }
@@ -20,7 +16,7 @@
 
 - (id)initWithAccount:(LBAccount*)account;
 
-- (void)connectUsingBlock:(LBResponseBlock)block;
+
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password block:(LBResponseBlock)block;
 - (void)selectMailbox:(NSString*)mailbox block:(LBResponseBlock)block;
 - (void)listMessagesWithBlock:(LBResponseBlock)block;
@@ -44,8 +40,5 @@
 
 - (NSData*)lastFetchedMessage;
 
-- (BOOL)isConnected;
-
-- (NSString*) responseAsString;
 
 @end

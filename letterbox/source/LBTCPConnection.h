@@ -12,11 +12,17 @@
 
 @class LBTCPReader;
 
+extern NSString *LBCONNECTING;
+
 #define CRLF "\r\n"
 typedef void (^LBResponseBlock)(NSError *);
 
 @interface LBTCPConnection : TCPConnection  <TCPConnectionDelegate, LBActivity> {
     void (^responseBlock)(NSError *);
+    
+    NSInteger   bytesRead;
+    
+    NSString    *currentCommand;
     
     NSString    *activityStatus;
 }
@@ -27,5 +33,19 @@ typedef void (^LBResponseBlock)(NSError *);
 
 - (void)canRead:(LBTCPReader*)reader;
 - (void)setActivityStatusAndNotifiy:(NSString *)value;
+
+- (void)connectUsingBlock:(LBResponseBlock)block;
+
+- (BOOL)isConnected;
+
+- (NSString*) responseAsString;
+
+// for subclassers
+- (void) callBlockWithError:(NSError*)err;
+- (NSString*)firstLineOfData:(NSData*)data;
+- (NSString*)lastLineOfData:(NSData*)data;
+- (BOOL)endOfData:(NSData*)data isEqualTo:(NSString*)string;
+- (NSString*)singleLineResponseFromData:(NSData*)data;
+- (void)sendCommand:(NSString*)command withArgument:(NSString*)arg;
 
 @end

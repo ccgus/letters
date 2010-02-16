@@ -338,7 +338,7 @@
 - (void) debugAction:(id)sender {
     debug(@"%s:%d", __FUNCTION__, __LINE__);
     
-    LBSMTPConnection *smtp = [[LBSMTPConnection alloc] init];
+    LBSMTPConnection *smtp = [[LBSMTPConnection alloc] initWithAccount:[[self accounts] lastObject]];
     
     [smtp test];
     

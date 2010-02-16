@@ -5,7 +5,7 @@
 #import "LBAccount.h"
 #import "IPAddress.h"
 
-static NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
+
 static NSString *LBLOGIN = @"LOGIN";
 static NSString *LBLSUB = @"LSUB";
 static NSString *LBSELECT = @"SELECT";
@@ -50,7 +50,7 @@ static NSString *LBDONE = @"DONE";
 }
 
 
--(void) sendCommand:(NSString*)command withArguments:(NSString*)args {
+-(void) sendCommand:(NSString*)command withArgument:(NSString*)arg {
     
     bytesRead           = 0;
     self.responseBytes  = [NSMutableData data];
@@ -60,8 +60,8 @@ static NSString *LBDONE = @"DONE";
     
     NSString *stringToSend = nil;
     
-    if (args) {
-        stringToSend = [NSString stringWithFormat:@"%d %@ %@\r\n", commandCount, command, args];
+    if (arg) {
+        stringToSend = [NSString stringWithFormat:@"%d %@ %@\r\n", commandCount, command, arg];
     }
     else {
         stringToSend = [NSString stringWithFormat:@"%d %@\r\n", commandCount, command];
@@ -76,18 +76,6 @@ static NSString *LBDONE = @"DONE";
     
 }
 
-- (void)connectUsingBlock:(LBResponseBlock)block {
-    
-    responseBlock       = [block copy];
-    
-    self.delegate       = self;
-    
-    currentCommand      = LBCONNECTING;
-    bytesRead           = 0;
-    self.responseBytes  = [NSMutableData data];
-    
-    [self open];
-}
 
 - (void) connectionDidOpen: (TCPConnection*)connection {
     debug(@"%s:%d", __FUNCTION__, __LINE__);
@@ -100,7 +88,7 @@ static NSString *LBDONE = @"DONE";
 
 - (void)endIDLE {
     if (currentCommand == LBIDLE) {
-        [self sendCommand:LBDONE withArguments:nil];
+        [self sendCommand:LBDONE withArgument:nil];
     }
 }
 
@@ -108,62 +96,62 @@ static NSString *LBDONE = @"DONE";
     
     responseBlock = [block copy];
     
-    [self sendCommand:LBLOGIN withArguments:[NSString stringWithFormat:@"%@ %@", username, password]];
+    [self sendCommand:LBLOGIN withArgument:[NSString stringWithFormat:@"%@ %@", username, password]];
 }
 
 - (void)selectMailbox:(NSString*)mailbox block:(LBResponseBlock)block {
     
     responseBlock = [block copy];
     
-    [self sendCommand:LBSELECT withArguments:mailbox];
+    [self sendCommand:LBSELECT withArgument:mailbox];
 }
 
 - (void)listMessagesWithBlock:(LBResponseBlock)block {
     
     responseBlock = [block copy];
     
-    [self sendCommand:LBSEARCH withArguments:@"ALL"];
+    [self sendCommand:LBSEARCH withArgument:@"ALL"];
 }
 
 - (void)listSubscribedMailboxesWithBock:(LBResponseBlock)block {
     
     responseBlock = [block copy];
     
-    [self sendCommand:LBLSUB withArguments:@"\"\" \"*\""];
+    [self sendCommand:LBLSUB withArgument:@"\"\" \"*\""];
 }
 
 - (void)idleWithBlock:(LBResponseBlock)block {
     
     responseBlock = [block copy];
     
-    [self sendCommand:LBIDLE withArguments:nil];
+    [self sendCommand:LBIDLE withArgument:nil];
 }
 
 - (void)logoutWithBlock:(LBResponseBlock)block {
     responseBlock = [block copy];
-    [self sendCommand:LBLOGOUT withArguments:nil];
+    [self sendCommand:LBLOGOUT withArgument:nil];
 }
 
 
 - (void)createMailbox:(NSString*)mailboxName withBlock:(LBResponseBlock)block {
     responseBlock = [block copy];
-    [self sendCommand:LBCREATE withArguments:mailboxName];
+    [self sendCommand:LBCREATE withArgument:mailboxName];
 }
 
 - (void)deleteMailbox:(NSString*)mailboxName withBlock:(LBResponseBlock)block {
     responseBlock = [block copy];
-    [self sendCommand:LBDELETE withArguments:mailboxName];
+    [self sendCommand:LBDELETE withArgument:mailboxName];
 }
 
 
 - (void)subscribeToMailbox:(NSString*)mailboxName withBlock:(LBResponseBlock)block {
     responseBlock = [block copy];
-    [self sendCommand:LBSUBSCRIBE withArguments:mailboxName];
+    [self sendCommand:LBSUBSCRIBE withArgument:mailboxName];
 }
 
 - (void)unsubscribeToMailbox:(NSString*)mailboxName withBlock:(LBResponseBlock)block {
     responseBlock = [block copy];
-    [self sendCommand:LBUNSUBSCRIBE withArguments:mailboxName];
+    [self sendCommand:LBUNSUBSCRIBE withArgument:mailboxName];
 }
 
 - (void)fetchMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block; {
@@ -171,127 +159,7 @@ static NSString *LBDONE = @"DONE";
     
     NSString *format = [NSString stringWithFormat:@"%@ (RFC822)", seqIds];
     
-    [self sendCommand:LBFETCH withArguments:format];
-}
-
-- (NSString*)singleLineResponseFromData:(NSData*)data {
-    
-    // *something* + crlf
-    if ([data length] < 4) {
-        return nil; 
-    }
-    
-    const char *c = [data bytes];
-    
-    // check for completion of command.
-    if (strncmp(&(c[[data length] - 2]), CRLF, 2)) {
-        return nil;
-    }
-    
-    // er... what about this char set?
-    return [[[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSUTF8StringEncoding] autorelease];
-}
-
-- (BOOL)endOfData:(NSData*)data isEqualTo:(NSString*)string {
-    
-    if ([data length] < ([string length])) {
-        return NO; 
-    }
-    
-    const char *c = [data bytes];
-    
-    // check for completion of command.
-    if (strncmp(&(c[[data length] - [string length]]), [string UTF8String], [string length])) {
-        return NO;
-    }
-    
-    return YES;
-}
-
-- (NSString*)lastLineOfData:(NSData*)data {
-    
-    if ([data length] < 3) { // something + crlf
-        return nil; 
-    }
-    
-    NSUInteger len    = [data length];
-    char *cdata       = (char *)[data bytes];
-    NSUInteger idx    = len - 3;
-    char *pos         = &cdata[idx];
-    
-    // if it doesn't end with crlf, it's bad.
-    
-    if (!(cdata[len - 1] == '\n' && cdata[len - 2] == '\r')) {
-        return nil;
-    }
-    
-    while (idx > 0) {
-        // let's go backwards!
-        
-        if (*pos == '\n') {
-            // get rid of the encountered lf, and the ending crlf
-            NSRange r = NSMakeRange(idx + 1, len - (idx + 3));
-            NSData *subData = [data subdataWithRange:r];
-            NSString *junk = [[[NSString alloc] initWithBytes:[subData bytes] length:[subData length] encoding:NSUTF8StringEncoding] autorelease];
-            return junk;
-        }
-        
-        pos--;
-        idx--;
-    }
-    
-    return nil;
-}
-
-- (NSString*)firstLineOfData:(NSData*)data {
-    
-    if ([data length] < 3) { // something + crlf
-        return nil; 
-    }
-    
-    NSUInteger len    = [data length];
-    NSUInteger idx    = 0;
-    char *cdata       = (char *)[data bytes];
-    
-    while (idx < len) {
-        
-        if (cdata[idx] == '\r') {
-            // get rid of the encountered lf, and the ending crlf
-            NSRange r = NSMakeRange(0, idx);
-            NSData *subData = [data subdataWithRange:r];
-            NSString *junk = [[[NSString alloc] initWithBytes:[subData bytes] length:[subData length] encoding:NSUTF8StringEncoding] autorelease];
-            return junk;
-        }
-        
-        idx++;
-    }
-    
-    return nil;
-}
-
-
-
-
-
-- (void) callBlockWithError:(NSError*)err {
-    
-    if (responseBlock) {
-        
-        void (^local)(NSError *) = responseBlock;
-        
-        // get rid of it, because we might be reassigning it in the very block we're calling
-        responseBlock = nil;
-        
-        dispatch_async(dispatch_get_main_queue(),^ {
-            local(err);
-            [local release];
-        });
-        
-    }
-}
-
-- (NSString*) responseAsString {
-    return [[[NSString alloc] initWithBytes:[self.responseBytes bytes] length:[self.responseBytes length] encoding:NSUTF8StringEncoding] autorelease];
+    [self sendCommand:LBFETCH withArgument:format];
 }
 
 - (NSDictionary *)parseLSUBLine:(NSString*)line {
@@ -676,11 +544,6 @@ static NSString *LBDONE = @"DONE";
 }
 
 
-
-
-- (BOOL)isConnected {
-    return [self status] == kTCP_Open;
-}
 
 
 
