@@ -32,6 +32,15 @@ static NSString *LBSMTPHello = @"helo";
     return self;
 }
 
+- (void)helloWithBlock:(LBResponseBlock)block {
+    
+    responseBlock = [block copy];
+    
+    NSString *serverName = [[self address] hostname];
+    
+    [self sendCommand:LBSMTPHello withArgument:serverName];
+}
+
 - (void)canRead:(LBTCPReader*)reader {
     debug(@"%s:%d", __FUNCTION__, __LINE__);
     
@@ -67,9 +76,23 @@ static NSString *LBSMTPHello = @"helo";
         
         [self callBlockWithError:err];
     }
-    
-    
-    
+    if (currentCommand == LBSMTPHello) {
+        
+        NSString *res = [self firstLineOfData:[self responseBytes]];
+        if (!res) {
+            // haven't gotten our crlf yet.
+            return;
+        }
+        
+        NSError *err = nil;
+        
+        if (![res hasPrefix:@"250 "]) {
+            NSString *junk  = [NSString stringWithFormat:@"Could not connect: '%@'", [self responseAsString]];
+            LBQuickError(&err, LBCONNECTING, 0, junk);
+        }
+        
+        [self callBlockWithError:err];
+    }
 }
 
 
@@ -86,8 +109,18 @@ static NSString *LBSMTPHello = @"helo";
             NSLog(@"error: %@", error);
         }
         else {
+            debug(@"hurray! Time to hello.");
             
-            debug(@"hurray!");
+            [self helloWithBlock:^(NSError *error) {
+                if (error) {
+                    // FIXME: show a warning or something?
+                    NSLog(@"error: %@", error);
+                }
+                else {
+                    debug(@"hurra with hello!");
+                }
+                
+            }];
         }
     }];
 }

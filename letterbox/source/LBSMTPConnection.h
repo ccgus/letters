@@ -11,4 +11,6 @@
 - (void) test;
 - (id)initWithAccount:(LBAccount*)account;
 
+- (void)helloWithBlock:(LBResponseBlock)block;
+
 @end
