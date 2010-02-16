@@ -531,8 +531,6 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     
     NSString *databasePath = [[accountCacheURL URLByAppendingPathComponent:@"letterscache.db"] path];
     
-    debug(@"databasePath: %@", databasePath);
-    
     cacheDB = [[FMDatabase databaseWithPath:databasePath] retain];
     
     if (![cacheDB open]) {

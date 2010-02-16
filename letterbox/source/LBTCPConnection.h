@@ -39,14 +39,17 @@ typedef void (^LBResponseBlock)(NSError *);
 
 - (NSString*) responseAsString;
 
-- (LBTCPReader*)treader;
-
 // for subclassers
-- (void) callBlockWithError:(NSError*)err;
+- (void)callBlockWithError:(NSError*)err;
+- (void)callBlockWithError:(NSError*)err killReadBlock:(BOOL)killReadBlock;
 - (NSString*)firstLineOfData:(NSData*)data;
 - (NSString*)lastLineOfData:(NSData*)data;
 - (BOOL)endOfData:(NSData*)data isEqualTo:(NSString*)string;
 - (NSString*)singleLineResponseFromData:(NSData*)data;
+
 - (void)sendCommand:(NSString*)command withArgument:(NSString*)arg;
+- (void)sendCommand:(NSString*)command withArgument:(NSString*)arg readBlock:(void (^)(LBTCPReader *))block;
+
+- (void)sendData:(NSData*)data readBlock:(void (^)(LBTCPReader *))block;
 
 @end

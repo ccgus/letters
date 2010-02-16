@@ -13,10 +13,7 @@
 
 - (void) _canRead {
     
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
-    
     if (canReadBlock) {
-        debug(@"calling the block");
         canReadBlock(self);
     }
     else {

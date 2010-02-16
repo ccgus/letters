@@ -49,7 +49,6 @@
                                                        queue:nil
                                                   usingBlock:^(NSNotification *note)
                                                   {
-                                                      debug(@"folder list updated");
                                                       [foldersList reloadData];
                                                   }];
     

@@ -49,32 +49,14 @@ static NSString *LBDONE = @"DONE";
     return self;
 }
 
-
--(void) sendCommand:(NSString*)command withArgument:(NSString*)arg {
-    
-    bytesRead           = 0;
-    self.responseBytes  = [NSMutableData data];
-    currentCommand      = command;
-    
+- (NSString*)modifyCommandString:(NSString*)commandString {
     commandCount++;
     
-    NSString *stringToSend = nil;
+    commandString = [NSString stringWithFormat:@"%d %@", commandCount, commandString];
     
-    if (arg) {
-        stringToSend = [NSString stringWithFormat:@"%d %@ %@\r\n", commandCount, command, arg];
-    }
-    else {
-        stringToSend = [NSString stringWithFormat:@"%d %@\r\n", commandCount, command];
-    }
-    
-    
-    if (self.debugOutput) {
-        NSLog(@"< %@", stringToSend);
-    }
-    
-    [[self writer] writeData:[stringToSend dataUsingEncoding:NSUTF8StringEncoding]];
-    
+    return commandString;
 }
+
 
 - (void)endIDLE {
     if (currentCommand == LBIDLE) {

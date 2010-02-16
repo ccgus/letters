@@ -351,7 +351,6 @@ static NSMutableArray *sAllConnections;
 
 - (BOOL) _streamPeerCertAvailable: (TCPStream*)stream
 {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
     BOOL allow = YES;
     if( ! _checkedPeerCert ) {
         @try{

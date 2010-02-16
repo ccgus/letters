@@ -4,7 +4,12 @@
 #import "IPAddress.h"
 #import "LetterBoxUtilities.h"
 
-static NSString *LBSMTPHello = @"helo";
+static NSString *LBSMTPHELLO    = @"HELO";
+static NSString *LBSMTPMAILFROM = @"MAIL FROM:";
+static NSString *LBSMTPRCPTTO   = @"RCPT TO:";
+static NSString *LBSMTPDATA     = @"DATA";
+
+#define MAX_BYTES_READ 2048
 
 @implementation LBSMTPConnection
 
@@ -32,52 +37,27 @@ static NSString *LBSMTPHello = @"helo";
     return self;
 }
 
-- (void)xconnectUsingBlock:(LBResponseBlock)block {
-    
-    /*
-    [[self treader] setCanReadBlock:^(LBTCPReader *arg1) {
-        
-        debug(@"woot got data!");
-        
-    }];
-    */
-    debug(@"calling super.");
-    
-    [super connectUsingBlock:block];
-    
-    
-    //get the reader class, and assign a "can read" block on it, then just dot hat here whatever.
-    
-}
-
-- (void)helloWithBlock:(LBResponseBlock)block {
-    
-    responseBlock = [block copy];
-    
-    NSString *serverName = [[self address] hostname];
-    
-    [self sendCommand:LBSMTPHello withArgument:serverName];
-}
-
-- (void)canRead:(LBTCPReader*)reader {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
-    
-    // what's a good number here?
-#define MAX_BYTES_READ 2048
+- (void)appendDataFromReader:(LBTCPReader*)reader {
     
     NSMutableData *data         = [NSMutableData dataWithLength:MAX_BYTES_READ];
     NSInteger localBytesRead    = [reader read:[data mutableBytes] maxLength:MAX_BYTES_READ];
     
-    [self.responseBytes appendBytes:[data mutableBytes] length:localBytesRead];
+    [[self responseBytes] appendBytes:[data mutableBytes] length:localBytesRead];
     
     bytesRead += localBytesRead;
+    
     
     if (self.debugOutput) {
         NSString *junk = [[[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSUTF8StringEncoding] autorelease];
         NSLog(@"> %@", junk);
     }
+}
+
+- (void)connectUsingBlock:(LBResponseBlock)block {
     
-    if (currentCommand == LBCONNECTING) {
+    [(LBTCPReader*)[self reader] setCanReadBlock:^(LBTCPReader *reader) {
+        
+        [self appendDataFromReader:reader];
         
         NSString *res = [self firstLineOfData:[self responseBytes]];
         if (!res) {
@@ -92,24 +72,129 @@ static NSString *LBSMTPHello = @"helo";
             LBQuickError(&err, LBCONNECTING, 0, junk);
         }
         
-        [self callBlockWithError:err];
-    }
-    if (currentCommand == LBSMTPHello) {
+        if (err) {
+            [self callBlockWithError:err killReadBlock:YES];
+            return;
+        }
+        
+        NSString *serverName = [[self address] hostname];
+        
+        [self sendCommand:LBSMTPHELLO withArgument:serverName readBlock:^(LBTCPReader *arg1) {
+            
+            [self appendDataFromReader:reader];
+            
+            NSString *res = [self firstLineOfData:[self responseBytes]];
+            
+            // check to see if we have our line, with a crlf
+            if (!res) {
+                return;
+            }
+            
+            NSError *err = nil;
+            
+            if (![res hasPrefix:@"250 "]) {
+                NSString *junk  = [NSString stringWithFormat:@"Could not connect: '%@'", [self responseAsString]];
+                LBQuickError(&err, LBSMTPHELLO, 0, junk);
+            }
+            
+            [self callBlockWithError:err killReadBlock:YES];
+        }];
+    }];
+    
+    [super connectUsingBlock:block];
+}
+
+- (void)sendMessage:(NSString*)message to:(NSString*)to from:(NSString*)from block:(LBResponseBlock)block {
+    
+    responseBlock = [block copy];
+    
+    to   = [NSString stringWithFormat:@"%@<%@>", LBSMTPRCPTTO, to];
+    from = [NSString stringWithFormat:@"%@<%@>", LBSMTPMAILFROM, from];
+    
+    [self sendCommand:from withArgument:nil readBlock:^(LBTCPReader *reader) {
+        
+        [self appendDataFromReader:reader];
         
         NSString *res = [self firstLineOfData:[self responseBytes]];
         if (!res) {
-            // haven't gotten our crlf yet.
             return;
         }
         
         NSError *err = nil;
-        
         if (![res hasPrefix:@"250 "]) {
-            NSString *junk  = [NSString stringWithFormat:@"Could not connect: '%@'", [self responseAsString]];
-            LBQuickError(&err, LBCONNECTING, 0, junk);
+            NSString *junk  = [NSString stringWithFormat:@"Could not email: '%@'", [self responseAsString]];
+            LBQuickError(&err, LBSMTPMAILFROM, 0, junk);
+            [self callBlockWithError:err killReadBlock:YES];
+            return;
         }
         
-        [self callBlockWithError:err];
+        [self sendCommand:to withArgument:nil readBlock:^(LBTCPReader *reader) {
+            
+            [self appendDataFromReader:reader];
+            
+            NSString *res = [self firstLineOfData:[self responseBytes]];
+            if (!res) {
+                return;
+            }
+            
+            NSError *err = nil;
+            if (![res hasPrefix:@"250 "]) {
+                NSString *junk  = [NSString stringWithFormat:@"Could not email: '%@'", [self responseAsString]];
+                LBQuickError(&err, LBSMTPRCPTTO, 0, junk);
+                [self callBlockWithError:err killReadBlock:YES];
+                return;
+            }
+            
+            [self sendCommand:LBSMTPDATA withArgument:nil readBlock:^(LBTCPReader *reader) {
+                
+                [self appendDataFromReader:reader];
+                
+                NSString *res = [self firstLineOfData:[self responseBytes]];
+                if (!res) {
+                    return;
+                }
+                
+                NSError *err = nil;
+                if (![res hasPrefix:@"354 "]) {
+                    NSString *junk  = [NSString stringWithFormat:@"Could not set data: '%@'", [self responseAsString]];
+                    LBQuickError(&err, LBSMTPDATA, 0, junk);
+                    [self callBlockWithError:err killReadBlock:YES];
+                    return;
+                }
+                
+                NSString *fixedmessage = [message stringByAppendingString:@"\r\n.\r\n"];
+                
+                [self sendData:[fixedmessage dataUsingEncoding:NSUTF8StringEncoding] readBlock:^(LBTCPReader *reader) {
+                    [self appendDataFromReader:reader];
+                    
+                    NSString *res = [self firstLineOfData:[self responseBytes]];
+                    if (!res) {
+                        return;
+                    }
+                    
+                    NSError *err = nil;
+                    if (![res hasPrefix:@"250 "]) {
+                        NSString *junk  = [NSString stringWithFormat:@"Could not send message: '%@'", [self responseAsString]];
+                        LBQuickError(&err, LBSMTPDATA, 0, junk);
+                    }
+                    
+                    [self callBlockWithError:err killReadBlock:YES];
+                }];
+            }];
+        }];
+    }];
+}
+
+
+- (void)canRead:(LBTCPReader*)reader {
+    
+    [self appendDataFromReader:reader];
+    
+    if (currentCommand == LBCONNECTING) {
+        
+        // eek!  we no longer need this?
+        
+        
     }
 }
 
@@ -120,26 +205,23 @@ static NSString *LBSMTPHello = @"helo";
     
     [self connectUsingBlock:^(NSError *error) {
         
-        debug(@"got connected");
-        
         if (error) {
             // FIXME: show a warning or something?
             NSLog(@"error: %@", error);
+            return;
         }
-        else {
-            debug(@"hurray! Time to hello.");
+        
+        NSString *message = @"Subject: Hello Gus!\r\n\r\nHello there good sir, how are you?";
+        
+        [self sendMessage:message to:@"gus@ubuntu.localdomain" from:@"gus@ubuntu.localdomain" block:^(NSError *err) {
+            if (err) {
+                debug(@"well, crap.  Our message didn't send!");
+                debug(@"err: %@", err);
+                return;
+            }
             
-            [self helloWithBlock:^(NSError *error) {
-                if (error) {
-                    // FIXME: show a warning or something?
-                    NSLog(@"error: %@", error);
-                }
-                else {
-                    debug(@"hurra with hello!");
-                }
-                
-            }];
-        }
+            debug(@"message sent!");
+        }];
     }];
 }
 

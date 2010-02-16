@@ -32,9 +32,30 @@ NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
 -(Class) readerClass   {return [LBTCPReader class];}
 
 - (void)sendCommand:(NSString*)command withArgument:(NSString*)arg {
+    [self sendCommand:command withArgument:arg readBlock:nil];
+}
+
+- (NSString*)modifyCommandString:(NSString*)commandString {
+    return commandString;
+}
+
+- (void)sendData:(NSData*)data readBlock:(void (^)(LBTCPReader *))block {
     
     bytesRead           = 0;
     self.responseBytes  = [NSMutableData data];
+    
+    if (self.debugOutput) {
+        NSLog(@"< %@", [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
+    }
+    
+    [(LBTCPReader*)[self reader] setCanReadBlock:block];
+    
+    [[self writer] writeData:data];
+}
+
+
+- (void)sendCommand:(NSString*)command withArgument:(NSString*)arg readBlock:(void (^)(LBTCPReader *))block {
+    
     currentCommand      = command;
     
     NSString *stringToSend = nil;
@@ -46,12 +67,9 @@ NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
         stringToSend = [NSString stringWithFormat:@"%@\r\n", command];
     }
     
-    if (self.debugOutput) {
-        NSLog(@"< %@", stringToSend);
-    }
+    stringToSend = [self modifyCommandString:stringToSend];
     
-    [[self writer] writeData:[stringToSend dataUsingEncoding:NSUTF8StringEncoding]];
-    
+    [self sendData:[stringToSend dataUsingEncoding:NSUTF8StringEncoding] readBlock:block];
 }
 
 - (void)connectUsingBlock:(LBResponseBlock)block {
@@ -174,9 +192,15 @@ NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
 
 
 
+- (void)callBlockWithError:(NSError*)err {
+    [self callBlockWithError:err killReadBlock:NO];
+}
 
-
-- (void) callBlockWithError:(NSError*)err {
+- (void)callBlockWithError:(NSError*)err killReadBlock:(BOOL)killReadBlock {
+    
+    if (killReadBlock) {
+        [(LBTCPReader*)[self reader] setCanReadBlock:nil];
+    }
     
     if (responseBlock) {
         
@@ -189,11 +213,10 @@ NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
             local(err);
             [local release];
         });
-        
     }
 }
 
-- (NSString*) responseAsString {
+- (NSString*)responseAsString {
     return [[[NSString alloc] initWithBytes:[self.responseBytes bytes] length:[self.responseBytes length] encoding:NSUTF8StringEncoding] autorelease];
 }
 
@@ -252,10 +275,6 @@ NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
 - (void) cancelActivity {
     shouldCancelActivity = YES;
     [self setActivityStatusAndNotifiy:NSLocalizedString(@"Canceling…", @"Canceling…")];
-}
-
-- (LBTCPReader*)treader {
-    return (LBTCPReader*)[self reader];
 }
 
 
