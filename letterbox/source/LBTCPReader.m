@@ -13,9 +13,21 @@
 
 - (void) _canRead {
     
-    // sometimes, our connection is also LBSMTPConnection.  It just happens to implement canRead: as well.
-    [(LBTCPConnection*)_conn canRead:self];
+    debug(@"%s:%d", __FUNCTION__, __LINE__);
     
+    if (canReadBlock) {
+        debug(@"calling the block");
+        canReadBlock(self);
+    }
+    else {
+        // sometimes, our connection is also LBSMTPConnection.  It just happens to implement canRead: as well.
+        [(LBTCPConnection*)_conn canRead:self];
+    }
+}
+
+- (void) setCanReadBlock:(void (^)(LBTCPReader *))block {
+    [canReadBlock release];
+    canReadBlock = [block copy];
 }
 
 @end

@@ -32,6 +32,24 @@ static NSString *LBSMTPHello = @"helo";
     return self;
 }
 
+- (void)xconnectUsingBlock:(LBResponseBlock)block {
+    
+    /*
+    [[self treader] setCanReadBlock:^(LBTCPReader *arg1) {
+        
+        debug(@"woot got data!");
+        
+    }];
+    */
+    debug(@"calling super.");
+    
+    [super connectUsingBlock:block];
+    
+    
+    //get the reader class, and assign a "can read" block on it, then just dot hat here whatever.
+    
+}
+
 - (void)helloWithBlock:(LBResponseBlock)block {
     
     responseBlock = [block copy];
@@ -98,11 +116,11 @@ static NSString *LBSMTPHello = @"helo";
 
 - (void) test {
     
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
-    
     [self setDebugOutput:[LBPrefs boolForKey:@"debugIMAPMessages"]];
     
     [self connectUsingBlock:^(NSError *error) {
+        
+        debug(@"got connected");
         
         if (error) {
             // FIXME: show a warning or something?

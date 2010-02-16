@@ -9,8 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "LBActivity.h"
 #import "TCPConnection.h"
-
-@class LBTCPReader;
+#import "LBTCPReader.h"
 
 extern NSString *LBCONNECTING;
 
@@ -39,6 +38,8 @@ typedef void (^LBResponseBlock)(NSError *);
 - (BOOL)isConnected;
 
 - (NSString*) responseAsString;
+
+- (LBTCPReader*)treader;
 
 // for subclassers
 - (void) callBlockWithError:(NSError*)err;

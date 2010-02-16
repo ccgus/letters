@@ -10,7 +10,9 @@
 #import "TCPStream.h"
 
 @interface LBTCPReader : TCPReader {
-
+    void (^canReadBlock)(LBTCPReader *);
 }
+
+- (void) setCanReadBlock:(void (^)(LBTCPReader *))block;
 
 @end

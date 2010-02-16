@@ -72,7 +72,7 @@ NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
 }
 
 - (BOOL) connection: (TCPConnection*)connection authorizeSSLPeer: (SecCertificateRef)peerCert {
-    NSLog(@"** %@ authorizeSSLPeer: %@",self, [TCPEndpoint describeCert:peerCert]);
+    //NSLog(@"** %@ authorizeSSLPeer: %@",self, [TCPEndpoint describeCert:peerCert]);
     return peerCert != nil;
 }
 
@@ -200,13 +200,12 @@ NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
 
 - (void)canRead:(LBTCPReader*)reader {
     // this is meant to be subclassed.
+    debug(@"%s:%d", __FUNCTION__, __LINE__);
 }
 
 - (BOOL)isConnected {
     return [self status] == kTCP_Open;
 }
-
-
 
 - (int) activityType {
     return 0;
@@ -255,6 +254,9 @@ NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
     [self setActivityStatusAndNotifiy:NSLocalizedString(@"Canceling…", @"Canceling…")];
 }
 
+- (LBTCPReader*)treader {
+    return (LBTCPReader*)[self reader];
+}
 
 
 @end

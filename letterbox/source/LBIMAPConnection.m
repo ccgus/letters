@@ -76,16 +76,6 @@ static NSString *LBDONE = @"DONE";
     
 }
 
-
-- (void) connectionDidOpen: (TCPConnection*)connection {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
-}
-
-- (BOOL) connection: (TCPConnection*)connection authorizeSSLPeer: (SecCertificateRef)peerCert {
-    NSLog(@"** %@ authorizeSSLPeer: %@",self, [TCPEndpoint describeCert:peerCert]);
-    return peerCert != nil;
-}
-
 - (void)endIDLE {
     if (currentCommand == LBIDLE) {
         [self sendCommand:LBDONE withArgument:nil];

@@ -4,7 +4,7 @@
 
 @class LBAccount;
 
-@interface LBSMTPConnection : LBTCPConnection <TCPConnectionDelegate, LBActivity> {
+@interface LBSMTPConnection : LBTCPConnection  {
 
 }
 
