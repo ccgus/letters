@@ -30,7 +30,6 @@ typedef void (^LBResponseBlock)(NSError *);
 @property (assign) BOOL debugOutput;
 @property (retain) NSMutableData *responseBytes;
 
-- (void)canRead:(LBTCPReader*)reader;
 - (void)setActivityStatusAndNotifiy:(NSString *)value;
 
 - (void)connectUsingBlock:(LBResponseBlock)block;
@@ -51,5 +50,7 @@ typedef void (^LBResponseBlock)(NSError *);
 - (void)sendCommand:(NSString*)command withArgument:(NSString*)arg readBlock:(void (^)(LBTCPReader *))block;
 
 - (void)sendData:(NSData*)data readBlock:(void (^)(LBTCPReader *))block;
+
+- (void)appendDataFromReader:(LBTCPReader*)reader;
 
 @end

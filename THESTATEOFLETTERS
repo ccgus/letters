@@ -1,3 +1,16 @@
+Feb 17, 2010
+
+Hello.  I'm back from vacation.  Yes, it was fun, thanks!
+
+I've added a new class "LBTCPConnection", which inherits from MY's TCPConnection, which is then subclassed by IMAPConnection, and a new class named SMTPConnection.  You can guess what it does.
+
+I've also reworked how the reading of data is done.  Previously, when data was available the connection class was sent a canRead: message from the reader class.  No longer- now you setup a block for the reader to call back, which keeps things a bit more organized in the connection classes, since you no longer need a big old' list of if else blocks to figure out what to do.
+
+Fun times.
+
+-gus
+
+
 Feb 3, 2010 AGAIN
 
 Ok, we're doing the SSL thing now, plus a gmail fix for listing mailboxes.

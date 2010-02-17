@@ -72,6 +72,23 @@ NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
     [self sendData:[stringToSend dataUsingEncoding:NSUTF8StringEncoding] readBlock:block];
 }
 
+- (void)appendDataFromReader:(LBTCPReader*)reader {
+    #define MAX_BYTES_READ 2048
+    
+    NSMutableData *data         = [NSMutableData dataWithLength:MAX_BYTES_READ];
+    NSInteger localBytesRead    = [reader read:[data mutableBytes] maxLength:MAX_BYTES_READ];
+    
+    [[self responseBytes] appendBytes:[data mutableBytes] length:localBytesRead];
+    
+    bytesRead += localBytesRead;
+    
+    
+    if (self.debugOutput) {
+        NSString *junk = [[[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSUTF8StringEncoding] autorelease];
+        NSLog(@"> %@", junk);
+    }
+}
+
 - (void)connectUsingBlock:(LBResponseBlock)block {
     
     responseBlock       = [block copy];
@@ -220,11 +237,6 @@ NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
     return [[[NSString alloc] initWithBytes:[self.responseBytes bytes] length:[self.responseBytes length] encoding:NSUTF8StringEncoding] autorelease];
 }
 
-
-- (void)canRead:(LBTCPReader*)reader {
-    // this is meant to be subclassed.
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
-}
 
 - (BOOL)isConnected {
     return [self status] == kTCP_Open;

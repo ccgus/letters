@@ -9,8 +9,6 @@ static NSString *LBSMTPMAILFROM = @"MAIL FROM:";
 static NSString *LBSMTPRCPTTO   = @"RCPT TO:";
 static NSString *LBSMTPDATA     = @"DATA";
 
-#define MAX_BYTES_READ 2048
-
 @implementation LBSMTPConnection
 
 
@@ -42,21 +40,7 @@ static NSString *LBSMTPDATA     = @"DATA";
     return self;
 }
 
-- (void)appendDataFromReader:(LBTCPReader*)reader {
-    
-    NSMutableData *data         = [NSMutableData dataWithLength:MAX_BYTES_READ];
-    NSInteger localBytesRead    = [reader read:[data mutableBytes] maxLength:MAX_BYTES_READ];
-    
-    [[self responseBytes] appendBytes:[data mutableBytes] length:localBytesRead];
-    
-    bytesRead += localBytesRead;
-    
-    
-    if (self.debugOutput) {
-        NSString *junk = [[[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSUTF8StringEncoding] autorelease];
-        NSLog(@"> %@", junk);
-    }
-}
+
 
 - (void)connectUsingBlock:(LBResponseBlock)block {
     
@@ -188,19 +172,6 @@ static NSString *LBSMTPDATA     = @"DATA";
             }];
         }];
     }];
-}
-
-
-- (void)canRead:(LBTCPReader*)reader {
-    
-    [self appendDataFromReader:reader];
-    
-    if (currentCommand == LBCONNECTING) {
-        
-        // eek!  we no longer need this?
-        
-        
-    }
 }
 
 

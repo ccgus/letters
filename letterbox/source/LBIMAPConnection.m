@@ -68,28 +68,106 @@ static NSString *LBDONE = @"DONE";
     
     responseBlock = [block copy];
     
-    [self sendCommand:LBLOGIN withArgument:[NSString stringWithFormat:@"%@ %@", username, password]];
+    NSString *loginArgument = [NSString stringWithFormat:@"%@ %@", username, password];
+    
+    [self sendCommand:LBLOGIN withArgument:loginArgument readBlock:^(LBTCPReader *reader) {
+        
+        [self appendDataFromReader:reader];
+        
+        NSString *res = [self singleLineResponseFromData:[self responseBytes]];
+        
+        if (!res) {
+            debug(@"slow auth?");
+            return;
+        }
+        
+        NSString *expected = [NSString stringWithFormat:@"%d OK LOGIN", commandCount];
+        
+        BOOL worked = [res hasPrefix:expected];
+        
+        NSError *err = nil;
+        
+        if (!worked) {
+            LBQuickError(&err, LBLOGIN, 0, @"Could not login");
+        }
+        
+        [self callBlockWithError:err killReadBlock:YES];
+    }];
 }
 
 - (void)selectMailbox:(NSString*)mailbox block:(LBResponseBlock)block {
     
     responseBlock = [block copy];
     
-    [self sendCommand:LBSELECT withArgument:mailbox];
+    [self sendCommand:LBSELECT withArgument:mailbox readBlock:^(LBTCPReader *reader) {
+        
+        [self appendDataFromReader:reader];
+        
+        // the "[READ-WRITE]" bit is a "should" in the RFC.  Do we have any examples otherwise?
+        NSString *expected = [NSString stringWithFormat:@"%d OK [READ-WRITE] Ok%s", commandCount, CRLF];
+        NSString *expected2 = [NSString stringWithFormat:@"%d OK %s", commandCount, CRLF];
+        
+        NSError *err = nil;
+        
+        if (!([self endOfData:[self responseBytes] isEqualTo:expected] || [self endOfData:[self responseBytes] isEqualTo:expected2])) {
+            NSString *junk = [NSString stringWithFormat:@"Could not Select mailbox: %@", [self responseAsString]];
+            LBQuickError(&err, LBSELECT, 0, junk);
+        }
+        
+        [self callBlockWithError:err killReadBlock:YES];
+        
+    }];
 }
 
 - (void)listMessagesWithBlock:(LBResponseBlock)block {
     
     responseBlock = [block copy];
     
-    [self sendCommand:LBSEARCH withArgument:@"ALL"];
+    [self sendCommand:LBSEARCH withArgument:@"ALL" readBlock:^(LBTCPReader *reader) {
+        
+        [self appendDataFromReader:reader];
+        
+        NSString *expected      = [NSString stringWithFormat:@"%d OK", commandCount];
+        NSString *expectedErr   = [NSString stringWithFormat:@"%d NO", commandCount];
+        NSString *expectedBad   = [NSString stringWithFormat:@"%d BAD", commandCount];
+        NSString *lastLine      = [self lastLineOfData:[self responseBytes]];
+        
+        if ([lastLine hasPrefix:expected]) {
+            
+            // FIXME: check for correctness
+            [self callBlockWithError:nil killReadBlock:YES];
+        }
+        else if ([lastLine hasPrefix:expectedErr] || [lastLine hasPrefix:expectedBad]) {
+            
+            NSError *err    = nil;
+            NSString *junk  = [NSString stringWithFormat:@"Could not search mailbox: %@", [self responseAsString]];
+            
+            LBQuickError(&err, LBSEARCH, 0, junk);
+            
+            [self callBlockWithError:err killReadBlock:YES];
+        }
+    }];
 }
 
 - (void)listSubscribedMailboxesWithBock:(LBResponseBlock)block {
     
     responseBlock = [block copy];
     
-    [self sendCommand:LBLSUB withArgument:@"\"\" \"*\""];
+    [self sendCommand:LBLSUB withArgument:@"\"\" \"*\"" readBlock:^(LBTCPReader *reader) {
+        
+        [self appendDataFromReader:reader];
+        
+        NSString *expected = [NSString stringWithFormat:@"%d OK", commandCount];
+        
+        NSString *lastLine = [self lastLineOfData:[self responseBytes]];
+        
+        if ([lastLine hasPrefix:expected]) {
+            debug(@"yay?");
+            // FIXME: check for correctness
+            [self callBlockWithError:nil killReadBlock:YES];
+        }
+        
+    }];
 }
 
 - (void)idleWithBlock:(LBResponseBlock)block {
@@ -99,39 +177,175 @@ static NSString *LBDONE = @"DONE";
     [self sendCommand:LBIDLE withArgument:nil];
 }
 
-- (void)logoutWithBlock:(LBResponseBlock)block {
-    responseBlock = [block copy];
-    [self sendCommand:LBLOGOUT withArgument:nil];
+
+- (void)connectUsingBlock:(LBResponseBlock)block {
+    
+    [(LBTCPReader*)[self reader] setCanReadBlock:^(LBTCPReader *reader) {
+        
+        [self appendDataFromReader:reader];
+        
+        NSString *res = [self singleLineResponseFromData:[self responseBytes]];
+        
+        if (!res) {
+            debug(@"slow connection?");
+            return;
+        }
+        
+        debug(@"res: %@", res);
+        
+        [self callBlockWithError:nil killReadBlock:YES];
+        
+    }];
+    
+    [super connectUsingBlock:block];
 }
 
 
-- (void)createMailbox:(NSString*)mailboxName withBlock:(LBResponseBlock)block {
+- (void)logoutWithBlock:(LBResponseBlock)block {
+    
     responseBlock = [block copy];
-    [self sendCommand:LBCREATE withArgument:mailboxName];
+    
+    [self sendCommand:LBLOGOUT withArgument:nil readBlock:^(LBTCPReader *reader) {
+        
+        [self appendDataFromReader:reader];
+        
+        NSString *lastLine      = [self lastLineOfData:[self responseBytes]];
+        NSString *expectedGood  = [NSString stringWithFormat:@"%d OK ", commandCount, CRLF];
+        NSString *expectedBad   = [NSString stringWithFormat:@"%d BAD ", commandCount, CRLF];
+        NSString *expectedErr   = [NSString stringWithFormat:@"%d NO ", commandCount, CRLF];
+        
+        if (!([lastLine hasPrefix:expectedGood] || [lastLine hasPrefix:expectedBad] || [lastLine hasPrefix:expectedErr])) {
+            return; // we're not done reading yet.  MAYBE
+        }
+        
+        BOOL worked = [lastLine hasPrefix:expectedGood];
+        
+        NSError *err = nil;
+        
+        if (!worked) {
+            
+            NSString *junk = [NSString stringWithFormat:@"Could not Logout: %@", [self responseAsString]];
+            LBQuickError(&err, LBLOGOUT, 0, junk);
+        }
+        
+        [self callBlockWithError:err killReadBlock:YES];
+    }];
+}
+
+- (void) simpleCommand:(NSString*)command withArgument:(NSString*)arg block:(LBResponseBlock)block {
+    
+    responseBlock = [block copy];
+    
+    [self sendCommand:command withArgument:arg readBlock:^(LBTCPReader *reader) {
+        
+        [self appendDataFromReader:reader];
+        
+        NSString *res = [self singleLineResponseFromData:[self responseBytes]];
+        
+        if (!res) {
+            return;
+        }
+        
+        NSString *expected = [NSString stringWithFormat:@"%d OK ", commandCount];
+        
+        BOOL worked = [res hasPrefix:expected];
+        
+        NSError *err = nil;
+        
+        if (!worked) {
+            // FIXME: pick up on the name of the mailbox here.
+            NSString *junk = [NSString stringWithFormat:@"Error for %@: '%@'", currentCommand, expected];
+            LBQuickError(&err, command, 0, junk);
+        }
+        
+        [self callBlockWithError:err killReadBlock:YES];
+    }];
+    
+}
+
+- (void)createMailbox:(NSString*)mailboxName withBlock:(LBResponseBlock)block {
+    [self simpleCommand:LBCREATE withArgument:mailboxName block:block];
 }
 
 - (void)deleteMailbox:(NSString*)mailboxName withBlock:(LBResponseBlock)block {
-    responseBlock = [block copy];
-    [self sendCommand:LBDELETE withArgument:mailboxName];
+    [self simpleCommand:LBDELETE withArgument:mailboxName block:block];
 }
 
 
 - (void)subscribeToMailbox:(NSString*)mailboxName withBlock:(LBResponseBlock)block {
-    responseBlock = [block copy];
-    [self sendCommand:LBSUBSCRIBE withArgument:mailboxName];
+    [self simpleCommand:LBSUBSCRIBE withArgument:mailboxName block:block];
 }
 
 - (void)unsubscribeToMailbox:(NSString*)mailboxName withBlock:(LBResponseBlock)block {
-    responseBlock = [block copy];
-    [self sendCommand:LBUNSUBSCRIBE withArgument:mailboxName];
+    [self simpleCommand:LBUNSUBSCRIBE withArgument:mailboxName block:block];
 }
 
-- (void)fetchMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block; {
+- (void)fetchMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block {
     responseBlock = [block copy];
     
     NSString *format = [NSString stringWithFormat:@"%@ (RFC822)", seqIds];
     
-    [self sendCommand:LBFETCH withArgument:format];
+    [self sendCommand:LBFETCH withArgument:format  readBlock:^(LBTCPReader *reader) {
+        
+        [self appendDataFromReader:reader];
+        
+        NSString *firstLine = [self firstLineOfData:[self responseBytes]];
+        
+        if (firstLine) {
+            
+            // * 1 FETCH (RFC822 {2668}'
+            
+            // FIXME: this happens sometimes, and we throw an assert in that case:
+            // * 882 FETCH ()
+            
+            // FIXME: need to be a bit more precise here.
+            
+            NSRange startBracket = [firstLine rangeOfString:@"{"];
+            NSRange endBracket   = [firstLine rangeOfString:@"}"];
+            
+            if (startBracket.location == NSNotFound || endBracket.location == NSNotFound) {
+                debug(@"SOMETHING BAD IS HAPPENING");
+                assert(false);
+            }
+            
+            assert(NSMaxRange(startBracket) < endBracket.location);
+            
+            NSString *len = [firstLine substringWithRange:NSMakeRange(NSMaxRange(startBracket), endBracket.location - NSMaxRange(startBracket))];
+            
+            currentFetchingMessageSize      = [len integerValue];
+            
+            currentFetchingMessageHeader    = [firstLine retain];
+            
+            // do we have our header, message, crlf, ), crlf, and an OK FETCH + something + CRLF?
+            
+            // yes, endMessageLength isn't accurate, but it just needs to be at least this.
+            NSInteger endMessageLength = [@"\r\n)\r\n1 OK FETCH\r\n" length];
+            NSInteger atLeastLength    = [currentFetchingMessageHeader length] + currentFetchingMessageSize + endMessageLength;
+            
+            if ([[self responseBytes] length] > atLeastLength) {
+                
+                NSString *lastLine      = [self lastLineOfData:[self responseBytes]];
+                NSString *expectedGood  = [NSString stringWithFormat:@"%d OK FETCH", commandCount, CRLF];
+                //NSString *expectedNo    = [NSString stringWithFormat:@"%d NO", commandCount, CRLF];
+                //NSString *expectedBad   = [NSString stringWithFormat:@"%d BAD", commandCount, CRLF];
+                
+                NSError *err = nil;
+                
+                if ([lastLine hasPrefix:expectedGood]) {
+                    
+                    [self callBlockWithError:err killReadBlock:YES];
+                }
+                
+            }
+            
+            // 10 OK FETCH completed.
+            
+            
+            // * 1 FETCH (RFC822 {2668} crlf + 2668 bytes of data + crlf + ) + crlf + 10 OK FETCH completed.
+            
+        }
+    }];
+    
 }
 
 - (NSDictionary *)parseLSUBLine:(NSString*)line {
@@ -281,7 +495,7 @@ static NSString *LBDONE = @"DONE";
     
     list = [list substringFromIndex:9];
     
-    NSString *lastLine = [self lastLineOfData:self.responseBytes];
+    NSString *lastLine = [self lastLineOfData:[self responseBytes]];
     
     // now, let's cut that last bit out.
     // the -4 is for the 2 crlf's in there.
@@ -300,230 +514,15 @@ static NSString *LBDONE = @"DONE";
     // 1486
     NSInteger headerLen = [currentFetchingMessageHeader length] + 2; // + 2 for crlf.
     
-    if ([self.responseBytes length] < (headerLen + currentFetchingMessageSize)) {
+    if ([[self responseBytes] length] < (headerLen + currentFetchingMessageSize)) {
         NSLog(@"There isn't enough data for the last message.  Are you calling too soon?");
         return nil;
     }
     
-    NSData *data = [self.responseBytes subdataWithRange:NSMakeRange(headerLen, currentFetchingMessageSize)];
+    NSData *data = [[self responseBytes] subdataWithRange:NSMakeRange(headerLen, currentFetchingMessageSize)];
     
     return data;
 }
-
-- (void)canRead:(LBTCPReader*)reader {
-    
-    // what's a good number here?
-    #define MAX_BYTES_READ 2048
-    
-    NSMutableData *data         = [NSMutableData dataWithLength:MAX_BYTES_READ];
-    NSInteger localBytesRead    = [reader read:[data mutableBytes] maxLength:MAX_BYTES_READ];
-    
-    [self.responseBytes appendBytes:[data mutableBytes] length:localBytesRead];
-    
-    bytesRead += localBytesRead;
-    
-    if (self.debugOutput) {
-        NSString *junk = [[[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSUTF8StringEncoding] autorelease];
-        NSLog(@"> %@", junk);
-    }
-    
-    if (currentCommand == LBCONNECTING) {
-        
-        NSString *res = [self singleLineResponseFromData:self.responseBytes];
-        
-        if (!res) {
-            debug(@"slow connection?");
-            return;
-        }
-        
-        [self callBlockWithError:nil];
-        
-    }
-    else if (currentCommand == LBLOGIN) {
-        
-        NSString *res = [self singleLineResponseFromData:self.responseBytes];
-        
-        if (!res) {
-            debug(@"slow auth?");
-            return;
-        }
-        
-        NSString *expected = [NSString stringWithFormat:@"%d OK LOGIN", commandCount];
-        
-        BOOL worked = [res hasPrefix:expected];
-        
-        NSError *err = nil;
-        
-        if (!worked) {
-            LBQuickError(&err, LBLOGIN, 0, @"Could not login");
-        }
-        
-        [self callBlockWithError:err];
-    }
-    else if (currentCommand == LBCREATE || currentCommand == LBDELETE || currentCommand == LBSUBSCRIBE || currentCommand == LBUNSUBSCRIBE) {
-        
-        NSString *res = [self singleLineResponseFromData:self.responseBytes];
-        
-        if (!res) {
-            return;
-        }
-        
-        NSString *expected = [NSString stringWithFormat:@"%d OK ", commandCount];
-        
-        BOOL worked = [res hasPrefix:expected];
-        
-        NSError *err = nil;
-        
-        if (!worked) {
-            // FIXME: pick up on the name of the mailbox here.
-            NSString *junk = [NSString stringWithFormat:@"Error for %@: '%@'", currentCommand, expected];
-            LBQuickError(&err, LBLOGIN, 0, junk);
-        }
-        
-        [self callBlockWithError:err];
-    }
-    else if (currentCommand == LBLSUB) {
-        
-        NSString *expected = [NSString stringWithFormat:@"%d OK", commandCount];
-        
-        NSString *lastLine = [self lastLineOfData:self.responseBytes];
-        
-        if ([lastLine hasPrefix:expected]) {
-            debug(@"yay?");
-            // FIXME: check for correctness
-            [self callBlockWithError:nil];
-        }
-    }
-    else if (currentCommand == LBSEARCH) {
-        
-        NSString *expected      = [NSString stringWithFormat:@"%d OK", commandCount];
-        NSString *expectedErr   = [NSString stringWithFormat:@"%d NO", commandCount];
-        NSString *expectedBad   = [NSString stringWithFormat:@"%d BAD", commandCount];
-        NSString *lastLine      = [self lastLineOfData:self.responseBytes];
-        
-        if ([lastLine hasPrefix:expected]) {
-            
-            // FIXME: check for correctness
-            [self callBlockWithError:nil];
-        }
-        else if ([lastLine hasPrefix:expectedErr] || [lastLine hasPrefix:expectedBad]) {
-            
-            
-            
-            NSError *err    = nil;
-            NSString *junk  = [NSString stringWithFormat:@"Could not search mailbox: %@", [self responseAsString]];
-            
-            LBQuickError(&err, LBSELECT, 0, junk);
-            
-            [self callBlockWithError:err];
-        }
-        
-        
-    }
-    else if (currentCommand == LBSELECT) {
-        
-        // the "[READ-WRITE]" bit is a "should" in the RFC.  Do we have any examples otherwise?
-        NSString *expected = [NSString stringWithFormat:@"%d OK [READ-WRITE] Ok%s", commandCount, CRLF];
-        NSString *expected2 = [NSString stringWithFormat:@"%d OK %s", commandCount, CRLF];
-        
-        NSError *err = nil;
-        
-        if (!([self endOfData:self.responseBytes isEqualTo:expected] || [self endOfData:self.responseBytes isEqualTo:expected2])) {
-            NSString *junk = [NSString stringWithFormat:@"Could not Select mailbox: %@", [self responseAsString]];
-            LBQuickError(&err, LBSELECT, 0, junk);
-        }
-
-        [self callBlockWithError:err];
-    }
-    
-    else if (currentCommand == LBLOGOUT) {
-        
-        NSString *lastLine      = [self lastLineOfData:self.responseBytes];
-        NSString *expectedGood  = [NSString stringWithFormat:@"%d OK ", commandCount, CRLF];
-        NSString *expectedBad   = [NSString stringWithFormat:@"%d BAD ", commandCount, CRLF];
-        NSString *expectedErr   = [NSString stringWithFormat:@"%d NO ", commandCount, CRLF];
-        
-        if (!([lastLine hasPrefix:expectedGood] || [lastLine hasPrefix:expectedBad] || [lastLine hasPrefix:expectedErr])) {
-            return; // we're not done reading yet.  MAYBE
-        }
-        
-        BOOL worked = [lastLine hasPrefix:expectedGood];
-        
-        NSError *err = nil;
-        
-        if (!worked) {
-            
-            NSString *junk = [NSString stringWithFormat:@"Could not Logout: %@", [self responseAsString]];
-            LBQuickError(&err, LBLOGOUT, 0, junk);
-        }
-        
-        [self callBlockWithError:err];
-    }
-    else if (currentCommand == LBFETCH) {
-        NSString *firstLine = [self firstLineOfData:self.responseBytes];
-        
-        if (firstLine) {
-            
-            // * 1 FETCH (RFC822 {2668}'
-            
-            // * 882 FETCH () ... hrm.
-            
-            // FIXME: need to be a bit more precise here.
-            
-            NSRange startBracket = [firstLine rangeOfString:@"{"];
-            NSRange endBracket   = [firstLine rangeOfString:@"}"];
-            
-            if (startBracket.location == NSNotFound || endBracket.location == NSNotFound) {
-                debug(@"SOMETHING BAD IS HAPPENING");
-                assert(false);
-            }
-            
-            assert(NSMaxRange(startBracket) < endBracket.location);
-            
-            NSString *len = [firstLine substringWithRange:NSMakeRange(NSMaxRange(startBracket), endBracket.location - NSMaxRange(startBracket))];
-            
-            currentFetchingMessageSize      = [len integerValue];
-            
-            currentFetchingMessageHeader    = [firstLine retain];
-            
-            // do we have our header, message, crlf, ), crlf, and an OK FETCH + something + CRLF?
-            
-            // yes, endMessageLength isn't accurate, but it just needs to be at least this.
-            NSInteger endMessageLength = [@"\r\n)\r\n1 OK FETCH\r\n" length];
-            NSInteger atLeastLength    = [currentFetchingMessageHeader length] + currentFetchingMessageSize + endMessageLength;
-            
-            if ([self.responseBytes length] > atLeastLength) {
-                
-                NSString *lastLine      = [self lastLineOfData:self.responseBytes];
-                NSString *expectedGood  = [NSString stringWithFormat:@"%d OK FETCH", commandCount, CRLF];
-                //NSString *expectedNo    = [NSString stringWithFormat:@"%d NO", commandCount, CRLF];
-                //NSString *expectedBad   = [NSString stringWithFormat:@"%d BAD", commandCount, CRLF];
-                
-                NSError *err = nil;
-                
-                if ([lastLine hasPrefix:expectedGood]) {
-                    
-                    [self callBlockWithError:err];
-                }
-                
-            }
-            
-                // 10 OK FETCH completed.
-            
-            
-            // * 1 FETCH (RFC822 {2668} crlf + 2668 bytes of data + crlf + ) + crlf + 10 OK FETCH completed.
-            
-        }
-    }
-}
-
-
-
-
-
-
-
-
 
 @end
 
