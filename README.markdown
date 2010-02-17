@@ -1,8 +1,6 @@
 Letters
 =======
 
-*Can't Hurt!*
-
 **Letters-Dev:** http://lists.ranchero.com/listinfo.cgi/letters-dev-ranchero.com<br/>
 **Email-init** (aka Letters-Talk): http://lists.ranchero.com/listinfo.cgi/email-init-ranchero.com<br/>
 **irc:** freenode.net ##lettersapp
@@ -16,29 +14,27 @@ It's for a bit of experimentation, and to act as a starting point.  It currently
 **TODO**
 
   - Pretty much everything
-  - Message caching.  I've got something started, but I was rushing it and it's lame, so right now it's commented out.
+  - Message caching
   - Keychain support
   - Support for multiple accounts
   - Responding to messages
-  - Threading
-  - A sane cache store (the current implmentation loads everything into memory right now, and is slow)
+  - A sane cache store
   - Management of the server connections
   - Activity Monitor (you wanted to cancel something?)
   - Plugin API
   - A UI that doesn't make designers faint
-  - Stop crashing
-  - LetterBox (the underlying framework for Letters) uses exceptions everywhere.  Need to take those out and put in NSError ** stuff instead.
   - Address Book integration for Mail.app-like recipient entry
   - Etc.
 
-**Building**
+**Contributing**
 
-Check out the git repository, open up Letters.xcodeproj, and build away.
+Check out the file "README-CONTRIB.markdown" for how to use github to get the code, make changes, and submit them for inclusion.
 
 **System Requirements**
 
 a) One Macintosh Personal Microcomputer with at least one 64 bit Intel processor, running Mac OS X 10.7 or later.
 
+<br/><br/><br/><br/>
 
 Letters Vision Statement
 ========================
