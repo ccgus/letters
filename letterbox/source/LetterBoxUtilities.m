@@ -197,3 +197,11 @@ NSDictionary* LBSimpleMesageHeaderSliceAndDice(NSData *msgData) {
     return headers;
 }
 
+NSString* LBUUIDString(void) {
+    CFUUIDRef uuid = CFUUIDCreate(kCFAllocatorDefault);
+    NSString *uuidString = (NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuid);
+    CFRelease(uuid);
+    [uuidString autorelease];
+    return [uuidString lowercaseString];
+}
+

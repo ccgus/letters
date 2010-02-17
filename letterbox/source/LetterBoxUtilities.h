@@ -39,5 +39,7 @@ NSString *LBWrapLines(NSString *body, int width);
 
 NSDictionary* LBSimpleMesageHeaderSliceAndDice(NSData *msgData);
 
+NSString* LBUUIDString(void);
+
 #define LBRelease(a)  { [a release]; a = nil; }
 #define LBPrefs [NSUserDefaults standardUserDefaults]

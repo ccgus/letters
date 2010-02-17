@@ -22,6 +22,10 @@ static NSString *LBSMTPDATA     = @"DATA";
     
 	if (self != nil) {
         
+        // FIXME: add an option for smtp + ssl
+        
+        /*
+        
         if ([account imapTLS]) {
             
             NSMutableDictionary *sslProps = [NSMutableDictionary dictionary];
@@ -32,6 +36,7 @@ static NSString *LBSMTPDATA     = @"DATA";
             
             [self setSSLProperties:sslProps];
         }
+        */
     }
     
     return self;
@@ -211,9 +216,15 @@ static NSString *LBSMTPDATA     = @"DATA";
             return;
         }
         
-        NSString *message = @"Subject: Hello Gus!\r\n\r\nHello there good sir, how are you?";
         
-        [self sendMessage:message to:@"gus@ubuntu.localdomain" from:@"gus@ubuntu.localdomain" block:^(NSError *err) {
+        NSString *messageId = [NSString stringWithFormat:@"Message-ID: %@\r\n", LBUUIDString()];
+        NSString *mailer    = @"X-Mailer: Letterbox\r\n";
+        NSString *subject   = @"Subject: Hello Gus!";
+        NSString *message   = @"Hello there good sir, how are you?";
+        
+        NSString *body = [NSString stringWithFormat:@"%@%@%@\r\n", messageId, mailer, subject, message];
+        
+        [self sendMessage:body to:@"gus@ubuntu.localdomain" from:@"gus@ubuntu.localdomain" block:^(NSError *err) {
             if (err) {
                 debug(@"well, crap.  Our message didn't send!");
                 debug(@"err: %@", err);

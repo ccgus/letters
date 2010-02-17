@@ -466,6 +466,8 @@ static NSString *LBDONE = @"DONE";
             
             // * 1 FETCH (RFC822 {2668}'
             
+            // * 882 FETCH () ... hrm.
+            
             // FIXME: need to be a bit more precise here.
             
             NSRange startBracket = [firstLine rangeOfString:@"{"];
