@@ -18,12 +18,10 @@
                                                 waitForFinish = NO;\
                                                 return; } }
 
-#define LBAssertTrue(b, reason) { if (!b)   {   failed = YES;\
+#define LBAssertTrue(b, reason) { if (!(b)) {   failed = YES;\
                                                 failReason = reason;\
                                                 waitForFinish = NO;\
                                                 return; } }
-
-
 
 #define LBInitTest() __block BOOL failed            = NO;\
                      __block NSString *failReason   = nil;\
@@ -123,6 +121,31 @@
     
     LBWaitForFinish();
 }
+- (void)testLoginFail {
+    
+    LBInitTestWithServerScript(@"testLoginFail.py");
+    
+    dispatch_async(dispatch_get_main_queue(),^ {
+        
+        LBIMAPConnection *conn = [[[LBIMAPConnection alloc] initWithAccount:[self atestAccount]] autorelease];
+        
+        [conn connectUsingBlock:^(NSError *err) {
+            
+            LBTestError(err, @"Got an error trying to connect!");
+            
+            [conn loginWithBlock:^(NSError *err) {
+                
+                LBAssertTrue(err != nil, @"We shouldn't have been able to log in.");
+                
+                [conn close];
+                
+                LBEndTest();
+            }];
+        }];
+    });
+    
+    LBWaitForFinish();
+}
 
 - (void)testDeleteAndExpunge {
     
@@ -140,7 +163,7 @@
             
             LBTestError(err, @"Got an error trying to connect!");
             
-            [conn loginWithUsername:[account username] password:[account password] block:^(NSError *err) {
+            [conn loginWithBlock:^(NSError *err) {
                 
                 LBTestError(err, @"Got an error trying to login!");
                 
@@ -185,7 +208,7 @@
             
             LBTestError(err, @"Got an error trying to connect!");
             
-            [conn loginWithUsername:[account username] password:[account password] block:^(NSError *err) {
+            [conn loginWithBlock:^(NSError *err) {
                 LBTestError(err, @"Got an error trying to login!");
                 
                 [conn listSubscribedMailboxesWithBock:^(NSError *err) {

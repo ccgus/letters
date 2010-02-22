@@ -17,6 +17,8 @@ extern NSString *LBCONNECTING;
 
 #define CRLF "\r\n"
 
+@class LBAccount;
+
 @interface LBTCPConnection : TCPConnection  <TCPConnectionDelegate, LBActivity> {
     void (^responseBlock)(NSError *);
     
@@ -30,6 +32,7 @@ extern NSString *LBCONNECTING;
 @property (assign) BOOL shouldCancelActivity;
 @property (assign) BOOL debugOutput;
 @property (retain) NSMutableData *responseBytes;
+@property (retain) LBAccount *account;
 
 - (void)setActivityStatusAndNotifiy:(NSString *)value;
 

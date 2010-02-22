@@ -8,6 +8,7 @@
 
 #import "LBTCPConnection.h"
 #import "LBTCPReader.h"
+#import "LBAccount.h"
 
 #import "TCP_Internal.h"
 #import "IPAddress.h"
@@ -18,11 +19,13 @@ NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
 @synthesize shouldCancelActivity;
 @synthesize responseBytes;
 @synthesize debugOutput;
+@synthesize account;
 
 - (void)dealloc {
     
     [responseBytes release];
     [activityStatus release];
+    [account release];
     
     [super dealloc];
 }

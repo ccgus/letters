@@ -47,5 +47,6 @@ typedef void (^LBResponseBlock)(NSError *);
 - (void)moveMessages:(NSArray*)messageList inFolder:(NSString*)currentFolder toFolder:(NSString*)folder finshedBlock:(LBResponseBlock)block;
 
 - (void)deleteMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block;
+- (void)expungeWithBlock:(LBResponseBlock)block;
 
 @end

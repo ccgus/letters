@@ -29,14 +29,16 @@ static NSString *LBDONE = @"DONE";
 @implementation LBIMAPConnection
 
 
-- (id)initWithAccount:(LBAccount*)account {
+- (id)initWithAccount:(LBAccount*)anAccount {
     
-    IPAddress *addr = [IPAddress addressWithHostname:[account imapServer] port:[account imapPort]];
+    IPAddress *addr = [IPAddress addressWithHostname:[anAccount imapServer] port:[anAccount imapPort]];
     self = [self initToAddress:addr];
     
 	if (self != nil) {
-            
-        if ([account imapTLS]) {
+        
+        [self setAccount:anAccount];
+        
+        if ([[self account] imapTLS]) {
             
             NSMutableDictionary *sslProps = [NSMutableDictionary dictionary];
             
@@ -66,11 +68,11 @@ static NSString *LBDONE = @"DONE";
     }
 }
 
-- (void)loginWithUsername:(NSString *)username password:(NSString *)password block:(LBResponseBlock)block {
+- (void)loginWithBlock:(LBResponseBlock)block {
     
     responseBlock = [block copy];
     
-    NSString *loginArgument = [NSString stringWithFormat:@"%@ %@", username, password];
+    NSString *loginArgument = [NSString stringWithFormat:@"%@ %@", [[self account] username], [[self account] password]];
     
     [self sendCommand:LBLOGIN withArgument:loginArgument readBlock:^(LBTCPReader *reader) {
         

@@ -10,11 +10,14 @@
     
     NSInteger   currentFetchingMessageSize;
     NSString    *currentFetchingMessageHeader;
+    
 }
+
+
 
 - (id)initWithAccount:(LBAccount*)account;
 
-- (void)loginWithUsername:(NSString *)username password:(NSString *)password block:(LBResponseBlock)block;
+- (void)loginWithBlock:(LBResponseBlock)block;
 - (void)selectMailbox:(NSString*)mailbox block:(LBResponseBlock)block;
 - (void)listMessagesWithBlock:(LBResponseBlock)block;
 - (void)listSubscribedMailboxesWithBock:(LBResponseBlock)block;

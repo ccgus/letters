@@ -164,7 +164,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
             
             [conn setActivityStatusAndNotifiy:NSLocalizedString(@"Logging in", @"Logging in")];
             
-            [conn loginWithUsername:[[self account] username] password:[[self account] password] block:^(NSError *err) {
+            [conn loginWithBlock:^(NSError *err) {
                 
                 [self checkInIMAPConnection:conn];
                 

@@ -12,13 +12,15 @@ static NSString *LBSMTPDATA     = @"DATA";
 @implementation LBSMTPConnection
 
 
-- (id)initWithAccount:(LBAccount*)account {
+- (id)initWithAccount:(LBAccount*)anAccount {
     
     // FIXME: add a "smtp port" option
-    IPAddress *addr = [IPAddress addressWithHostname:[account smtpServer] port:25];
+    IPAddress *addr = [IPAddress addressWithHostname:[anAccount smtpServer] port:25];
     self = [self initToAddress:addr];
     
 	if (self != nil) {
+        
+        [self setAccount:anAccount];
         
         // FIXME: add an option for smtp + ssl
         
