@@ -103,9 +103,24 @@ static NSString *LBDONE = @"DONE";
     
     responseBlock = [block copy];
     
+    mailbox = [NSString stringWithFormat:@"\"%@\"", mailbox];
+    
     [self sendCommand:LBSELECT withArgument:mailbox readBlock:^(LBTCPReader *reader) {
         
         [self appendDataFromReader:reader];
+        
+        NSString *firstLine   = [[self responseBytes] lbFirstLine];
+        NSString *expectedBAD = [NSString stringWithFormat:@"%d BAD", commandCount];
+        NSString *expectedNO  = [NSString stringWithFormat:@"%d NO",  commandCount];
+        
+        if ([firstLine hasPrefix:expectedBAD] || [firstLine hasPrefix:expectedNO]) {
+            debug(@"Well, that was bad!");
+            NSError *err;
+            NSString *junk = [NSString stringWithFormat:@"Could not Select mailbox: %@", [self responseAsString]];
+            LBQuickError(&err, LBSELECT, 0, junk);
+            [self callBlockWithError:err killReadBlock:YES];
+            return;
+        }
         
         NSString *lastLine = [[self responseBytes] lbLastLineOfMultiline];
         
@@ -114,17 +129,12 @@ static NSString *LBDONE = @"DONE";
         }
         
         NSString *expectedOK  = [NSString stringWithFormat:@"%d OK",  commandCount];
-        NSString *expectedBAD = [NSString stringWithFormat:@"%d BAD", commandCount];
-        NSString *expectedNO  = [NSString stringWithFormat:@"%d NO",  commandCount];
         
         if ([lastLine hasPrefix:expectedOK]) {
             [self callBlockWithError:nil killReadBlock:YES];
         }
-        else if ([lastLine hasPrefix:expectedBAD] || [lastLine hasPrefix:expectedNO]) {
-            NSError *err;
-            NSString *junk = [NSString stringWithFormat:@"Could not Select mailbox: %@", [self responseAsString]];
-            LBQuickError(&err, LBSELECT, 0, junk);
-            [self callBlockWithError:err killReadBlock:YES];
+        else {
+            debug(@"waiting for more select data for %@", mailbox);
         }
         
         // else, we're still reading.
