@@ -28,6 +28,7 @@
 
 - (void)fetchMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block;
 - (void)deleteMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block;
+- (void)expungeWithBlock:(LBResponseBlock)block;
 
 - (void)idleWithBlock:(LBResponseBlock)block;
 

@@ -455,6 +455,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         }];
     });
 }
+
 - (void)moveMessages:(NSArray*)messageList inFolder:(NSString*)currentFolder toFolder:(NSString*)folder finshedBlock:(LBResponseBlock)block {
     
     /*

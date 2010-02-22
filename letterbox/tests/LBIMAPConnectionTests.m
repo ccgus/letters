@@ -43,7 +43,6 @@
 @implementation LBIMAPConnectionTests
 
 - (LBAccount*)atestAccount {
-    // FIXME: how are we supposed to generalize this?
     
     LBAccount *acct = [[[LBAccount alloc] init] autorelease];
     [acct setUsername:@"user"];
@@ -56,8 +55,23 @@
     return acct;
 }
 
-- (NSTask*)runServerScript:(NSString*)scriptName {
+- (LBAccount*)realAccount {
     
+    // oh what to do here?
+    LBAccount *acct = [[[LBAccount alloc] init] autorelease];
+    [acct setUsername:@"gus"];
+    [acct setPassword:@"password"];
+    [acct setImapServer:@"ubuntu.local"];
+    [acct setImapPort:143];
+    [acct setIsActive:YES];
+    [acct setImapTLS:NO];
+    
+    return acct;
+}
+
+
+
+- (NSTask*)runServerScript:(NSString*)scriptName {
     
     system("killall python");
     
@@ -103,6 +117,53 @@
                 [conn close];
                 
                 LBEndTest();
+            }];
+        }];
+    });
+    
+    LBWaitForFinish();
+}
+
+- (void)testDeleteAndExpunge {
+    
+    LBInitTestWithServerScript(@"testDeleteAndExpunge.py");
+    
+    // this needs to run on the main loop
+    dispatch_async(dispatch_get_main_queue(),^ {
+        
+        LBAccount *account      = [self atestAccount];
+        LBIMAPConnection *conn  = [[[LBIMAPConnection alloc] initWithAccount:account] autorelease];
+        
+        conn.debugOutput = YES;
+        
+        [conn connectUsingBlock:^(NSError *err) {
+            
+            LBTestError(err, @"Got an error trying to connect!");
+            
+            [conn loginWithUsername:[account username] password:[account password] block:^(NSError *err) {
+                
+                LBTestError(err, @"Got an error trying to login!");
+                
+                
+                [conn selectMailbox:@"INBOX" block:^(NSError *err) {
+                    
+                    LBTestError(err, @"Got an error trying to select!");
+                    
+                    // delete the first message.
+                    [conn deleteMessages:@"1" withBlock:^(NSError *err) {
+                        
+                        LBTestError(err, @"delete the first message.");
+                        
+                        [conn expungeWithBlock:^(NSError *err) {
+                            
+                            LBTestError(err, @"expunge");
+                            
+                            [conn close];
+                            
+                            LBEndTest();
+                        }];
+                    }];
+                }];
             }];
         }];
     });
@@ -162,5 +223,12 @@
     
     LBWaitForFinish();
 }
+
+
+
+
+
+
+
 
 @end
