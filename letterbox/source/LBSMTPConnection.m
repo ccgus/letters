@@ -48,7 +48,7 @@ static NSString *LBSMTPDATA     = @"DATA";
         
         [self appendDataFromReader:reader];
         
-        NSString *res = [self firstLineOfData:[self responseBytes]];
+        NSString *res = [[self class] firstLineOfData:[self responseBytes]];
         if (!res) {
             // haven't gotten our crlf yet.
             return;
@@ -72,7 +72,7 @@ static NSString *LBSMTPDATA     = @"DATA";
             
             [self appendDataFromReader:reader];
             
-            NSString *res = [self firstLineOfData:[self responseBytes]];
+            NSString *res = [[self class] firstLineOfData:[self responseBytes]];
             
             // check to see if we have our line, with a crlf
             if (!res) {
@@ -104,7 +104,7 @@ static NSString *LBSMTPDATA     = @"DATA";
         
         [self appendDataFromReader:reader];
         
-        NSString *res = [self firstLineOfData:[self responseBytes]];
+        NSString *res = [[self class] firstLineOfData:[self responseBytes]];
         if (!res) {
             return;
         }
@@ -121,7 +121,7 @@ static NSString *LBSMTPDATA     = @"DATA";
             
             [self appendDataFromReader:reader];
             
-            NSString *res = [self firstLineOfData:[self responseBytes]];
+            NSString *res = [[self class] firstLineOfData:[self responseBytes]];
             if (!res) {
                 return;
             }
@@ -138,7 +138,7 @@ static NSString *LBSMTPDATA     = @"DATA";
                 
                 [self appendDataFromReader:reader];
                 
-                NSString *res = [self firstLineOfData:[self responseBytes]];
+                NSString *res = [[self class] firstLineOfData:[self responseBytes]];
                 if (!res) {
                     return;
                 }
@@ -156,7 +156,7 @@ static NSString *LBSMTPDATA     = @"DATA";
                 [self sendData:[fixedmessage dataUsingEncoding:NSUTF8StringEncoding] readBlock:^(LBTCPReader *reader) {
                     [self appendDataFromReader:reader];
                     
-                    NSString *res = [self firstLineOfData:[self responseBytes]];
+                    NSString *res = [[self class] firstLineOfData:[self responseBytes]];
                     if (!res) {
                         return;
                     }

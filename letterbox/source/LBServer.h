@@ -12,6 +12,8 @@ extern NSString *LBServerFolderUpdatedNotification;
 extern NSString *LBServerSubjectsUpdatedNotification;
 extern NSString *LBServerBodiesUpdatedNotification;
 
+typedef void (^LBResponseBlock)(NSError *);
+
 @class LBAccount;
 @class LBIMAPFolder;
 @class FMDatabase;
@@ -42,6 +44,8 @@ extern NSString *LBServerBodiesUpdatedNotification;
 
 - (NSArray*)messageListForPath:(NSString*)folderPath;
 
-- (void)moveMessages:(NSArray*)messageList inFolder:(NSString*)currentFolder toFolder:(NSString*)folder finshedBlock:(void (^)(BOOL, NSError *))block;
+- (void)moveMessages:(NSArray*)messageList inFolder:(NSString*)currentFolder toFolder:(NSString*)folder finshedBlock:(LBResponseBlock)block;
+
+- (void)deleteMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block;
 
 @end

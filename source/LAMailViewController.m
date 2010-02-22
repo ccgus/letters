@@ -106,6 +106,32 @@
 
 
 
+- (BOOL)tableViewDidRecieveDeleteKey:(NSTableView*)tableView {
+    debug(@"%s:%d", __FUNCTION__, __LINE__);
+    
+    if (tableView != mailboxMessageList) {
+        return NO;
+    }
+    
+    NSInteger selectedRow = [mailboxMessageList selectedRow];
+    if (selectedRow >= 0) {
+        
+        LBAccount *currentAccount   = [[appDelegate accounts] lastObject];
+        NSArray *messageList        = [[currentAccount server] messageListForPath:[self selectedFolderPath]];
+        LBMessage *msg              = [messageList objectAtIndex:selectedRow];
+        
+        debug(@"msg: %@", msg);
+    }
+    
+    return YES;
+}
+
+- (BOOL)tableDidRecieveEnterOrSpaceKey:(NSTableView*)tableView {
+    debug(@"%s:%d", __FUNCTION__, __LINE__);
+    // open up the message in a new window.
+    return YES;
+}
+
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
     
     if ([notification object] == mailboxMessageList) {
@@ -151,6 +177,7 @@
     
     return [messageList count];
 }
+
 
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex {
     
@@ -200,7 +227,7 @@
     // this is a work in progress.
     LBAccount *currentAccount = [[appDelegate accounts] lastObject];
     
-    [[currentAccount server] moveMessages:messages inFolder:[self selectedFolderPath] toFolder:folder finshedBlock:^(BOOL arg1, NSError *arg2) {
+    [[currentAccount server] moveMessages:messages inFolder:[self selectedFolderPath] toFolder:folder finshedBlock:^(NSError *err) {
     
         NSLog(@"All done with move... I think");
     }];

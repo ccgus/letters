@@ -50,7 +50,7 @@
 
 	[accountTestInfo setObject:[NSNumber numberWithInt:0]           forKey:@"authType"];
 	[accountTestInfo setObject:[NSNumber numberWithInt:YES]         forKey:@"isActive"];
-	[accountTestInfo setObject:[NSNumber numberWithInt:1]           forKey:@"connectionType"]; }
+	[accountTestInfo setObject:[NSNumber numberWithBool:YES]        forKey:@"imapTLS"]; }
 
 - (void)tearDown {
     [accountTestInfo release];

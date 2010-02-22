@@ -45,7 +45,7 @@ NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
     self.responseBytes  = [NSMutableData data];
     
     if (self.debugOutput) {
-        NSLog(@"< %@", [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
+        NSLog(@"C: %@", [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
     }
     
     [(LBTCPReader*)[self reader] setCanReadBlock:block];
@@ -85,7 +85,7 @@ NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
     
     if (self.debugOutput) {
         NSString *junk = [[[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSUTF8StringEncoding] autorelease];
-        NSLog(@"> %@", junk);
+        NSLog(@"S: %@", junk);
     }
 }
 
@@ -112,7 +112,7 @@ NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
 }
 
 
-- (NSString*)singleLineResponseFromData:(NSData*)data {
++ (NSString*)singleLineResponseFromData:(NSData*)data {
     
     // *something* + crlf
     if ([data length] < 4) {
@@ -130,7 +130,7 @@ NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
     return [[[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSUTF8StringEncoding] autorelease];
 }
 
-- (BOOL)endOfData:(NSData*)data isEqualTo:(NSString*)string {
++ (BOOL)endOfData:(NSData*)data isEqualTo:(NSString*)string {
     
     if ([data length] < ([string length])) {
         return NO; 
@@ -146,7 +146,7 @@ NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
     return YES;
 }
 
-- (NSString*)lastLineOfData:(NSData*)data {
++ (NSString*)lastLineOfMultilineData:(NSData*)data {
     
     if ([data length] < 3) { // something + crlf
         return nil; 
@@ -158,7 +158,6 @@ NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
     char *pos         = &cdata[idx];
     
     // if it doesn't end with crlf, it's bad.
-    
     if (!(cdata[len - 1] == '\n' && cdata[len - 2] == '\r')) {
         return nil;
     }
@@ -181,7 +180,7 @@ NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
     return nil;
 }
 
-- (NSString*)firstLineOfData:(NSData*)data {
++ (NSString*)firstLineOfData:(NSData*)data {
     
     if ([data length] < 3) { // something + crlf
         return nil; 

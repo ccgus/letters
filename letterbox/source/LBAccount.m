@@ -99,11 +99,12 @@
     
     [d setObject:fromAddress ? fromAddress : @"" forKey:@"fromAddress"];
     
-    [d setObject:imapServer ? imapServer : @"" forKey:@"imapServer"];
+    [d setObject:imapServer ? imapServer : @""     forKey:@"imapServer"];
+    [d setObject:[NSNumber numberWithInt:imapPort] forKey:@"imapPort"];
+    
     [d setObject:smtpServer ? smtpServer : @"" forKey:@"smtpServer"];
     
     [d setObject:[NSNumber numberWithInt:authType] forKey:@"authType"];
-    [d setObject:[NSNumber numberWithInt:imapPort] forKey:@"imapPort"];
     [d setObject:[NSNumber numberWithInt:isActive] forKey:@"isActive"];
     
     [d setObject:[NSNumber numberWithBool:imapTLS] forKey:@"imapTLS"];

@@ -12,10 +12,7 @@
     NSString    *currentFetchingMessageHeader;
 }
 
-
-
 - (id)initWithAccount:(LBAccount*)account;
-
 
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password block:(LBResponseBlock)block;
 - (void)selectMailbox:(NSString*)mailbox block:(LBResponseBlock)block;
@@ -30,6 +27,7 @@
 - (void)unsubscribeToMailbox:(NSString*)mailboxName withBlock:(LBResponseBlock)block;
 
 - (void)fetchMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block;
+- (void)deleteMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block;
 
 - (void)idleWithBlock:(LBResponseBlock)block;
 

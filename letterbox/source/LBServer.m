@@ -168,25 +168,10 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
                 
                 [self checkInIMAPConnection:conn];
                 
-                
-                block(err);
-                
-                /*
+                // by default, select the inbox.
                 [conn selectMailbox:@"INBOX" block:^(NSError *err) {
-                    
-                    // FIXME: check to make sure the server says we can idle.
-                    
-                    [conn idleWithBlock:^(NSError *err) {
-                        
-                        debug(@"GOT AN IDLE WHATSNAME!");
-                        
-                        debug(@"conn: %@", [conn responseAsString]);
-                        
-                    }];
-                    
+                    block(err);
                 }];
-                
-                */
             }];
         }];
     });
@@ -447,8 +432,30 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     return [foldersCache objectForKey:folderPath];
 }
 
+- (void)deleteMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block {
+    
+    LBIMAPConnection *conn = [self checkoutIMAPConnection];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
+        [conn deleteMessages:seqIds withBlock:^(NSError *err) {
+            [self checkInIMAPConnection:conn];
+            block(err);
+        }];
+    });
+    
+}
 
-- (void)moveMessages:(NSArray*)messageList inFolder:(NSString*)currentFolder toFolder:(NSString*)folder finshedBlock:(void (^)(BOOL, NSError *))block {
+- (void)expungeWithBlock:(LBResponseBlock)block {
+    LBIMAPConnection *conn = [self checkoutIMAPConnection];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
+        [conn expungeWithBlock:^(NSError *err) {
+            [self checkInIMAPConnection:conn];
+            block(err);
+        }];
+    });
+}
+- (void)moveMessages:(NSArray*)messageList inFolder:(NSString*)currentFolder toFolder:(NSString*)folder finshedBlock:(LBResponseBlock)block {
     
     /*
     // FIXME: we need a way have this guy auto log in in.

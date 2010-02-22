@@ -109,30 +109,7 @@
         [self connectToDefaultServerAndPullMail];
     }
     else {
-        
-        // OK, instead of having a fancy + button in the prefs where we load a new account template,
-        // I'm just going to stick one on there, and only display one for now.  THIS IS TEMPORARY.
-        
-//        LBAccount *account = [[LBAccount alloc] init];
-//        [accounts addObject:account];
-//        
-//        if ([[LAPrefs stringForKey:@"iToolsMember"] length] > 0) {
-//            account.imapServer      = @"mail.me.com";
-//            account.imapPort        = 993;
-//            account.username        = [LAPrefs stringForKey:@"iToolsMember"];
-//            account.connectionType  = CONNECTION_TYPE_TLS;
-//            account.authType        = IMAP_AUTH_TYPE_PLAIN;
-//            
-//            
-//            // FIXME: need to setup some preferred smtp servers here.
-//            account.smtpServer      = @"smtp.me.com";
-//            
-//        }
-//        
-//        [self saveAccounts];
-//
         [self openPreferences:self selectModuleWithId:@"LAPrefsAccountsModule"];
-
     }
     
     [[NSNotificationCenter defaultCenter] addObserverForName:@"NewAccountCreated"
@@ -239,6 +216,7 @@
 }
 
 - (void)scheduleMailCheckTimer {
+    
     // If the check time is zero, the user wants to check manually
     NSTimeInterval checkTimeInMinutes = [LAPrefs doubleForKey:@"mailAutoCheckTimeIntervalInMinutes"];
     //NSLog (@"Scheduling to %0.2f", checkTimeInMinutes);
@@ -338,12 +316,25 @@
 - (void) debugAction:(id)sender {
     debug(@"%s:%d", __FUNCTION__, __LINE__);
     
-    LBSMTPConnection *smtp = [[LBSMTPConnection alloc] initWithAccount:[[self accounts] lastObject]];
+    //LBSMTPConnection *smtp = [[LBSMTPConnection alloc] initWithAccount:[[self accounts] lastObject]];
+    //[smtp test];
     
-    [smtp test];
+    LBAccount *currentAccount   = [[self accounts] lastObject];
     
-    debug(@"smtp: %@", smtp);
-    
+    [[currentAccount server] deleteMessages:@"1" withBlock:^(NSError *err) {
+        
+        debug(@"done deleted messages");
+        
+        if (err) {
+            debug(@"crap.");
+            return;
+        }
+        
+        [[currentAccount server] expungeWithBlock:^(NSError *err) {
+            debug(@"done did the expunge.");
+        }];
+   
+    }];
 }
 
 

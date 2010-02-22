@@ -16,6 +16,7 @@
 		968D0F44111528AB0044BE1D /* LBAddressTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D39110ABD32005ECF65 /* LBAddressTests.m */; };
 		968D0F45111528AB0044BE1D /* LBAttachmentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D3B110ABD32005ECF65 /* LBAttachmentTests.m */; };
 		96B8B0FB11153F4200A36A36 /* LBBareMessageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D35110ABD32005ECF65 /* LBBareMessageTests.m */; };
+		CC220E981131BD5B000B46D8 /* LBIMAPConnectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC220E971131BD5B000B46D8 /* LBIMAPConnectionTests.m */; };
 		CC3D54231108E7F700EEEF77 /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = CC3D541D1108E7F700EEEF77 /* FMDatabase.h */; };
 		CC3D54241108E7F700EEEF77 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3D541E1108E7F700EEEF77 /* FMDatabase.m */; };
 		CC3D54251108E7F700EEEF77 /* FMDatabaseAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = CC3D541F1108E7F700EEEF77 /* FMDatabaseAdditions.h */; };
@@ -142,6 +143,8 @@
 		968D0E5C111525550044BE1D /* GHUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GHUnit.framework; sourceTree = "<group>"; };
 		968D0E7B1115258B0044BE1D /* GHUnitTestMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GHUnitTestMain.m; path = tests/GHUnitTestMain.m; sourceTree = "<group>"; };
 		968D0EA71115267D0044BE1D /* Tests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tests.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC220E961131BD5B000B46D8 /* LBIMAPConnectionTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBIMAPConnectionTests.h; path = tests/LBIMAPConnectionTests.h; sourceTree = "<group>"; };
+		CC220E971131BD5B000B46D8 /* LBIMAPConnectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBIMAPConnectionTests.m; path = tests/LBIMAPConnectionTests.m; sourceTree = "<group>"; };
 		CC3D541D1108E7F700EEEF77 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabase.h; path = source/FMDatabase.h; sourceTree = "<group>"; };
 		CC3D541E1108E7F700EEEF77 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = source/FMDatabase.m; sourceTree = "<group>"; };
 		CC3D541F1108E7F700EEEF77 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = source/FMDatabaseAdditions.h; sourceTree = "<group>"; };
@@ -480,6 +483,8 @@
 				CC877D3B110ABD32005ECF65 /* LBAttachmentTests.m */,
 				CC877D34110ABD32005ECF65 /* LBBareMessageTests.h */,
 				CC877D35110ABD32005ECF65 /* LBBareMessageTests.m */,
+				CC220E961131BD5B000B46D8 /* LBIMAPConnectionTests.h */,
+				CC220E971131BD5B000B46D8 /* LBIMAPConnectionTests.m */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -696,6 +701,7 @@
 				968D0F44111528AB0044BE1D /* LBAddressTests.m in Sources */,
 				968D0F45111528AB0044BE1D /* LBAttachmentTests.m in Sources */,
 				96B8B0FB11153F4200A36A36 /* LBBareMessageTests.m in Sources */,
+				CC220E981131BD5B000B46D8 /* LBIMAPConnectionTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

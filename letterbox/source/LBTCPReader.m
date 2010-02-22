@@ -19,7 +19,20 @@
     else {
         debug(@"%s:%d", __FUNCTION__, __LINE__);
         NSLog(@"Reader has data, but nothings being done with it!");
-        assert(NO);
+        
+        
+#define MAX_BYTES_READ 2048
+        
+        NSMutableData *data         = [NSMutableData dataWithLength:MAX_BYTES_READ];
+        NSInteger localBytesRead    = [self read:[data mutableBytes] maxLength:MAX_BYTES_READ];
+        
+        NSString *junk = [[[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSUTF8StringEncoding] autorelease];
+        NSLog(@"%@", junk);
+        
+        
+        
+        
+        //assert(NO);
     }
 }
 

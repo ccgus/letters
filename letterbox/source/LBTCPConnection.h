@@ -10,11 +10,11 @@
 #import "LBActivity.h"
 #import "TCPConnection.h"
 #import "LBTCPReader.h"
+#import "LBServer.h"  // for LBResponseBlock
 
 extern NSString *LBCONNECTING;
 
 #define CRLF "\r\n"
-typedef void (^LBResponseBlock)(NSError *);
 
 @interface LBTCPConnection : TCPConnection  <TCPConnectionDelegate, LBActivity> {
     void (^responseBlock)(NSError *);
@@ -41,10 +41,10 @@ typedef void (^LBResponseBlock)(NSError *);
 // for subclassers
 - (void)callBlockWithError:(NSError*)err;
 - (void)callBlockWithError:(NSError*)err killReadBlock:(BOOL)killReadBlock;
-- (NSString*)firstLineOfData:(NSData*)data;
-- (NSString*)lastLineOfData:(NSData*)data;
-- (BOOL)endOfData:(NSData*)data isEqualTo:(NSString*)string;
-- (NSString*)singleLineResponseFromData:(NSData*)data;
++ (NSString*)firstLineOfData:(NSData*)data;
++ (NSString*)lastLineOfMultilineData:(NSData*)data;
++ (BOOL)endOfData:(NSData*)data isEqualTo:(NSString*)string;
++ (NSString*)singleLineResponseFromData:(NSData*)data;
 
 - (void)sendCommand:(NSString*)command withArgument:(NSString*)arg;
 - (void)sendCommand:(NSString*)command withArgument:(NSString*)arg readBlock:(void (^)(LBTCPReader *))block;
