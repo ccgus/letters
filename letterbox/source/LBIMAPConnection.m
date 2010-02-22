@@ -85,7 +85,7 @@ static NSString *LBDONE = @"DONE";
             return;
         }
         
-        NSString *expected = [NSString stringWithFormat:@"%d OK LOGIN", commandCount];
+        NSString *expected = [NSString stringWithFormat:@"%d OK", commandCount];
         
         BOOL worked = [res hasPrefix:expected];
         
@@ -107,18 +107,28 @@ static NSString *LBDONE = @"DONE";
         
         [self appendDataFromReader:reader];
         
-        // the "[READ-WRITE]" bit is a "should" in the RFC.  Do we have any examples otherwise?
-        NSString *expected = [NSString stringWithFormat:@"%d OK [READ-WRITE] Ok%s", commandCount, CRLF];
-        NSString *expected2 = [NSString stringWithFormat:@"%d OK %s", commandCount, CRLF];
+        NSString *lastLine = [[self responseBytes] lbLastLineOfMultiline];
         
-        NSError *err = nil;
-        
-        if (!([[self responseBytes] lbEndIsEqualTo:expected] || [[self responseBytes] lbEndIsEqualTo:expected])) {
-            NSString *junk = [NSString stringWithFormat:@"Could not Select mailbox: %@", [self responseAsString]];
-            LBQuickError(&err, LBSELECT, 0, junk);
+        if (!lastLine) {
+            return;
         }
         
-        [self callBlockWithError:err killReadBlock:YES];
+        NSString *expectedOK  = [NSString stringWithFormat:@"%d OK",  commandCount];
+        NSString *expectedBAD = [NSString stringWithFormat:@"%d BAD", commandCount];
+        NSString *expectedNO  = [NSString stringWithFormat:@"%d NO",  commandCount];
+        
+        if ([lastLine hasPrefix:expectedOK]) {
+            [self callBlockWithError:nil killReadBlock:YES];
+        }
+        else if ([lastLine hasPrefix:expectedBAD] || [lastLine hasPrefix:expectedNO]) {
+            NSError *err;
+            NSString *junk = [NSString stringWithFormat:@"Could not Select mailbox: %@", [self responseAsString]];
+            LBQuickError(&err, LBSELECT, 0, junk);
+            [self callBlockWithError:err killReadBlock:YES];
+        }
+        
+        // else, we're still reading.
+        
         
     }];
 }

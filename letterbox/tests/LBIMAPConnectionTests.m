@@ -147,6 +147,47 @@
     LBWaitForFinish();
 }
 
+
+- (void)testMobileMeSelect {
+    
+    LBInitTestWithServerScript(@"testMobileMeSelect.py");
+    
+    // this needs to run on the main loop
+    dispatch_async(dispatch_get_main_queue(),^ {
+        
+        LBAccount *account      = [self atestAccount];
+        LBIMAPConnection *conn  = [[[LBIMAPConnection alloc] initWithAccount:account] autorelease];
+        
+        conn.debugOutput = YES;
+        
+        [conn connectUsingBlock:^(NSError *err) {
+            
+            LBTestError(err, @"Got an error trying to connect!");
+            
+            [conn loginWithBlock:^(NSError *err) {
+                
+                LBTestError(err, @"Got an error trying to login!");
+                
+                [conn selectMailbox:@"Mailbox With Spaces" block:^(NSError *err) {
+                    
+                    LBTestError(err, @"Got an error trying to select!");
+                    
+                    [conn logoutWithBlock:^(NSError *err) {
+                        debug(@"all done!");
+                        LBTestError(err, @"Got an error trying to log out!");
+                        
+                        [conn close];
+                        
+                        LBEndTest();
+                    }];
+                }];
+            }];
+        }];
+    });
+    
+    LBWaitForFinish();
+}
+
 - (void)testDeleteAndExpunge {
     
     LBInitTestWithServerScript(@"testDeleteAndExpunge.py");
