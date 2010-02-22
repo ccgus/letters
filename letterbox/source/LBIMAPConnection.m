@@ -76,7 +76,7 @@ static NSString *LBDONE = @"DONE";
         
         [self appendDataFromReader:reader];
         
-        NSString *res = [[self class] singleLineResponseFromData:[self responseBytes]];
+        NSString *res = [[self responseBytes] lbSingleLineResponse];
         
         if (!res) {
             debug(@"slow auth?");
@@ -111,7 +111,7 @@ static NSString *LBDONE = @"DONE";
         
         NSError *err = nil;
         
-        if (!([[self class] endOfData:[self responseBytes] isEqualTo:expected] || [[self class] endOfData:[self responseBytes] isEqualTo:expected2])) {
+        if (!([[self responseBytes] lbEndIsEqualTo:expected] || [[self responseBytes] lbEndIsEqualTo:expected])) {
             NSString *junk = [NSString stringWithFormat:@"Could not Select mailbox: %@", [self responseAsString]];
             LBQuickError(&err, LBSELECT, 0, junk);
         }
@@ -132,7 +132,7 @@ static NSString *LBDONE = @"DONE";
         NSString *expected      = [NSString stringWithFormat:@"%d OK", commandCount];
         NSString *expectedErr   = [NSString stringWithFormat:@"%d NO", commandCount];
         NSString *expectedBad   = [NSString stringWithFormat:@"%d BAD", commandCount];
-        NSString *lastLine      = [[self class] lastLineOfMultilineData:[self responseBytes]];
+        NSString *lastLine      = [[self responseBytes] lbLastLineOfMultiline];
         
         if ([lastLine hasPrefix:expected]) {
             
@@ -161,7 +161,7 @@ static NSString *LBDONE = @"DONE";
         
         NSString *expected = [NSString stringWithFormat:@"%d OK", commandCount];
         
-        NSString *lastLine = [[self class] lastLineOfMultilineData:[self responseBytes]];
+        NSString *lastLine = [[self responseBytes] lbLastLineOfMultiline];
         
         if ([lastLine hasPrefix:expected]) {
             debug(@"yay?");
@@ -186,7 +186,7 @@ static NSString *LBDONE = @"DONE";
         
         [self appendDataFromReader:reader];
         
-        NSString *res = [[self class] singleLineResponseFromData:[self responseBytes]];
+        NSString *res = [[self responseBytes] lbSingleLineResponse];
         
         if (!res) {
             debug(@"slow connection?");
@@ -215,7 +215,7 @@ static NSString *LBDONE = @"DONE";
         
         debug(@"[self responseBytes]: %@", [self responseAsString]);
         
-        NSString *lastLine      = [[self class] firstLineOfData:[self responseBytes]];
+        NSString *lastLine      = [[self responseBytes] lbFirstLine];
         NSString *expectedGood  = [NSString stringWithFormat:@"%d OK ", commandCount, CRLF];
         NSString *expectedBad   = [NSString stringWithFormat:@"%d BAD ", commandCount, CRLF];
         NSString *expectedErr   = [NSString stringWithFormat:@"%d NO ", commandCount, CRLF];
@@ -246,7 +246,7 @@ static NSString *LBDONE = @"DONE";
         
         [self appendDataFromReader:reader];
         
-        NSString *res = [[self class] singleLineResponseFromData:[self responseBytes]];
+        NSString *res = [[self responseBytes] lbSingleLineResponse];
         
         if (!res) {
             return;
@@ -296,7 +296,7 @@ static NSString *LBDONE = @"DONE";
     [self sendCommand:LBSTORE withArgument:format readBlock:^(LBTCPReader *reader) {
         [self appendDataFromReader:reader];
         
-        NSString *lastLine = [[self class] lastLineOfMultilineData:[self responseBytes]];
+        NSString *lastLine = [[self responseBytes] lbLastLineOfMultiline];
         
         if (!lastLine) {
             return;
@@ -325,7 +325,7 @@ static NSString *LBDONE = @"DONE";
     [self sendCommand:LBEXPUNGE withArgument:nil readBlock:^(LBTCPReader *reader) {
         [self appendDataFromReader:reader];
         
-        NSString *lastLine = [[self class] lastLineOfMultilineData:[self responseBytes]];
+        NSString *lastLine = [[self responseBytes] lbLastLineOfMultiline];
         
         if (!lastLine) {
             return;
@@ -353,7 +353,7 @@ static NSString *LBDONE = @"DONE";
         
         [self appendDataFromReader:reader];
         
-        NSString *firstLine = [[self class] firstLineOfData:[self responseBytes]];
+        NSString *firstLine = [[self responseBytes] lbFirstLine];
         
         if (firstLine) {
             
@@ -388,7 +388,7 @@ static NSString *LBDONE = @"DONE";
             
             if ([[self responseBytes] length] > atLeastLength) {
                 
-                NSString *lastLine      = [[self class] lastLineOfMultilineData:[self responseBytes]];
+                NSString *lastLine      = [[self responseBytes] lbLastLineOfMultiline];
                 NSString *expectedGood  = [NSString stringWithFormat:@"%d OK FETCH", commandCount, CRLF];
                 //NSString *expectedNo    = [NSString stringWithFormat:@"%d NO", commandCount, CRLF];
                 //NSString *expectedBad   = [NSString stringWithFormat:@"%d BAD", commandCount, CRLF];
@@ -559,7 +559,7 @@ static NSString *LBDONE = @"DONE";
     
     list = [list substringFromIndex:9];
     
-    NSString *lastLine = [[self class] lastLineOfMultilineData:[self responseBytes]];
+    NSString *lastLine = [[self responseBytes] lbLastLineOfMultiline];
     
     // now, let's cut that last bit out.
     // the -4 is for the 2 crlf's in there.
