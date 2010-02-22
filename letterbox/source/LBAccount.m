@@ -105,7 +105,7 @@
     [d setObject:smtpServer ? smtpServer : @"" forKey:@"smtpServer"];
     
     [d setObject:[NSNumber numberWithInt:authType] forKey:@"authType"];
-    [d setObject:[NSNumber numberWithInt:isActive] forKey:@"isActive"];
+    [d setObject:[NSNumber numberWithBool:isActive] forKey:@"isActive"];
     
     [d setObject:[NSNumber numberWithBool:imapTLS] forKey:@"imapTLS"];
     
