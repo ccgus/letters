@@ -1,3 +1,21 @@
+Feb 21, 2010
+
+Hey- I've added some new tests for basic IMAP connection stuff.
+
+It goes like this:
+LBIMAPConnectionTests has some methods in it, we'll use "testListSubscriptions" as an example.
+GHUnit runs testListSubscriptions, which runs a python script (from NSTask) named "testListSubscriptions.py".  Open up that guy, it's basically a script of server responses.  So we load up that script, it opens up on port 1430, and we then connect to it with our imap connection, and do stuff.
+
+Since everything with LB is done with blocks, we run the connection on the main thread so the test thread doesn't freak out because of runloops and such.  Plus, our response blocks are always called on the main thread anyway.  There's some funky macros in there to help with setup and teardown of that stuff.
+
+It should probably also validate that what we're sending is good.  But it doesn't currently.
+
+Anyway, that's what was worked on today.
+
+-gus
+
+
+
 Feb 17, 2010
 
 Hello.  I'm back from vacation.  Yes, it was fun, thanks!
