@@ -1,3 +1,11 @@
+Feb 23, 2010
+
+I've redone how the tests are run.  LBIMAPConnectionTests no longer runs the python script- instead it uses LBTestIMAPServer, which listens on port 1430 and also prints out files from a plist.  So for instance, the testBadLSUB method tells it to load up testBadLSUB.plist, which contains a bunch of expected values from the client (which it tests against) and a bunch of commands to send out.  If the incomming client commands don't match up right, we crash (because of runloops and such, I can't currently throw an exception.  I probably should figure this bit out though).
+
+Besides being able to test for correctness in the client commands, having the local server and not having to spawn an extra process means faster running tests.  Which is good.
+
+-gus
+
 Feb 21, 2010
 
 Hey- I've added some new tests for basic IMAP connection stuff.
