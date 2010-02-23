@@ -177,12 +177,25 @@ static NSString *LBDONE = @"DONE";
     
     responseBlock = [block copy];
     
+    // http://tools.ietf.org/html/rfc3501#section-6.3.9
+    
     [self sendCommand:LBLSUB withArgument:@"\"\" \"*\"" readBlock:^(LBTCPReader *reader) {
         
         [self appendDataFromReader:reader];
         
-        NSString *expected = [NSString stringWithFormat:@"%d OK", commandCount];
+        NSString *firstLine     = [[self responseBytes] lbFirstLine];
+        NSString *expectedNo    = [NSString stringWithFormat:@"%d NO", commandCount];
+        NSString *expectedBad   = [NSString stringWithFormat:@"%d BAD", commandCount];
         
+        if ([firstLine hasPrefix:expectedBad] || [firstLine hasPrefix:expectedNo]) {
+            NSError *err;
+            NSString *junk = [NSString stringWithFormat:@"Could not LSUB mailbox: %@", [self responseAsString]];
+            LBQuickError(&err, LBLSUB, 0, junk);
+            [self callBlockWithError:err killReadBlock:YES];
+            return;
+        }
+        
+        NSString *expected = [NSString stringWithFormat:@"%d OK", commandCount];
         NSString *lastLine = [[self responseBytes] lbLastLineOfMultiline];
         
         if ([lastLine hasPrefix:expected]) {

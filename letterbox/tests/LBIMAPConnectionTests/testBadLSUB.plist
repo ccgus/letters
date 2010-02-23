@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>accept</key>
+	<array>
+		<string>1 LOGIN user password\r\n</string>
+		<string>2 LSUB "" "*"\r\n</string>
+		<string>3 LOGOUT\r\n</string>
+	</array>
+	<key>send</key>
+	<array>
+		<string>* OK [CAPABILITY mmp0795 IMAP4 IMAP4rev1 ACL QUOTA LITERAL+ NAMESPACE UIDPLUS CHILDREN BINARY UNSELECT SORT LANGUAGE IDLE XSENDER X-NETSCAPE XSERVERINFO X-SUN-SORT X-SUN-IMAP X-ANNOTATEMORE X-UNAUTHENTICATE XUM1 AUTH=PLAIN] Messaging Multiplexor (Sun Java(tm) System Messaging Server 7.2-7.02 (built Apr 16 2009))\r\n</string>
+		<string>1 OK User logged in\r\n</string>
+		<string>2 BAD LSUB whoa this is a bad response!\r\n</string>
+		<string>3 OK HAVE A SUPER NICE DAY SUCKA.\r\n</string>
+	</array>
+</dict>
+</plist>

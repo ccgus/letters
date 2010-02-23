@@ -279,6 +279,41 @@
     LBWaitForFinish();
 }
 
-
+- (void)testBadLSUB {
+    
+    [[LBTestIMAPServer sharedIMAPServer] runScript:[self pathToTestScript:@"testBadLSUB.plist"]];
+    
+    LBInitTest();
+    
+    dispatch_async(dispatch_get_main_queue(),^ {
+        
+        LBAccount *account      = [self atestAccount];
+        LBIMAPConnection *conn  = [[[LBIMAPConnection alloc] initWithAccount:account] autorelease];
+        
+        [conn connectUsingBlock:^(NSError *err) {
+            
+            LBTestError(err, @"Got an error trying to connect!");
+            
+            [conn loginWithBlock:^(NSError *err) {
+                LBTestError(err, @"Got an error trying to login!");
+                
+                [conn listSubscribedMailboxesWithBock:^(NSError *err) {
+                    LBAssertTrue(err != nil, @"Should have gotten an error!");
+                    
+                    [conn logoutWithBlock:^(NSError *err) {
+                        
+                        LBTestError(err, @"Got an error trying to log out!");
+                        
+                        [conn close];
+                        
+                        LBEndTest();
+                    }];
+                }];
+            }];
+        }];
+    });
+    
+    LBWaitForFinish();
+}
 
 @end
