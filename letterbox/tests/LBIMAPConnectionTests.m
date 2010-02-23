@@ -9,6 +9,7 @@
 #import "LBIMAPConnectionTests.h"
 #import "LBIMAPConnection.h"
 #import "LBAccount.h"
+#import "LBTestIMAPServer.h"
 
 #define debug NSLog
 
@@ -28,12 +29,6 @@
                      __block BOOL waitForFinish     = YES;\
                      __block NSTask *serverTask     = nil;
                      
-
-#define LBInitTestWithServerScript(script)  LBInitTest()\
-                                            dispatch_sync(dispatch_get_main_queue(),^ {\
-                                                serverTask = [[self runServerScript:script] retain];\
-                                            });
-
 #define LBEndTest() waitForFinish = NO;
 
 #define LBWaitForFinish() { while (waitForFinish) { sleep(.1); } [serverTask terminate]; [serverTask release]; GHAssertFalse(failed, failReason); }
@@ -67,37 +62,21 @@
     return acct;
 }
 
-
-
-- (NSTask*)runServerScript:(NSString*)scriptName {
-    
-    system("killall python");
-    
+- (NSString*)pathToTestScript:(NSString*)scriptName {
     NSString *myFilePath = [NSString stringWithUTF8String:__FILE__];
-    
     NSString *parentDir = [[myFilePath stringByDeletingLastPathComponent] stringByDeletingLastPathComponent];
-    
     NSString *testDir   = [[parentDir stringByAppendingPathComponent:@"tests"] stringByAppendingPathComponent:@"LBIMAPConnectionTests"];
-    
     NSString *taskPath  = [testDir stringByAppendingPathComponent:scriptName];
     
-    NSTask *task = [[NSTask alloc] init];
-    
-    [task setLaunchPath:taskPath];
-    
-    [task launch];
-    
-    // wait a sec for it to startup
-    sleep(1);
-    
-    debug(@"task: %@", task);
-    
-    return task;
+    return taskPath;
 }
+
 
 - (void)testLoginLogout {
     
-    LBInitTestWithServerScript(@"testLoginLogout.py");
+    [[LBTestIMAPServer sharedIMAPServer] runScript:[self pathToTestScript:@"testLoginLogout.plist"]];
+    
+    LBInitTest();
     
     // this needs to run on the main loop
     dispatch_async(dispatch_get_main_queue(),^ {
@@ -109,6 +88,8 @@
             LBTestError(err, @"Got an error trying to connect!");
             
             [conn logoutWithBlock:^(NSError *err) {
+                
+                debug(@"logged out!");
                 
                 LBTestError(err, @"Got an error trying to log out!");
                 
@@ -123,7 +104,9 @@
 }
 - (void)testLoginFail {
     
-    LBInitTestWithServerScript(@"testLoginFail.py");
+    [[LBTestIMAPServer sharedIMAPServer] runScript:[self pathToTestScript:@"testLoginFail.plist"]];
+    
+    LBInitTest();
     
     dispatch_async(dispatch_get_main_queue(),^ {
         
@@ -150,7 +133,9 @@
 
 - (void)testMobileMeSelect {
     
-    LBInitTestWithServerScript(@"testMobileMeSelect.py");
+    [[LBTestIMAPServer sharedIMAPServer] runScript:[self pathToTestScript:@"testMobileMeSelect.plist"]];
+    
+    LBInitTest();
     
     // this needs to run on the main loop
     dispatch_async(dispatch_get_main_queue(),^ {
@@ -173,7 +158,7 @@
                     LBTestError(err, @"Got an error trying to select!");
                     
                     [conn logoutWithBlock:^(NSError *err) {
-                        debug(@"all done!");
+                        
                         LBTestError(err, @"Got an error trying to log out!");
                         
                         [conn close];
@@ -190,7 +175,10 @@
 
 - (void)testDeleteAndExpunge {
     
-    LBInitTestWithServerScript(@"testDeleteAndExpunge.py");
+    [[LBTestIMAPServer sharedIMAPServer] runScript:[self pathToTestScript:@"testDeleteAndExpunge.plist"]];
+    
+    LBInitTest();
+    
     
     // this needs to run on the main loop
     dispatch_async(dispatch_get_main_queue(),^ {
@@ -237,7 +225,10 @@
 
 - (void)testListSubscriptions {
     
-    LBInitTestWithServerScript(@"testListSubscriptions.py");
+    
+    [[LBTestIMAPServer sharedIMAPServer] runScript:[self pathToTestScript:@"testListSubscriptions.plist"]];
+    
+    LBInitTest();
     
     // this needs to run on the main loop
     dispatch_async(dispatch_get_main_queue(),^ {
@@ -287,11 +278,6 @@
     
     LBWaitForFinish();
 }
-
-
-
-
-
 
 
 

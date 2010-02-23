@@ -13,6 +13,7 @@
     void (^canReadBlock)(LBTCPReader *);
 }
 
-- (void) setCanReadBlock:(void (^)(LBTCPReader *))block;
+- (void)setCanReadBlock:(void (^)(LBTCPReader *))block;
+- (NSString*)stringFromReadData;
 
 @end

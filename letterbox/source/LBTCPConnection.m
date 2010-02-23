@@ -87,7 +87,7 @@ NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
     
     
     if (self.debugOutput) {
-        NSString *junk = [[[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSUTF8StringEncoding] autorelease];
+        NSString *junk = [[[NSString alloc] initWithBytes:[data bytes] length:localBytesRead encoding:NSUTF8StringEncoding] autorelease];
         NSLog(@"S: %@", junk);
     }
 }
@@ -106,7 +106,7 @@ NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
 }
 
 - (void) connectionDidOpen: (TCPConnection*)connection {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
+    //debug(@"%s:%d", __FUNCTION__, __LINE__);
 }
 
 - (BOOL) connection: (TCPConnection*)connection authorizeSSLPeer: (SecCertificateRef)peerCert {

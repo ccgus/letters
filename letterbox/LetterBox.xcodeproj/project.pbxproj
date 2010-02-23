@@ -27,6 +27,7 @@
 		CC3D54271108E7F700EEEF77 /* FMResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = CC3D54211108E7F700EEEF77 /* FMResultSet.h */; };
 		CC3D54281108E7F700EEEF77 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3D54221108E7F700EEEF77 /* FMResultSet.m */; };
 		CC3D54381108EFE800EEEF77 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CC3D54371108EFE800EEEF77 /* libsqlite3.dylib */; };
+		CC46749F113464D500037A0B /* LBTestIMAPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = CC467350113453F800037A0B /* LBTestIMAPServer.m */; };
 		CC877CE4110ABC04005ECF65 /* LetterBoxUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CD0110ABC04005ECF65 /* LetterBoxUtilities.m */; };
 		CC877CE5110ABC04005ECF65 /* LetterBoxUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CD1110ABC04005ECF65 /* LetterBoxUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC877CE6110ABC04005ECF65 /* LetterBoxTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = CC877CD2110ABC04005ECF65 /* LetterBoxTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -159,6 +160,8 @@
 		CC3D54211108E7F700EEEF77 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = source/FMResultSet.h; sourceTree = "<group>"; };
 		CC3D54221108E7F700EEEF77 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = source/FMResultSet.m; sourceTree = "<group>"; };
 		CC3D54371108EFE800EEEF77 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		CC46734F113453F800037A0B /* LBTestIMAPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBTestIMAPServer.h; path = tests/LBTestIMAPServer.h; sourceTree = "<group>"; };
+		CC467350113453F800037A0B /* LBTestIMAPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBTestIMAPServer.m; path = tests/LBTestIMAPServer.m; sourceTree = "<group>"; };
 		CC877CD0110ABC04005ECF65 /* LetterBoxUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LetterBoxUtilities.m; path = source/LetterBoxUtilities.m; sourceTree = "<group>"; };
 		CC877CD1110ABC04005ECF65 /* LetterBoxUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LetterBoxUtilities.h; path = source/LetterBoxUtilities.h; sourceTree = "<group>"; };
 		CC877CD2110ABC04005ECF65 /* LetterBoxTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LetterBoxTypes.h; path = source/LetterBoxTypes.h; sourceTree = "<group>"; };
@@ -504,6 +507,8 @@
 				CC220E971131BD5B000B46D8 /* LBIMAPConnectionTests.m */,
 				CC2212B911320868000B46D8 /* LBNSDataAdditionsTests.h */,
 				CC2212BA11320868000B46D8 /* LBNSDataAdditionsTests.m */,
+				CC46734F113453F800037A0B /* LBTestIMAPServer.h */,
+				CC467350113453F800037A0B /* LBTestIMAPServer.m */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -724,6 +729,7 @@
 				96B8B0FB11153F4200A36A36 /* LBBareMessageTests.m in Sources */,
 				CC220E981131BD5B000B46D8 /* LBIMAPConnectionTests.m in Sources */,
 				CC2212BB11320868000B46D8 /* LBNSDataAdditionsTests.m in Sources */,
+				CC46749F113464D500037A0B /* LBTestIMAPServer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -830,6 +836,7 @@
 				INFOPLIST_FILE = "resources/Tests-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				OTHER_CFLAGS = "-DDEBUG";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
