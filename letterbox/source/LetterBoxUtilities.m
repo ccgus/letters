@@ -205,25 +205,89 @@ NSString* LBUUIDString(void) {
     return [uuidString lowercaseString];
 }
 
-NSString * LBParseFetchResponseForFlags(NSString *fetchResponse, NSRange *currentSectionRange) {
+NSString * LBParseFetchResponseForFlags(NSString *fetchResponse, NSRange currentSectionRange) {
     
     // this should be easy.  Flags start with ( and end with ).
     
-    NSUInteger startLoc = currentSectionRange->location + 1;
+    NSUInteger startLoc = currentSectionRange.location + 1;
     NSUInteger len      = [fetchResponse length];
     
     if (startLoc >= len) {
         return nil;
     }
     
+    NSRange searchRange = NSMakeRange(NSMaxRange(currentSectionRange), [fetchResponse length] - (NSMaxRange(currentSectionRange)));
+    NSRange start       = [fetchResponse rangeOfString:@"(" options:0 range:searchRange];
+    NSRange end         = [fetchResponse rangeOfString:@")" options:0 range:searchRange];
     
+    if (end.location == NSNotFound || start.location == NSNotFound) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"Could not find end or start for the FLAGS tag");
+        return nil;
+    }
     
-    //NSRange secondSpaceRange = [fetchResponse rangeOfString:@" " options:0 range:NSMakeRange(startLoc, [fetchResponse length] - startLoc )];
+    NSString *sub = [fetchResponse substringWithRange:NSMakeRange(NSMaxRange(start) - 1, (end.location - NSMaxRange(start)) + 2)];
     
-    return nil;
+    return sub;
 }
 
-NSDictionary* LBParseFetchResponse(NSString *fetchResponse) {
+NSString * LBParseFetchResponseBetweenDelims(NSString *fetchResponse, NSRange currentSectionRange, NSString *startDelim, NSString *endDelim) {
+    
+    NSUInteger startLoc = currentSectionRange.location + 1;
+    NSUInteger len      = [fetchResponse length];
+    
+    if (startLoc >= len) {
+        return nil;
+    }
+    
+    NSRange searchRange = NSMakeRange(NSMaxRange(currentSectionRange), [fetchResponse length] - (NSMaxRange(currentSectionRange)));
+    NSRange start       = [fetchResponse rangeOfString:startDelim options:0 range:searchRange];
+    NSRange end         = [fetchResponse rangeOfString:endDelim   options:0 range:NSMakeRange(searchRange.location + 2, searchRange.length - 2)];
+    
+    if (end.location == NSNotFound || start.location == NSNotFound) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"Could not find end or start for the LBParseFetchResponseBetweenDelims");
+        return nil;
+    }
+    
+    NSString *sub = [fetchResponse substringWithRange:NSMakeRange(NSMaxRange(start) - 1, (end.location - NSMaxRange(start)) + 2)];
+    
+    return sub;
+}
+
+NSString * LBParseFetchResponseNextWord(NSString *fetchResponse, NSRange currentSectionRange, NSString *word) {
+    
+    NSUInteger startLoc = currentSectionRange.location + [word length];
+    NSUInteger len      = [fetchResponse length];
+    
+    if (startLoc >= len) {
+        return nil;
+    }
+    
+    // the 5 is for FLAGS's length
+    NSRange searchRange = NSMakeRange(NSMaxRange(currentSectionRange), [fetchResponse length] - (NSMaxRange(currentSectionRange)));
+    NSRange spaceEnd    = [fetchResponse rangeOfString:@" " options:0 range:searchRange];
+    
+    
+    if (spaceEnd.location == NSNotFound) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"Could not find spaceEnd");
+        return nil;
+    }
+    
+    NSString *sub = [fetchResponse substringWithRange:NSMakeRange(startLoc, NSMaxRange(spaceEnd))];
+    
+    
+    if ([word isEqualToString:@"INTERNALDATE"]) { // special case, get rid of the quotes
+        word = [word substringWithRange:NSMakeRange(1, [word length] - 2)];
+    }
+    
+    return sub;
+}
+
+NSDictionary* LBParseSimpleFetchResponse(NSString *fetchResponse) {
+    
+    // http://tools.ietf.org/html/rfc3501#section-6.4.5
     
     // this guy has to be an untagged response, right?
     if (![fetchResponse hasPrefix:@"*"]) {
@@ -231,21 +295,27 @@ NSDictionary* LBParseFetchResponse(NSString *fetchResponse) {
     }
     
     // * 1 FETCH (FLAGS (\\Seen $NotJunk NotJunk) INTERNALDATE \"29-Jan-2010 21:44:05 -0800\" RFC822.SIZE 15650 ENVELOPE (\"Wed, 27 Jan 2010 22:51:51 +0000\" \"Re: Coding Style Guidelines\" ((\"Bob Smith\" NIL \"bobsmith\" \"gmail.com\")) ((\"Bob Smith\" NIL \"bobsmith\" \"gmail.com\")) ((\"Bob Smith\" NIL \"bobsmith\" \"gmail.com\")) ((\"Gus Mueller\" NIL \"gus\" \"lettersapp.com\")) NIL NIL \"<4CE4C6F7-A466-4060-8FC6-4FEF66C6B906lettersapp.com>\" \"<8f5c05b71001271451j72710a29ia54773d3r743182c@mail.gmail.com>\") UID 98656
-
     
-    // the next bit after that is a space, then an identifier for the request (usually a #), then another space, then our stuff.
-    // so let's skip to the stuff.
+    NSMutableDictionary *d = [NSMutableDictionary dictionary];
     
-    NSUInteger startLoc = 3; // '* 1...' == at least 3
+    NSRange startRange = [fetchResponse rangeOfString:@"FETCH"];
+    
+    if (startRange.location == NSNotFound) {
+        return nil;
+    }
+    
+    NSUInteger startLoc = NSMaxRange(startRange) + 1; // for the space after FETCH
     NSUInteger strLength = [fetchResponse length];
-    
-    NSRange secondSpaceRange = [fetchResponse rangeOfString:@" " options:0 range:NSMakeRange(startLoc, [fetchResponse length] - startLoc )];
-    debug(@"secondSpaceRange: %@", NSStringFromRange(secondSpaceRange));
-    
-    startLoc = NSMaxRange(secondSpaceRange);
     
     const char *c = [fetchResponse UTF8String];
     c+= startLoc;
+    
+    if (*c == '(') {
+        // it's the start of the reponse in parens.  Just skip over it.
+        c++;
+        startLoc++;
+    }
+    
     
     NSRange currentSectionRange = NSMakeRange(startLoc, 0);
     
@@ -254,25 +324,43 @@ NSDictionary* LBParseFetchResponse(NSString *fetchResponse) {
         if (*c == ' ') {
             
             NSString *word = [fetchResponse substringWithRange:currentSectionRange];
-            debug(@"word: '%@'", word);
+            
+            NSString *value      = nil;
+            NSUInteger valOffset = 0;
+            
+            if ([word isEqualToString:@"FLAGS"]) {
+                value = LBParseFetchResponseBetweenDelims(fetchResponse, currentSectionRange, @"(", @")");
+                valOffset = [value length];
+            }
+            else if ([word isEqualToString:@"INTERNALDATE"]) {
+                value = LBParseFetchResponseBetweenDelims(fetchResponse, currentSectionRange, @"\"", @"\"");
+                valOffset = [value length];
+                value = [value substringWithRange:NSMakeRange(1, [value length] - 2)]; // trim this guy
+            }
+            else if ([word isEqualToString:@"RFC822.SIZE"]) {
+                value = LBParseFetchResponseBetweenDelims(fetchResponse, currentSectionRange, @" ", @" ");
+                valOffset = [value length];
+                value = [value substringWithRange:NSMakeRange(1, [value length] - 2)]; // trim this guy
+            }
+            
+            // FIXME: need to add ENVELOPE parsing
+            
+            if (value) {
+                [d setObject:value forKey:word];
+                currentSectionRange.location += valOffset;
+                c += valOffset;
+            }
             
             currentSectionRange.location = NSMaxRange(currentSectionRange) + 1;
             currentSectionRange.length = -1;  // we'll get a ++ below
         }
         
-        //NSLog(@"%c", *c);
         
         currentSectionRange.length++;
         c++;
     }
     
-    // allllright.  It's all ascii, right?
     
-    
-    
-    
-    
-    NSMutableDictionary *d = [NSMutableDictionary dictionary];
     
     return d;
     
