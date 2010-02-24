@@ -223,6 +223,62 @@
     LBWaitForFinish();
 }
 
+
+
+- (void)testDeleteAndExpungeTwo {
+    
+    //[[LBTestIMAPServer sharedIMAPServer] runScript:[self pathToTestScript:@"testDeleteAndExpunge.plist"]];
+    
+    LBInitTest();
+    
+    
+    // this needs to run on the main loop
+    dispatch_async(dispatch_get_main_queue(),^ {
+        
+        LBAccount *account      = [self realAccount];
+        LBIMAPConnection *conn  = [[[LBIMAPConnection alloc] initWithAccount:account] autorelease];
+        
+        conn.debugOutput = YES;
+        
+        [conn connectUsingBlock:^(NSError *err) {
+            
+            LBTestError(err, @"Got an error trying to connect!");
+            
+            [conn loginWithBlock:^(NSError *err) {
+                
+                LBTestError(err, @"Got an error trying to login!");
+                
+                
+                [conn selectMailbox:@"INBOX" block:^(NSError *err) {
+                    
+                    LBTestError(err, @"Got an error trying to select!");
+                    
+                    // delete the first message.
+                    [conn deleteMessages:@"1" withBlock:^(NSError *err) {
+                        
+                        LBTestError(err, @"delete the first message.");
+                        
+                        [conn expungeWithBlock:^(NSError *err) {
+                            
+                            LBTestError(err, @"expunge");
+                            
+                            [conn close];
+                            
+                            LBEndTest();
+                        }];
+                    }];
+                }];
+            }];
+        }];
+    });
+    
+    LBWaitForFinish();
+}
+
+
+
+
+
 - (void)testListSubscriptions {
     
     

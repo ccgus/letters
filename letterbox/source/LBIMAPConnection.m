@@ -379,6 +379,19 @@ static NSString *LBDONE = @"DONE";
     }];
 }
 
+- (void)shortFetchMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block {
+    // http://tools.ietf.org/html/rfc3501#section-6.4.5
+    
+    responseBlock = [block copy];
+    
+    NSString *format = [NSString stringWithFormat:@"%@ (FLAGS INTERNALDATE RFC822.SIZE ENVELOPE UID)", seqIds];
+    [self sendCommand:LBFETCH withArgument:format  readBlock:^(LBTCPReader *reader) {
+        
+        #warning TODO
+    }];
+}
+
+
 - (void)fetchMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block {
     responseBlock = [block copy];
     

@@ -205,3 +205,84 @@ NSString* LBUUIDString(void) {
     return [uuidString lowercaseString];
 }
 
+NSString * LBParseFetchResponseForFlags(NSString *fetchResponse, NSRange *currentSectionRange) {
+    
+    // this should be easy.  Flags start with ( and end with ).
+    
+    NSUInteger startLoc = currentSectionRange->location + 1;
+    NSUInteger len      = [fetchResponse length];
+    
+    if (startLoc >= len) {
+        return nil;
+    }
+    
+    
+    
+    //NSRange secondSpaceRange = [fetchResponse rangeOfString:@" " options:0 range:NSMakeRange(startLoc, [fetchResponse length] - startLoc )];
+    
+    return nil;
+}
+
+NSDictionary* LBParseFetchResponse(NSString *fetchResponse) {
+    
+    // this guy has to be an untagged response, right?
+    if (![fetchResponse hasPrefix:@"*"]) {
+        return nil;
+    }
+    
+    // * 1 FETCH (FLAGS (\\Seen $NotJunk NotJunk) INTERNALDATE \"29-Jan-2010 21:44:05 -0800\" RFC822.SIZE 15650 ENVELOPE (\"Wed, 27 Jan 2010 22:51:51 +0000\" \"Re: Coding Style Guidelines\" ((\"Bob Smith\" NIL \"bobsmith\" \"gmail.com\")) ((\"Bob Smith\" NIL \"bobsmith\" \"gmail.com\")) ((\"Bob Smith\" NIL \"bobsmith\" \"gmail.com\")) ((\"Gus Mueller\" NIL \"gus\" \"lettersapp.com\")) NIL NIL \"<4CE4C6F7-A466-4060-8FC6-4FEF66C6B906lettersapp.com>\" \"<8f5c05b71001271451j72710a29ia54773d3r743182c@mail.gmail.com>\") UID 98656
+
+    
+    // the next bit after that is a space, then an identifier for the request (usually a #), then another space, then our stuff.
+    // so let's skip to the stuff.
+    
+    NSUInteger startLoc = 3; // '* 1...' == at least 3
+    NSUInteger strLength = [fetchResponse length];
+    
+    NSRange secondSpaceRange = [fetchResponse rangeOfString:@" " options:0 range:NSMakeRange(startLoc, [fetchResponse length] - startLoc )];
+    debug(@"secondSpaceRange: %@", NSStringFromRange(secondSpaceRange));
+    
+    startLoc = NSMaxRange(secondSpaceRange);
+    
+    const char *c = [fetchResponse UTF8String];
+    c+= startLoc;
+    
+    NSRange currentSectionRange = NSMakeRange(startLoc, 0);
+    
+    while (*c) {
+        
+        if (*c == ' ') {
+            
+            NSString *word = [fetchResponse substringWithRange:currentSectionRange];
+            debug(@"word: '%@'", word);
+            
+            currentSectionRange.location = NSMaxRange(currentSectionRange) + 1;
+            currentSectionRange.length = -1;  // we'll get a ++ below
+        }
+        
+        //NSLog(@"%c", *c);
+        
+        currentSectionRange.length++;
+        c++;
+    }
+    
+    // allllright.  It's all ascii, right?
+    
+    
+    
+    
+    
+    NSMutableDictionary *d = [NSMutableDictionary dictionary];
+    
+    return d;
+    
+}
+
+
+
+
+
+
+
+
+
