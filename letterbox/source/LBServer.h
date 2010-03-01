@@ -11,6 +11,7 @@
 extern NSString *LBServerFolderUpdatedNotification;
 extern NSString *LBServerSubjectsUpdatedNotification;
 extern NSString *LBServerBodiesUpdatedNotification;
+extern NSString *LBServerMessageDeletedNotification;
 
 typedef void (^LBResponseBlock)(NSError *);
 

@@ -20,6 +20,7 @@
 NSString *LBServerFolderUpdatedNotification = @"LBServerFolderUpdatedNotification";
 NSString *LBServerSubjectsUpdatedNotification = @"LBServerSubjectsUpdatedNotification";
 NSString *LBServerBodiesUpdatedNotification = @"LBServerBodiesUpdatedNotification";
+NSString *LBServerMessageDeletedNotification = @"LBServerMessageDeletedNotification";
 
 // these are defined in LBActivity.h, but they need to go somewhere and I'm not making a .m just for them.
 NSString *LBActivityStartedNotification = @"LBActivityStartedNotification";
@@ -420,7 +421,6 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 
 - (NSArray*)messageListForPath:(NSString*)folderPath {
     
-    
     if (![foldersCache objectForKey:folderPath]) {
         
         NSArray *msgList = [self cachedMessagesForFolder:folderPath];
@@ -428,13 +428,17 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         [foldersCache setObject:msgList forKey:folderPath];
     }
     
-    
     return [foldersCache objectForKey:folderPath];
 }
 
 - (void)deleteMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block {
     
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
+    
+    // UID STORE 19443 +FLAGS.SILENT (\Deleted)
+    // OK STORE completed.
+    
+    // need up update the database with our intent to delete the message.
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
         [conn deleteMessages:seqIds withBlock:^(NSError *err) {
@@ -572,14 +576,20 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         [cacheDB executeUpdate:@"insert into letters_meta (name, type, value) values (?,?,?)", @"schemaVersion", @"int", [NSNumber numberWithInt:schemaVersion]];
         
         // this table obviously isn't going to cut it.  It needs multiple to's and other nice things.
-        [cacheDB executeUpdate:@"create table message ( uuid text primary key,\n\
-                                                   messageid text,\n\
-                                                   folder text,\n\
-                                                   subject text,\n\
-                                                   fromAddress text, \n\
-                                                   toAddress text, \n\
-                                                   receivedDate float,\n\
-                                                   sendDate float\n\
+        [cacheDB executeUpdate:@"create table message ( localUUID text primary key,\n\
+                                                        serverUID text,\n\
+                                                        folder text,\n\
+                                                        subject text,\n\
+                                                        fromAddress text, \n\
+                                                        toAddress text, \n\
+                                                        receivedDate float,\n\
+                                                        sendDate float,\n\
+                                                        seenFlag integer,\n\
+                                                        answeredFlag integer,\n\
+                                                        flaggedFlag integer,\n\
+                                                        deletedFlag integer,\n\
+                                                        draftFlag integer,\n\
+                                                        flags text\n\
                                                  )"];
         
         // um... do we need anything else?
@@ -587,6 +597,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         
         [cacheDB commit];
     }
+    
     [rs close];
     
     NSMutableArray *newFolders = [NSMutableArray array];
@@ -601,9 +612,6 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     [[NSNotificationCenter defaultCenter] postNotificationName:LBServerFolderUpdatedNotification
                                                         object:self
                                                       userInfo:nil];
-    
-    
-    
 }
 
 - (void)saveMessageToCache:(NSData*)messageData forMailbox:(NSString*)mailboxName {

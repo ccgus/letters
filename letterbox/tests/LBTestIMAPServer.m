@@ -9,6 +9,7 @@
 #import "LBTestIMAPServer.h"
 #import "LBTCPConnection.h"
 #import "TCPWriter.h"
+#import "LBNSStringAdditions.h"
 
 #define debug NSLog
 
@@ -43,6 +44,44 @@
     return ret;
 }
 
++ (LBAccount*)testAccount {
+    
+    LBAccount *acct = [[[LBAccount alloc] init] autorelease];
+    [acct setUsername:@"user"];
+    [acct setPassword:@"password"];
+    [acct setImapServer:@"localhost"];
+    [acct setImapPort:1430];
+    [acct setIsActive:YES];
+    [acct setImapTLS:NO];
+    
+    return acct;
+}
+
++ (LBAccount*)realAccount {
+    
+    // oh what to do here?
+    LBAccount *acct = [[[LBAccount alloc] init] autorelease];
+    [acct setUsername:@"gus"];
+    [acct setPassword:@"password"];
+    [acct setImapServer:@"ubuntu.local"];
+    [acct setImapPort:143];
+    [acct setIsActive:YES];
+    [acct setImapTLS:NO];
+    
+    return acct;
+}
+
+
+
+- (NSString*)pathToTestScript:(NSString*)scriptName {
+    NSString *myFilePath = [NSString stringWithUTF8String:__FILE__];
+    NSString *parentDir = [[myFilePath stringByDeletingLastPathComponent] stringByDeletingLastPathComponent];
+    NSString *testDir   = [[parentDir stringByAppendingPathComponent:@"tests"] stringByAppendingPathComponent:@"testscripts"];
+    NSString *taskPath  = [testDir stringByAppendingPathComponent:scriptName];
+    
+    return taskPath;
+}
+
 - (void)runScript:(NSString*)pathToScript {
     
     if (!listener) {
@@ -64,6 +103,7 @@
         
     }
     
+    pathToScript = [self pathToTestScript:pathToScript];
     
     NSDictionary *d = [NSDictionary dictionaryWithContentsOfFile:pathToScript];
     

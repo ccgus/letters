@@ -114,11 +114,3 @@
 
 @end
 
-
-@implementation NSString (LetterBoxAdditions)
-
-- (NSData*)utf8Data {
-    return [self dataUsingEncoding:NSUTF8StringEncoding];
-}
-
-@end

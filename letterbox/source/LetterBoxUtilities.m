@@ -30,7 +30,13 @@
  */
 
 #import "LetterBoxUtilities.h"
+#import "LBAddress.h"
 #import "JRLog.h"
+#import "LBEnvelopeTokenizer.h"
+#import "TDToken.h"
+#import "TDWhitespaceState.h"
+#import "TDCommentState.h"
+#import "LBNSStringAdditions.h"
 
 /* direction is 1 for send, 0 for receive, -1 when it does not apply */
 void letterbox_logger(int direction, const char * str, size_t size) {
@@ -205,88 +211,72 @@ NSString* LBUUIDString(void) {
     return [uuidString lowercaseString];
 }
 
-NSString * LBParseFetchResponseForFlags(NSString *fetchResponse, NSRange currentSectionRange) {
-    
-    // this should be easy.  Flags start with ( and end with ).
-    
-    NSUInteger startLoc = currentSectionRange.location + 1;
-    NSUInteger len      = [fetchResponse length];
-    
-    if (startLoc >= len) {
-        return nil;
-    }
-    
-    NSRange searchRange = NSMakeRange(NSMaxRange(currentSectionRange), [fetchResponse length] - (NSMaxRange(currentSectionRange)));
-    NSRange start       = [fetchResponse rangeOfString:@"(" options:0 range:searchRange];
-    NSRange end         = [fetchResponse rangeOfString:@")" options:0 range:searchRange];
-    
-    if (end.location == NSNotFound || start.location == NSNotFound) {
-        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
-        NSLog(@"Could not find end or start for the FLAGS tag");
-        return nil;
-    }
-    
-    NSString *sub = [fetchResponse substringWithRange:NSMakeRange(NSMaxRange(start) - 1, (end.location - NSMaxRange(start)) + 2)];
-    
-    return sub;
-}
 
-NSString * LBParseFetchResponseBetweenDelims(NSString *fetchResponse, NSRange currentSectionRange, NSString *startDelim, NSString *endDelim) {
-    
-    NSUInteger startLoc = currentSectionRange.location + 1;
-    NSUInteger len      = [fetchResponse length];
-    
-    if (startLoc >= len) {
-        return nil;
-    }
-    
-    NSRange searchRange = NSMakeRange(NSMaxRange(currentSectionRange), [fetchResponse length] - (NSMaxRange(currentSectionRange)));
-    NSRange start       = [fetchResponse rangeOfString:startDelim options:0 range:searchRange];
-    NSRange end         = [fetchResponse rangeOfString:endDelim   options:0 range:NSMakeRange(searchRange.location + 2, searchRange.length - 2)];
-    
-    if (end.location == NSNotFound || start.location == NSNotFound) {
-        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
-        NSLog(@"Could not find end or start for the LBParseFetchResponseBetweenDelims");
-        return nil;
-    }
-    
-    NSString *sub = [fetchResponse substringWithRange:NSMakeRange(NSMaxRange(start) - 1, (end.location - NSMaxRange(start)) + 2)];
-    
-    return sub;
-}
+/*
+http://tools.ietf.org/html/rfc3501#section-7.4.2
 
-NSString * LBParseFetchResponseNextWord(NSString *fetchResponse, NSRange currentSectionRange, NSString *word) {
-    
-    NSUInteger startLoc = currentSectionRange.location + [word length];
-    NSUInteger len      = [fetchResponse length];
-    
-    if (startLoc >= len) {
-        return nil;
-    }
-    
-    // the 5 is for FLAGS's length
-    NSRange searchRange = NSMakeRange(NSMaxRange(currentSectionRange), [fetchResponse length] - (NSMaxRange(currentSectionRange)));
-    NSRange spaceEnd    = [fetchResponse rangeOfString:@" " options:0 range:searchRange];
-    
-    
-    if (spaceEnd.location == NSNotFound) {
-        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
-        NSLog(@"Could not find spaceEnd");
-        return nil;
-    }
-    
-    NSString *sub = [fetchResponse substringWithRange:NSMakeRange(startLoc, NSMaxRange(spaceEnd))];
-    
-    
-    if ([word isEqualToString:@"INTERNALDATE"]) { // special case, get rid of the quotes
-        word = [word substringWithRange:NSMakeRange(1, [word length] - 2)];
-    }
-    
-    return sub;
-}
+    ENVELOPE
+         A parenthesized list that describes the envelope structure of a
+         message.  This is computed by the server by parsing the
+         [RFC-2822] header into the component parts, defaulting various
+         fields as necessary.
+
+         The fields of the envelope structure are in the following
+         order: date, subject, from, sender, reply-to, to, cc, bcc,
+         in-reply-to, and message-id.  The date, subject, in-reply-to,
+         and message-id fields are strings.  The from, sender, reply-to,
+         to, cc, and bcc fields are parenthesized lists of address
+         structures.
+
+         An address structure is a parenthesized list that describes an
+         electronic mail address.  The fields of an address structure
+         are in the following order: personal name, [SMTP]
+         at-domain-list (source route), mailbox name, and host name.
+
+         [RFC-2822] group syntax is indicated by a special form of
+         address structure in which the host name field is NIL.  If the
+         mailbox name field is also NIL, this is an end of group marker
+         (semi-colon in RFC 822 syntax).  If the mailbox name field is
+         non-NIL, this is a start of group marker, and the mailbox name
+         field holds the group name phrase.
+
+         If the Date, Subject, In-Reply-To, and Message-ID header lines
+         are absent in the [RFC-2822] header, the corresponding member
+         of the envelope is NIL; if these header lines are present but
+         empty the corresponding member of the envelope is the empty
+         string.
+         
+            Note: some servers may return a NIL envelope member in the
+            "present but empty" case.  Clients SHOULD treat NIL and
+            empty string as identical.
+
+            Note: [RFC-2822] requires that all messages have a valid
+            Date header.  Therefore, the date member in the envelope can
+            not be NIL or the empty string.
+
+            Note: [RFC-2822] requires that the In-Reply-To and
+            Message-ID headers, if present, have non-empty content.
+            Therefore, the in-reply-to and message-id members in the
+            envelope can not be the empty string.
+
+         If the From, To, cc, and bcc header lines are absent in the
+         [RFC-2822] header, or are present but empty, the corresponding
+         member of the envelope is NIL.
+
+         If the Sender or Reply-To lines are absent in the [RFC-2822]
+         header, or are present but empty, the server sets the
+         corresponding member of the envelope to be the same value as
+         the from member (the client is not expected to know to do
+         this).
+
+            Note: [RFC-2822] requires that all messages have a valid
+            From header.  Therefore, the from, sender, and reply-to
+            members in the envelope can not be NIL.
+*/
+
+
 
 NSDictionary* LBParseSimpleFetchResponse(NSString *fetchResponse) {
-    
     // http://tools.ietf.org/html/rfc3501#section-6.4.5
     
     // this guy has to be an untagged response, right?
@@ -298,75 +288,130 @@ NSDictionary* LBParseSimpleFetchResponse(NSString *fetchResponse) {
     
     NSMutableDictionary *d = [NSMutableDictionary dictionary];
     
-    NSRange startRange = [fetchResponse rangeOfString:@"FETCH"];
     
-    if (startRange.location == NSNotFound) {
-        return nil;
-    }
+    LBEnvelopeTokenizer *tokenizer  = [LBEnvelopeTokenizer tokenizerWithString:fetchResponse];
     
-    NSUInteger startLoc = NSMaxRange(startRange) + 1; // for the space after FETCH
-    NSUInteger strLength = [fetchResponse length];
+    //tokenizer.whitespaceState.reportsWhitespaceTokens = YES;
     
-    const char *c = [fetchResponse UTF8String];
-    c+= startLoc;
-    
-    if (*c == '(') {
-        // it's the start of the reponse in parens.  Just skip over it.
-        c++;
-        startLoc++;
-    }
-    
-    
-    NSRange currentSectionRange = NSMakeRange(startLoc, 0);
-    
-    while (*c) {
+    TDToken *eof                    = [TDToken EOFToken];
+    TDToken *tok                    = 0x00;
+    while ((tok = [tokenizer nextToken]) != eof) {
         
-        if (*c == ' ') {
+        NSString *tokS = [tok stringValue];
+        debug(@"tokS: '%@'", tokS);
+        
+        if ([tokS isEqualToString:@"FLAGS"]) {
             
-            NSString *word = [fetchResponse substringWithRange:currentSectionRange];
+            NSMutableString *flags = [NSMutableString string];
+            // should be a '(', so we skip over that.
+            [tokenizer nextToken];
             
-            NSString *value      = nil;
-            NSUInteger valOffset = 0;
-            
-            if ([word isEqualToString:@"FLAGS"]) {
-                value = LBParseFetchResponseBetweenDelims(fetchResponse, currentSectionRange, @"(", @")");
-                valOffset = [value length];
+            tokenizer.whitespaceState.reportsWhitespaceTokens = YES;
+            while (((tok = [tokenizer nextToken]) != eof) && ![[tok stringValue] isEqualToString:@")"]) {
+                [flags appendString:[tok stringValue]];
             }
-            else if ([word isEqualToString:@"INTERNALDATE"]) {
-                value = LBParseFetchResponseBetweenDelims(fetchResponse, currentSectionRange, @"\"", @"\"");
-                valOffset = [value length];
-                value = [value substringWithRange:NSMakeRange(1, [value length] - 2)]; // trim this guy
-            }
-            else if ([word isEqualToString:@"RFC822.SIZE"]) {
-                value = LBParseFetchResponseBetweenDelims(fetchResponse, currentSectionRange, @" ", @" ");
-                valOffset = [value length];
-                value = [value substringWithRange:NSMakeRange(1, [value length] - 2)]; // trim this guy
-            }
+            tokenizer.whitespaceState.reportsWhitespaceTokens = NO;
             
-            // FIXME: need to add ENVELOPE parsing
-            
-            if (value) {
-                [d setObject:value forKey:word];
-                currentSectionRange.location += valOffset;
-                c += valOffset;
-            }
-            
-            currentSectionRange.location = NSMaxRange(currentSectionRange) + 1;
-            currentSectionRange.length = -1;  // we'll get a ++ below
+            [d setObject:flags forKey:tokS];
         }
-        
-        
-        currentSectionRange.length++;
-        c++;
+        else if ([tokS isEqualToString:@"INTERNALDATE"] || [tokS isEqualToString:@".SIZE"] || [tokS isEqualToString:@"UID"]) {
+            
+            NSString *val = [[tokenizer nextToken] stringValue];
+            
+            val = [val stringByDeletingEndQuotes];
+            
+            if ([tokS isEqualToString:@".SIZE"]) {
+                #warning seems to be a shortcoming of the parsing kit, that we can't ge a . to be a word.  Fix?
+                tokS = @"RFC822.SIZE"; // seems to be a shortcoming of the parsing kit, that we can't ge a . to be a word.
+            }
+            
+            [d setObject:val forKey:tokS];
+        }
+        else if ([tokS isEqualToString:@"ENVELOPE"]) {
+            
+            NSArray *tokenSections = [NSArray arrayWithObjects:@"from", @"sender", @"reply-to", @"to", @"cc", @"bcc", nil];
+            
+            // should be the opening (
+            if (![[[tokenizer nextToken] stringValue] isEqualToString:@"("]) {
+                return nil;
+            }
+            
+            // alrighty, date, then subject
+            NSString *val = [[tokenizer nextToken] stringValue];
+            
+            if ([val hasPrefix:@"\""] && [val hasSuffix:@"\""]) {
+                val = [val substringWithRange:NSMakeRange(1, [val length] - 2)];
+                [d setObject:val forKey:@"date"];
+            }
+            
+            val = [[tokenizer nextToken] stringValue];
+            if ([val hasPrefix:@"\""] && [val hasSuffix:@"\""]) {
+                val = [val substringWithRange:NSMakeRange(1, [val length] - 2)];
+                [d setObject:val forKey:@"subject"];
+            }
+            
+            
+            // time to parse the addresses
+            for (NSString *tokSect in tokenSections) {
+                
+                tokS = [[tokenizer nextToken] stringValue];
+                
+                if ([tokS isEqualToString:@"NIL"]) {
+                    continue;
+                }
+                
+                if (![tokS isEqualToString:@"("]) {
+                    NSLog(@"No opening (! (got '%@')", tokS);
+                    return nil;
+                }
+                
+                NSMutableArray *addrs = [NSMutableArray array];
+                
+                [d setObject:addrs forKey:tokSect];
+                
+                while (YES) {
+                    
+                    if (![[[tokenizer nextToken] stringValue] isEqualToString:@"("]) {
+                        break;
+                    }
+                    
+                    NSString *personalName = [[tokenizer nextToken] stringValue];
+                    NSString *sourceRoute  = [[tokenizer nextToken] stringValue];
+                    NSString *mailboxName  = [[tokenizer nextToken] stringValue];
+                    NSString *hostName     = [[tokenizer nextToken] stringValue];
+                    [tokenizer nextToken]; // get rid of the )
+                    
+                    (void)sourceRoute;
+                    
+                    if ([personalName isEqualToString:@""] || [personalName isEqualToString:@"NIL"]) {
+                        personalName = nil;
+                    }
+                    
+                    debug(@"personalName: '%@'", personalName);
+                    debug(@"mailboxName: '%@@%@'", mailboxName, hostName);
+                    
+                    LBAddress *addr = [LBAddress addressWithName:[personalName stringByDeletingEndQuotes]
+                                                           email:[NSString stringWithFormat:@"%@@%@", [mailboxName stringByDeletingEndQuotes], [hostName stringByDeletingEndQuotes]]];
+                    
+                    [addrs addObject:addr];
+                }
+            }
+            
+            NSString *inReply   = [[tokenizer nextToken] stringValue];
+            NSString *messageId = [[tokenizer nextToken] stringValue];
+            
+            [d setObject:[inReply stringByDeletingEndQuotes] forKey:@"in-reply-to"];
+            [d setObject:[messageId stringByDeletingEndQuotes] forKey:@"message-id"];
+            
+            // finish off the )
+            [tokenizer nextToken];
+            
+            // in-reply-to, and message-id
+        }
     }
-    
-    
     
     return d;
-    
 }
-
-
 
 
 

@@ -19,8 +19,3 @@
 
 @end
 
-@interface NSString (LetterBoxAdditions)
-
-- (NSData*)utf8Data;
-
-@end

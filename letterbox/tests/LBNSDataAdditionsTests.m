@@ -8,6 +8,7 @@
 
 #import "LBNSDataAdditionsTests.h"
 #import "LBNSDataAdditions.h"
+#import "LBNSStringAdditions.h"
 
 @implementation LBNSDataAdditionsTests
 
@@ -32,7 +33,6 @@
 - (void)testDataStuffC {
     
     NSString *foo = @"Hello World,";
-    NSString *expected = @"Hello World,";
     NSString *got = [[foo utf8Data] lbFirstLine];
     
     // there's no crlf on this bit, so it should be nil.

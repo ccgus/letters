@@ -95,6 +95,102 @@
 		CCA0E822112A0F8B00110E76 /* LBTCPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA0E820112A0F8B00110E76 /* LBTCPConnection.m */; };
 		CCA0E825112A0FD800110E76 /* LBTCPReader.h in Headers */ = {isa = PBXBuildFile; fileRef = CCA0E823112A0FD800110E76 /* LBTCPReader.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CCA0E826112A0FD800110E76 /* LBTCPReader.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA0E824112A0FD800110E76 /* LBTCPReader.m */; };
+		CCAF144A113B1CA400CE220F /* LBServerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CCAF1449113B1CA400CE220F /* LBServerTests.m */; };
+		CCCB7C36113B662A00B2F291 /* TDAlternation.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7BD9113B662A00B2F291 /* TDAlternation.h */; };
+		CCCB7C37113B662A00B2F291 /* TDAlternation.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7BDA113B662A00B2F291 /* TDAlternation.m */; };
+		CCCB7C38113B662A00B2F291 /* TDAny.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7BDB113B662A00B2F291 /* TDAny.h */; };
+		CCCB7C39113B662A00B2F291 /* TDAny.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7BDC113B662A00B2F291 /* TDAny.m */; };
+		CCCB7C3A113B662A00B2F291 /* TDAssembly.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7BDD113B662A00B2F291 /* TDAssembly.h */; };
+		CCCB7C3B113B662A00B2F291 /* TDAssembly.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7BDE113B662A00B2F291 /* TDAssembly.m */; };
+		CCCB7C3C113B662A00B2F291 /* TDCaseInsensitiveLiteral.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7BDF113B662A00B2F291 /* TDCaseInsensitiveLiteral.h */; };
+		CCCB7C3D113B662A00B2F291 /* TDCaseInsensitiveLiteral.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7BE0113B662A00B2F291 /* TDCaseInsensitiveLiteral.m */; };
+		CCCB7C3E113B662A00B2F291 /* TDChar.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7BE1113B662A00B2F291 /* TDChar.h */; };
+		CCCB7C3F113B662A00B2F291 /* TDChar.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7BE2113B662A00B2F291 /* TDChar.m */; };
+		CCCB7C40113B662A00B2F291 /* TDCharacterAssembly.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7BE3113B662A00B2F291 /* TDCharacterAssembly.h */; };
+		CCCB7C41113B662A00B2F291 /* TDCharacterAssembly.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7BE4113B662A00B2F291 /* TDCharacterAssembly.m */; };
+		CCCB7C42113B662A00B2F291 /* TDCollectionParser.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7BE5113B662A00B2F291 /* TDCollectionParser.h */; };
+		CCCB7C43113B662A00B2F291 /* TDCollectionParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7BE6113B662A00B2F291 /* TDCollectionParser.m */; };
+		CCCB7C44113B662A00B2F291 /* TDComment.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7BE7113B662A00B2F291 /* TDComment.h */; };
+		CCCB7C45113B662A00B2F291 /* TDComment.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7BE8113B662A00B2F291 /* TDComment.m */; };
+		CCCB7C46113B662A00B2F291 /* TDCommentState.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7BE9113B662A00B2F291 /* TDCommentState.h */; };
+		CCCB7C47113B662A00B2F291 /* TDCommentState.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7BEA113B662A00B2F291 /* TDCommentState.m */; };
+		CCCB7C48113B662A00B2F291 /* TDDigit.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7BEB113B662A00B2F291 /* TDDigit.h */; };
+		CCCB7C49113B662A00B2F291 /* TDDigit.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7BEC113B662A00B2F291 /* TDDigit.m */; };
+		CCCB7C4A113B662A00B2F291 /* TDEmpty.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7BED113B662A00B2F291 /* TDEmpty.h */; };
+		CCCB7C4B113B662A00B2F291 /* TDEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7BEE113B662A00B2F291 /* TDEmpty.m */; };
+		CCCB7C4C113B662A00B2F291 /* TDLetter.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7BEF113B662A00B2F291 /* TDLetter.h */; };
+		CCCB7C4D113B662A00B2F291 /* TDLetter.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7BF0113B662A00B2F291 /* TDLetter.m */; };
+		CCCB7C4E113B662A00B2F291 /* TDLiteral.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7BF1113B662A00B2F291 /* TDLiteral.h */; };
+		CCCB7C4F113B662A00B2F291 /* TDLiteral.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7BF2113B662A00B2F291 /* TDLiteral.m */; };
+		CCCB7C50113B662A00B2F291 /* TDLowercaseWord.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7BF3113B662A00B2F291 /* TDLowercaseWord.h */; };
+		CCCB7C51113B662A00B2F291 /* TDLowercaseWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7BF4113B662A00B2F291 /* TDLowercaseWord.m */; };
+		CCCB7C52113B662A00B2F291 /* TDMultiLineCommentState.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7BF5113B662A00B2F291 /* TDMultiLineCommentState.h */; };
+		CCCB7C53113B662A00B2F291 /* TDMultiLineCommentState.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7BF6113B662A00B2F291 /* TDMultiLineCommentState.m */; };
+		CCCB7C54113B662A00B2F291 /* TDNonReservedWord.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7BF7113B662A00B2F291 /* TDNonReservedWord.h */; };
+		CCCB7C55113B662A00B2F291 /* TDNonReservedWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7BF8113B662A00B2F291 /* TDNonReservedWord.m */; };
+		CCCB7C56113B662A00B2F291 /* TDNum.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7BF9113B662A00B2F291 /* TDNum.h */; };
+		CCCB7C57113B662A00B2F291 /* TDNum.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7BFA113B662A00B2F291 /* TDNum.m */; };
+		CCCB7C58113B662A00B2F291 /* TDNumberState.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7BFB113B662A00B2F291 /* TDNumberState.h */; };
+		CCCB7C59113B662A00B2F291 /* TDNumberState.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7BFC113B662A00B2F291 /* TDNumberState.m */; };
+		CCCB7C5A113B662A00B2F291 /* TDParseKit.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7BFD113B662A00B2F291 /* TDParseKit.h */; };
+		CCCB7C5B113B662A00B2F291 /* TDParser.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7BFE113B662A00B2F291 /* TDParser.h */; };
+		CCCB7C5C113B662A00B2F291 /* TDParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7BFF113B662A00B2F291 /* TDParser.m */; };
+		CCCB7C5D113B662A00B2F291 /* TDQuotedString.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C00113B662A00B2F291 /* TDQuotedString.h */; };
+		CCCB7C5E113B662A00B2F291 /* TDQuotedString.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C01113B662A00B2F291 /* TDQuotedString.m */; };
+		CCCB7C5F113B662A00B2F291 /* TDQuoteState.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C02113B662A00B2F291 /* TDQuoteState.h */; };
+		CCCB7C60113B662A00B2F291 /* TDQuoteState.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C03113B662A00B2F291 /* TDQuoteState.m */; };
+		CCCB7C61113B662A00B2F291 /* TDReader.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C04113B662A00B2F291 /* TDReader.h */; };
+		CCCB7C62113B662A00B2F291 /* TDReader.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C05113B662A00B2F291 /* TDReader.m */; };
+		CCCB7C63113B662A00B2F291 /* TDRepetition.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C06113B662A00B2F291 /* TDRepetition.h */; };
+		CCCB7C64113B662A00B2F291 /* TDRepetition.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C07113B662A00B2F291 /* TDRepetition.m */; };
+		CCCB7C65113B662A00B2F291 /* TDReservedWord.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C08113B662A00B2F291 /* TDReservedWord.h */; };
+		CCCB7C66113B662A00B2F291 /* TDReservedWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C09113B662A00B2F291 /* TDReservedWord.m */; };
+		CCCB7C67113B662A00B2F291 /* TDScientificNumberState.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C0A113B662A00B2F291 /* TDScientificNumberState.h */; };
+		CCCB7C68113B662A00B2F291 /* TDScientificNumberState.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C0B113B662A00B2F291 /* TDScientificNumberState.m */; };
+		CCCB7C69113B662A00B2F291 /* TDSequence.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C0C113B662A00B2F291 /* TDSequence.h */; };
+		CCCB7C6A113B662A00B2F291 /* TDSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C0D113B662A00B2F291 /* TDSequence.m */; };
+		CCCB7C6D113B662A00B2F291 /* TDSingleLineCommentState.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C10113B662A00B2F291 /* TDSingleLineCommentState.h */; };
+		CCCB7C6E113B662A00B2F291 /* TDSingleLineCommentState.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C11113B662A00B2F291 /* TDSingleLineCommentState.m */; };
+		CCCB7C6F113B662A00B2F291 /* TDSpecificChar.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C12113B662A00B2F291 /* TDSpecificChar.h */; };
+		CCCB7C70113B662A00B2F291 /* TDSpecificChar.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C13113B662A00B2F291 /* TDSpecificChar.m */; };
+		CCCB7C71113B662A00B2F291 /* TDSymbol.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C14113B662A00B2F291 /* TDSymbol.h */; };
+		CCCB7C72113B662A00B2F291 /* TDSymbol.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C15113B662A00B2F291 /* TDSymbol.m */; };
+		CCCB7C73113B662A00B2F291 /* TDSymbolNode.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C16113B662A00B2F291 /* TDSymbolNode.h */; };
+		CCCB7C74113B662A00B2F291 /* TDSymbolNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C17113B662A00B2F291 /* TDSymbolNode.m */; };
+		CCCB7C75113B662A00B2F291 /* TDSymbolRootNode.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C18113B662A00B2F291 /* TDSymbolRootNode.h */; };
+		CCCB7C76113B662A00B2F291 /* TDSymbolRootNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C19113B662A00B2F291 /* TDSymbolRootNode.m */; };
+		CCCB7C77113B662A00B2F291 /* TDSymbolState.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C1A113B662A00B2F291 /* TDSymbolState.h */; };
+		CCCB7C78113B662A00B2F291 /* TDSymbolState.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C1B113B662A00B2F291 /* TDSymbolState.m */; };
+		CCCB7C79113B662A00B2F291 /* TDTerminal.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C1C113B662A00B2F291 /* TDTerminal.h */; };
+		CCCB7C7A113B662A00B2F291 /* TDTerminal.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C1D113B662A00B2F291 /* TDTerminal.m */; };
+		CCCB7C7B113B662A00B2F291 /* TDToken.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C1E113B662A00B2F291 /* TDToken.h */; };
+		CCCB7C7C113B662A00B2F291 /* TDToken.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C1F113B662A00B2F291 /* TDToken.m */; };
+		CCCB7C7D113B662A00B2F291 /* TDTokenArraySource.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C20113B662A00B2F291 /* TDTokenArraySource.h */; };
+		CCCB7C7E113B662A00B2F291 /* TDTokenArraySource.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C21113B662A00B2F291 /* TDTokenArraySource.m */; };
+		CCCB7C7F113B662A00B2F291 /* TDTokenAssembly.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C22113B662A00B2F291 /* TDTokenAssembly.h */; };
+		CCCB7C80113B662A00B2F291 /* TDTokenAssembly.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C23113B662A00B2F291 /* TDTokenAssembly.m */; };
+		CCCB7C81113B662A00B2F291 /* TDTokenizer.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C24113B662A00B2F291 /* TDTokenizer.h */; };
+		CCCB7C82113B662A00B2F291 /* TDTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C25113B662A00B2F291 /* TDTokenizer.m */; };
+		CCCB7C83113B662A00B2F291 /* TDTokenizerState.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C26113B662A00B2F291 /* TDTokenizerState.h */; };
+		CCCB7C84113B662A00B2F291 /* TDTokenizerState.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C27113B662A00B2F291 /* TDTokenizerState.m */; };
+		CCCB7C85113B662A00B2F291 /* TDTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C28113B662A00B2F291 /* TDTrack.h */; };
+		CCCB7C86113B662A00B2F291 /* TDTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C29113B662A00B2F291 /* TDTrack.m */; };
+		CCCB7C87113B662A00B2F291 /* TDTrackException.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C2A113B662A00B2F291 /* TDTrackException.h */; };
+		CCCB7C88113B662A00B2F291 /* TDTrackException.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C2B113B662A00B2F291 /* TDTrackException.m */; };
+		CCCB7C89113B662A00B2F291 /* TDUppercaseWord.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C2C113B662A00B2F291 /* TDUppercaseWord.h */; };
+		CCCB7C8A113B662A00B2F291 /* TDUppercaseWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C2D113B662A00B2F291 /* TDUppercaseWord.m */; };
+		CCCB7C8B113B662A00B2F291 /* TDWhitespaceState.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C2E113B662A00B2F291 /* TDWhitespaceState.h */; };
+		CCCB7C8C113B662A00B2F291 /* TDWhitespaceState.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C2F113B662A00B2F291 /* TDWhitespaceState.m */; };
+		CCCB7C8D113B662A00B2F291 /* TDWord.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C30113B662A00B2F291 /* TDWord.h */; };
+		CCCB7C8E113B662A00B2F291 /* TDWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C31113B662A00B2F291 /* TDWord.m */; };
+		CCCB7C8F113B662A00B2F291 /* TDWordOrReservedState.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C32113B662A00B2F291 /* TDWordOrReservedState.h */; };
+		CCCB7C90113B662A00B2F291 /* TDWordOrReservedState.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C33113B662A00B2F291 /* TDWordOrReservedState.m */; };
+		CCCB7C91113B662A00B2F291 /* TDWordState.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7C34113B662A00B2F291 /* TDWordState.h */; };
+		CCCB7C92113B662A00B2F291 /* TDWordState.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7C35113B662A00B2F291 /* TDWordState.m */; };
+		CCCB7D1D113B6B0700B2F291 /* LBEnvelopeTokenizer.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7D1B113B6B0700B2F291 /* LBEnvelopeTokenizer.h */; };
+		CCCB7D1E113B6B0700B2F291 /* LBEnvelopeTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7D1C113B6B0700B2F291 /* LBEnvelopeTokenizer.m */; };
+		CCCB7DBC113B764C00B2F291 /* LBNSStringAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = CCCB7DBA113B764C00B2F291 /* LBNSStringAdditions.h */; };
+		CCCB7DBD113B764C00B2F291 /* LBNSStringAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB7DBB113B764C00B2F291 /* LBNSStringAdditions.m */; };
 		CCD58CD5110BD9A30077F572 /* LBIMAPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = CCD58CD3110BD9A30077F572 /* LBIMAPConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CCD58CD6110BD9A30077F572 /* LBIMAPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = CCD58CD4110BD9A30077F572 /* LBIMAPConnection.m */; };
 		CCD721831115257A003C14AC /* LBFolder.h in Headers */ = {isa = PBXBuildFile; fileRef = CCD721811115257A003C14AC /* LBFolder.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -241,6 +337,103 @@
 		CCA0E824112A0FD800110E76 /* LBTCPReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBTCPReader.m; path = source/LBTCPReader.m; sourceTree = "<group>"; };
 		CCA553E01106DB6B00CEEFF4 /* Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Tests-Info.plist"; path = "resources/Tests-Info.plist"; sourceTree = "<group>"; };
 		CCA553E21106DB7100CEEFF4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = resources/Info.plist; sourceTree = "<group>"; };
+		CCAF1448113B1CA400CE220F /* LBServerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBServerTests.h; path = tests/LBServerTests.h; sourceTree = "<group>"; };
+		CCAF1449113B1CA400CE220F /* LBServerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBServerTests.m; path = tests/LBServerTests.m; sourceTree = "<group>"; };
+		CCCB7BD9113B662A00B2F291 /* TDAlternation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAlternation.h; sourceTree = "<group>"; };
+		CCCB7BDA113B662A00B2F291 /* TDAlternation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAlternation.m; sourceTree = "<group>"; };
+		CCCB7BDB113B662A00B2F291 /* TDAny.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAny.h; sourceTree = "<group>"; };
+		CCCB7BDC113B662A00B2F291 /* TDAny.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAny.m; sourceTree = "<group>"; };
+		CCCB7BDD113B662A00B2F291 /* TDAssembly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAssembly.h; sourceTree = "<group>"; };
+		CCCB7BDE113B662A00B2F291 /* TDAssembly.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAssembly.m; sourceTree = "<group>"; };
+		CCCB7BDF113B662A00B2F291 /* TDCaseInsensitiveLiteral.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDCaseInsensitiveLiteral.h; sourceTree = "<group>"; };
+		CCCB7BE0113B662A00B2F291 /* TDCaseInsensitiveLiteral.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDCaseInsensitiveLiteral.m; sourceTree = "<group>"; };
+		CCCB7BE1113B662A00B2F291 /* TDChar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDChar.h; sourceTree = "<group>"; };
+		CCCB7BE2113B662A00B2F291 /* TDChar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDChar.m; sourceTree = "<group>"; };
+		CCCB7BE3113B662A00B2F291 /* TDCharacterAssembly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDCharacterAssembly.h; sourceTree = "<group>"; };
+		CCCB7BE4113B662A00B2F291 /* TDCharacterAssembly.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDCharacterAssembly.m; sourceTree = "<group>"; };
+		CCCB7BE5113B662A00B2F291 /* TDCollectionParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDCollectionParser.h; sourceTree = "<group>"; };
+		CCCB7BE6113B662A00B2F291 /* TDCollectionParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDCollectionParser.m; sourceTree = "<group>"; };
+		CCCB7BE7113B662A00B2F291 /* TDComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDComment.h; sourceTree = "<group>"; };
+		CCCB7BE8113B662A00B2F291 /* TDComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDComment.m; sourceTree = "<group>"; };
+		CCCB7BE9113B662A00B2F291 /* TDCommentState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDCommentState.h; sourceTree = "<group>"; };
+		CCCB7BEA113B662A00B2F291 /* TDCommentState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDCommentState.m; sourceTree = "<group>"; };
+		CCCB7BEB113B662A00B2F291 /* TDDigit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDDigit.h; sourceTree = "<group>"; };
+		CCCB7BEC113B662A00B2F291 /* TDDigit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDDigit.m; sourceTree = "<group>"; };
+		CCCB7BED113B662A00B2F291 /* TDEmpty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDEmpty.h; sourceTree = "<group>"; };
+		CCCB7BEE113B662A00B2F291 /* TDEmpty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDEmpty.m; sourceTree = "<group>"; };
+		CCCB7BEF113B662A00B2F291 /* TDLetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDLetter.h; sourceTree = "<group>"; };
+		CCCB7BF0113B662A00B2F291 /* TDLetter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDLetter.m; sourceTree = "<group>"; };
+		CCCB7BF1113B662A00B2F291 /* TDLiteral.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDLiteral.h; sourceTree = "<group>"; };
+		CCCB7BF2113B662A00B2F291 /* TDLiteral.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDLiteral.m; sourceTree = "<group>"; };
+		CCCB7BF3113B662A00B2F291 /* TDLowercaseWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDLowercaseWord.h; sourceTree = "<group>"; };
+		CCCB7BF4113B662A00B2F291 /* TDLowercaseWord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDLowercaseWord.m; sourceTree = "<group>"; };
+		CCCB7BF5113B662A00B2F291 /* TDMultiLineCommentState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDMultiLineCommentState.h; sourceTree = "<group>"; };
+		CCCB7BF6113B662A00B2F291 /* TDMultiLineCommentState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDMultiLineCommentState.m; sourceTree = "<group>"; };
+		CCCB7BF7113B662A00B2F291 /* TDNonReservedWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDNonReservedWord.h; sourceTree = "<group>"; };
+		CCCB7BF8113B662A00B2F291 /* TDNonReservedWord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDNonReservedWord.m; sourceTree = "<group>"; };
+		CCCB7BF9113B662A00B2F291 /* TDNum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDNum.h; sourceTree = "<group>"; };
+		CCCB7BFA113B662A00B2F291 /* TDNum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDNum.m; sourceTree = "<group>"; };
+		CCCB7BFB113B662A00B2F291 /* TDNumberState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDNumberState.h; sourceTree = "<group>"; };
+		CCCB7BFC113B662A00B2F291 /* TDNumberState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDNumberState.m; sourceTree = "<group>"; };
+		CCCB7BFD113B662A00B2F291 /* TDParseKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDParseKit.h; sourceTree = "<group>"; };
+		CCCB7BFE113B662A00B2F291 /* TDParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDParser.h; sourceTree = "<group>"; };
+		CCCB7BFF113B662A00B2F291 /* TDParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDParser.m; sourceTree = "<group>"; };
+		CCCB7C00113B662A00B2F291 /* TDQuotedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDQuotedString.h; sourceTree = "<group>"; };
+		CCCB7C01113B662A00B2F291 /* TDQuotedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDQuotedString.m; sourceTree = "<group>"; };
+		CCCB7C02113B662A00B2F291 /* TDQuoteState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDQuoteState.h; sourceTree = "<group>"; };
+		CCCB7C03113B662A00B2F291 /* TDQuoteState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDQuoteState.m; sourceTree = "<group>"; };
+		CCCB7C04113B662A00B2F291 /* TDReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDReader.h; sourceTree = "<group>"; };
+		CCCB7C05113B662A00B2F291 /* TDReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDReader.m; sourceTree = "<group>"; };
+		CCCB7C06113B662A00B2F291 /* TDRepetition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDRepetition.h; sourceTree = "<group>"; };
+		CCCB7C07113B662A00B2F291 /* TDRepetition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDRepetition.m; sourceTree = "<group>"; };
+		CCCB7C08113B662A00B2F291 /* TDReservedWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDReservedWord.h; sourceTree = "<group>"; };
+		CCCB7C09113B662A00B2F291 /* TDReservedWord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDReservedWord.m; sourceTree = "<group>"; };
+		CCCB7C0A113B662A00B2F291 /* TDScientificNumberState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDScientificNumberState.h; sourceTree = "<group>"; };
+		CCCB7C0B113B662A00B2F291 /* TDScientificNumberState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDScientificNumberState.m; sourceTree = "<group>"; };
+		CCCB7C0C113B662A00B2F291 /* TDSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSequence.h; sourceTree = "<group>"; };
+		CCCB7C0D113B662A00B2F291 /* TDSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSequence.m; sourceTree = "<group>"; };
+		CCCB7C10113B662A00B2F291 /* TDSingleLineCommentState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSingleLineCommentState.h; sourceTree = "<group>"; };
+		CCCB7C11113B662A00B2F291 /* TDSingleLineCommentState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSingleLineCommentState.m; sourceTree = "<group>"; };
+		CCCB7C12113B662A00B2F291 /* TDSpecificChar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSpecificChar.h; sourceTree = "<group>"; };
+		CCCB7C13113B662A00B2F291 /* TDSpecificChar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSpecificChar.m; sourceTree = "<group>"; };
+		CCCB7C14113B662A00B2F291 /* TDSymbol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSymbol.h; sourceTree = "<group>"; };
+		CCCB7C15113B662A00B2F291 /* TDSymbol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSymbol.m; sourceTree = "<group>"; };
+		CCCB7C16113B662A00B2F291 /* TDSymbolNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSymbolNode.h; sourceTree = "<group>"; };
+		CCCB7C17113B662A00B2F291 /* TDSymbolNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSymbolNode.m; sourceTree = "<group>"; };
+		CCCB7C18113B662A00B2F291 /* TDSymbolRootNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSymbolRootNode.h; sourceTree = "<group>"; };
+		CCCB7C19113B662A00B2F291 /* TDSymbolRootNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSymbolRootNode.m; sourceTree = "<group>"; };
+		CCCB7C1A113B662A00B2F291 /* TDSymbolState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSymbolState.h; sourceTree = "<group>"; };
+		CCCB7C1B113B662A00B2F291 /* TDSymbolState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSymbolState.m; sourceTree = "<group>"; };
+		CCCB7C1C113B662A00B2F291 /* TDTerminal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTerminal.h; sourceTree = "<group>"; };
+		CCCB7C1D113B662A00B2F291 /* TDTerminal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTerminal.m; sourceTree = "<group>"; };
+		CCCB7C1E113B662A00B2F291 /* TDToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDToken.h; sourceTree = "<group>"; };
+		CCCB7C1F113B662A00B2F291 /* TDToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDToken.m; sourceTree = "<group>"; };
+		CCCB7C20113B662A00B2F291 /* TDTokenArraySource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTokenArraySource.h; sourceTree = "<group>"; };
+		CCCB7C21113B662A00B2F291 /* TDTokenArraySource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTokenArraySource.m; sourceTree = "<group>"; };
+		CCCB7C22113B662A00B2F291 /* TDTokenAssembly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTokenAssembly.h; sourceTree = "<group>"; };
+		CCCB7C23113B662A00B2F291 /* TDTokenAssembly.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTokenAssembly.m; sourceTree = "<group>"; };
+		CCCB7C24113B662A00B2F291 /* TDTokenizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTokenizer.h; sourceTree = "<group>"; };
+		CCCB7C25113B662A00B2F291 /* TDTokenizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTokenizer.m; sourceTree = "<group>"; };
+		CCCB7C26113B662A00B2F291 /* TDTokenizerState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTokenizerState.h; sourceTree = "<group>"; };
+		CCCB7C27113B662A00B2F291 /* TDTokenizerState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTokenizerState.m; sourceTree = "<group>"; };
+		CCCB7C28113B662A00B2F291 /* TDTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTrack.h; sourceTree = "<group>"; };
+		CCCB7C29113B662A00B2F291 /* TDTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTrack.m; sourceTree = "<group>"; };
+		CCCB7C2A113B662A00B2F291 /* TDTrackException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTrackException.h; sourceTree = "<group>"; };
+		CCCB7C2B113B662A00B2F291 /* TDTrackException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTrackException.m; sourceTree = "<group>"; };
+		CCCB7C2C113B662A00B2F291 /* TDUppercaseWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDUppercaseWord.h; sourceTree = "<group>"; };
+		CCCB7C2D113B662A00B2F291 /* TDUppercaseWord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDUppercaseWord.m; sourceTree = "<group>"; };
+		CCCB7C2E113B662A00B2F291 /* TDWhitespaceState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDWhitespaceState.h; sourceTree = "<group>"; };
+		CCCB7C2F113B662A00B2F291 /* TDWhitespaceState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDWhitespaceState.m; sourceTree = "<group>"; };
+		CCCB7C30113B662A00B2F291 /* TDWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDWord.h; sourceTree = "<group>"; };
+		CCCB7C31113B662A00B2F291 /* TDWord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDWord.m; sourceTree = "<group>"; };
+		CCCB7C32113B662A00B2F291 /* TDWordOrReservedState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDWordOrReservedState.h; sourceTree = "<group>"; };
+		CCCB7C33113B662A00B2F291 /* TDWordOrReservedState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDWordOrReservedState.m; sourceTree = "<group>"; };
+		CCCB7C34113B662A00B2F291 /* TDWordState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDWordState.h; sourceTree = "<group>"; };
+		CCCB7C35113B662A00B2F291 /* TDWordState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDWordState.m; sourceTree = "<group>"; };
+		CCCB7D1B113B6B0700B2F291 /* LBEnvelopeTokenizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBEnvelopeTokenizer.h; path = source/LBEnvelopeTokenizer.h; sourceTree = "<group>"; };
+		CCCB7D1C113B6B0700B2F291 /* LBEnvelopeTokenizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBEnvelopeTokenizer.m; path = source/LBEnvelopeTokenizer.m; sourceTree = "<group>"; };
+		CCCB7DBA113B764C00B2F291 /* LBNSStringAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBNSStringAdditions.h; path = source/LBNSStringAdditions.h; sourceTree = "<group>"; };
+		CCCB7DBB113B764C00B2F291 /* LBNSStringAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBNSStringAdditions.m; path = source/LBNSStringAdditions.m; sourceTree = "<group>"; };
 		CCD58CD3110BD9A30077F572 /* LBIMAPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBIMAPConnection.h; path = source/LBIMAPConnection.h; sourceTree = "<group>"; };
 		CCD58CD4110BD9A30077F572 /* LBIMAPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBIMAPConnection.m; path = source/LBIMAPConnection.m; sourceTree = "<group>"; };
 		CCD721811115257A003C14AC /* LBFolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBFolder.h; path = source/LBFolder.h; sourceTree = "<group>"; };
@@ -327,6 +520,7 @@
 		08FB77AEFE84172EC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				CCCB7BD8113B662A00B2F291 /* todparsekit */,
 				CC2212BC11320870000B46D8 /* Additions */,
 				CC8998D11118C2200024616B /* MooseYard */,
 				CC3D541C1108E7AC00EEEF77 /* FMDB */,
@@ -359,6 +553,8 @@
 				CC877CD2110ABC04005ECF65 /* LetterBoxTypes.h */,
 				CC877CD1110ABC04005ECF65 /* LetterBoxUtilities.h */,
 				CC877CD0110ABC04005ECF65 /* LetterBoxUtilities.m */,
+				CCCB7D1B113B6B0700B2F291 /* LBEnvelopeTokenizer.h */,
+				CCCB7D1C113B6B0700B2F291 /* LBEnvelopeTokenizer.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -404,6 +600,8 @@
 			children = (
 				CC2212BD11320883000B46D8 /* LBNSDataAdditions.h */,
 				CC2212BE11320883000B46D8 /* LBNSDataAdditions.m */,
+				CCCB7DBA113B764C00B2F291 /* LBNSStringAdditions.h */,
+				CCCB7DBB113B764C00B2F291 /* LBNSStringAdditions.m */,
 			);
 			name = Additions;
 			sourceTree = "<group>";
@@ -494,6 +692,104 @@
 			path = mooseyard/MYNetwork/TCP;
 			sourceTree = "<group>";
 		};
+		CCCB7BD8113B662A00B2F291 /* todparsekit */ = {
+			isa = PBXGroup;
+			children = (
+				CCCB7BD9113B662A00B2F291 /* TDAlternation.h */,
+				CCCB7BDA113B662A00B2F291 /* TDAlternation.m */,
+				CCCB7BDB113B662A00B2F291 /* TDAny.h */,
+				CCCB7BDC113B662A00B2F291 /* TDAny.m */,
+				CCCB7BDD113B662A00B2F291 /* TDAssembly.h */,
+				CCCB7BDE113B662A00B2F291 /* TDAssembly.m */,
+				CCCB7BDF113B662A00B2F291 /* TDCaseInsensitiveLiteral.h */,
+				CCCB7BE0113B662A00B2F291 /* TDCaseInsensitiveLiteral.m */,
+				CCCB7BE1113B662A00B2F291 /* TDChar.h */,
+				CCCB7BE2113B662A00B2F291 /* TDChar.m */,
+				CCCB7BE3113B662A00B2F291 /* TDCharacterAssembly.h */,
+				CCCB7BE4113B662A00B2F291 /* TDCharacterAssembly.m */,
+				CCCB7BE5113B662A00B2F291 /* TDCollectionParser.h */,
+				CCCB7BE6113B662A00B2F291 /* TDCollectionParser.m */,
+				CCCB7BE7113B662A00B2F291 /* TDComment.h */,
+				CCCB7BE8113B662A00B2F291 /* TDComment.m */,
+				CCCB7BE9113B662A00B2F291 /* TDCommentState.h */,
+				CCCB7BEA113B662A00B2F291 /* TDCommentState.m */,
+				CCCB7BEB113B662A00B2F291 /* TDDigit.h */,
+				CCCB7BEC113B662A00B2F291 /* TDDigit.m */,
+				CCCB7BED113B662A00B2F291 /* TDEmpty.h */,
+				CCCB7BEE113B662A00B2F291 /* TDEmpty.m */,
+				CCCB7BEF113B662A00B2F291 /* TDLetter.h */,
+				CCCB7BF0113B662A00B2F291 /* TDLetter.m */,
+				CCCB7BF1113B662A00B2F291 /* TDLiteral.h */,
+				CCCB7BF2113B662A00B2F291 /* TDLiteral.m */,
+				CCCB7BF3113B662A00B2F291 /* TDLowercaseWord.h */,
+				CCCB7BF4113B662A00B2F291 /* TDLowercaseWord.m */,
+				CCCB7BF5113B662A00B2F291 /* TDMultiLineCommentState.h */,
+				CCCB7BF6113B662A00B2F291 /* TDMultiLineCommentState.m */,
+				CCCB7BF7113B662A00B2F291 /* TDNonReservedWord.h */,
+				CCCB7BF8113B662A00B2F291 /* TDNonReservedWord.m */,
+				CCCB7BF9113B662A00B2F291 /* TDNum.h */,
+				CCCB7BFA113B662A00B2F291 /* TDNum.m */,
+				CCCB7BFB113B662A00B2F291 /* TDNumberState.h */,
+				CCCB7BFC113B662A00B2F291 /* TDNumberState.m */,
+				CCCB7BFD113B662A00B2F291 /* TDParseKit.h */,
+				CCCB7BFE113B662A00B2F291 /* TDParser.h */,
+				CCCB7BFF113B662A00B2F291 /* TDParser.m */,
+				CCCB7C00113B662A00B2F291 /* TDQuotedString.h */,
+				CCCB7C01113B662A00B2F291 /* TDQuotedString.m */,
+				CCCB7C02113B662A00B2F291 /* TDQuoteState.h */,
+				CCCB7C03113B662A00B2F291 /* TDQuoteState.m */,
+				CCCB7C04113B662A00B2F291 /* TDReader.h */,
+				CCCB7C05113B662A00B2F291 /* TDReader.m */,
+				CCCB7C06113B662A00B2F291 /* TDRepetition.h */,
+				CCCB7C07113B662A00B2F291 /* TDRepetition.m */,
+				CCCB7C08113B662A00B2F291 /* TDReservedWord.h */,
+				CCCB7C09113B662A00B2F291 /* TDReservedWord.m */,
+				CCCB7C0A113B662A00B2F291 /* TDScientificNumberState.h */,
+				CCCB7C0B113B662A00B2F291 /* TDScientificNumberState.m */,
+				CCCB7C0C113B662A00B2F291 /* TDSequence.h */,
+				CCCB7C0D113B662A00B2F291 /* TDSequence.m */,
+				CCCB7C10113B662A00B2F291 /* TDSingleLineCommentState.h */,
+				CCCB7C11113B662A00B2F291 /* TDSingleLineCommentState.m */,
+				CCCB7C12113B662A00B2F291 /* TDSpecificChar.h */,
+				CCCB7C13113B662A00B2F291 /* TDSpecificChar.m */,
+				CCCB7C14113B662A00B2F291 /* TDSymbol.h */,
+				CCCB7C15113B662A00B2F291 /* TDSymbol.m */,
+				CCCB7C16113B662A00B2F291 /* TDSymbolNode.h */,
+				CCCB7C17113B662A00B2F291 /* TDSymbolNode.m */,
+				CCCB7C18113B662A00B2F291 /* TDSymbolRootNode.h */,
+				CCCB7C19113B662A00B2F291 /* TDSymbolRootNode.m */,
+				CCCB7C1A113B662A00B2F291 /* TDSymbolState.h */,
+				CCCB7C1B113B662A00B2F291 /* TDSymbolState.m */,
+				CCCB7C1C113B662A00B2F291 /* TDTerminal.h */,
+				CCCB7C1D113B662A00B2F291 /* TDTerminal.m */,
+				CCCB7C1E113B662A00B2F291 /* TDToken.h */,
+				CCCB7C1F113B662A00B2F291 /* TDToken.m */,
+				CCCB7C20113B662A00B2F291 /* TDTokenArraySource.h */,
+				CCCB7C21113B662A00B2F291 /* TDTokenArraySource.m */,
+				CCCB7C22113B662A00B2F291 /* TDTokenAssembly.h */,
+				CCCB7C23113B662A00B2F291 /* TDTokenAssembly.m */,
+				CCCB7C24113B662A00B2F291 /* TDTokenizer.h */,
+				CCCB7C25113B662A00B2F291 /* TDTokenizer.m */,
+				CCCB7C26113B662A00B2F291 /* TDTokenizerState.h */,
+				CCCB7C27113B662A00B2F291 /* TDTokenizerState.m */,
+				CCCB7C28113B662A00B2F291 /* TDTrack.h */,
+				CCCB7C29113B662A00B2F291 /* TDTrack.m */,
+				CCCB7C2A113B662A00B2F291 /* TDTrackException.h */,
+				CCCB7C2B113B662A00B2F291 /* TDTrackException.m */,
+				CCCB7C2C113B662A00B2F291 /* TDUppercaseWord.h */,
+				CCCB7C2D113B662A00B2F291 /* TDUppercaseWord.m */,
+				CCCB7C2E113B662A00B2F291 /* TDWhitespaceState.h */,
+				CCCB7C2F113B662A00B2F291 /* TDWhitespaceState.m */,
+				CCCB7C30113B662A00B2F291 /* TDWord.h */,
+				CCCB7C31113B662A00B2F291 /* TDWord.m */,
+				CCCB7C32113B662A00B2F291 /* TDWordOrReservedState.h */,
+				CCCB7C33113B662A00B2F291 /* TDWordOrReservedState.m */,
+				CCCB7C34113B662A00B2F291 /* TDWordState.h */,
+				CCCB7C35113B662A00B2F291 /* TDWordState.m */,
+			);
+			path = todparsekit;
+			sourceTree = "<group>";
+		};
 		F85A18AF09C7D8F200305C06 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -514,6 +810,8 @@
 				CC467350113453F800037A0B /* LBTestIMAPServer.m */,
 				CC5BEC1A1134CC9D0024C6EA /* LBUtilityTests.h */,
 				CC5BEC1B1134CC9D0024C6EA /* LBUtilityTests.m */,
+				CCAF1448113B1CA400CE220F /* LBServerTests.h */,
+				CCAF1449113B1CA400CE220F /* LBServerTests.m */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -565,6 +863,54 @@
 				CCA0E821112A0F8B00110E76 /* LBTCPConnection.h in Headers */,
 				CCA0E825112A0FD800110E76 /* LBTCPReader.h in Headers */,
 				CC22134611320C8F000B46D8 /* LBNSDataAdditions.h in Headers */,
+				CCCB7C36113B662A00B2F291 /* TDAlternation.h in Headers */,
+				CCCB7C38113B662A00B2F291 /* TDAny.h in Headers */,
+				CCCB7C3A113B662A00B2F291 /* TDAssembly.h in Headers */,
+				CCCB7C3C113B662A00B2F291 /* TDCaseInsensitiveLiteral.h in Headers */,
+				CCCB7C3E113B662A00B2F291 /* TDChar.h in Headers */,
+				CCCB7C40113B662A00B2F291 /* TDCharacterAssembly.h in Headers */,
+				CCCB7C42113B662A00B2F291 /* TDCollectionParser.h in Headers */,
+				CCCB7C44113B662A00B2F291 /* TDComment.h in Headers */,
+				CCCB7C46113B662A00B2F291 /* TDCommentState.h in Headers */,
+				CCCB7C48113B662A00B2F291 /* TDDigit.h in Headers */,
+				CCCB7C4A113B662A00B2F291 /* TDEmpty.h in Headers */,
+				CCCB7C4C113B662A00B2F291 /* TDLetter.h in Headers */,
+				CCCB7C4E113B662A00B2F291 /* TDLiteral.h in Headers */,
+				CCCB7C50113B662A00B2F291 /* TDLowercaseWord.h in Headers */,
+				CCCB7C52113B662A00B2F291 /* TDMultiLineCommentState.h in Headers */,
+				CCCB7C54113B662A00B2F291 /* TDNonReservedWord.h in Headers */,
+				CCCB7C56113B662A00B2F291 /* TDNum.h in Headers */,
+				CCCB7C58113B662A00B2F291 /* TDNumberState.h in Headers */,
+				CCCB7C5A113B662A00B2F291 /* TDParseKit.h in Headers */,
+				CCCB7C5B113B662A00B2F291 /* TDParser.h in Headers */,
+				CCCB7C5D113B662A00B2F291 /* TDQuotedString.h in Headers */,
+				CCCB7C5F113B662A00B2F291 /* TDQuoteState.h in Headers */,
+				CCCB7C61113B662A00B2F291 /* TDReader.h in Headers */,
+				CCCB7C63113B662A00B2F291 /* TDRepetition.h in Headers */,
+				CCCB7C65113B662A00B2F291 /* TDReservedWord.h in Headers */,
+				CCCB7C67113B662A00B2F291 /* TDScientificNumberState.h in Headers */,
+				CCCB7C69113B662A00B2F291 /* TDSequence.h in Headers */,
+				CCCB7C6D113B662A00B2F291 /* TDSingleLineCommentState.h in Headers */,
+				CCCB7C6F113B662A00B2F291 /* TDSpecificChar.h in Headers */,
+				CCCB7C71113B662A00B2F291 /* TDSymbol.h in Headers */,
+				CCCB7C73113B662A00B2F291 /* TDSymbolNode.h in Headers */,
+				CCCB7C75113B662A00B2F291 /* TDSymbolRootNode.h in Headers */,
+				CCCB7C77113B662A00B2F291 /* TDSymbolState.h in Headers */,
+				CCCB7C79113B662A00B2F291 /* TDTerminal.h in Headers */,
+				CCCB7C7B113B662A00B2F291 /* TDToken.h in Headers */,
+				CCCB7C7D113B662A00B2F291 /* TDTokenArraySource.h in Headers */,
+				CCCB7C7F113B662A00B2F291 /* TDTokenAssembly.h in Headers */,
+				CCCB7C81113B662A00B2F291 /* TDTokenizer.h in Headers */,
+				CCCB7C83113B662A00B2F291 /* TDTokenizerState.h in Headers */,
+				CCCB7C85113B662A00B2F291 /* TDTrack.h in Headers */,
+				CCCB7C87113B662A00B2F291 /* TDTrackException.h in Headers */,
+				CCCB7C89113B662A00B2F291 /* TDUppercaseWord.h in Headers */,
+				CCCB7C8B113B662A00B2F291 /* TDWhitespaceState.h in Headers */,
+				CCCB7C8D113B662A00B2F291 /* TDWord.h in Headers */,
+				CCCB7C8F113B662A00B2F291 /* TDWordOrReservedState.h in Headers */,
+				CCCB7C91113B662A00B2F291 /* TDWordState.h in Headers */,
+				CCCB7D1D113B6B0700B2F291 /* LBEnvelopeTokenizer.h in Headers */,
+				CCCB7DBC113B764C00B2F291 /* LBNSStringAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -720,6 +1066,53 @@
 				CCA0E822112A0F8B00110E76 /* LBTCPConnection.m in Sources */,
 				CCA0E826112A0FD800110E76 /* LBTCPReader.m in Sources */,
 				CC22134511320C86000B46D8 /* LBNSDataAdditions.m in Sources */,
+				CCCB7C37113B662A00B2F291 /* TDAlternation.m in Sources */,
+				CCCB7C39113B662A00B2F291 /* TDAny.m in Sources */,
+				CCCB7C3B113B662A00B2F291 /* TDAssembly.m in Sources */,
+				CCCB7C3D113B662A00B2F291 /* TDCaseInsensitiveLiteral.m in Sources */,
+				CCCB7C3F113B662A00B2F291 /* TDChar.m in Sources */,
+				CCCB7C41113B662A00B2F291 /* TDCharacterAssembly.m in Sources */,
+				CCCB7C43113B662A00B2F291 /* TDCollectionParser.m in Sources */,
+				CCCB7C45113B662A00B2F291 /* TDComment.m in Sources */,
+				CCCB7C47113B662A00B2F291 /* TDCommentState.m in Sources */,
+				CCCB7C49113B662A00B2F291 /* TDDigit.m in Sources */,
+				CCCB7C4B113B662A00B2F291 /* TDEmpty.m in Sources */,
+				CCCB7C4D113B662A00B2F291 /* TDLetter.m in Sources */,
+				CCCB7C4F113B662A00B2F291 /* TDLiteral.m in Sources */,
+				CCCB7C51113B662A00B2F291 /* TDLowercaseWord.m in Sources */,
+				CCCB7C53113B662A00B2F291 /* TDMultiLineCommentState.m in Sources */,
+				CCCB7C55113B662A00B2F291 /* TDNonReservedWord.m in Sources */,
+				CCCB7C57113B662A00B2F291 /* TDNum.m in Sources */,
+				CCCB7C59113B662A00B2F291 /* TDNumberState.m in Sources */,
+				CCCB7C5C113B662A00B2F291 /* TDParser.m in Sources */,
+				CCCB7C5E113B662A00B2F291 /* TDQuotedString.m in Sources */,
+				CCCB7C60113B662A00B2F291 /* TDQuoteState.m in Sources */,
+				CCCB7C62113B662A00B2F291 /* TDReader.m in Sources */,
+				CCCB7C64113B662A00B2F291 /* TDRepetition.m in Sources */,
+				CCCB7C66113B662A00B2F291 /* TDReservedWord.m in Sources */,
+				CCCB7C68113B662A00B2F291 /* TDScientificNumberState.m in Sources */,
+				CCCB7C6A113B662A00B2F291 /* TDSequence.m in Sources */,
+				CCCB7C6E113B662A00B2F291 /* TDSingleLineCommentState.m in Sources */,
+				CCCB7C70113B662A00B2F291 /* TDSpecificChar.m in Sources */,
+				CCCB7C72113B662A00B2F291 /* TDSymbol.m in Sources */,
+				CCCB7C74113B662A00B2F291 /* TDSymbolNode.m in Sources */,
+				CCCB7C76113B662A00B2F291 /* TDSymbolRootNode.m in Sources */,
+				CCCB7C78113B662A00B2F291 /* TDSymbolState.m in Sources */,
+				CCCB7C7A113B662A00B2F291 /* TDTerminal.m in Sources */,
+				CCCB7C7C113B662A00B2F291 /* TDToken.m in Sources */,
+				CCCB7C7E113B662A00B2F291 /* TDTokenArraySource.m in Sources */,
+				CCCB7C80113B662A00B2F291 /* TDTokenAssembly.m in Sources */,
+				CCCB7C82113B662A00B2F291 /* TDTokenizer.m in Sources */,
+				CCCB7C84113B662A00B2F291 /* TDTokenizerState.m in Sources */,
+				CCCB7C86113B662A00B2F291 /* TDTrack.m in Sources */,
+				CCCB7C88113B662A00B2F291 /* TDTrackException.m in Sources */,
+				CCCB7C8A113B662A00B2F291 /* TDUppercaseWord.m in Sources */,
+				CCCB7C8C113B662A00B2F291 /* TDWhitespaceState.m in Sources */,
+				CCCB7C8E113B662A00B2F291 /* TDWord.m in Sources */,
+				CCCB7C90113B662A00B2F291 /* TDWordOrReservedState.m in Sources */,
+				CCCB7C92113B662A00B2F291 /* TDWordState.m in Sources */,
+				CCCB7D1E113B6B0700B2F291 /* LBEnvelopeTokenizer.m in Sources */,
+				CCCB7DBD113B764C00B2F291 /* LBNSStringAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -736,6 +1129,7 @@
 				CC2212BB11320868000B46D8 /* LBNSDataAdditionsTests.m in Sources */,
 				CC46749F113464D500037A0B /* LBTestIMAPServer.m in Sources */,
 				CC5BEC1C1134CC9D0024C6EA /* LBUtilityTests.m in Sources */,
+				CCAF144A113B1CA400CE220F /* LBServerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
