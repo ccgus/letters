@@ -7,17 +7,30 @@
 //
 
 #import "LBMessage.h"
+#import "LetterBoxUtilities.h"
 
 @implementation LBMessage
 
-@synthesize uuid;
+
+@synthesize localUUID;
+@synthesize serverUID;
 @synthesize messageId;
-@synthesize messageURL;
+@synthesize inReplyTo;
+@synthesize mailbox;
 @synthesize subject;
 @synthesize sender;
 @synthesize to;
+@synthesize messageBody;
+@synthesize messageURL;
 @synthesize receivedDate;
 @synthesize sendDate;
+
+@synthesize seenFlag;
+@synthesize answeredFlag;
+@synthesize flaggedFlag;
+@synthesize deletedFlag;
+@synthesize draftFlag;
+@synthesize flags;
 
 - (id)initWithURL:(NSURL*)fileURL {
 	self = [super init];
@@ -30,15 +43,19 @@
 
 - (void)dealloc {
     
-    [uuid release];
-    [messageId release];
-    [messageURL release];
-    [messageBody release];
-    [subject release];
-    [sender release];
-    [to release];
-    [receivedDate release];
-    [sendDate release];
+    LBRelease(localUUID);
+    LBRelease(serverUID);
+    LBRelease(messageId);
+    LBRelease(inReplyTo);
+    LBRelease(mailbox);
+    LBRelease(subject);
+    LBRelease(sender);
+    LBRelease(to);
+    LBRelease(messageBody);
+    LBRelease(messageURL);
+    LBRelease(receivedDate);
+    LBRelease(sendDate);
+    LBRelease(flags);
     
     [super dealloc];
 }

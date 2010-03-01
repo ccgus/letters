@@ -158,8 +158,8 @@
             
         }
     }
-    
     else if ([notification object] == foldersList) {
+        [mailboxMessageList deselectAll:self];
         [mailboxMessageList reloadData];
     }
 }
@@ -193,6 +193,12 @@
     }
     
     NSArray *messageList = [[currentAccount server] messageListForPath:[self selectedFolderPath]];
+    
+    if ([messageList count] < rowIndex) {
+        debug(@"whoa- what happened here?");
+        debug(@"We're asking for a message in a folder that doesn't ahve that many...");
+        return nil;
+    }
     
     LBMessage *msg = [messageList objectAtIndex:rowIndex];
     

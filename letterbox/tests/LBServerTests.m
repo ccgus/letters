@@ -8,6 +8,7 @@
 
 #import "LBServerTests.h"
 #import "LBAccount.h"
+#import "LBMessage.h"
 #import "LBTestIMAPServer.h"
 #import "LBServer.h"
 
@@ -23,7 +24,7 @@
                                                   usingBlock:block];
 }
 
-- (void)xtestDeleteAndExpunge {
+- (void) testDeleteAndExpunge {
     
     #warning GUS YOU ARE WORKING ON THIS
     
@@ -32,7 +33,7 @@
     LBInitTest();
     
     __block BOOL gotDeleteNotification       = NO;
-    __block BOOL gotFlagsUpdatedNotification = NO;
+    //__block BOOL gotFlagsUpdatedNotification = NO;
     
     // this needs to run on the main loop
     dispatch_async(dispatch_get_main_queue(),^ {
@@ -48,15 +49,30 @@
             
             LBTestError(err, @"Got an error trying to connect!");
             
-            [server deleteMessages:@"1" withBlock:^(NSError *err) {
+            [server updateMessagesInMailbox:@"INBOX" withBlock:^(NSError *err) {
                 
-                LBAssertTrue(gotDeleteNotification, @"Delete notification");
+                NSArray *messages = [server messageListForPath:@"INBOX"];
                 
-                LBTestError(err, @"Got an error delete!");
+                LBAssertTrue([messages count] == 2, @"message list should have been two");
                 
-                [server expungeWithBlock:^(NSError *err) {
+                LBMessage *firstMessage = [messages objectAtIndex:0];
+                
+                debug(@"[firstMessage serverUID]: '%@'", [firstMessage serverUID]);
+                
+                [server deleteMessageWithUID:[firstMessage serverUID] withBlock:^(NSError *err) {
                     
-                    LBEndTest();
+                    debug(@"delete was yep");
+                    
+                    #warning make sure some notification goes out.
+                    // LBAssertTrue(gotDeleteNotification, @"Did not get delete notification");
+                    
+                    LBTestError(err, @"Got an error delete!");
+                    
+                    debug(@"yay?");
+                    
+                    [server expungeWithBlock:^(NSError *err) {
+                        LBEndTest();
+                    }];
                 }];
             }];
         }];

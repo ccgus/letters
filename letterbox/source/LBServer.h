@@ -42,12 +42,14 @@ typedef void (^LBResponseBlock)(NSError *);
 - (void)connectUsingBlock:(void (^)(NSError *))block;
 
 - (void)checkForMail;
+- (void)updateMessagesInMailbox:(NSString*)mailbox withBlock:(LBResponseBlock)block;
 
 - (NSArray*)messageListForPath:(NSString*)folderPath;
 
 - (void)moveMessages:(NSArray*)messageList inFolder:(NSString*)currentFolder toFolder:(NSString*)folder finshedBlock:(LBResponseBlock)block;
 
 - (void)deleteMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block;
+- (void)deleteMessageWithUID:(NSString*)serverUID withBlock:(LBResponseBlock)block;
 - (void)expungeWithBlock:(LBResponseBlock)block;
 
 @end

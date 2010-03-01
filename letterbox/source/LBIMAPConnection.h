@@ -29,8 +29,10 @@
 - (void)subscribeToMailbox:(NSString*)mailboxName withBlock:(LBResponseBlock)block;
 - (void)unsubscribeToMailbox:(NSString*)mailboxName withBlock:(LBResponseBlock)block;
 
+- (void)fetchEnvelopes:(NSString*)seqIds withBlock:(LBResponseBlock)block;
 - (void)fetchMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block;
 - (void)deleteMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block;
+- (void)deleteMessageWithUID:(NSString*)serverUID withBlock:(LBResponseBlock)block;
 - (void)expungeWithBlock:(LBResponseBlock)block;
 
 - (void)idleWithBlock:(LBResponseBlock)block;
@@ -41,6 +43,7 @@
 - (NSArray*)searchedResultSet;
 
 - (NSData*)lastFetchedMessage;
+- (NSArray*)fetchedEnvelopes;
 
 
 @end

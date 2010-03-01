@@ -147,7 +147,7 @@ static NSString *LBDONE = @"DONE";
     
     responseBlock = [block copy];
     
-    [self sendCommand:LBSEARCH withArgument:@"CHARSET UTF-8 ALL" readBlock:^(LBTCPReader *reader) {
+    [self sendCommand:LBSEARCH withArgument:@"ALL" readBlock:^(LBTCPReader *reader) {
         
         [self appendDataFromReader:reader];
         
@@ -321,6 +321,45 @@ static NSString *LBDONE = @"DONE";
 }
 
 
+- (void)deleteMessageWithUID:(NSString*)serverUID withBlock:(LBResponseBlock)block {
+    
+    responseBlock = [block copy];
+    
+    // 123 UID STORE 456 +FLAGS.SILENT (\Deleted)
+    
+    // we're really just setting a flag on the message.
+    NSString *format = [NSString stringWithFormat:@"UID STORE %@ +FLAGS.SILENT (\\Deleted)", serverUID];
+    
+    [self sendCommand:format withArgument:nil readBlock:^(LBTCPReader *reader) {
+        [self appendDataFromReader:reader];
+        
+        NSString *line = [[self responseBytes] lbSingleLineResponse];
+        
+        if (!line) {
+            return;
+        }
+        
+        debug(@"line: %@", line);
+        
+        NSString *expectedGood  = [NSString stringWithFormat:@"%d OK", commandCount, CRLF];
+        NSError *err            = nil;
+        
+        if (![line hasPrefix:expectedGood]) {
+            LBQuickError(&err, @"UID STORE", 0, line);
+        }
+        
+        [self callBlockWithError:err killReadBlock:YES];
+        
+    }];
+}
+
+
+
+
+
+
+
+
 - (void)deleteMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block {
     
     responseBlock = [block copy];
@@ -379,21 +418,66 @@ static NSString *LBDONE = @"DONE";
     }];
 }
 
-- (void)shortFetchMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block {
-    // http://tools.ietf.org/html/rfc3501#section-6.4.5
+- (NSArray*)fetchedEnvelopes {
+    NSMutableArray *ar = [NSMutableArray array];
     
+    // ok, this should be the envelopes, one per line.
+    
+    for (NSString *line in [[self responseAsString] componentsSeparatedByString:@"\r\n"]) {
+        
+        if (![line hasPrefix:@"*"]) {
+            continue;
+        }
+        
+        NSDictionary *d = LBParseSimpleFetchResponse(line);
+        
+        if (d) {
+            [ar addObject:d];
+        }
+        else {
+            NSLog(@"Could not parse '%@'", line);
+        }
+        
+    }
+    
+    return ar;
+}
+
+- (void)fetchEnvelopes:(NSString*)seqIds withBlock:(LBResponseBlock)block {
+    // http://tools.ietf.org/html/rfc3501#section-6.4.5
     responseBlock = [block copy];
     
     NSString *format = [NSString stringWithFormat:@"%@ (FLAGS INTERNALDATE RFC822.SIZE ENVELOPE UID)", seqIds];
+    
     [self sendCommand:LBFETCH withArgument:format  readBlock:^(LBTCPReader *reader) {
         
-        #warning TODO
+        [self appendDataFromReader:reader];
+        
+        NSString *lastLine = [[self responseBytes] lbLastLineOfMultiline];
+        
+        NSString *expectedGood = [NSString stringWithFormat:@"%d OK", commandCount, CRLF];
+        NSString *expectedNo   = [NSString stringWithFormat:@"%d NO", commandCount, CRLF];
+        NSString *expectedBad  = [NSString stringWithFormat:@"%d BAD", commandCount, CRLF];
+        
+        if ([lastLine hasPrefix:expectedNo] || [lastLine hasPrefix:expectedBad]) {
+            NSError *err = nil;
+            LBQuickError(&err, LBFETCH, 0, lastLine);
+            [self callBlockWithError:err killReadBlock:YES];
+            return;
+        }
+        
+        if (![lastLine hasPrefix:expectedGood]) {
+            return;
+        }
+        
+        [self callBlockWithError:nil killReadBlock:YES];
     }];
 }
 
-
 - (void)fetchMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block {
     responseBlock = [block copy];
+    
+    #warning make sure we do a peek here, so it doesn't get marked as read.
     
     NSString *format = [NSString stringWithFormat:@"%@ (RFC822)", seqIds];
     
@@ -451,7 +535,6 @@ static NSString *LBDONE = @"DONE";
             }
             
             // 10 OK FETCH completed.
-            
             
             // * 1 FETCH (RFC822 {2668} crlf + 2668 bytes of data + crlf + ) + crlf + 10 OK FETCH completed.
             

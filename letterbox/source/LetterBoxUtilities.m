@@ -298,7 +298,6 @@ NSDictionary* LBParseSimpleFetchResponse(NSString *fetchResponse) {
     while ((tok = [tokenizer nextToken]) != eof) {
         
         NSString *tokS = [tok stringValue];
-        debug(@"tokS: '%@'", tokS);
         
         if ([tokS isEqualToString:@"FLAGS"]) {
             
@@ -386,9 +385,6 @@ NSDictionary* LBParseSimpleFetchResponse(NSString *fetchResponse) {
                     if ([personalName isEqualToString:@""] || [personalName isEqualToString:@"NIL"]) {
                         personalName = nil;
                     }
-                    
-                    debug(@"personalName: '%@'", personalName);
-                    debug(@"mailboxName: '%@@%@'", mailboxName, hostName);
                     
                     LBAddress *addr = [LBAddress addressWithName:[personalName stringByDeletingEndQuotes]
                                                            email:[NSString stringWithFormat:@"%@@%@", [mailboxName stringByDeletingEndQuotes], [hostName stringByDeletingEndQuotes]]];

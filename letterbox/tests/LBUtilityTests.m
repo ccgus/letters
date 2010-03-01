@@ -24,9 +24,6 @@
     GHAssertEqualStrings([res objectForKey:@"RFC822.SIZE"], @"15650", @"RFC822.SIZE");
     GHAssertEqualStrings([res objectForKey:@"UID"], @"98656", @"UID");
     
-    NSDictionary *envelope = [res objectForKey:@"ENVELOPE"];
-    GHAssertNil(envelope, @"ENVELOPE");
-    
     GHAssertEqualStrings([res objectForKey:@"date"], @"Wed, 27 Jan 2010 22:51:51 +0000", @"envelope date");
     GHAssertEqualStrings([res objectForKey:@"subject"], @"Re: Coding Style Guidelines", @"envelope subject");
     GHAssertEqualStrings([res objectForKey:@"in-reply-to"], @"<4CE4C6F7-A466-4060-8FC6-4FEF66C6B906lettersapp.com>", @"in-reply-to");
@@ -69,7 +66,6 @@
     GHAssertEqualStrings([addr name], @"Gus Mueller", @"address name");
     GHAssertEqualStrings([addr email], @"gus@lettersapp.com", @"address name");
     
-    #warning test the last thingies
 }
 
 - (void) testFetchResponse2 {
@@ -131,7 +127,6 @@
     
     
     
-#warning test the last thingies
 }
 
 @end

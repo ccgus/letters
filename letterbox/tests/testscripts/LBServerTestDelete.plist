@@ -5,13 +5,12 @@
 	<key>accept</key>
 	<array>
 		<string>1 LOGIN user password\r\n</string>
-		<string>2 SELECT "INBOX"\r\n</string>
-		<string>3 SEARCH ALL\r\n</string>
-		<string>4 FETCH 1 (FLAGS INTERNALDATE RFC822.SIZE ENVELOPE UID)\r\n</string>
-		<string>5 FETCH 2 (FLAGS INTERNALDATE RFC822.SIZE ENVELOPE UID)\r\n</string>
-		<string>6 FETCH 3 (FLAGS INTERNALDATE RFC822.SIZE ENVELOPE UID)\r\n</string>
-		<string>7 UID xxx STORE 1 +FLAGS (\Deleted)\r\n</string>
-		<string>8 EXPUNGE\r\n</string>
+		<string>2 SELECT &quot;INBOX&quot;\r\n</string>
+		<string>3 SELECT &quot;INBOX&quot;\r\n</string>
+		<string>4 SEARCH ALL\r\n</string>
+		<string>5 FETCH 1:2 (FLAGS INTERNALDATE RFC822.SIZE ENVELOPE UID)\r\n</string>
+		<string>6 UID STORE 98797 +FLAGS.SILENT (\Deleted)\r\n</string>
+		<string>7 EXPUNGE\r\n</string>
 	</array>
 	<key>send</key>
 	<array>
@@ -22,15 +21,25 @@
 * 8 EXISTS\r\n
 * 1 RECENT\r\n
 * OK [UIDVALIDITY 1049043632] Ok\r\n
-* OK [MYRIGHTS \"acdilrsw\"] ACL\r\n
+* OK [MYRIGHTS \&quot;acdilrsw\&quot;] ACL\r\n
 2 OK [READ-WRITE] Ok\r\n</string>
-		<string>* 1 FETCH (FLAGS (\Seen \Deleted))\r\n
-3 OK STORE completed.\r\n</string>
-
-		<string>* 1 EXPUNGE\r\n
-* 7 EXISTS\r\n
+		<string>* FLAGS ($NotJunk NotJunk \Draft \Answered \Flagged \Deleted \Seen \Recent)\r\n
+* OK [PERMANENTFLAGS ($NotJunk NotJunk \* \Draft \Answered \Flagged \Deleted \Seen)] Limited\r\n
+* 8 EXISTS\r\n
 * 1 RECENT\r\n
-4 OK EXPUNGE completed\r\n</string>
+* OK [UIDVALIDITY 1049043632] Ok\r\n
+* OK [MYRIGHTS \&quot;acdilrsw\&quot;] ACL\r\n
+3 OK [READ-WRITE] Ok\r\n</string>
+		<string>* SEARCH 1 2\r\n
+4 OK SEARCH done.\r\n</string>
+		<string>* 1 FETCH (FLAGS (\Seen) INTERNALDATE &quot;16-Feb-2010 17:47:08 -0800&quot; RFC822.SIZE 392 ENVELOPE (NIL &quot;Hello Gus!&quot; NIL NIL NIL NIL NIL NIL NIL &quot;87b5e366-0dfe-4a72-bca6-388e8686e37c&quot;) UID 98797)\r\n
+* 2 FETCH (FLAGS (\Seen) INTERNALDATE &quot;21-Feb-2010 17:27:17 -0800&quot; RFC822.SIZE 583 ENVELOPE (&quot;Sun, 21 Feb 2010 17:27:17 -0800&quot; &quot;test&quot; ((&quot;August Mueller&quot; NIL &quot;gus&quot; &quot;ubuntu.localdomain&quot;)) ((&quot;August Mueller&quot; NIL &quot;gus&quot; &quot;ubuntu.localdomain&quot;)) ((&quot;August Mueller&quot; NIL &quot;gus&quot; &quot;ubuntu.localdomain&quot;)) ((&quot;August Mueller&quot; NIL &quot;gus&quot; &quot;ubuntu.localdomain&quot;)) NIL NIL NIL &quot;&lt;20100222012717.GA7119@ubuntu.localdomain&gt;&quot;) UID 98798)\r\n
+5 OK FETCH completed.\r\n</string>
+		<string>6 OK STORE completed.\r\n</string>
+		<string>* 1 EXPUNGE\r\n
+* 1 EXISTS\r\n
+* 1 RECENT\r\n
+7 OK EXPUNGE completed\r\n</string>
 	</array>
 </dict>
 </plist>

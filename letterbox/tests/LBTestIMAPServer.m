@@ -142,8 +142,8 @@
     NSString *expected = [acceptList objectAtIndex:0];
     
     if (![expected isEqualToString:got]) {
-        debug(@"expected: '%@'", expected);
-        debug(@"got: '%@'", got);
+        debug(@"expected: %@", expected);
+        debug(@"got:      %@", got);
         assert(false);
     }
     

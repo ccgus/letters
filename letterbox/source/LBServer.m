@@ -33,6 +33,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 - (void)saveMessageToCache:(NSData*)messageData forMailbox:(NSString*)mailboxName;
 - (void)checkForMailInMailboxList:(NSMutableArray*)mailboxList;
 - (void)saveFoldersToCache:(NSArray*)messages;
+- (void)saveEnvelopeToCache:(NSDictionary*)envelopeDate forMailbox:(NSString*)mailboxName;
 @end
 
 
@@ -186,7 +187,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         // hey, we're all done!
         
         dispatch_async(dispatch_get_main_queue(),^ {
-        
+            
             [foldersCache removeObjectForKey:mailbox];
         
             [[NSNotificationCenter defaultCenter] postNotificationName:LBServerSubjectsUpdatedNotification
@@ -207,22 +208,84 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     NSString *firstId = [[[messageList objectAtIndex:0] retain] autorelease];
     [messageList removeObjectAtIndex:0];
     
-    
-    NSString *status = NSLocalizedString(@"%ld bottles of beer on the wall.  %ld bottles to go. (%@)", @"%ld bottles of beer on the wall.  %ld bottles to go. (%@)");
+    NSString *status = NSLocalizedString(@"Fetching header %d of %d in \"%@\"", @"Fetching header %d of %d in \"%@\"");
     [conn setActivityStatusAndNotifiy:[NSString stringWithFormat:status, [messageList count], [messageList count], mailbox]];
     
+    [conn fetchEnvelopes:firstId withBlock:^(NSError *err) {
+        
+        for (NSDictionary *d in [conn fetchedEnvelopes]) {
+            [self saveEnvelopeToCache:d forMailbox:mailbox];
+        }
+        
+        [self checkInIMAPConnection:conn];
+        [self pullMessageFromServerFromList:messageList mailbox:mailbox mailboxList:mailboxList];
+    }];
     
+    
+    
+    
+    
+    // FETCH 1 (FLAGS INTERNALDATE RFC822.SIZE ENVELOPE UID)
+    /*
     [conn fetchMessages:firstId withBlock:^(NSError *err) {
         
         NSData *d = [conn lastFetchedMessage];
         
-        [self saveMessageToCache:d forMailbox:mailbox ];
+        [self saveMessageToCache:d forMailbox:mailbox];
         
         //NSString *s = [[[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding] autorelease];
         
         [self checkInIMAPConnection:conn];
         [self pullMessageFromServerFromList:messageList mailbox:mailbox mailboxList:mailboxList];
     }];
+    */
+}
+
+- (void)updateMessagesInMailbox:(NSString*)mailbox withBlock:(LBResponseBlock)block {
+    
+    LBIMAPConnection *conn = [self checkoutIMAPConnection];
+    
+    [conn selectMailbox:mailbox block:^(NSError *err) {
+        
+        if (err) {
+            [self checkInIMAPConnection:conn];
+            block(err);
+            return;
+        }
+        
+        [conn listMessagesWithBlock:^(NSError *err) {
+            
+            if (err) {
+                [self checkInIMAPConnection:conn];
+                block(err);
+                return;
+            }
+            
+            debug(@"[conn searchedResultSet]: '%@'", [conn searchedResultSet]);
+            
+            NSString *envIds = @"1";
+            NSArray *seqIds  = [conn searchedResultSet];
+            if ([seqIds count] > 1) {
+                envIds = [NSString stringWithFormat:@"%@:%@", [seqIds objectAtIndex:0], [seqIds lastObject]];
+            }
+            
+            [conn fetchEnvelopes:envIds withBlock:^(NSError *err) {
+                
+                for (NSDictionary *d in [conn fetchedEnvelopes]) {
+                    [self saveEnvelopeToCache:d forMailbox:mailbox];
+                }
+                
+                [self checkInIMAPConnection:conn];
+                
+                block(err);
+                
+            }];
+            
+            
+            
+        }];
+    }];
+    
 }
 
 - (void)checkForMailInMailboxList:(NSMutableArray*)mailboxList {
@@ -234,8 +297,6 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     }
     
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
-    
-    
     
     // start at the top.
     NSString *mailbox = [[[mailboxList objectAtIndex:0] retain] autorelease];
@@ -268,6 +329,8 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
             [self checkForMailInMailboxList:mailboxList];
             return;
         }
+        
+        
         
         [conn listMessagesWithBlock:^(NSError *err) {
             
@@ -446,8 +509,22 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
             block(err);
         }];
     });
-    
 }
+
+- (void)deleteMessageWithUID:(NSString*)serverUID withBlock:(LBResponseBlock)block {
+    
+    LBIMAPConnection *conn = [self checkoutIMAPConnection];
+    
+    // need up update the database with our intent to delete the message.
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
+        [conn deleteMessageWithUID:serverUID withBlock:^(NSError *err) {
+            [self checkInIMAPConnection:conn];
+            block(err);
+        }];
+    });
+}
+
 
 - (void)expungeWithBlock:(LBResponseBlock)block {
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
@@ -578,7 +655,9 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         // this table obviously isn't going to cut it.  It needs multiple to's and other nice things.
         [cacheDB executeUpdate:@"create table message ( localUUID text primary key,\n\
                                                         serverUID text,\n\
-                                                        folder text,\n\
+                                                        messageId text,\n\
+                                                        inReplyTo text,\n\
+                                                        mailbox text,\n\
                                                         subject text,\n\
                                                         fromAddress text, \n\
                                                         toAddress text, \n\
@@ -612,6 +691,35 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     [[NSNotificationCenter defaultCenter] postNotificationName:LBServerFolderUpdatedNotification
                                                         object:self
                                                       userInfo:nil];
+}
+
+- (void)saveEnvelopeToCache:(NSDictionary*)envelopeDict forMailbox:(NSString*)mailboxName {
+    
+    NSString *flags     = [envelopeDict objectForKey:@"FLAGS"];
+    NSString *serverUID = [envelopeDict objectForKey:@"UID"];
+    NSString *inReplyTo = [envelopeDict objectForKey:@"in-reply-to"];
+    NSString *messageId = [envelopeDict objectForKey:@"message-id"];
+    NSString *subject   = [envelopeDict objectForKey:@"subject"];
+    
+    NSArray *senderArray= [envelopeDict objectForKey:@"sender"];
+    NSArray *toArray    = [envelopeDict objectForKey:@"to"];
+    
+    LBAddress *sender   = [senderArray lastObject];
+    LBAddress *to       = [toArray lastObject];
+    
+    // \Answered \Flagged \Deleted \Seen \Draft)
+    BOOL seen           = [flags rangeOfString:@"\\Seen"].location != NSNotFound;
+    BOOL answered       = [flags rangeOfString:@"\\Answered"].location != NSNotFound;
+    
+    [cacheDB beginTransaction];
+    
+    // this feels icky.
+    [cacheDB executeUpdate:@"delete from message where messageId = ?", messageId];
+    
+    [cacheDB executeUpdate:@"insert into message ( localUUID, serverUID, messageId, inReplyTo, mailbox, subject, fromAddress, toAddress, receivedDate, sendDate, seenFlag, answeredFlag, flags) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+     LBUUIDString(), serverUID, messageId, inReplyTo, mailboxName, subject, [sender email], [to email], [NSDate distantFuture], [NSDate distantPast], [NSNumber numberWithBool:seen], [NSNumber numberWithBool:answered], flags];
+    
+    [cacheDB commit];
 }
 
 - (void)saveMessageToCache:(NSData*)messageData forMailbox:(NSString*)mailboxName {
@@ -680,7 +788,11 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     
     NSMutableArray *messageArray = [NSMutableArray array];
     
-    FMResultSet *rs = [cacheDB executeQuery:@"select uuid, messageid, subject, fromAddress, toAddress, receivedDate, sendDate from message where folder = ? order by receivedDate", folder];
+    FMResultSet *rs = [cacheDB executeQuery:@"select localUUID, serverUID, messageId, inReplyTo, subject, fromAddress, toAddress, receivedDate, sendDate, seenFlag, answeredFlag from message where mailbox = ? order by receivedDate", folder];
+    
+    debug(@"[cacheDB hadError]: '%@'", [cacheDB lastErrorMessage]);
+    assert(![cacheDB hadError]);
+    
     while ([rs next]) {
         
         NSString *messageFile = [NSString stringWithFormat:@"%s.letterboxmsg", [[rs stringForColumnIndex:1] fileSystemRepresentation]];
@@ -694,13 +806,18 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
             continue;
         }
         
-        message.uuid = [rs stringForColumnIndex:0];
-        message.messageId = [rs stringForColumnIndex:1];
-        message.subject = [rs stringForColumnIndex:2];
-        message.sender = [rs stringForColumnIndex:3];
-        message.to = [rs stringForColumnIndex:4];
-        message.receivedDate = [rs dateForColumnIndex:5];
-        message.sendDate = [rs dateForColumnIndex:6];
+        message.localUUID   = [rs stringForColumnIndex:0];
+        message.serverUID   = [rs stringForColumnIndex:1];
+        message.messageId   = [rs stringForColumnIndex:2];
+        message.inReplyTo   = [rs stringForColumnIndex:3];
+        message.subject     = [rs stringForColumnIndex:4];
+        message.sender      = [rs stringForColumnIndex:5];
+        message.to          = [rs stringForColumnIndex:6];
+        message.receivedDate = [rs dateForColumnIndex:7];
+        message.sendDate    = [rs dateForColumnIndex:8];
+        message.seenFlag    = [rs boolForColumnIndex:9];
+        message.answeredFlag = [rs boolForColumnIndex:10];
+        
         
         [messageArray addObject:message];
     }
