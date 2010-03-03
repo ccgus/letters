@@ -26,8 +26,6 @@
 
 - (void) testDeleteAndExpunge {
     
-    #warning GUS YOU ARE WORKING ON THIS
-    
     [[LBTestIMAPServer sharedIMAPServer] runScript:@"LBServerTestDelete.plist"];
     
     LBInitTest();
@@ -38,12 +36,18 @@
     // this needs to run on the main loop
     dispatch_async(dispatch_get_main_queue(),^ {
         
-        [self addObserverForName:LBServerMessageDeletedNotification usingBlock:^(NSNotification *arg1) {
-            gotDeleteNotification = YES;
-        }];
-        
         LBAccount *account  = [LBTestIMAPServer testAccount];
         LBServer *server    = [account server];
+        
+        [self addObserverForName:LBServerMessageDeletedNotification usingBlock:^(NSNotification *note) {
+            gotDeleteNotification = ([note object] == server && [[[note userInfo] objectForKey:@"uid"] isEqualToString:@"98797"]);
+            
+            NSArray *messages = [server messageListForPath:@"INBOX"];
+            
+            LBMessage *firstMessage = [messages objectAtIndex:0];
+            
+            LBAssertTrue([firstMessage deletedFlag], @"checking the deleted flag for the first message yo");
+        }];
         
         [server connectUsingBlock:^(NSError *err) {
             
@@ -57,14 +61,9 @@
                 
                 LBMessage *firstMessage = [messages objectAtIndex:0];
                 
-                debug(@"[firstMessage serverUID]: '%@'", [firstMessage serverUID]);
-                
-                [server deleteMessageWithUID:[firstMessage serverUID] withBlock:^(NSError *err) {
+                [server deleteMessageWithUID:[firstMessage serverUID] inMailbox:@"INBOX" withBlock:^(NSError *err) {
                     
-                    debug(@"delete was yep");
-                    
-                    #warning make sure some notification goes out.
-                    // LBAssertTrue(gotDeleteNotification, @"Did not get delete notification");
+                    LBAssertTrue(gotDeleteNotification, @"Did not get delete notification");
                     
                     LBTestError(err, @"Got an error delete!");
                     

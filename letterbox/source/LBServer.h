@@ -48,8 +48,8 @@ typedef void (^LBResponseBlock)(NSError *);
 
 - (void)moveMessages:(NSArray*)messageList inFolder:(NSString*)currentFolder toFolder:(NSString*)folder finshedBlock:(LBResponseBlock)block;
 
+- (void)deleteMessageWithUID:(NSString*)serverUID inMailbox:(NSString*)mailbox withBlock:(LBResponseBlock)block;
 - (void)deleteMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block;
-- (void)deleteMessageWithUID:(NSString*)serverUID withBlock:(LBResponseBlock)block;
 - (void)expungeWithBlock:(LBResponseBlock)block;
 
 @end

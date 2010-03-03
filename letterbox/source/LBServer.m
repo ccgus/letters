@@ -511,11 +511,23 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     });
 }
 
-- (void)deleteMessageWithUID:(NSString*)serverUID withBlock:(LBResponseBlock)block {
+- (void)deleteMessageWithUID:(NSString*)serverUID inMailbox:(NSString*)mailbox withBlock:(LBResponseBlock)block {
+    
+    #warning make sure to select the mailbox if we haven't already.
     
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
     
     // need up update the database with our intent to delete the message.
+    
+    [cacheDB executeUpdate:@"update message set deletedFlag = 1 where serverUID = ?", serverUID];
+    
+    [foldersCache removeObjectForKey:mailbox];
+    
+    #warning need up update the envelope flags after this guy too.
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:LBServerMessageDeletedNotification
+                                                        object:self
+                                                      userInfo:[NSDictionary dictionaryWithObject:serverUID forKey:@"uid"]];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
         [conn deleteMessageWithUID:serverUID withBlock:^(NSError *err) {
@@ -788,7 +800,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     
     NSMutableArray *messageArray = [NSMutableArray array];
     
-    FMResultSet *rs = [cacheDB executeQuery:@"select localUUID, serverUID, messageId, inReplyTo, subject, fromAddress, toAddress, receivedDate, sendDate, seenFlag, answeredFlag from message where mailbox = ? order by receivedDate", folder];
+    FMResultSet *rs = [cacheDB executeQuery:@"select localUUID, serverUID, messageId, inReplyTo, subject, fromAddress, toAddress, receivedDate, sendDate, seenFlag, answeredFlag, flaggedFlag, deletedFlag, draftFlag from message where mailbox = ? order by receivedDate", folder];
     
     debug(@"[cacheDB hadError]: '%@'", [cacheDB lastErrorMessage]);
     assert(![cacheDB hadError]);
@@ -817,6 +829,9 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         message.sendDate    = [rs dateForColumnIndex:8];
         message.seenFlag    = [rs boolForColumnIndex:9];
         message.answeredFlag = [rs boolForColumnIndex:10];
+        message.flaggedFlag = [rs boolForColumnIndex:11];
+        message.deletedFlag = [rs boolForColumnIndex:12];
+        message.draftFlag   = [rs boolForColumnIndex:13];
         
         
         [messageArray addObject:message];
