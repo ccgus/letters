@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>accept</key>
+	<array>
+		<string>1 LOGIN user password\r\n</string>
+		<string>2 SELECT "INBOX"\r\n</string>
+		<string>3 CAPABILITY\r\n</string>
+		<string>4 SELECT "INBOX.acorn"\r\n</string>
+		<string>5 UID COPY 390 "INBOX"\r\n</string>
+		<string>6 UID STORE 390 +FLAGS.SILENT (\Deleted)\r\n</string>
+	</array>
+	<key>send</key>
+	<array>
+		<string>* OK [CAPABILITY IMAP4rev1 UIDPLUS CHILDREN NAMESPACE THREAD=ORDEREDSUBJECT THREAD=REFERENCES SORT QUOTA IDLE ACL ACL2=UNION STARTTLS] Courier-IMAP ready. Copyright 1998-2008 Double Precision, Inc.  See COPYING for distribution information.\r\n</string>
+		<string>1 OK LOGIN Ok.\r\n</string>
+		<string>* FLAGS ($NotJunk NotJunk \Draft \Answered \Flagged \Deleted \Seen \Recent)\r\n
+* OK [PERMANENTFLAGS ($NotJunk NotJunk \* \Draft \Answered \Flagged \Deleted \Seen)] Limited\r\n
+* 8 EXISTS\r\n
+* 1 RECENT\r\n
+* OK [UIDVALIDITY 1049043632] Ok\r\n
+* OK [MYRIGHTS \"acdilrsw\"] ACL\r\n
+2 OK [READ-WRITE] Ok\r\n</string>
+		<string>* CAPABILITY IMAP4rev1 UIDPLUS CHILDREN NAMESPACE THREAD=ORDEREDSUBJECT THREAD=REFERENCES SORT QUOTA IDLE ACL ACL2=UNION\r\n
+3 OK CAPABILITY completed\r\n</string>
+		<string>* FLAGS (JunkRecorded $NotJunk $Forwarded NotJunk \Draft \Answered \Flagged \Deleted \Seen \Recent)\r\n
+* OK [PERMANENTFLAGS (JunkRecorded $NotJunk $Forwarded NotJunk \* \Draft \Answered \Flagged \Deleted \Seen)] Limited\r\n
+* 383 EXISTS\r\n
+* 0 RECENT\r\n
+* OK [UIDVALIDITY 1187211972] Ok\r\n
+* OK [MYRIGHTS "acdilrsw"] ACL\r\n
+4 OK [READ-WRITE] Ok\r\n</string>
+		<string>5 OK [COPYUID 1049043632 390 98802] COPY completed.\r\n</string>
+		<string>6 OK STORE completed.\r\n</string>
+	</array>
+</dict>
+</plist>
