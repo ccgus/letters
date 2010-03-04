@@ -26,6 +26,8 @@ typedef void (^LBResponseBlock)(NSError *);
     
     NSMutableArray      *inactiveIMAPConnections;
     NSMutableArray      *activeIMAPConnections;
+    
+    NSString            *serverCapabilityResponse;
 }
 
 @property (retain) LBAccount *account;
@@ -36,6 +38,9 @@ typedef void (^LBResponseBlock)(NSError *);
 @property (readonly, retain) NSMutableDictionary *foldersCache;
 @property (retain) NSArray *foldersList;
 
+@property (readonly, retain) NSString *serverCapabilityResponse;
+
+@property (readonly) BOOL capabilityUIDPlus;
 
 - (id)initWithAccount:(LBAccount*)anAccount usingCacheFolder:(NSURL*)cacheFileURL;
 
@@ -46,10 +51,12 @@ typedef void (^LBResponseBlock)(NSError *);
 
 - (NSArray*)messageListForPath:(NSString*)folderPath;
 
-- (void)moveMessages:(NSArray*)messageList inFolder:(NSString*)currentFolder toFolder:(NSString*)folder finshedBlock:(LBResponseBlock)block;
+- (void)moveMessagesWithUIDs:(NSArray*)messageList inMailbox:(NSString*)sourceMailbox toMailbox:(NSString*)destinationMailbox withBlock:(LBResponseBlock)block;
 
 - (void)deleteMessageWithUID:(NSString*)serverUID inMailbox:(NSString*)mailbox withBlock:(LBResponseBlock)block;
 - (void)deleteMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block;
 - (void)expungeWithBlock:(LBResponseBlock)block;
+
+- (void)findCapabilityWithBlock:(LBResponseBlock)block;
 
 @end

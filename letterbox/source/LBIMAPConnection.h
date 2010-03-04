@@ -10,7 +10,6 @@
     
     NSInteger   currentFetchingMessageSize;
     NSString    *currentFetchingMessageHeader;
-    
 }
 
 
@@ -35,7 +34,10 @@
 - (void)deleteMessageWithUID:(NSString*)serverUID withBlock:(LBResponseBlock)block;
 - (void)expungeWithBlock:(LBResponseBlock)block;
 
+- (void)copyMessageWithUID:(NSString*)serverUID toMailbox:(NSString*)destMailbox withBlock:(LBResponseBlock)block;
+
 - (void)idleWithBlock:(LBResponseBlock)block;
+- (void)findCapabilityWithBlock:(LBResponseBlock)block;
 
 // this will parse the last LSUB command.  You better have done a listSubscribedMailboxesWithBock: right before this.
 - (NSArray*)fetchedMailboxes;

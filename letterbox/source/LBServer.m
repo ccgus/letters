@@ -43,6 +43,8 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 @synthesize accountCacheURL;
 @synthesize foldersCache;
 @synthesize foldersList;
+@synthesize serverCapabilityResponse;
+@synthesize capabilityUIDPlus;
 
 - (id)initWithAccount:(LBAccount*)anAccount usingCacheFolder:(NSURL*)cacheFileURL {
     
@@ -70,6 +72,8 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     [baseCacheURL release];
     [accountCacheURL release];
     [cacheDB release];
+    
+    [serverCapabilityResponse release];
     
     [inactiveIMAPConnections release];
     [activeIMAPConnections release];
@@ -179,6 +183,31 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     });
 }
 
+- (void)findCapabilityWithBlock:(LBResponseBlock)block {
+    LBIMAPConnection *conn = [self checkoutIMAPConnection];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
+        
+        [conn setActivityStatusAndNotifiy:NSLocalizedString(@"Checking server capabilities", @"Checking server capabilities")];
+        
+        [conn findCapabilityWithBlock:^(NSError *err) {
+            
+            [self checkInIMAPConnection:conn];
+            
+            if (!err) {
+                serverCapabilityResponse = [[conn responseAsString] copy];
+                
+                capabilityUIDPlus = [serverCapabilityResponse rangeOfString:@" UIDPLUS "].location != NSNotFound;
+                
+            }
+            
+            block(err);
+            
+        }];
+    });
+    
+    
+}
+
 - (void)pullMessageFromServerFromList:(NSMutableArray*)messageList mailbox:(NSString*)mailbox mailboxList:(NSMutableArray*)mailboxList {
     
     // FIXME: should we check first to see if we've got the right box selected?
@@ -260,8 +289,6 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
                 block(err);
                 return;
             }
-            
-            debug(@"[conn searchedResultSet]: '%@'", [conn searchedResultSet]);
             
             NSString *envIds = @"1";
             NSArray *seqIds  = [conn searchedResultSet];
@@ -353,8 +380,6 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
             }
         }];
     }];
-    
-    debug(@"refreshing mailbox: %@", mailbox);
 }
 
 - (void)checkForMail {
@@ -549,58 +574,42 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     });
 }
 
-- (void)moveMessages:(NSArray*)messageList inFolder:(NSString*)currentFolder toFolder:(NSString*)folder finshedBlock:(LBResponseBlock)block {
+- (void)moveMessagesWithUIDs:(NSArray*)messageList inMailbox:(NSString*)sourceMailbox toMailbox:(NSString*)destinationMailbox withBlock:(LBResponseBlock)block {
     
-    /*
-    // FIXME: we need a way have this guy auto log in in.
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
         
-        BOOL success = YES;
-        NSError *err = nil;
-        
-        int mr = mailimap_select([conn session], [currentFolder UTF8String]);
-        
-        // uhhhhhh
-        
-        //struct mailimap_set *set = mailimap_set_new_empty(void);
-        //struct mailimap_set_item
-        
-        NSMutableArray *messageIdList = [NSMutableArray array];
-        
-        for (LBMessage *message in messageList) {
-            [messageIdList addObject:[NSNumber numberWithUnsignedLong:[message sequenceNumber]]];
-        }
-        
-        debug(@"messageIdList: %@", messageIdList);
-        
-        struct mailimap_set *set = setFromArray(messageIdList);
-        
-        mr = mailimap_uid_copy([conn session], set, [folder UTF8String]);
-        
-        //int mailimap_copy([conn session], struct mailimap_set * set, const char * mb);
-        
-        
-        
-        
-        
-        dispatch_async(dispatch_get_main_queue(),^ {
-            [self checkInIMAPConnection:conn];
-        });
-        
-        if (block) {
-            dispatch_async(dispatch_get_main_queue(),^ {
+        [conn selectMailbox:sourceMailbox block:^(NSError *err) {
+            
+            if (err) {
+                [self checkInIMAPConnection:conn];
+                block(err);
+                return;
+            }
+            
+            #warning make sure to move them all!
+            NSString *uid = [messageList lastObject];
+            
+            [conn copyMessageWithUID:uid toMailbox:destinationMailbox withBlock:^(NSError *err) {
                 
-                block(success, err);
+                if (err) {
+                    [self checkInIMAPConnection:conn];
+                    block(err);
+                    return;
+                }
+                
+                
+                // this message should have a new uid now.
                 
                 [self checkInIMAPConnection:conn];
-            });
-        }
-        
+                
+                [self deleteMessageWithUID:uid inMailbox:sourceMailbox withBlock:^(NSError *err) {
+                    block(err);
+                }];
+            }];
+        }];
     });
-    */
-    
 }
 
 

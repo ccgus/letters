@@ -20,6 +20,7 @@ static NSString *LBSTORE = @"STORE";
 static NSString *LBIDLE = @"IDLE";
 static NSString *LBEXPUNGE = @"EXPUNGE";
 static NSString *LBDONE = @"DONE";
+static NSString *LBCAPABILITY = @"CAPABILITY";
 
 
 @interface LBIMAPConnection ()
@@ -68,6 +69,47 @@ static NSString *LBDONE = @"DONE";
     }
 }
 
+
+- (void)findCapabilityWithBlock:(LBResponseBlock)block {
+    
+    responseBlock = [block copy];
+    
+    [self sendCommand:LBCAPABILITY withArgument:nil readBlock:^(LBTCPReader *reader) {
+        
+        [self appendDataFromReader:reader];
+        
+        NSString *firstLine   = [[self responseBytes] lbFirstLine];
+        NSString *expectedBAD = [NSString stringWithFormat:@"%d BAD", commandCount];
+        NSString *expectedNO  = [NSString stringWithFormat:@"%d NO",  commandCount];
+        
+        if ([firstLine hasPrefix:expectedBAD] || [firstLine hasPrefix:expectedNO]) {
+            NSError *err;
+            NSString *junk = [NSString stringWithFormat:@"Could not find capiblity: %@", [self responseAsString]];
+            LBQuickError(&err, LBCAPABILITY, 0, junk);
+            [self callBlockWithError:err killReadBlock:YES];
+            return;
+        }
+        
+        NSString *lastLine = [[self responseBytes] lbLastLineOfMultiline];
+        if (!lastLine) {
+            return;
+        }
+        
+        NSString *expectedOK  = [NSString stringWithFormat:@"%d OK",  commandCount];
+        
+        if ([lastLine hasPrefix:expectedOK]) {
+            
+            // need to parse the sucker now.
+            
+            [self callBlockWithError:nil killReadBlock:YES];
+        }
+        else {
+            // we're just waiting for more data.
+        }
+        
+    }];
+}
+
 - (void)loginWithBlock:(LBResponseBlock)block {
     
     responseBlock = [block copy];
@@ -81,7 +123,6 @@ static NSString *LBDONE = @"DONE";
         NSString *res = [[self responseBytes] lbSingleLineResponse];
         
         if (!res) {
-            debug(@"slow auth?");
             return;
         }
         
@@ -114,7 +155,6 @@ static NSString *LBDONE = @"DONE";
         NSString *expectedNO  = [NSString stringWithFormat:@"%d NO",  commandCount];
         
         if ([firstLine hasPrefix:expectedBAD] || [firstLine hasPrefix:expectedNO]) {
-            debug(@"Well, that was bad!");
             NSError *err;
             NSString *junk = [NSString stringWithFormat:@"Could not Select mailbox: %@", [self responseAsString]];
             LBQuickError(&err, LBSELECT, 0, junk);
@@ -199,7 +239,6 @@ static NSString *LBDONE = @"DONE";
         NSString *lastLine = [[self responseBytes] lbLastLineOfMultiline];
         
         if ([lastLine hasPrefix:expected]) {
-            debug(@"yay?");
             // FIXME: check for correctness
             [self callBlockWithError:nil killReadBlock:YES];
         }
@@ -224,11 +263,8 @@ static NSString *LBDONE = @"DONE";
         NSString *res = [[self responseBytes] lbSingleLineResponse];
         
         if (!res) {
-            debug(@"slow connection?");
             return;
         }
-        
-        debug(@"res: %@", res);
         
         [self callBlockWithError:nil killReadBlock:YES];
         
@@ -244,11 +280,7 @@ static NSString *LBDONE = @"DONE";
     
     [self sendCommand:LBLOGOUT withArgument:nil readBlock:^(LBTCPReader *reader) {
         
-        debug(@"got data for logout");
-        
         [self appendDataFromReader:reader];
-        
-        debug(@"[self responseBytes]: %@", [self responseAsString]);
         
         NSString *lastLine      = [[self responseBytes] lbFirstLine];
         NSString *expectedGood  = [NSString stringWithFormat:@"%d OK ", commandCount, CRLF];
@@ -339,8 +371,6 @@ static NSString *LBDONE = @"DONE";
             return;
         }
         
-        debug(@"line: %@", line);
-        
         NSString *expectedGood  = [NSString stringWithFormat:@"%d OK", commandCount, CRLF];
         NSError *err            = nil;
         
@@ -376,13 +406,10 @@ static NSString *LBDONE = @"DONE";
             return;
         }
         
-        debug(@"lastLine: %@", lastLine);
-        
         NSString *expectedGood  = [NSString stringWithFormat:@"%d OK", commandCount, CRLF];
         NSError *err = nil;
         
         if ([lastLine hasPrefix:expectedGood]) {
-            debug(@"yay");
             [self callBlockWithError:err killReadBlock:YES];
         }
         else {
@@ -441,6 +468,38 @@ static NSString *LBDONE = @"DONE";
     }
     
     return ar;
+}
+
+- (void)copyMessageWithUID:(NSString*)serverUID toMailbox:(NSString*)destMailbox withBlock:(LBResponseBlock)block {
+    
+    responseBlock = [block copy];
+    
+    
+    
+    // we're really just setting a flag on the message.
+    NSString *format = [NSString stringWithFormat:@"UID COPY %@ \"%@\"", serverUID, destMailbox];
+    
+    [self sendCommand:format withArgument:nil readBlock:^(LBTCPReader *reader) {
+        [self appendDataFromReader:reader];
+        
+        NSString *line = [[self responseBytes] lbSingleLineResponse];
+        
+        if (!line) {
+            return;
+        }
+        
+        // FIXME: look for the copyuid stuff ([COPYUID 1049043632 390 98802])
+        
+        NSString *expectedGood  = [NSString stringWithFormat:@"%d OK", commandCount, CRLF];
+        NSError *err            = nil;
+        
+        if (![line hasPrefix:expectedGood]) {
+            LBQuickError(&err, @"UID COPY", 0, line);
+        }
+        
+        [self callBlockWithError:err killReadBlock:YES];
+        
+    }];
 }
 
 - (void)fetchEnvelopes:(NSString*)seqIds withBlock:(LBResponseBlock)block {
