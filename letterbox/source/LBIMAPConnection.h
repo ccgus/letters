@@ -12,6 +12,8 @@
     NSString    *currentFetchingMessageHeader;
 }
 
+@property (readonly) BOOL needsToExpunge;
+@property (readonly) NSString *currentlySelectMailbox;
 
 
 - (id)initWithAccount:(LBAccount*)account;
@@ -34,7 +36,7 @@
 - (void)deleteMessageWithUID:(NSString*)serverUID withBlock:(LBResponseBlock)block;
 - (void)expungeWithBlock:(LBResponseBlock)block;
 
-- (void)copyMessageWithUID:(NSString*)serverUID toMailbox:(NSString*)destMailbox withBlock:(LBResponseBlock)block;
+- (void)copyMessage:(LBMessage*)message toMailbox:(NSString*)destMailbox withBlock:(LBResponseBlock)block;
 
 - (void)idleWithBlock:(LBResponseBlock)block;
 - (void)findCapabilityWithBlock:(LBResponseBlock)block;

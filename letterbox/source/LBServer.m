@@ -27,6 +27,13 @@ NSString *LBActivityStartedNotification = @"LBActivityStartedNotification";
 NSString *LBActivityUpdatedNotification = @"LBActivityUpdatedNotification";
 NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 
+
+#define LBCheckErrorAndReturnIfBad(anerr) { if (anerr) { [self checkInIMAPConnection:conn]; block(anerr); return; } }
+
+
+
+
+
 @interface LBServer ()
 - (void)loadCache;
 - (NSArray*)cachedMessagesForFolder:(NSString *)folder;
@@ -519,6 +526,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     return [foldersCache objectForKey:folderPath];
 }
 
+#warning delete this method
 - (void)deleteMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block {
     
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
@@ -536,17 +544,69 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     });
 }
 
+
+
+- (void)deleteMessage:(LBMessage*)message withBlock:(LBResponseBlock)block {
+    
+    /*    
+     this is what we do to delete.
+     copy the message to the folder "INBOX.Deleted Messages".
+     we'll get a new uid at that point.
+     we'll then set the delete flag on that guy, and update our database.
+     then we'll mark the connection for "needs to expunge", which will happen
+     when we quit, or change folders.
+     */  
+    
+    NSString *deletedMessagesMailbox = @"INBOX.Deleted Messages";
+    
+    [self moveMessage:message toMailbox:deletedMessagesMailbox withBlock:^(NSError* err) {
+        block(err);
+    }];
+    
+}
+
+
+
+
+#warning delete this method
 - (void)deleteMessageWithUID:(NSString*)serverUID inMailbox:(NSString*)mailbox withBlock:(LBResponseBlock)block {
     
     #warning make sure to select the mailbox if we haven't already.
     
-    LBIMAPConnection *conn = [self checkoutIMAPConnection];
+    
+    
+    // FIXME: is this different for every server, or an Apple Mail thing, or should we create it or?
+    
+    #warning this is hardcoded to INBOX right now
+    
+    
+    /*
+    [self moveMessagesWithUIDs:[NSArray arrayWithObject:serverUID] inMailbox:@"INBOX" toMailbox:deletedMessagesMailbox withBlock:^(NSError*err) {
+        
+        if (err) {
+            NSLog(@"Error moving message: %@", err);
+            return;
+        }
+        
+        LBIMAPConnection *conn = [self checkoutIMAPConnection];
+        
+        
+        
+        
+    }];
+        
+    */
+    
+    
+    
+    
+    
     
     // need up update the database with our intent to delete the message.
     
-    [cacheDB executeUpdate:@"update message set deletedFlag = 1 where serverUID = ?", serverUID];
-    
     [foldersCache removeObjectForKey:mailbox];
+    
+    debug(@"%s:%d", __FUNCTION__, __LINE__);
     
     #warning need up update the envelope flags after this guy too.
     
@@ -554,8 +614,13 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
                                                         object:self
                                                       userInfo:[NSDictionary dictionaryWithObject:serverUID forKey:@"uid"]];
     
+    LBIMAPConnection *conn = [self checkoutIMAPConnection];
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
+        
+        debug(@"doing delete.");
         [conn deleteMessageWithUID:serverUID withBlock:^(NSError *err) {
+            debug(@"got delete callback.");
             [self checkInIMAPConnection:conn];
             block(err);
         }];
@@ -574,37 +639,40 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     });
 }
 
-- (void)moveMessagesWithUIDs:(NSArray*)messageList inMailbox:(NSString*)sourceMailbox toMailbox:(NSString*)destinationMailbox withBlock:(LBResponseBlock)block {
+- (void)moveMessage:(LBMessage*)message toMailbox:(NSString*)destinationMailbox withBlock:(LBResponseBlock)block {
     
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
         
-        [conn selectMailbox:sourceMailbox block:^(NSError *err) {
+        [conn selectMailbox:[message mailbox] block:^(NSError *err) {
             
-            if (err) {
+            LBCheckErrorAndReturnIfBad(err);
+            
+            [conn copyMessage:message toMailbox:destinationMailbox withBlock:^(NSError *err) {
+                
+                LBCheckErrorAndReturnIfBad(err);
+                
+                NSString *copyUIDInfo = [conn responseAsString];
+                
+                NSRange startB  = [copyUIDInfo rangeOfString:@"["];
+                NSRange endB    = [copyUIDInfo rangeOfString:@"]"];
+                NSString *sub   = [copyUIDInfo substringWithRange:NSMakeRange(NSMaxRange(startB), endB.location - NSMaxRange(startB))];
+                NSArray *ar     = [sub componentsSeparatedByString:@" "];
+                
+                LBMessage *oldMessage = [[message copy] autorelease];
+                
+                [message setServerUID:[ar lastObject]];
+                [message setMailbox:destinationMailbox];
+                
+                [cacheDB executeUpdate:@"update message set serverUID = ?, mailbox = ? where serverUID = ?", [message serverUID], destinationMailbox, [oldMessage serverUID]];
+                
                 [self checkInIMAPConnection:conn];
-                block(err);
-                return;
-            }
-            
-            #warning make sure to move them all!
-            NSString *uid = [messageList lastObject];
-            
-            [conn copyMessageWithUID:uid toMailbox:destinationMailbox withBlock:^(NSError *err) {
                 
-                if (err) {
-                    [self checkInIMAPConnection:conn];
-                    block(err);
-                    return;
-                }
+                #warning fuck it's not a delete, it's a move!
+                #warning delete will put it in the deleted messages folder!
                 
-                
-                // this message should have a new uid now.
-                
-                [self checkInIMAPConnection:conn];
-                
-                [self deleteMessageWithUID:uid inMailbox:sourceMailbox withBlock:^(NSError *err) {
+                [self deleteMessage:oldMessage withBlock:^(NSError *err) {
                     block(err);
                 }];
             }];
@@ -811,7 +879,10 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     
     FMResultSet *rs = [cacheDB executeQuery:@"select localUUID, serverUID, messageId, inReplyTo, subject, fromAddress, toAddress, receivedDate, sendDate, seenFlag, answeredFlag, flaggedFlag, deletedFlag, draftFlag from message where mailbox = ? order by receivedDate", folder];
     
-    debug(@"[cacheDB hadError]: '%@'", [cacheDB lastErrorMessage]);
+    if ([cacheDB hadError]) {
+        NSLog(@"%@", [cacheDB lastErrorMessage]);
+    }
+    
     assert(![cacheDB hadError]);
     
     while ([rs next]) {

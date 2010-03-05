@@ -17,5 +17,5 @@
 
 @interface NSObject (LAMessageListViewAdditions)
 - (BOOL)tableViewDidRecieveDeleteKey:(NSTableView*)tableView;
-- (BOOL)tableDidRecieveEnterOrSpaceKey:(NSTableView*)tableView;
+- (BOOL)tableViewDidRecieveEnterOrSpaceKey:(NSTableView*)tableView;
 @end

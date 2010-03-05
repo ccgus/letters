@@ -19,6 +19,7 @@ typedef void (^LBResponseBlock)(NSError *);
 @class LBIMAPFolder;
 @class FMDatabase;
 @class LBIMAPConnection;
+@class LBMessage;
 
 @interface LBServer : NSObject {
     
@@ -51,10 +52,11 @@ typedef void (^LBResponseBlock)(NSError *);
 
 - (NSArray*)messageListForPath:(NSString*)folderPath;
 
-- (void)moveMessagesWithUIDs:(NSArray*)messageList inMailbox:(NSString*)sourceMailbox toMailbox:(NSString*)destinationMailbox withBlock:(LBResponseBlock)block;
+- (void)moveMessage:(LBMessage*)message toMailbox:(NSString*)destinationMailbox withBlock:(LBResponseBlock)block;
 
-- (void)deleteMessageWithUID:(NSString*)serverUID inMailbox:(NSString*)mailbox withBlock:(LBResponseBlock)block;
-- (void)deleteMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block;
+- (void)deleteMessage:(LBMessage*)message withBlock:(LBResponseBlock)block;
+//- (void)deleteMessageWithUID:(NSString*)serverUID inMailbox:(NSString*)mailbox withBlock:(LBResponseBlock)block;
+//- (void)deleteMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block;
 - (void)expungeWithBlock:(LBResponseBlock)block;
 
 - (void)findCapabilityWithBlock:(LBResponseBlock)block;

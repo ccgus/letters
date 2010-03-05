@@ -39,15 +39,8 @@
         LBAccount *account  = [LBTestIMAPServer testAccount];
         LBServer *server    = [account server];
         
-        [self addObserverForName:LBServerMessageDeletedNotification usingBlock:^(NSNotification *note) {
-            gotDeleteNotification = ([note object] == server && [[[note userInfo] objectForKey:@"uid"] isEqualToString:@"98797"]);
-            
-            NSArray *messages = [server messageListForPath:@"INBOX"];
-            
-            LBMessage *firstMessage = [messages objectAtIndex:0];
-            
-            LBAssertTrue([firstMessage deletedFlag], @"checking the deleted flag for the first message yo");
-        }];
+        NSArray *messages       = [server messageListForPath:@"INBOX"];
+        LBMessage *firstMessage = [messages objectAtIndex:0];
         
         [server connectUsingBlock:^(NSError *err) {
             
@@ -59,10 +52,10 @@
                 
                 LBAssertTrue([messages count] == 2, @"message list should have been two");
                 
-                LBMessage *firstMessage = [messages objectAtIndex:0];
-                
-                [server deleteMessageWithUID:[firstMessage serverUID] inMailbox:@"INBOX" withBlock:^(NSError *err) {
+                [server deleteMessage:firstMessage withBlock:^(NSError *err) {
                     
+                    LBAssertTrue([[firstMessage serverUID]  isEqualToString:@"98797"], @"updated uid");
+                    LBAssertTrue([firstMessage deletedFlag], @"checking the deleted flag for the first message yo");
                     LBAssertTrue(gotDeleteNotification, @"Did not get delete notification");
                     
                     LBTestError(err, @"Got an error delete!");
@@ -89,7 +82,7 @@
     
     LBInitTest();
     
-    __block BOOL gotDeleteNotification = NO;
+    __block BOOL gotMoveNotification = NO;
     
     // this needs to run on the main loop
     dispatch_async(dispatch_get_main_queue(),^ {
@@ -100,7 +93,7 @@
         #warning ummmmmmmmmmmmmmmmmm check for a message moved notif?
         [self addObserverForName:LBServerMessageDeletedNotification usingBlock:^(NSNotification *note) {
             debug(@"noooooooooootificionat");
-            gotDeleteNotification = ([note object] == server && [[[note userInfo] objectForKey:@"uid"] isEqualToString:@"390"]);
+            gotMoveNotification = ([note object] == server && [[[note userInfo] objectForKey:@"uid"] isEqualToString:@"390"]);
         }];
         
         debug(@"connecting");
@@ -113,18 +106,15 @@
                 
                 LBAssertTrue(server.capabilityUIDPlus, @"Checking capabilityUIDPlus");
                 
-                NSArray *uidArray = [NSArray arrayWithObject:@"390"];
+                LBMessage *message = [[[LBMessage alloc] init] autorelease];
                 
-                debug(@"ok, going to move.");
+                [message setServerUID:@"390"];
+                [message setMailbox:@"INBOX.acorn"];
                 
-                [server moveMessagesWithUIDs:uidArray
-                                   inMailbox:@"INBOX.acorn"
-                                   toMailbox:@"INBOX"
-                                   withBlock:^(NSError *err)
-                {
+                [server moveMessage:message toMailbox:@"INBOX" withBlock:^(NSError *err) {
                     #warning should this be a move notification?
                     
-                    LBAssertTrue(gotDeleteNotification, @"Did not get delete notification");
+                    LBAssertTrue(gotMoveNotification, @"gotMoveNotification is false");
                     
                     LBTestError(err, @"Got an error delete!");
                     

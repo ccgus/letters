@@ -4,6 +4,7 @@
 #import "TCP_Internal.h"
 #import "LBAccount.h"
 #import "IPAddress.h"
+#import "LBMessage.h"
 
 
 static NSString *LBLOGIN = @"LOGIN";
@@ -29,6 +30,8 @@ static NSString *LBCAPABILITY = @"CAPABILITY";
 
 @implementation LBIMAPConnection
 
+@synthesize needsToExpunge;
+@synthesize currentlySelectMailbox;
 
 - (id)initWithAccount:(LBAccount*)anAccount {
     
@@ -53,6 +56,15 @@ static NSString *LBCAPABILITY = @"CAPABILITY";
     
     return self;
 }
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [currentlySelectMailbox release];
+    [super dealloc];
+}
+
+
 
 - (NSString*)modifyCommandString:(NSString*)commandString {
     commandCount++;
@@ -142,11 +154,16 @@ static NSString *LBCAPABILITY = @"CAPABILITY";
 
 - (void)selectMailbox:(NSString*)mailbox block:(LBResponseBlock)block {
     
+    if ([mailbox isEqualToString:currentlySelectMailbox]) {
+        block(nil);
+        return;
+    }
+    
     responseBlock = [block copy];
     
-    mailbox = [NSString stringWithFormat:@"\"%@\"", mailbox];
+    NSString *selectArg = [NSString stringWithFormat:@"\"%@\"", mailbox];
     
-    [self sendCommand:LBSELECT withArgument:mailbox readBlock:^(LBTCPReader *reader) {
+    [self sendCommand:LBSELECT withArgument:selectArg readBlock:^(LBTCPReader *reader) {
         
         [self appendDataFromReader:reader];
         
@@ -171,15 +188,15 @@ static NSString *LBCAPABILITY = @"CAPABILITY";
         NSString *expectedOK  = [NSString stringWithFormat:@"%d OK",  commandCount];
         
         if ([lastLine hasPrefix:expectedOK]) {
+            
+            [mailbox retain];
+            [currentlySelectMailbox release];
+            currentlySelectMailbox = mailbox;
+            
             [self callBlockWithError:nil killReadBlock:YES];
-        }
-        else {
-            debug(@"waiting for more select data for %@", mailbox);
         }
         
         // else, we're still reading.
-        
-        
     }];
 }
 
@@ -470,14 +487,12 @@ static NSString *LBCAPABILITY = @"CAPABILITY";
     return ar;
 }
 
-- (void)copyMessageWithUID:(NSString*)serverUID toMailbox:(NSString*)destMailbox withBlock:(LBResponseBlock)block {
+- (void)copyMessage:(LBMessage*)message toMailbox:(NSString*)destMailbox withBlock:(LBResponseBlock)block {
     
     responseBlock = [block copy];
     
-    
-    
     // we're really just setting a flag on the message.
-    NSString *format = [NSString stringWithFormat:@"UID COPY %@ \"%@\"", serverUID, destMailbox];
+    NSString *format = [NSString stringWithFormat:@"UID COPY %@ \"%@\"", [message serverUID], destMailbox];
     
     [self sendCommand:format withArgument:nil readBlock:^(LBTCPReader *reader) {
         [self appendDataFromReader:reader];

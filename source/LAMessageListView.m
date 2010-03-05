@@ -33,8 +33,8 @@
         // check for the enter / space to open it up
         else if (val == 13 /*return*/ || val == 32 /*space bar*/) {
             
-            if ([[self delegate] respondsToSelector:@selector(tableDidRecieveEnterOrSpaceKey:)]) {
-                return [(id)[self delegate] tableDidRecieveEnterOrSpaceKey:self];
+            if ([[self delegate] respondsToSelector:@selector(tableViewDidRecieveEnterOrSpaceKey:)]) {
+                return [(id)[self delegate] tableViewDidRecieveEnterOrSpaceKey:self];
             }
         }
     }

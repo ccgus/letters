@@ -115,18 +115,30 @@
     
     NSInteger selectedRow = [mailboxMessageList selectedRow];
     if (selectedRow >= 0) {
-        
+        debug(@"%s:%d", __FUNCTION__, __LINE__);
         LBAccount *currentAccount   = [[appDelegate accounts] lastObject];
         NSArray *messageList        = [[currentAccount server] messageListForPath:[self selectedFolderPath]];
         LBMessage *msg              = [messageList objectAtIndex:selectedRow];
+        debug(@"%s:%d", __FUNCTION__, __LINE__);
         
-        debug(@"msg: %@", msg);
+        // make another ref to the id, because msg is about to be dealloc'd when we clean up the cache.
+        NSString *serverUID =  [msg serverUID];
+        
+        [[currentAccount server] deleteMessageWithUID:serverUID inMailbox:[self selectedFolderPath] withBlock:^(NSError *err) {
+            debug(@"%s:%d", __FUNCTION__, __LINE__);
+            if (err) {
+                debug(@"craaaaaaaap got an error trying to delete %@", serverUID);
+            }
+        }];
+        
+        [mailboxMessageList reloadData];
+        
     }
     
     return YES;
 }
 
-- (BOOL)tableDidRecieveEnterOrSpaceKey:(NSTableView*)tableView {
+- (BOOL)tableViewDidRecieveEnterOrSpaceKey:(NSTableView*)tableView {
     debug(@"%s:%d", __FUNCTION__, __LINE__);
     // open up the message in a new window.
     return YES;
@@ -233,11 +245,12 @@
     // this is a work in progress.
     LBAccount *currentAccount = [[appDelegate accounts] lastObject];
     
+    /*
     [[currentAccount server] moveMessages:messages inFolder:[self selectedFolderPath] toFolder:folder finshedBlock:^(NSError *err) {
     
         NSLog(@"All done with move... I think");
     }];
-    
+    */
 }
 
 - (void)delete:(id)sender {

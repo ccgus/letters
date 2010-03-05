@@ -60,6 +60,33 @@
     [super dealloc];
 }
 
+
+- (id)copyWithZone:(NSZone*)zone {
+    
+    LBMessage *m    = [[[self class] alloc] init];
+    
+    m->localUUID    = [[self localUUID] copy];
+    m->serverUID    = [[self serverUID] copy];
+    m->messageId    = [[self messageId] copy];
+    m->inReplyTo    = [[self inReplyTo] copy];
+    m->mailbox      = [[self mailbox] copy];
+    m->subject      = [[self subject] copy];
+    m->sender       = [[self sender] copy];
+    m->to           = [[self to] copy];
+    m->messageBody  = [[self messageBody] copy];
+    m->messageURL   = [[self messageURL] copy];
+    m->receivedDate = [[self receivedDate] copy];
+    m->sendDate     = [[self sendDate] copy];
+    m->flags        = [[self flags] copy];
+    
+    return m;
+}
+
+- (id) copy {
+    return [self copyWithZone:nil];
+}
+
+
 - (void) parseHeaders {
     
     if (!subject) {
