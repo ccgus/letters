@@ -38,7 +38,7 @@ static NSString *LBCAPABILITY = @"CAPABILITY";
     IPAddress *addr = [IPAddress addressWithHostname:[anAccount imapServer] port:[anAccount imapPort]];
     self = [self initToAddress:addr];
     
-	if (self != nil) {
+    if (self != nil) {
         
         [self setAccount:anAccount];
         

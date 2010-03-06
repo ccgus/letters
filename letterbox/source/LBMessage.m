@@ -8,6 +8,7 @@
 
 #import "LBMessage.h"
 #import "LetterBoxUtilities.h"
+#import "LBMIMEParser.h"
 
 @implementation LBMessage
 
@@ -24,7 +25,7 @@
 @synthesize messageURL;
 @synthesize receivedDate;
 @synthesize sendDate;
-
+@synthesize mimePart;
 @synthesize seenFlag;
 @synthesize answeredFlag;
 @synthesize flaggedFlag;
@@ -33,12 +34,12 @@
 @synthesize flags;
 
 - (id)initWithURL:(NSURL*)fileURL {
-	self = [super init];
-	if (self != nil) {
-		self.messageURL = fileURL;
-	}
+    self = [super init];
+    if (self != nil) {
+        self.messageURL = fileURL;
+    }
     
-	return self;
+    return self;
 }
 
 - (void)dealloc {
@@ -56,6 +57,7 @@
     LBRelease(receivedDate);
     LBRelease(sendDate);
     LBRelease(flags);
+    LBRelease(mimePart);
     
     [super dealloc];
 }
@@ -117,6 +119,24 @@
         NSError *err = nil;
         
         NSString *fullMessage = [NSString stringWithContentsOfURL:messageURL usedEncoding:&usedEncoding error:&err];
+        if (fullMessage == nil) {
+            if ([[err domain] isEqual: NSCocoaErrorDomain] && [err code] == 264 /*unknown encoding*/ ) {
+                fullMessage = [NSString stringWithContentsOfURL: messageURL encoding: NSMacOSRomanStringEncoding error: &err];
+            }
+        }
+        
+        if (fullMessage == nil) {
+            fullMessage = [err localizedDescription];
+        }
+        
+        NSLog( @"URL: %@", messageURL );
+        
+        mimePart = [[LBMIMEMultipartMessage alloc] initWithString: fullMessage];
+        NSLog( @"%@", mimePart.contentType );
+        for ( LBMIMEPart *part in mimePart.subparts )
+        {
+            NSLog( @"sub part: %@", part.contentType );
+        }
         
         NSRange r = [fullMessage rangeOfString:@"\r\n\r\n"];
         
@@ -124,7 +144,12 @@
             messageBody = [fullMessage retain];
         }
         else {
-            messageBody = [[fullMessage substringFromIndex:NSMaxRange(r)] retain];
+            LBMIMEPart *representation = [mimePart availablePartForTypeFromArray: [NSArray arrayWithObjects: @"text/plain", @"text/plain", nil]];
+            
+            messageBody = [representation.content copy];
+            
+            
+            //messageBody = [[fullMessage substringFromIndex:NSMaxRange(r)] retain];
         }
         
         if (!messageBody) {

@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-
+#import "LBMIMEParser.h"
 
 @interface LBMessage : NSObject {
     
@@ -35,6 +35,7 @@
 @property (assign) BOOL deletedFlag;
 @property (assign) BOOL draftFlag;
 @property (retain) NSString *flags;
+@property (retain) LBMIMEMultipartMessage *mimePart;
 
 - (void) parseHeaders;
 

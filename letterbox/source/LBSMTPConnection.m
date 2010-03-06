@@ -18,7 +18,7 @@ static NSString *LBSMTPDATA     = @"DATA";
     IPAddress *addr = [IPAddress addressWithHostname:[anAccount smtpServer] port:25];
     self = [self initToAddress:addr];
     
-	if (self != nil) {
+    if (self != nil) {
         
         [self setAccount:anAccount];
         

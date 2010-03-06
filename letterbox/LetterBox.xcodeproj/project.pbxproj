@@ -16,6 +16,8 @@
 		968D0F44111528AB0044BE1D /* LBAddressTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D39110ABD32005ECF65 /* LBAddressTests.m */; };
 		968D0F45111528AB0044BE1D /* LBAttachmentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D3B110ABD32005ECF65 /* LBAttachmentTests.m */; };
 		96B8B0FB11153F4200A36A36 /* LBBareMessageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D35110ABD32005ECF65 /* LBBareMessageTests.m */; };
+		CC1C825F1142EA0300A8788E /* LBMIMEParser.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C825D1142EA0300A8788E /* LBMIMEParser.h */; };
+		CC1C82601142EA0300A8788E /* LBMIMEParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C825E1142EA0300A8788E /* LBMIMEParser.m */; };
 		CC220E981131BD5B000B46D8 /* LBIMAPConnectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC220E971131BD5B000B46D8 /* LBIMAPConnectionTests.m */; };
 		CC2212BB11320868000B46D8 /* LBNSDataAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC2212BA11320868000B46D8 /* LBNSDataAdditionsTests.m */; };
 		CC22134511320C86000B46D8 /* LBNSDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CC2212BE11320883000B46D8 /* LBNSDataAdditions.m */; };
@@ -244,6 +246,8 @@
 		968D0E5C111525550044BE1D /* GHUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GHUnit.framework; sourceTree = "<group>"; };
 		968D0E7B1115258B0044BE1D /* GHUnitTestMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GHUnitTestMain.m; path = tests/GHUnitTestMain.m; sourceTree = "<group>"; };
 		968D0EA71115267D0044BE1D /* Tests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tests.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC1C825D1142EA0300A8788E /* LBMIMEParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBMIMEParser.h; path = source/LBMIMEParser.h; sourceTree = "<group>"; };
+		CC1C825E1142EA0300A8788E /* LBMIMEParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBMIMEParser.m; path = source/LBMIMEParser.m; sourceTree = "<group>"; };
 		CC220E961131BD5B000B46D8 /* LBIMAPConnectionTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBIMAPConnectionTests.h; path = tests/LBIMAPConnectionTests.h; sourceTree = "<group>"; };
 		CC220E971131BD5B000B46D8 /* LBIMAPConnectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBIMAPConnectionTests.m; path = tests/LBIMAPConnectionTests.m; sourceTree = "<group>"; };
 		CC2212B911320868000B46D8 /* LBNSDataAdditionsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBNSDataAdditionsTests.h; path = tests/LBNSDataAdditionsTests.h; sourceTree = "<group>"; };
@@ -526,6 +530,8 @@
 				CC3D541C1108E7AC00EEEF77 /* FMDB */,
 				CC877CE3110ABC04005ECF65 /* LBAccount.h */,
 				CC877CE2110ABC04005ECF65 /* LBAccount.m */,
+				CC1C825D1142EA0300A8788E /* LBMIMEParser.h */,
+				CC1C825E1142EA0300A8788E /* LBMIMEParser.m */,
 				CCF41346110D39F200401D5D /* LBActivity.h */,
 				CC877CE1110ABC04005ECF65 /* LBAddress.h */,
 				CC877CE0110ABC04005ECF65 /* LBAddress.m */,
@@ -911,6 +917,7 @@
 				CCCB7C91113B662A00B2F291 /* TDWordState.h in Headers */,
 				CCCB7D1D113B6B0700B2F291 /* LBEnvelopeTokenizer.h in Headers */,
 				CCCB7DBC113B764C00B2F291 /* LBNSStringAdditions.h in Headers */,
+				CC1C825F1142EA0300A8788E /* LBMIMEParser.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1113,6 +1120,7 @@
 				CCCB7C92113B662A00B2F291 /* TDWordState.m in Sources */,
 				CCCB7D1E113B6B0700B2F291 /* LBEnvelopeTokenizer.m in Sources */,
 				CCCB7DBD113B764C00B2F291 /* LBNSStringAdditions.m in Sources */,
+				CC1C82601142EA0300A8788E /* LBMIMEParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

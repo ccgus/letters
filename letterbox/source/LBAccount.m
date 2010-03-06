@@ -14,11 +14,11 @@
 @synthesize isActive;
 
 - (id) init {
-	self = [super init];
-	if (self != nil) {
-		imapPort = 993;
-	}
-	return self;
+    self = [super init];
+    if (self != nil) {
+        imapPort = 993;
+    }
+    return self;
 }
 
 

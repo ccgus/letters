@@ -39,4 +39,6 @@
 #import "LetterBoxTypes.h"
 #import "LetterBoxUtilities.h"
 
+#import "LBMIMEParser.h"
+
 //#import <libetpan/libetpan.h>

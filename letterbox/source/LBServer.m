@@ -55,9 +55,9 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 
 - (id)initWithAccount:(LBAccount*)anAccount usingCacheFolder:(NSURL*)cacheFileURL {
     
-	self = [super init];
-	if (self != nil) {
-		self.account        = anAccount;
+    self = [super init];
+    if (self != nil) {
+        self.account        = anAccount;
         self.baseCacheURL   = cacheFileURL;
         
         inactiveIMAPConnections = [[NSMutableArray array] retain];
@@ -66,9 +66,9 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         foldersList  = [[NSArray array] retain];
         
         [self loadCache];
-	}
+    }
     
-	return self;
+    return self;
 }
 
 
