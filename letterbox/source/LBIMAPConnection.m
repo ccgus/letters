@@ -154,6 +154,10 @@ static NSString *LBCAPABILITY = @"CAPABILITY";
 
 - (void)selectMailbox:(NSString*)mailbox block:(LBResponseBlock)block {
     
+    if (!mailbox) {
+        debug(@"bad mailbox!");
+    }
+    
     if ([mailbox isEqualToString:currentlySelectMailbox]) {
         block(nil);
         return;

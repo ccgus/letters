@@ -61,4 +61,6 @@ typedef void (^LBResponseBlock)(NSError *);
 
 - (void)findCapabilityWithBlock:(LBResponseBlock)block;
 
+- (void)clearCache;
+
 @end

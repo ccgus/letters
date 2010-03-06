@@ -36,7 +36,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 
 @interface LBServer ()
 - (void)loadCache;
-- (NSArray*)cachedMessagesForFolder:(NSString *)folder;
+- (NSArray*)cachedMessagesForMailbox:(NSString *)mailbox;
 - (void)saveMessageToCache:(NSData*)messageData forMailbox:(NSString*)mailboxName;
 - (void)checkForMailInMailboxList:(NSMutableArray*)mailboxList;
 - (void)saveFoldersToCache:(NSArray*)messages;
@@ -518,32 +518,13 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     
     if (![foldersCache objectForKey:folderPath]) {
         
-        NSArray *msgList = [self cachedMessagesForFolder:folderPath];
+        NSArray *msgList = [self cachedMessagesForMailbox:folderPath];
         
         [foldersCache setObject:msgList forKey:folderPath];
     }
     
     return [foldersCache objectForKey:folderPath];
 }
-
-#warning delete this method
-- (void)deleteMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block {
-    
-    LBIMAPConnection *conn = [self checkoutIMAPConnection];
-    
-    // UID STORE 19443 +FLAGS.SILENT (\Deleted)
-    // OK STORE completed.
-    
-    // need up update the database with our intent to delete the message.
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
-        [conn deleteMessages:seqIds withBlock:^(NSError *err) {
-            [self checkInIMAPConnection:conn];
-            block(err);
-        }];
-    });
-}
-
 
 
 - (void)deleteMessage:(LBMessage*)message withBlock:(LBResponseBlock)block {
@@ -560,72 +541,16 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     NSString *deletedMessagesMailbox = @"INBOX.Deleted Messages";
     
     [self moveMessage:message toMailbox:deletedMessagesMailbox withBlock:^(NSError* err) {
+        
+        #warning FIXME: need to update the database with flags.
+        
+        [message setDeletedFlag:YES];
+        
         block(err);
     }];
     
 }
 
-
-
-
-#warning delete this method
-- (void)deleteMessageWithUID:(NSString*)serverUID inMailbox:(NSString*)mailbox withBlock:(LBResponseBlock)block {
-    
-    #warning make sure to select the mailbox if we haven't already.
-    
-    
-    
-    // FIXME: is this different for every server, or an Apple Mail thing, or should we create it or?
-    
-    #warning this is hardcoded to INBOX right now
-    
-    
-    /*
-    [self moveMessagesWithUIDs:[NSArray arrayWithObject:serverUID] inMailbox:@"INBOX" toMailbox:deletedMessagesMailbox withBlock:^(NSError*err) {
-        
-        if (err) {
-            NSLog(@"Error moving message: %@", err);
-            return;
-        }
-        
-        LBIMAPConnection *conn = [self checkoutIMAPConnection];
-        
-        
-        
-        
-    }];
-        
-    */
-    
-    
-    
-    
-    
-    
-    // need up update the database with our intent to delete the message.
-    
-    [foldersCache removeObjectForKey:mailbox];
-    
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
-    
-    #warning need up update the envelope flags after this guy too.
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:LBServerMessageDeletedNotification
-                                                        object:self
-                                                      userInfo:[NSDictionary dictionaryWithObject:serverUID forKey:@"uid"]];
-    
-    LBIMAPConnection *conn = [self checkoutIMAPConnection];
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
-        
-        debug(@"doing delete.");
-        [conn deleteMessageWithUID:serverUID withBlock:^(NSError *err) {
-            debug(@"got delete callback.");
-            [self checkInIMAPConnection:conn];
-            block(err);
-        }];
-    });
-}
 
 
 - (void)expungeWithBlock:(LBResponseBlock)block {
@@ -667,12 +592,15 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
                 
                 [cacheDB executeUpdate:@"update message set serverUID = ?, mailbox = ? where serverUID = ?", [message serverUID], destinationMailbox, [oldMessage serverUID]];
                 
-                [self checkInIMAPConnection:conn];
+                // clear the cache.
+                [foldersCache removeAllObjects];
                 
-                #warning fuck it's not a delete, it's a move!
-                #warning delete will put it in the deleted messages folder!
+                [[NSNotificationCenter defaultCenter] postNotificationName:LBServerMessageDeletedNotification
+                                                                    object:self
+                                                                  userInfo:[NSDictionary dictionaryWithObject:[oldMessage serverUID] forKey:@"uid"]];
                 
-                [self deleteMessage:oldMessage withBlock:^(NSError *err) {
+                [conn deleteMessageWithUID:[oldMessage serverUID] withBlock:^(NSError *err) {
+                    [self checkInIMAPConnection:conn];
                     block(err);
                 }];
             }];
@@ -760,6 +688,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
                                                         flags text\n\
                                                  )"];
         
+        #warning fixme: change "folder" to mailbox
         // um... do we need anything else?
         [cacheDB executeUpdate:@"create table folder ( folder text, subscribed int )"];
         
@@ -780,6 +709,24 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     [[NSNotificationCenter defaultCenter] postNotificationName:LBServerFolderUpdatedNotification
                                                         object:self
                                                       userInfo:nil];
+}
+
+- (void)clearCache {
+    
+    [foldersCache removeAllObjects];
+    
+    [cacheDB executeUpdate:@"delete * from letters_meta"];
+    [cacheDB executeUpdate:@"delete * from message"];
+    [cacheDB executeUpdate:@"delete * from folder"];
+    
+    [cacheDB close];
+    
+    [cacheDB release];
+    
+    
+    [[NSFileManager defaultManager] removeItemAtURL:accountCacheURL error:nil];
+    
+    [self loadCache];
 }
 
 - (void)saveEnvelopeToCache:(NSDictionary*)envelopeDict forMailbox:(NSString*)mailboxName {
@@ -873,11 +820,11 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     
 }
 
-- (NSArray*)cachedMessagesForFolder:(NSString *)folder {
+- (NSArray*)cachedMessagesForMailbox:(NSString *)mailbox {
     
     NSMutableArray *messageArray = [NSMutableArray array];
     
-    FMResultSet *rs = [cacheDB executeQuery:@"select localUUID, serverUID, messageId, inReplyTo, subject, fromAddress, toAddress, receivedDate, sendDate, seenFlag, answeredFlag, flaggedFlag, deletedFlag, draftFlag from message where mailbox = ? order by receivedDate", folder];
+    FMResultSet *rs = [cacheDB executeQuery:@"select localUUID, serverUID, messageId, inReplyTo, subject, fromAddress, toAddress, receivedDate, sendDate, seenFlag, answeredFlag, flaggedFlag, deletedFlag, draftFlag from message where mailbox = ? order by receivedDate", mailbox];
     
     if ([cacheDB hadError]) {
         NSLog(@"%@", [cacheDB lastErrorMessage]);
@@ -889,7 +836,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         
         NSString *messageFile = [NSString stringWithFormat:@"%s.letterboxmsg", [[rs stringForColumnIndex:1] fileSystemRepresentation]];
         
-        NSURL *messageCacheURL = [[accountCacheURL URLByAppendingPathComponent:folder] URLByAppendingPathComponent:messageFile];
+        NSURL *messageCacheURL = [[accountCacheURL URLByAppendingPathComponent:mailbox] URLByAppendingPathComponent:messageFile];
         
         LBMessage *message = [[[LBMessage alloc] initWithURL:messageCacheURL] autorelease];
         
@@ -897,6 +844,8 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
             NSLog(@"Could not load message at %@", messageCacheURL);
             continue;
         }
+        
+        message.mailbox     = mailbox;
         
         message.localUUID   = [rs stringForColumnIndex:0];
         message.serverUID   = [rs stringForColumnIndex:1];

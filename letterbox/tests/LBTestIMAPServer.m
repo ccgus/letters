@@ -54,6 +54,8 @@
     [acct setIsActive:YES];
     [acct setImapTLS:NO];
     
+    [[acct server] clearCache];
+    
     return acct;
 }
 
@@ -67,6 +69,9 @@
     [acct setImapPort:143];
     [acct setIsActive:YES];
     [acct setImapTLS:NO];
+    
+    
+    [[acct server] clearCache];
     
     return acct;
 }
