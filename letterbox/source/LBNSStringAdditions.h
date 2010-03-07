@@ -13,5 +13,10 @@
 
 - (NSData*)utf8Data;
 - (NSString*)stringByDeletingEndQuotes;
+- (NSString *)asRFC2047Phrase;
+
+- (NSRange)rangeOfString:(NSString*)s startIndex:(NSUInteger)idx;
+
+- (NSString*)substringFromIndex:(NSUInteger)startIndex toIndex:(NSUInteger)endIndex;
 
 @end

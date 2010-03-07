@@ -48,7 +48,11 @@
 
 - (void)testDecodedName {
     LBAddress *addr = [[LBAddress alloc] init];
-
+    
+#warning this is failing
+    [addr setName:@"=?ISO-8859-1?Q?a?= =?ISO-8859-2?Q?_b?="]; // RFC 2047 Example
+    GHAssertTrue([[addr decodedName] isEqual:@"a b"], @"Decoding failed. Result was [%@]", [addr decodedName]);
+    
     [addr setName:@"A User Name Like Mine (for example)"]; // No Encoding
     GHAssertTrue([[addr decodedName] isEqual:@"A User Name Like Mine (for example)"], @"No changes to the test string should have been made. Result was [%@]", [addr decodedName]);
 
@@ -74,10 +78,10 @@
 
     [addr setName:@"=?ISO-8859-1?Q?a?= b"]; // RFC 2047 Example
     GHAssertTrue([[addr decodedName] isEqual:@"a b"], @"Decoding failed. Result was [%@]", [addr decodedName]);
-
-    [addr setName:@"=?ISO-8859-1?Q?a?= =?ISO-8859-2?Q?_b?="]; // RFC 2047 Example
-    GHAssertTrue([[addr decodedName] isEqual:@"a b"], @"Decoding failed. Result was [%@]", [addr decodedName]);
-
+    
+    [addr setName:@"=?ISO-8859-2?Q?_b?="];
+    GHAssertTrue([[addr decodedName] isEqual:@" b"], @"Decoding failed. Result was [%@]", [addr decodedName]);
+    
     [addr setName:@"=?ISO-8859-1?Q?a?= =?ISO-8859-1?Q?b?="]; // RFC 2047 Example
     GHAssertTrue([[addr decodedName] isEqual:@"ab"], @"Decoding failed. Result was [%@]", [addr decodedName]);
 

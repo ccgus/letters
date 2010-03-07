@@ -32,6 +32,8 @@
 
 #import "LBAddress.h"
 #import "LetterBoxUtilities.h"
+#import "LBNSStringAdditions.h"
+#import "LBNSDataAdditions.h"
 
 @implementation LBAddress
 
@@ -89,106 +91,127 @@
     [super dealloc];
 }
 
-// RFC 2047 "Encoded Word" Decoder
-// http://tools.ietf.org/html/rfc2047
-//
--(NSString*)decodedName {
-    NSString *encodedWord;
-    NSString *encodedSubWord;
-    NSRange encodedWordStart = [name rangeOfString:@"=?"];
-    NSRange encodedWordEnd = [name rangeOfString:@"?="];
-    NSRange encodedWordRange = NSUnionRange(encodedWordStart, encodedWordEnd);
+/*
+http://tools.ietf.org/html/rfc2047
 
-    if ( ! encodedWordRange.length ) {
-        // If there are no encoded words, return the name as we have it.
+   encoded-word = "=?" charset "?" encoding "?" encoded-text "?="
+
+   charset = token    ; see section 3
+
+   encoding = token   ; see section 4
+
+   token = 1*<Any CHAR except SPACE, CTLs, and especials>
+
+   especials = "(" / ")" / "<" / ">" / "@" / "," / ";" / ":" / "
+               <"> / "/" / "[" / "]" / "?" / "." / "="
+
+   encoded-text = 1*<Any printable ASCII character other than "?"
+                     or SPACE>
+                  ; (but see "Use of encoded-words in message
+                  ; headers", section 5)
+*/
+- (NSString*)decodedName {
+    
+    if ([name rangeOfString:@"=?"].location == NSNotFound) {
         return name;
     }
-
-    NSString *decodedName = [NSString stringWithString:name];
-
-    while ( encodedWordRange.length ) {
-        encodedWord = [decodedName substringWithRange:encodedWordRange];
-        encodedSubWord = [encodedWord substringFromIndex:2];
-        encodedSubWord = [encodedSubWord substringToIndex:[encodedSubWord length] -2];
-
-        NSRange characterSetStart = {0,0};
-        NSRange characterSetEnd = [encodedSubWord rangeOfString:@"?"];
-        characterSetEnd.length = characterSetEnd.length - 1;
-        NSRange characterSetRange = NSUnionRange(characterSetStart, characterSetEnd);
-        NSString *characterSet = [encodedSubWord substringWithRange:characterSetRange];
-        encodedSubWord = [encodedSubWord substringFromIndex:characterSetEnd.location + 1];
-
-        if ( [encodedSubWord hasPrefix:@"Q"] || [encodedSubWord hasPrefix:@"q"] ){
-            NSString *decodedWord = [encodedSubWord substringFromIndex:2];
-            decodedWord = [decodedWord stringByReplacingOccurrencesOfString:@"_" withString:@" "];
-            decodedWord = [decodedWord stringByReplacingOccurrencesOfString:@"=" withString:@"%"];
-            if ( [characterSet isCaseInsensitiveLike:@"ISO-8859-1"] ) {
-                decodedWord = [decodedWord stringByReplacingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
-            } else if ( [characterSet isCaseInsensitiveLike:@"UTF-8"] ) {
-                decodedWord = [decodedWord stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-            } else if ( [characterSet isCaseInsensitiveLike:@"ISO-8859-2"] ) {
-                decodedWord = [decodedWord stringByReplacingPercentEscapesUsingEncoding:NSISOLatin2StringEncoding];
-            } else if ( [characterSet isCaseInsensitiveLike:@"ISO-8859-15"] ) {
-                // FIXME : jasonrm - Is this even allowed? From lists of encodings 15 looks to match ISO-8859-15 but I don't like hardcoding a number here.
-                decodedWord = [decodedWord stringByReplacingPercentEscapesUsingEncoding:15];
-            } else {
-                // FIXME : jasonrm - Only the most common (for someone in the US) encodings are supported, everything else is treated like ISO-8859-1
-                decodedWord = [decodedWord stringByReplacingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
+    
+    NSMutableString *retString  = [NSMutableString string];
+    
+    NSUInteger currentIdx = 0;
+    
+    while (currentIdx < [name length]) {
+        NSRange csStart = [name rangeOfString:@"=?" startIndex:currentIdx];
+        
+        if (csStart.location == NSNotFound) {
+            break;
+        }
+        
+        currentIdx = NSMaxRange(csStart);
+        
+        NSRange csEnd = [name rangeOfString:@"?" startIndex:currentIdx];
+        currentIdx = NSMaxRange(csEnd);
+        
+        NSRange encEnd = [name rangeOfString:@"?" startIndex:currentIdx];
+        currentIdx = NSMaxRange(encEnd);
+        
+        NSRange encTEnd = [name rangeOfString:@"?=" startIndex:currentIdx];
+        currentIdx = NSMaxRange(encTEnd);
+        
+        NSString *charset   = [name substringFromIndex:NSMaxRange(csStart) toIndex:csEnd.location];
+        NSString *encoding  = [[name substringFromIndex:NSMaxRange(csEnd) toIndex:encEnd.location] lowercaseString];
+        NSString *text      = [name substringFromIndex:NSMaxRange(encEnd) toIndex:encTEnd.location];
+        
+        debug(@"charset: '%@'", charset);
+        debug(@"encoding: '%@'", encoding);
+        debug(@"text: '%@'", text);
+        
+        if ([encoding isEqualToString:@"q"]) {
+            
+            text = [text stringByReplacingOccurrencesOfString:@"_" withString:@" "];
+            text = [text stringByReplacingOccurrencesOfString:@"=" withString:@"%"];
+            
+            if ([charset isCaseInsensitiveLike:@"ISO-8859-1"]) {
+                text = [text stringByReplacingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
             }
-            decodedName = [decodedName stringByReplacingOccurrencesOfString:encodedWord withString:decodedWord];
-            encodedWordStart = [decodedName rangeOfString:@"=?"];
-            encodedWordEnd = [decodedName rangeOfString:@"?="];
-            encodedWordRange = NSUnionRange(encodedWordStart, encodedWordEnd);
-        } else if ( [encodedSubWord hasPrefix:@"B"] || [encodedSubWord hasPrefix:@"b"] ) {
-            NSString *encodedWord = [encodedSubWord substringFromIndex:2];
+            else if ([charset isCaseInsensitiveLike:@"UTF-8"]) {
+                text = [text stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            }
+            else if ([charset isCaseInsensitiveLike:@"ISO-8859-2"]) {
+                text = [text stringByReplacingPercentEscapesUsingEncoding:NSISOLatin2StringEncoding];
+            }
+            else if ([charset isCaseInsensitiveLike:@"ISO-8859-15"]) {
+                // FIXME : jasonrm - Is this even allowed? From lists of encodings 15 looks to match ISO-8859-15 but I don't like hardcoding a number here.
+                text = [text stringByReplacingPercentEscapesUsingEncoding:15];
+            }
+            else {
+                // FIXME : jasonrm - Only the most common (for someone in the US) encodings are supported, everything else is treated like ISO-8859-1
+                text = [text stringByReplacingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
+            }
+            
+            [retString appendString:text];
+            
+        }
+        
+        else if ([encoding isEqualToString:@"b"]) {
+            
             NSString *decodedWord;
-
+            
             // FIXME : jasonrm - Something about this doesn't seem right...
-            NSData *decodedData = [LBAddress dataByDecodingBase64String:encodedWord];
-
-            if ( [characterSet isCaseInsensitiveLike:@"ISO-8859-1"] ) {
+            NSData *decodedData = [NSData dataWithBase64EncodedString:text];
+            
+            if ([charset isCaseInsensitiveLike:@"ISO-8859-1"]) {
                 decodedWord = [[NSString alloc] initWithData:decodedData encoding:NSISOLatin1StringEncoding];
-            } else if ( [characterSet isCaseInsensitiveLike:@"UTF-8"] ) {
+            }
+            else if ([charset isCaseInsensitiveLike:@"UTF-8"]) {
                 decodedWord = [[NSString alloc] initWithData:decodedData encoding:NSUTF8StringEncoding];
-            } else if ( [characterSet isCaseInsensitiveLike:@"ISO-8859-2"] ) {
+            }
+            else if ([charset isCaseInsensitiveLike:@"ISO-8859-2"]) {
                 decodedWord = [[NSString alloc] initWithData:decodedData encoding:NSISOLatin2StringEncoding];
-            } else if ( [characterSet isCaseInsensitiveLike:@"ISO-8859-8"] ) {
+            }
+            else if ([charset isCaseInsensitiveLike:@"ISO-8859-8"]) {
                 decodedWord = [[NSString alloc] initWithData:decodedData encoding:-2147483128];
-            } else if ( [characterSet isCaseInsensitiveLike:@"ISO-8859-15"] ) {
+            }
+            else if ([charset isCaseInsensitiveLike:@"ISO-8859-15"]) {
                 // FIXME : jasonrm - Is this even allowed? From lists of encodings 15 looks to match ISO-8859-15 but I don't like hardcoding a number here.
                 decodedWord = [[NSString alloc] initWithData:decodedData encoding:15];
-            } else {
+            }
+            else {
                 // FIXME : jasonrm - Only the most common (for someone in the US) encodings are supported, everything else is treated like ISO-8859-1
                 decodedWord = [[NSString alloc] initWithData:decodedData encoding:NSISOLatin1StringEncoding];
             }
+            
             return [decodedWord autorelease];
         }
     }
-    return decodedName;
+    
+    if (currentIdx < [name length]) {
+        [retString appendString:[name substringFromIndex:currentIdx]];
+    }
+    
+    return retString;
 }
 
-+ (NSData *)dataByDecodingBase64String:(NSString *)encodedString {
-    if ( ! [encodedString hasSuffix:@"\n"] ){
-        encodedString = [encodedString stringByAppendingString:@"\n"];
-    }
-    NSData *encodedData = [encodedString dataUsingEncoding:NSASCIIStringEncoding];
-    NSMutableData *decodedData = [NSMutableData data];
-
-    char buf[512];
-    uint bufLength;
-
-    BIO *b64coder = BIO_new(BIO_f_base64());
-    BIO *b64buffer = BIO_new_mem_buf((void *)[encodedData bytes], [encodedData length]);
-
-    b64buffer = BIO_push(b64coder, b64buffer);
-
-    while ( (bufLength = BIO_read(b64buffer, buf, 512)) > 0 ) {
-        [decodedData appendBytes:buf length:bufLength];
-    }
-    BIO_free_all(b64buffer);
-
-    return [[[NSData alloc] initWithData:decodedData] autorelease];
-}
 
 - (BOOL)isEqual:(id)object {
     if (![object isKindOfClass:[LBAddress class]]) {

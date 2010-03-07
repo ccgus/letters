@@ -87,12 +87,6 @@
 
 
 /*!
-    @abstract Given a base64 encoded NSString return it decoded as data
- */
-+ (NSData *)dataByDecodingBase64String:(NSString *)encodedString;
-
-
-/*!
     @abstract Works like the typical isEqual: method
 */
 - (BOOL)isEqual:(id)object;

@@ -17,5 +17,8 @@
 
 - (NSString*)utf8String;
 
+- (NSString*) base64Encoding;
++ (NSData*) dataWithBase64EncodedString:(NSString*)base64String;
+
 @end
 
