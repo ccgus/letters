@@ -49,7 +49,6 @@
 - (void)testDecodedName {
     LBAddress *addr = [[LBAddress alloc] init];
     
-#warning this is failing
     [addr setName:@"=?ISO-8859-1?Q?a?= =?ISO-8859-2?Q?_b?="]; // RFC 2047 Example
     GHAssertTrue([[addr decodedName] isEqual:@"a b"], @"Decoding failed. Result was [%@]", [addr decodedName]);
     
