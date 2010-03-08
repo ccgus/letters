@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-extern NSString *LBServerFolderUpdatedNotification;
+extern NSString *LBServerMailboxUpdatedNotification;
 extern NSString *LBServerSubjectsUpdatedNotification;
 extern NSString *LBServerBodiesUpdatedNotification;
 extern NSString *LBServerMessageDeletedNotification;
@@ -37,7 +37,7 @@ typedef void (^LBResponseBlock)(NSError *);
 
     // this is temp, until we get a real cache.
 @property (readonly, retain) NSMutableDictionary *foldersCache;
-@property (retain) NSArray *foldersList;
+@property (retain) NSArray *mailboxes;
 
 @property (readonly, retain) NSString *serverCapabilityResponse;
 
@@ -45,18 +45,15 @@ typedef void (^LBResponseBlock)(NSError *);
 
 - (id)initWithAccount:(LBAccount*)anAccount usingCacheFolder:(NSURL*)cacheFileURL;
 
-- (void)connectUsingBlock:(void (^)(NSError *))block;
-
 - (void)checkForMail;
-- (void)updateMessagesInMailbox:(NSString*)mailbox withBlock:(LBResponseBlock)block;
+- (void)updateMessagesInMailbox:(NSString*)mailbox withBlock:(LBResponseBlock)callerBlock;
 
 - (NSArray*)messageListForPath:(NSString*)folderPath;
 
-- (void)moveMessage:(LBMessage*)message toMailbox:(NSString*)destinationMailbox withBlock:(LBResponseBlock)block;
+- (void)moveMessage:(LBMessage*)message toMailbox:(NSString*)destinationMailbox withBlock:(LBResponseBlock)callerBlock;
 
 - (void)deleteMessage:(LBMessage*)message withBlock:(LBResponseBlock)block;
-//- (void)deleteMessageWithUID:(NSString*)serverUID inMailbox:(NSString*)mailbox withBlock:(LBResponseBlock)block;
-//- (void)deleteMessages:(NSString*)seqIds withBlock:(LBResponseBlock)block;
+- (void)connectUsingBlock:(LBResponseBlock)block;
 - (void)expungeWithBlock:(LBResponseBlock)block;
 
 - (void)findCapabilityWithBlock:(LBResponseBlock)block;

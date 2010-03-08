@@ -70,7 +70,7 @@
 
 - (void) testFetchResponse2 {
     
-    NSString *s = @"* 1 FETCH (FLAGS (\\Seen $NotJunk NotJunk) INTERNALDATE \"29-Jan-2010 21:44:05 -0800\" RFC822.SIZE 15650 ENVELOPE (\"Wed, 27 Jan 2010 22:51:51 +0000\" \"Re: Coding Style Guidelines\" ((\"Bob Smith\" NIL \"bobsmith\" \"gmail.com\")) ((\"Bob Smith\" \"\" \"bobsmith\" \"gmail.com\")) ((\"Bob Smith\" NIL \"bobsmith\" \"gmail.com\")) NIL ((\"Gus Mueller\" NIL \"gus\" \"lettersapp.com\") (\"Fred Mueller\" NIL \"fred\" \"lettersapp.com\")) NIL \"<4CE4C6F7-A466-4060-8FC6-4FEF66C6B906lettersapp.com>\" \"<8f5c05b71001271451j72710a29ia54773d3r743182c@mail.gmail.com>\") UID 98656)";
+    NSString *s = @"* 1 FETCH (FLAGS (\\Seen $NotJunk NotJunk) INTERNALDATE \"29-Jan-2010 21:44:05 -0800\" RFC822.SIZE 15650 ENVELOPE (\"Wed, 27 Jan 2010 22:51:51 +0000\" \"Re: Coding Style \"Guidelines\"\" ((\"Bob Smith\" NIL \"bobsmith\" \"gmail.com\")) ((\"Bob Smith\" \"\" \"bobsmith\" \"gmail.com\")) ((\"Bob Smith\" NIL \"bobsmith\" \"gmail.com\")) NIL ((\"Gus Mueller\" NIL \"gus\" \"lettersapp.com\") (\"Fred Mueller\" NIL \"fred\" \"lettersapp.com\")) NIL \"<4CE4C6F7-A466-4060-8FC6-4FEF66C6B906lettersapp.com>\" \"<8f5c05b71001271451j72710a29ia54773d3r743182c@mail.gmail.com>\") UID 98656)";
     
     NSDictionary *res = LBParseSimpleFetchResponse(s);
     
@@ -85,7 +85,7 @@
     GHAssertNil(envelope, @"ENVELOPE");
     
     GHAssertEqualStrings([res objectForKey:@"date"], @"Wed, 27 Jan 2010 22:51:51 +0000", @"envelope date");
-    GHAssertEqualStrings([res objectForKey:@"subject"], @"Re: Coding Style Guidelines", @"envelope subject");
+    GHAssertEqualStrings([res objectForKey:@"subject"], @"Re: Coding Style \"Guidelines\"", @"envelope subject");
     GHAssertEqualStrings([res objectForKey:@"in-reply-to"], @"<4CE4C6F7-A466-4060-8FC6-4FEF66C6B906lettersapp.com>", @"in-reply-to");
     GHAssertEqualStrings([res objectForKey:@"message-id"], @"<8f5c05b71001271451j72710a29ia54773d3r743182c@mail.gmail.com>", @"message-id");
     
@@ -124,8 +124,6 @@
     addr = [ccArray objectAtIndex:1];
     GHAssertEqualStrings([addr name], @"Fred Mueller", @"address name");
     GHAssertEqualStrings([addr email], @"fred@lettersapp.com", @"address name");
-    
-    
     
 }
 

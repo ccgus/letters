@@ -17,7 +17,7 @@
 #import "LBMessage.h"
 #import "LetterBoxUtilities.h"
 
-NSString *LBServerFolderUpdatedNotification = @"LBServerFolderUpdatedNotification";
+NSString *LBServerMailboxUpdatedNotification = @"LBServerMailboxUpdatedNotification";
 NSString *LBServerSubjectsUpdatedNotification = @"LBServerSubjectsUpdatedNotification";
 NSString *LBServerBodiesUpdatedNotification = @"LBServerBodiesUpdatedNotification";
 NSString *LBServerMessageDeletedNotification = @"LBServerMessageDeletedNotification";
@@ -28,19 +28,16 @@ NSString *LBActivityUpdatedNotification = @"LBActivityUpdatedNotification";
 NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 
 
-#define LBCheckErrorAndReturnIfBad(anerr) { if (anerr) { [self checkInIMAPConnection:conn]; block(anerr); return; } }
-
-
-
-
+#define LBCheckErrorAndReturnIfBad(anerr, callerBlock) { if (anerr) { [self checkInIMAPConnection:conn]; [self callBlock:callerBlock withError:anerr]; return; } }
 
 @interface LBServer ()
 - (void)loadCache;
 - (NSArray*)cachedMessagesForMailbox:(NSString *)mailbox;
 - (void)saveMessageToCache:(NSData*)messageData forMailbox:(NSString*)mailboxName;
 - (void)checkForMailInMailboxList:(NSMutableArray*)mailboxList;
-- (void)saveFoldersToCache:(NSArray*)messages;
-- (void)saveEnvelopeToCache:(NSDictionary*)envelopeDate forMailbox:(NSString*)mailboxName;
+- (void)saveMailboxesToCache:(NSArray*)messages;
+- (void)saveEnvelopesToCache:(NSArray*)envelopeList forMailbox:(NSString*)mailboxName;
+- (void)checkInIMAPConnection:(LBIMAPConnection*)conn;
 @end
 
 
@@ -49,7 +46,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 @synthesize baseCacheURL;
 @synthesize accountCacheURL;
 @synthesize foldersCache;
-@synthesize foldersList;
+@synthesize mailboxes;
 @synthesize serverCapabilityResponse;
 @synthesize capabilityUIDPlus;
 
@@ -62,8 +59,8 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         
         inactiveIMAPConnections = [[NSMutableArray array] retain];
         activeIMAPConnections   = [[NSMutableArray array] retain];
-        foldersCache = [[NSMutableDictionary dictionary] retain];
-        foldersList  = [[NSArray array] retain];
+        foldersCache            = [[NSMutableDictionary dictionary] retain];
+        mailboxes               = [[NSArray array] retain];
         
         [self loadCache];
     }
@@ -90,9 +87,19 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
 
 - (LBIMAPConnection*)checkoutIMAPConnection {
     
+    
     // FIXME: this method isn't thread safe
+    // FIXME: we should probably use a lock, rather than calling on the main thread.
+    
     if (![[NSThread currentThread] isMainThread]) {
-        NSLog(@"UH OH THIS IS BAD CHECKING OUT ON A NON MAIN THREAD NOOO.");
+        
+        __block LBIMAPConnection *conn = 0x00;
+        
+        dispatch_sync(dispatch_get_main_queue(),^ {
+            conn = [self checkoutIMAPConnection];
+        });
+        
+        return conn;
     }
     
     
@@ -105,8 +112,6 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         // should we worry about that?
         
         conn = [[[LBIMAPConnection alloc] initWithAccount:account] autorelease];
-        
-        
     }
     
     if (!conn) {
@@ -121,7 +126,11 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     return conn;
 }
 
-- (void)checkInIMAPConnection:(LBIMAPConnection*) conn {
+- (void)checkInIMAPConnection:(LBIMAPConnection*)conn {
+    
+    if (!conn) {
+        return;
+    }
     
     if (![[NSThread currentThread] isMainThread]) {
         
@@ -141,7 +150,12 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     [conn setActivityStatusAndNotifiy:nil];
 }
 
-
+- (void)callBlock:(LBResponseBlock)block withError:(NSError*)err {
+    
+    dispatch_async(dispatch_get_main_queue(),^ {
+        block(err);
+    });
+}
 
 #define CheckConnectionAndReturnIfCanceled(aConn) { if (aConn.shouldCancelActivity) { dispatch_async(dispatch_get_main_queue(),^ { [self checkInIMAPConnection:conn]; }); return; } }
 
@@ -150,14 +164,13 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
     
-    
     if (!conn) {
         
         NSError *err = nil;
         
         LBQuickError(&err, @"Conect", 0, NSLocalizedString(@"Could not connect to server.", @"Could not connect to server."));
         
-        block(err);
+        [self callBlock:block withError:err];
         return;
     }
     
@@ -183,14 +196,14 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
                 
                 // by default, select the inbox.
                 [conn selectMailbox:@"INBOX" block:^(NSError *err) {
-                    block(err);
+                    [self callBlock:block withError:err];
                 }];
             }];
         }];
     });
 }
 
-- (void)findCapabilityWithBlock:(LBResponseBlock)block {
+- (void)findCapabilityWithBlock:(LBResponseBlock)callerBlock {
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
         
@@ -204,18 +217,16 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
                 serverCapabilityResponse = [[conn responseAsString] copy];
                 
                 capabilityUIDPlus = [serverCapabilityResponse rangeOfString:@" UIDPLUS "].location != NSNotFound;
-                
             }
             
-            block(err);
-            
+            [self callBlock:callerBlock withError:err];
         }];
     });
     
     
 }
 
-- (void)pullMessageFromServerFromList:(NSMutableArray*)messageList mailbox:(NSString*)mailbox mailboxList:(NSMutableArray*)mailboxList {
+- (void)pullMessageFromServerFromList:(NSArray*)messageList mailbox:(NSString*)mailbox mailboxList:(NSMutableArray*)mailboxList {
     
     // FIXME: should we check first to see if we've got the right box selected?
     
@@ -225,7 +236,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         dispatch_async(dispatch_get_main_queue(),^ {
             
             [foldersCache removeObjectForKey:mailbox];
-        
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:LBServerSubjectsUpdatedNotification
                                                                 object:self
                                                               userInfo:[NSDictionary dictionaryWithObject:mailbox forKey:@"folderPath"]];
@@ -240,21 +251,26 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
     
-    // take one down, pass it around.  Ninety nine messages on the wall.
-    NSString *firstId = [[[messageList objectAtIndex:0] retain] autorelease];
-    [messageList removeObjectAtIndex:0];
+    NSString *messageListArg = nil;
     
-    NSString *status = NSLocalizedString(@"Fetching header %d of %d in \"%@\"", @"Fetching header %d of %d in \"%@\"");
-    [conn setActivityStatusAndNotifiy:[NSString stringWithFormat:status, [messageList count], [messageList count], mailbox]];
+    if ([messageList count] == 1) {
+        messageListArg = [messageList objectAtIndex:0];
+    }
+    else {
+        messageListArg = [NSString stringWithFormat:@"%@:%@", [messageList objectAtIndex:0], [messageList lastObject]];
+    }
     
-    [conn fetchEnvelopes:firstId withBlock:^(NSError *err) {
+    NSString *status = NSLocalizedString(@"Fetching headers for \"%@\"", @"Fetching headers for \"%@\"");
+    [conn setActivityStatusAndNotifiy:[NSString stringWithFormat:status, mailbox]];
+    
+    [conn fetchEnvelopes:messageListArg withBlock:^(NSError *err) {
         
-        for (NSDictionary *d in [conn fetchedEnvelopes]) {
-            [self saveEnvelopeToCache:d forMailbox:mailbox];
-        }
+        [self saveEnvelopesToCache:[conn fetchedEnvelopes] forMailbox:mailbox];
         
         [self checkInIMAPConnection:conn];
-        [self pullMessageFromServerFromList:messageList mailbox:mailbox mailboxList:mailboxList];
+        
+        
+        [self checkForMailInMailboxList:mailboxList];
     }];
     
     
@@ -277,7 +293,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     */
 }
 
-- (void)updateMessagesInMailbox:(NSString*)mailbox withBlock:(LBResponseBlock)block {
+- (void)updateMessagesInMailbox:(NSString*)mailbox withBlock:(LBResponseBlock)callerBlock {
     
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
     
@@ -285,7 +301,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         
         if (err) {
             [self checkInIMAPConnection:conn];
-            block(err);
+            [self callBlock:callerBlock withError:err];
             return;
         }
         
@@ -293,7 +309,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
             
             if (err) {
                 [self checkInIMAPConnection:conn];
-                block(err);
+                [self callBlock:callerBlock withError:err];
                 return;
             }
             
@@ -305,21 +321,14 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
             
             [conn fetchEnvelopes:envIds withBlock:^(NSError *err) {
                 
-                for (NSDictionary *d in [conn fetchedEnvelopes]) {
-                    [self saveEnvelopeToCache:d forMailbox:mailbox];
-                }
+                [self saveEnvelopesToCache:[conn fetchedEnvelopes] forMailbox:mailbox];
                 
                 [self checkInIMAPConnection:conn];
                 
-                block(err);
-                
+                [self callBlock:callerBlock withError:err];
             }];
-            
-            
-            
         }];
     }];
-    
 }
 
 - (void)checkForMailInMailboxList:(NSMutableArray*)mailboxList {
@@ -353,7 +362,6 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         }
     }
     
-    
     [conn selectMailbox:mailbox block:^(NSError *err) {
         
         if (err) {
@@ -363,8 +371,6 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
             [self checkForMailInMailboxList:mailboxList];
             return;
         }
-        
-        
         
         [conn listMessagesWithBlock:^(NSError *err) {
             
@@ -380,7 +386,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
             NSArray *messages = [conn searchedResultSet];
             
             if ([messages count]) {
-                [self pullMessageFromServerFromList:[messages mutableCopy] mailbox:mailbox mailboxList:mailboxList];
+                [self pullMessageFromServerFromList:messages mailbox:mailbox mailboxList:mailboxList];
             }
             else {
                 [self checkForMailInMailboxList:mailboxList];
@@ -393,7 +399,20 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
+    if (![conn isConnected]) {
+        
+        [self checkInIMAPConnection:conn];
+        
+        [self connectUsingBlock:^(NSError *err) {
+            if (!err) {
+                [self checkForMail];
+            }
+        }];
+        
+        return;
+    }
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void) {
         
         // FIXME: check for a connected object.
         
@@ -404,18 +423,16 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         [conn listSubscribedMailboxesWithBock:^(NSError *err) {
             
             NSMutableArray *mailboxNames = [NSMutableArray array];
-            NSArray *mailboxes = [conn fetchedMailboxes];
             
-            for (NSDictionary *mailboxInfo in mailboxes) {
+            for (NSDictionary *mailboxInfo in [conn fetchedMailboxes]) {
                 NSString *name = [mailboxInfo objectForKey:@"mailboxName"];
                 [mailboxNames addObject:name];
             }
             
             [mailboxNames sortUsingSelector:@selector(localizedStandardCompare:)];
             
-            [self setFoldersList:mailboxNames];
-            
-            [self saveFoldersToCache:foldersList];
+            [self setMailboxes:mailboxNames];
+            [self saveMailboxesToCache:mailboxNames];
             
             CheckConnectionAndReturnIfCanceled(conn);
             
@@ -423,7 +440,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
                 
                 [self checkInIMAPConnection:conn];
                 
-                [[NSNotificationCenter defaultCenter] postNotificationName:LBServerFolderUpdatedNotification
+                [[NSNotificationCenter defaultCenter] postNotificationName:LBServerMailboxUpdatedNotification
                                                                     object:self
                                                                   userInfo:nil];
                 
@@ -431,111 +448,31 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
                 [self checkForMailInMailboxList:[mailboxNames mutableCopy]];
             });
         }];
-        
-        
-        /*
-        
-        
-        for (NSString *folderPath in list) {
-            
-            CheckConnectionAndReturnIfCanceled(conn);
-            
-            NSString *status = NSLocalizedString(@"Finding messages in '%@'", @"Finding messages in '%@'");
-            [conn setActivityStatusAndNotifiy:[NSString stringWithFormat:status, folderPath]];
-            
-            LBFolder *folder    = [[LBFolder alloc] initWithPath:folderPath inIMAPConnection:conn];
-            
-            NSSet *messageSet   = [folder messageObjectsFromIndex:1 toIndex:0]; 
-            
-            if (!messageSet || ![folder connected]) {
-                NSLog(@"Could not get folder listing for %@", list);
-                [folder release];
-                continue;
-            }
-            
-            
-            NSArray *messages = [[messageSet allObjects] sortedArrayUsingComparator:^(LBMessage *obj1, LBMessage *obj2) {
-                // FIXME: sort by date or something, not subject.
-                return [[obj1 subject] localizedCompare:[obj2 subject]];
-            }];
-            
-            dispatch_async(dispatch_get_main_queue(),^ {
-                
-                [foldersCache setObject:messages forKey:folderPath];
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:LBServerSubjectsUpdatedNotification
-                                                                    object:self
-                                                                  userInfo:[NSDictionary dictionaryWithObject:folderPath
-                                                                                                       forKey:@"folderPath"]];
-            });
-            
-            NSInteger idx = 0;
-            
-            for (LBMessage *msg in messages) {
-                
-                CheckConnectionAndReturnIfCanceled(conn);
-                
-                idx++;
-                
-                NSString *status = NSLocalizedString(@"Loading message %d of %d messages in '%@'", @"Loading message %d of %d messages in '%@'");
-                [conn setActivityStatusAndNotifiy:[NSString stringWithFormat:status, idx, [messages count], folderPath]];
-                
-                char *result;
-                size_t messageLen;
-                int err = mailmessage_fetch([msg messageStruct], &result, &messageLen);
-                if (err) {
-                    debug(@"error with mailmessage_fetch %d", err);
-                    continue;
-                }
-                
-                debug(@"msg: %@", [msg uid]);
-                NSString *content = [[NSString alloc] initWithBytes:result length:messageLen encoding:NSASCIIStringEncoding];
-                
-                [self saveMessageToCache:msg body:content forFolder:folderPath];
-                
-            }
-            
-            dispatch_async(dispatch_get_main_queue(),^ {
-                [[NSNotificationCenter defaultCenter] postNotificationName:LBServerBodiesUpdatedNotification
-                                                                    object:self
-                                                                  userInfo:[NSDictionary dictionaryWithObject:folderPath forKey:@"folderPath"]];
-            });
-            
-            [folder release];
-            
-        }
-        
-        
-        
-        */
-        
-        
     });
-    
 }
 
-- (NSArray*)messageListForPath:(NSString*)folderPath {
+- (NSArray*)messageListForPath:(NSString*)mailbox {
     
-    if (![foldersCache objectForKey:folderPath]) {
+    if (![foldersCache objectForKey:mailbox]) {
         
-        NSArray *msgList = [self cachedMessagesForMailbox:folderPath];
+        NSArray *msgList = [self cachedMessagesForMailbox:mailbox];
         
-        [foldersCache setObject:msgList forKey:folderPath];
+        [foldersCache setObject:msgList forKey:mailbox];
     }
     
-    return [foldersCache objectForKey:folderPath];
+    return [foldersCache objectForKey:mailbox];
 }
 
 
-- (void)deleteMessage:(LBMessage*)message withBlock:(LBResponseBlock)block {
+- (void)deleteMessage:(LBMessage*)message withBlock:(LBResponseBlock)callerBlock {
     
     /*    
      this is what we do to delete.
-     copy the message to the folder "INBOX.Deleted Messages".
+     copy the message to the mailbox "INBOX.Deleted Messages".
      we'll get a new uid at that point.
      we'll then set the delete flag on that guy, and update our database.
      then we'll mark the connection for "needs to expunge", which will happen
-     when we quit, or change folders.
+     when we quit, or change mailboxs.
      */  
     
     NSString *deletedMessagesMailbox = @"INBOX.Deleted Messages";
@@ -546,25 +483,25 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         
         [message setDeletedFlag:YES];
         
-        block(err);
+        [self callBlock:callerBlock withError:err];
     }];
     
 }
 
 
 
-- (void)expungeWithBlock:(LBResponseBlock)block {
+- (void)expungeWithBlock:(LBResponseBlock)callerBlock {
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
         [conn expungeWithBlock:^(NSError *err) {
             [self checkInIMAPConnection:conn];
-            block(err);
+            [self callBlock:callerBlock withError:err];
         }];
     });
 }
 
-- (void)moveMessage:(LBMessage*)message toMailbox:(NSString*)destinationMailbox withBlock:(LBResponseBlock)block {
+- (void)moveMessage:(LBMessage*)message toMailbox:(NSString*)destinationMailbox withBlock:(LBResponseBlock)callerBlock {
     
     LBIMAPConnection *conn = [self checkoutIMAPConnection];
     
@@ -572,11 +509,11 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
         
         [conn selectMailbox:[message mailbox] block:^(NSError *err) {
             
-            LBCheckErrorAndReturnIfBad(err);
+            LBCheckErrorAndReturnIfBad(err, callerBlock);
             
             [conn copyMessage:message toMailbox:destinationMailbox withBlock:^(NSError *err) {
                 
-                LBCheckErrorAndReturnIfBad(err);
+                LBCheckErrorAndReturnIfBad(err, callerBlock);
                 
                 NSString *copyUIDInfo = [conn responseAsString];
                 
@@ -601,7 +538,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
                 
                 [conn deleteMessageWithUID:[oldMessage serverUID] withBlock:^(NSError *err) {
                     [self checkInIMAPConnection:conn];
-                    block(err);
+                    [self callBlock:callerBlock withError:err];
                 }];
             }];
         }];
@@ -688,25 +625,24 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
                                                         flags text\n\
                                                  )"];
         
-        #warning fixme: change "folder" to mailbox
         // um... do we need anything else?
-        [cacheDB executeUpdate:@"create table folder ( folder text, subscribed int )"];
+        [cacheDB executeUpdate:@"create table mailbox ( mailbox text, subscribed int )"];
         
         [cacheDB commit];
     }
     
     [rs close];
     
-    NSMutableArray *newFolders = [NSMutableArray array];
+    NSMutableArray *newMailboxes = [NSMutableArray array];
     
-    rs = [cacheDB executeQuery:@"select folder from folder"];
+    rs = [cacheDB executeQuery:@"select mailbox from mailbox"];
     while ([rs next]) {
-        [newFolders addObject:[rs stringForColumnIndex:0]];
+        [newMailboxes addObject:[rs stringForColumnIndex:0]];
     }
     
-    [self setFoldersList:[newFolders sortedArrayUsingSelector:@selector(localizedStandardCompare:)]];
+    [self setMailboxes:[newMailboxes sortedArrayUsingSelector:@selector(localizedStandardCompare:)]];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:LBServerFolderUpdatedNotification
+    [[NSNotificationCenter defaultCenter] postNotificationName:LBServerMailboxUpdatedNotification
                                                         object:self
                                                       userInfo:nil];
 }
@@ -717,7 +653,7 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     
     [cacheDB executeUpdate:@"delete * from letters_meta"];
     [cacheDB executeUpdate:@"delete * from message"];
-    [cacheDB executeUpdate:@"delete * from folder"];
+    [cacheDB executeUpdate:@"delete * from mailbox"];
     
     [cacheDB close];
     
@@ -729,31 +665,35 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     [self loadCache];
 }
 
-- (void)saveEnvelopeToCache:(NSDictionary*)envelopeDict forMailbox:(NSString*)mailboxName {
-    
-    NSString *flags     = [envelopeDict objectForKey:@"FLAGS"];
-    NSString *serverUID = [envelopeDict objectForKey:@"UID"];
-    NSString *inReplyTo = [envelopeDict objectForKey:@"in-reply-to"];
-    NSString *messageId = [envelopeDict objectForKey:@"message-id"];
-    NSString *subject   = [envelopeDict objectForKey:@"subject"];
-    
-    NSArray *senderArray= [envelopeDict objectForKey:@"sender"];
-    NSArray *toArray    = [envelopeDict objectForKey:@"to"];
-    
-    LBAddress *sender   = [senderArray lastObject];
-    LBAddress *to       = [toArray lastObject];
-    
-    // \Answered \Flagged \Deleted \Seen \Draft)
-    BOOL seen           = [flags rangeOfString:@"\\Seen"].location != NSNotFound;
-    BOOL answered       = [flags rangeOfString:@"\\Answered"].location != NSNotFound;
+- (void)saveEnvelopesToCache:(NSArray*)envelopeList forMailbox:(NSString*)mailboxName {
     
     [cacheDB beginTransaction];
     
     // this feels icky.
-    [cacheDB executeUpdate:@"delete from message where messageId = ?", messageId];
+    [cacheDB executeUpdate:@"delete from message where mailbox = ?", mailboxName];
     
-    [cacheDB executeUpdate:@"insert into message ( localUUID, serverUID, messageId, inReplyTo, mailbox, subject, fromAddress, toAddress, receivedDate, sendDate, seenFlag, answeredFlag, flags) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-     LBUUIDString(), serverUID, messageId, inReplyTo, mailboxName, subject, [sender email], [to email], [NSDate distantFuture], [NSDate distantPast], [NSNumber numberWithBool:seen], [NSNumber numberWithBool:answered], flags];
+    
+    for (NSDictionary *envelopeDict in envelopeList) {
+        
+        NSString *flags     = [envelopeDict objectForKey:@"FLAGS"];
+        NSString *serverUID = [envelopeDict objectForKey:@"UID"];
+        NSString *inReplyTo = [envelopeDict objectForKey:@"in-reply-to"];
+        NSString *messageId = [envelopeDict objectForKey:@"message-id"];
+        NSString *subject   = [envelopeDict objectForKey:@"subject"];
+        
+        NSArray *senderArray= [envelopeDict objectForKey:@"sender"];
+        NSArray *toArray    = [envelopeDict objectForKey:@"to"];
+        
+        LBAddress *sender   = [senderArray lastObject];
+        LBAddress *to       = [toArray lastObject];
+        
+        // \Answered \Flagged \Deleted \Seen \Draft)
+        BOOL seen           = [flags rangeOfString:@"\\Seen"].location != NSNotFound;
+        BOOL answered       = [flags rangeOfString:@"\\Answered"].location != NSNotFound;
+        
+        [cacheDB executeUpdate:@"insert into message ( localUUID, serverUID, messageId, inReplyTo, mailbox, subject, fromAddress, toAddress, receivedDate, sendDate, seenFlag, answeredFlag, flags) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+         LBUUIDString(), serverUID, messageId, inReplyTo, mailboxName, subject, [sender email], [to email], [NSDate distantFuture], [NSDate distantPast], [NSNumber numberWithBool:seen], [NSNumber numberWithBool:answered], flags];
+    }
     
     [cacheDB commit];
 }
@@ -798,26 +738,25 @@ NSString *LBActivityEndedNotification   = @"LBActivityEndedNotification";
     // this feels icky.
     [cacheDB executeUpdate:@"delete from message where messageId = ?", msgId];
     
-    [cacheDB executeUpdate:@"insert into message ( messageid, folder, subject, fromAddress, toAddress, receivedDate, sendDate) values (?, ?, ?, ?, ?, ?, ?)",
+    [cacheDB executeUpdate:@"insert into message ( messageid, mailbox, subject, fromAddress, toAddress, receivedDate, sendDate) values (?, ?, ?, ?, ?, ?, ?)",
                                 msgId, mailboxName, subject, from, to, [NSDate distantFuture], [NSDate distantPast]];
     
     [cacheDB commit];
 }
 
 // FIXME: need to setup a way to differentiate between subscribed and non subscribed.
-- (void)saveFoldersToCache:(NSArray*)messages {
+- (void)saveMailboxesToCache:(NSArray*)newMailboxes {
     
     [cacheDB beginTransaction];
     
     // this is pretty lame.
-    [cacheDB executeUpdate:@"delete from folder"];
+    [cacheDB executeUpdate:@"delete from mailbox"];
     
-    for (NSString *folder in messages) {
-        [cacheDB executeUpdate:@"insert into folder (folder, subscribed) values (?,1)", folder];
+    for (NSString *mailbox in newMailboxes) {
+        [cacheDB executeUpdate:@"insert into mailbox (mailbox, subscribed) values (?,1)", mailbox];
     }
     
     [cacheDB commit];
-    
 }
 
 - (NSArray*)cachedMessagesForMailbox:(NSString *)mailbox {

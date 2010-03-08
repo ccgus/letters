@@ -101,16 +101,13 @@
     [[[LAActivityViewer sharedActivityViewer] window] orderFront:self];
     
     
-    [self openNewMailView:nil];
-    
     [self loadAccounts];
     
-    if ([accounts count]) {
-        [self connectToDefaultServerAndPullMail];
-    }
-    else {
+    if (![accounts count]) {
         [self openPreferences:self selectModuleWithId:@"LAPrefsAccountsModule"];
     }
+    
+    [self openNewMailView:nil];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:@"NewAccountCreated"
                                                       object:nil
@@ -212,7 +209,8 @@
         }
     }
     
-    [self scheduleMailCheckTimer];
+    // turning this off for now, since it's a bit annoying right now when debugging stuff.
+    //[self scheduleMailCheckTimer];
 }
 
 - (void)scheduleMailCheckTimer {
@@ -319,22 +317,7 @@
     //LBSMTPConnection *smtp = [[LBSMTPConnection alloc] initWithAccount:[[self accounts] lastObject]];
     //[smtp test];
     
-    LBAccount *currentAccount   = [[self accounts] lastObject];
     
-    [[currentAccount server] deleteMessages:@"1" withBlock:^(NSError *err) {
-        
-        debug(@"done deleted messages");
-        
-        if (err) {
-            debug(@"crap.");
-            return;
-        }
-        
-        [[currentAccount server] expungeWithBlock:^(NSError *err) {
-            debug(@"done did the expunge.");
-        }];
-   
-    }];
 }
 
 

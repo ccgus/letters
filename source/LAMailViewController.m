@@ -44,7 +44,7 @@
     [foldersList setDataSource:self];
     [foldersList setDelegate:self];
     
-    [[NSNotificationCenter defaultCenter] addObserverForName:LBServerFolderUpdatedNotification
+    [[NSNotificationCenter defaultCenter] addObserverForName:LBServerMailboxUpdatedNotification
                                                       object:nil
                                                        queue:nil
                                                   usingBlock:^(NSNotification *note)
@@ -79,7 +79,7 @@
     }
     else {
         LBAccount *currentAccount = [[appDelegate accounts] lastObject];
-        return [[[currentAccount server] foldersList] objectAtIndex:selectedRow];        
+        return [[[currentAccount server] mailboxes] objectAtIndex:selectedRow];        
     }
 }
 
@@ -182,7 +182,7 @@
     LBAccount *currentAccount = [[appDelegate accounts] lastObject];
     
     if (aTableView == foldersList) {
-        return [[[currentAccount server] foldersList] count];
+        return [[[currentAccount server] mailboxes] count];
     }
     
     NSArray *messageList = [[currentAccount server] messageListForPath:[self selectedFolderPath]];
@@ -198,7 +198,7 @@
     
     if (aTableView == foldersList) {
         
-        NSString *folderName = [[[currentAccount server] foldersList] objectAtIndex:rowIndex];
+        NSString *folderName = [[[currentAccount server] mailboxes] objectAtIndex:rowIndex];
         
         // this will be taken out eventually.  But I just can't help myself.  Please be quiet about it.
         return [LAPrefs boolForKey:@"chocklock"] ? [folderName uppercaseString] : folderName;
@@ -243,7 +243,7 @@
     // FIXME: why isn't undo working?
     
     // this is a work in progress.
-    LBAccount *currentAccount = [[appDelegate accounts] lastObject];
+    //LBAccount *currentAccount = [[appDelegate accounts] lastObject];
     
     /*
     [[currentAccount server] moveMessages:messages inFolder:[self selectedFolderPath] toFolder:folder finshedBlock:^(NSError *err) {

@@ -18,11 +18,8 @@
         canReadBlock(self);
     }
     else {
-        debug(@"%s:%d", __FUNCTION__, __LINE__);
         NSLog(@"Reader has data, but nothings being done with it!");
-        
         NSLog(@"%@", [self stringFromReadData]);
-        
     }
 }
 

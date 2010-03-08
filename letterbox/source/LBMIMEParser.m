@@ -158,8 +158,8 @@ typedef enum
 
 @implementation LBMIMEPart ( LBMIMEParsing )
 
-- (void) parse: (NSString*) sourceText {
-    NSMutableArray *parts = [NSMutableArray array];
+- (void)parse:(NSString*)sourceText {
+    //NSMutableArray *parts = [NSMutableArray array];
     
     //LBMIMEParserState state = LBMIMEParserStateReadingHeader;
     
@@ -453,6 +453,7 @@ NSString *LBMIMEStringByDecodingPrintedQuoteableWithCharacterSet( NSString *inpu
 //            [decodedStringData appendBytes: &character length: sizeof( unichar )];
 //        }
 //    }
+    return nil;
 }
 
 NSString *LBMIMEStringByDecodingStringFromEncodingWithCharSet( NSString *inputString, NSString *transferEncoding, NSString *characterSet )

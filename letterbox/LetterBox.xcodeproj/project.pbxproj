@@ -16,7 +16,7 @@
 		968D0F44111528AB0044BE1D /* LBAddressTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D39110ABD32005ECF65 /* LBAddressTests.m */; };
 		968D0F45111528AB0044BE1D /* LBAttachmentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D3B110ABD32005ECF65 /* LBAttachmentTests.m */; };
 		96B8B0FB11153F4200A36A36 /* LBBareMessageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877D35110ABD32005ECF65 /* LBBareMessageTests.m */; };
-		CC1C825F1142EA0300A8788E /* LBMIMEParser.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C825D1142EA0300A8788E /* LBMIMEParser.h */; };
+		CC1C825F1142EA0300A8788E /* LBMIMEParser.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C825D1142EA0300A8788E /* LBMIMEParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC1C82601142EA0300A8788E /* LBMIMEParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C825E1142EA0300A8788E /* LBMIMEParser.m */; };
 		CC220E981131BD5B000B46D8 /* LBIMAPConnectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC220E971131BD5B000B46D8 /* LBIMAPConnectionTests.m */; };
 		CC2212BB11320868000B46D8 /* LBNSDataAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC2212BA11320868000B46D8 /* LBNSDataAdditionsTests.m */; };
