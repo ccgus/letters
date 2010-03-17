@@ -19,4 +19,6 @@
 
 - (NSString*)substringFromIndex:(NSUInteger)startIndex toIndex:(NSUInteger)endIndex;
 
+- (NSString*)trim;
+
 @end

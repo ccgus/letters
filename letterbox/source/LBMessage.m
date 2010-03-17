@@ -119,9 +119,10 @@
         NSError *err = nil;
         
         NSString *fullMessage = [NSString stringWithContentsOfURL:messageURL usedEncoding:&usedEncoding error:&err];
+        
         if (fullMessage == nil) {
-            if ([[err domain] isEqual: NSCocoaErrorDomain] && [err code] == 264 /*unknown encoding*/ ) {
-                fullMessage = [NSString stringWithContentsOfURL: messageURL encoding: NSMacOSRomanStringEncoding error: &err];
+            if ([[err domain] isEqual:NSCocoaErrorDomain] && [err code] == 264 /*unknown encoding*/ ) {
+                fullMessage = [NSString stringWithContentsOfURL:messageURL encoding:NSMacOSRomanStringEncoding error:&err];
             }
         }
         
@@ -129,13 +130,12 @@
             fullMessage = [err localizedDescription];
         }
         
-        NSLog( @"URL: %@", messageURL );
+        debug( @"URL: %@", messageURL );
         
         mimePart = [[LBMIMEMultipartMessage alloc] initWithString: fullMessage];
-        NSLog( @"%@", mimePart.contentType );
-        for ( LBMIMEPart *part in mimePart.subparts )
-        {
-            NSLog( @"sub part: %@", part.contentType );
+        debug( @"%@", mimePart.contentType );
+        for (LBMIMEPart *part in mimePart.subparts) {
+            NSLog(@"sub part: %@", part.contentType);
         }
         
         NSRange r = [fullMessage rangeOfString:@"\r\n\r\n"];
@@ -144,10 +144,9 @@
             messageBody = [fullMessage retain];
         }
         else {
-            LBMIMEPart *representation = [mimePart availablePartForTypeFromArray: [NSArray arrayWithObjects: @"text/plain", @"text/plain", nil]];
+            LBMIMEPart *representation = [mimePart availablePartForTypeFromArray:[NSArray arrayWithObjects: @"text/plain", @"text/html", nil]];
             
             messageBody = [representation.content copy];
-            
             
             //messageBody = [[fullMessage substringFromIndex:NSMaxRange(r)] retain];
         }

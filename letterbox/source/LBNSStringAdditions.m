@@ -72,7 +72,9 @@ static inline void OFCharacterToSurrogatePair(UnicodeScalarValue inCharacter, un
     return [self substringWithRange:NSMakeRange(startIndex, endIndex - startIndex)];
 }
 
-
+- (NSString*)trim {
+    return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
 
 
 static NSCharacterSet *nonNonCTLChars = nil;

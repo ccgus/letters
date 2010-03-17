@@ -9,8 +9,8 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface LBMIMEPart : NSObject
-{
+@interface LBMIMEPart : NSObject {
+    
 	LBMIMEPart *superpart; // non-retained
 	NSMutableArray *subparts;
 	
@@ -29,28 +29,28 @@
 @property (copy) NSString *contentDisposition;
 @property (copy) NSString *contentTransferEncoding;
 @property (copy) NSDictionary *properties; // all the properties in key value pairs.
+@property (copy) NSString *boundary;
 
-- (LBMIMEPart*) superpart;
-- (NSArray*) subparts;
-- (void) addSubpart: (LBMIMEPart*) subpart;
-- (void) removeSubpart: (LBMIMEPart*) subpart;
+- (LBMIMEPart*)superpart;
+- (NSArray*)subparts;
+- (void)addSubpart:(LBMIMEPart*)subpart;
+- (void)removeSubpart:(LBMIMEPart*)subpart;
 
 @end
 
 
-@interface LBMIMEMultipartMessage : LBMIMEPart
-{
+@interface LBMIMEMultipartMessage : LBMIMEPart {
 }
 
-- (BOOL) isMultipartAlternative;
+- (BOOL)isMultipartAlternative;
 
-- (NSArray*) types;
+- (NSArray*)types;
 - (NSString *)availableTypeFromArray:(NSArray *)types;
-- (LBMIMEPart*) partForType: (NSString*) mimeType;
-- (LBMIMEPart*) availablePartForTypeFromArray: (NSArray*) types;
+- (LBMIMEPart*)partForType:(NSString*)mimeType;
+- (LBMIMEPart*)availablePartForTypeFromArray:(NSArray*) types;
 
 // the MIME spec says the alternative parts are ordered from least faithful to the most faithful. we can only presume the sender has done that correctly. consider this a guess rather than being definitive.
-- (NSString*) mostFailthfulAlternativeType;
+- (NSString*)mostFailthfulAlternativeType;
 
 @end
 

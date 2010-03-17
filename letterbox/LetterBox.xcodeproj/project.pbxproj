@@ -29,6 +29,7 @@
 		CC3D54271108E7F700EEEF77 /* FMResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = CC3D54211108E7F700EEEF77 /* FMResultSet.h */; };
 		CC3D54281108E7F700EEEF77 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3D54221108E7F700EEEF77 /* FMResultSet.m */; };
 		CC3D54381108EFE800EEEF77 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CC3D54371108EFE800EEEF77 /* libsqlite3.dylib */; };
+		CC45FB6411509BE700AD3A30 /* LBMessageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FB6311509BE700AD3A30 /* LBMessageTests.m */; };
 		CC46749F113464D500037A0B /* LBTestIMAPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = CC467350113453F800037A0B /* LBTestIMAPServer.m */; };
 		CC5BEC1C1134CC9D0024C6EA /* LBUtilityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5BEC1B1134CC9D0024C6EA /* LBUtilityTests.m */; };
 		CC877CE4110ABC04005ECF65 /* LetterBoxUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CD0110ABC04005ECF65 /* LetterBoxUtilities.m */; };
@@ -261,6 +262,8 @@
 		CC3D54211108E7F700EEEF77 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = source/FMResultSet.h; sourceTree = "<group>"; };
 		CC3D54221108E7F700EEEF77 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = source/FMResultSet.m; sourceTree = "<group>"; };
 		CC3D54371108EFE800EEEF77 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		CC45FB6211509BE700AD3A30 /* LBMessageTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBMessageTests.h; path = tests/LBMessageTests.h; sourceTree = "<group>"; };
+		CC45FB6311509BE700AD3A30 /* LBMessageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBMessageTests.m; path = tests/LBMessageTests.m; sourceTree = "<group>"; };
 		CC46734F113453F800037A0B /* LBTestIMAPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBTestIMAPServer.h; path = tests/LBTestIMAPServer.h; sourceTree = "<group>"; };
 		CC467350113453F800037A0B /* LBTestIMAPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBTestIMAPServer.m; path = tests/LBTestIMAPServer.m; sourceTree = "<group>"; };
 		CC5BEC1A1134CC9D0024C6EA /* LBUtilityTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBUtilityTests.h; path = tests/LBUtilityTests.h; sourceTree = "<group>"; };
@@ -818,6 +821,8 @@
 				CC5BEC1B1134CC9D0024C6EA /* LBUtilityTests.m */,
 				CCAF1448113B1CA400CE220F /* LBServerTests.h */,
 				CCAF1449113B1CA400CE220F /* LBServerTests.m */,
+				CC45FB6211509BE700AD3A30 /* LBMessageTests.h */,
+				CC45FB6311509BE700AD3A30 /* LBMessageTests.m */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -1138,6 +1143,7 @@
 				CC46749F113464D500037A0B /* LBTestIMAPServer.m in Sources */,
 				CC5BEC1C1134CC9D0024C6EA /* LBUtilityTests.m in Sources */,
 				CCAF144A113B1CA400CE220F /* LBServerTests.m in Sources */,
+				CC45FB6411509BE700AD3A30 /* LBMessageTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

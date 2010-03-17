@@ -1,0 +1,117 @@
+Return-Path: <letters-dev-bounces@lists.ranchero.com>
+X-Spam-Checker-Version: SpamAssassin 3.2.5 (2008-06-10) on elvis.mu.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.6 required=5.0 tests=AWL,BAYES_00,FH_DATE_PAST_20XX,
+	HTML_MESSAGE autolearn=no version=3.2.5
+X-Original-To: gus@nomeat.com
+Delivered-To: gus@flyingmeat.org
+Received: from frida.dreamhost.com (frida.dreamhost.com [66.33.206.23])
+	by elvis.mo.org (Postfix) with ESMTP id 5E8461A3C3D
+	for <gus@nomeat.com>; Sun, 17 Jan 2010 19:25:09 -0800 (PST)
+Received: from diego.dreamhost.com (diego.dreamhost.com [66.33.216.104])
+	by frida.dreamhost.com (Postfix) with ESMTP
+	id 31B8917E0C; Sun, 17 Jan 2010 19:25:09 -0800 (PST)
+Received: from diego.dreamhost.com (localhost [127.0.0.1])
+	by diego.dreamhost.com (Postfix) with ESMTP id 37D034800E;
+	Sun, 17 Jan 2010 19:29:54 -0800 (PST)
+X-Original-To: letters-dev@lists.ranchero.com
+Received: from asmtpout027.mac.com (asmtpout027.mac.com [17.148.16.102])
+	by diego.dreamhost.com (Postfix) with ESMTP id 4E1674800C
+	for <letters-dev@lists.ranchero.com>;
+	Sun, 17 Jan 2010 19:29:52 -0800 (PST)
+MIME-version: 1.0
+Received: from [10.0.1.11]
+	(66-188-248-120.dhcp.eucl.wi.charter.com [66.188.248.120])
+	by asmtp027.mac.com (Sun Java(tm) System Messaging Server 6.3-8.01
+	(built Dec
+	16 2008; 32bit)) with ESMTPSA id <0KWF00E6JAT4H740@asmtp027.mac.com> for
+	letters-dev@lists.ranchero.com; Sun, 17 Jan 2010 19:24:42 -0800 (PST)
+From: BooneJS <oonejs@nonono.com>
+Subject: Re: IMAPness
+Date: Sun, 17 Jan 2010 21:24:40 -0600
+In-reply-to: <8AAE53D0-D7FA-47DD-9CE7-A199C27E8E57@josephholsten.com>
+To: letters-dev@lists.ranchero.com
+References: <2DBA00EE-2CC5-4692-9B16-DE76AB1F0A3B@caiochassot.com>
+	<8AAE53D0-D7FA-47DD-9CE7-A199C27E8E57@josephholsten.com>
+Message-id: <38C8575A-ABD7-4958-A70B-133EC31ABE0C@me.com>
+X-Mailer: Apple Mail (2.1077)
+X-BeenThere: letters-dev@lists.ranchero.com
+X-Mailman-Version: 2.1.12
+Precedence: list
+Reply-To: letters-dev@lists.ranchero.com
+List-Id: <letters-dev-ranchero.com>
+List-Unsubscribe: <http://lists.ranchero.com/options.cgi/letters-dev-ranchero.com>,
+	<mailto:letters-dev-request@lists.ranchero.com?subject=unsubscribe>
+List-Archive: <http://lists.ranchero.com/pipermail/letters-dev-ranchero.com>
+List-Post: <mailto:letters-dev@lists.ranchero.com>
+List-Help: <mailto:letters-dev-request@lists.ranchero.com?subject=help>
+List-Subscribe: <http://lists.ranchero.com/listinfo.cgi/letters-dev-ranchero.com>,
+	<mailto:letters-dev-request@lists.ranchero.com?subject=subscribe>
+Content-Type: multipart/mixed; boundary="===============0703719983=="
+Sender: letters-dev-bounces@lists.ranchero.com
+Errors-To: letters-dev-bounces@lists.ranchero.com
+
+
+--===============0703719983==
+Content-type: multipart/alternative;
+	boundary="Boundary_(ID_hU90Lbl7gyROHnojV4KAXQ)"
+
+
+--Boundary_(ID_hU90Lbl7gyROHnojV4KAXQ)
+Content-type: text/plain; charset=us-ascii
+Content-transfer-encoding: 7BIT
+
+
+On Jan 17, 2010, at 9:13 PM, Joseph Anthony Pasquale Holsten wrote:
+
+> On Jan 17, 2010, at 9:09 PM, Caio Chassot wrote:
+>> Also, let's learn some IMAP. My understanding of it is minimal, I just skimmed over different parts of the RFCs during scattered periods of my life.
+> 
+> YES PLEASE. Sharing any tutorials, like this from earlier: http://bobpeers.com/technical/telnet_imap, would be tremendously helpful.
+> 
+> And can anyone manage to get gmail to play nice over telnet/s_client?
+
+There's a "Developer References" section in the Wiki that would make a good home for any other tutorials and educational links the team finds.
+
+http://wiki.github.com/kch/email-init/brainstorm
+
+Regards,
+Boone
+
+--Boundary_(ID_hU90Lbl7gyROHnojV4KAXQ)
+Content-type: text/html; charset=us-ascii
+Content-transfer-encoding: quoted-printable
+
+<html><head></head><body style=3D"word-wrap: break-word; =
+-webkit-nbsp-mode: space; -webkit-line-break: after-white-space; =
+"><br><div><div>On Jan 17, 2010, at 9:13 PM, Joseph Anthony Pasquale =
+Holsten wrote:</div><br class=3D"Apple-interchange-newline"><blockquote =
+type=3D"cite"><div>On Jan 17, 2010, at 9:09 PM, Caio Chassot =
+wrote:<br><blockquote type=3D"cite">Also, let's learn some IMAP. My =
+understanding of it is minimal, I just skimmed over different parts of =
+the RFCs during scattered periods of my life.<br></blockquote><br>YES =
+PLEASE. Sharing any tutorials, like this from earlier: <a =
+href=3D"http://bobpeers.com/technical/telnet_imap">http://bobpeers.com/tec=
+hnical/telnet_imap</a>, would be tremendously helpful.<br><br>And can =
+anyone manage to get gmail to play nice over =
+telnet/s_client?<br></div></blockquote></div><br><div>There's a =
+"Developer References" section in the Wiki that would make a good home =
+for any other tutorials and educational links the team finds.<br><br><a =
+href=3D"http://wiki.github.com/kch/email-init/brainstorm">http://wiki.gith=
+ub.com/kch/email-init/brainstorm</a><br><br>Regards,<br>Boone</div></body>=
+</html>=
+
+--Boundary_(ID_hU90Lbl7gyROHnojV4KAXQ)--
+
+--===============0703719983==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+letters-dev@lists.ranchero.com mailing list
+List help: http://lists.ranchero.com/listinfo.cgi/letters-dev-ranchero.com
+
+--===============0703719983==--
+
