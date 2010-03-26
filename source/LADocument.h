@@ -27,5 +27,5 @@
 @property (retain) LAAddressBookViewController *addressBookVC;
 
 - (IBAction)openAddressBookPicker:(id)sender;
-- (void)addToAddress:(NSString *)address;
+- (void)addToAddress:(LAAddressBookEntry *)address;
 @end

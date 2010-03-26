@@ -11,6 +11,16 @@
 
 @protocol LAAddressBookViewDelegate;
 
+@interface LAAddressBookEntry : NSObject{
+	NSString *name;
+	NSString *email;
+}
+@property(nonatomic, retain) NSString *name;
+@property(nonatomic, retain) NSString *email;
+
+-(id)initWithName:(NSString*)aname andEntry:(NSString*)anemail;
+@end
+
 @interface LAAddressBookViewController : NSWindowController {
 	ABPeoplePickerView *peoplePicker;
 	NSView *accessoryView;
@@ -21,16 +31,16 @@
 @property(nonatomic, assign) IBOutlet id<LAAddressBookViewDelegate, NSObject> delegate;
 
 + (LAAddressBookViewController*)newAddressBookViewControllerWithDelegate:(id<LAAddressBookViewDelegate, NSObject>)aDelegate;
-- (NSString *)selectedString;
+- (LAAddressBookEntry *)selectedEntry;
 - (IBAction)to:(id)sender;
 - (IBAction)cc:(id)sender;
 - (IBAction)bcc:(id)sender;
 @end
 
 @protocol LAAddressBookViewDelegate
-- (void)addToAddress:(NSString *)address;
+- (void)addToAddress:(LAAddressBookEntry *)address;
 
 @optional
-- (void)addCcAddress:(NSString*)address;
-- (void)addBccAddress:(NSString*)address;
+- (void)addCcAddress:(LAAddressBookEntry*)address;
+- (void)addBccAddress:(LAAddressBookEntry*)address;
 @end

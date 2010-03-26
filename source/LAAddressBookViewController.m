@@ -9,6 +9,18 @@
 #import "LAAddressBookViewController.h"
 #import <AddressBook/AddressBook.h>
 
+@implementation LAAddressBookEntry
+@synthesize name, email;
+-(id)initWithName:(NSString*)aname andEntry:(NSString*)anemail{
+	if(self = [super init]){
+		self.name = aname;
+		self.email = anemail;
+	}
+	return self;
+}
+@end
+
+
 @implementation LAAddressBookViewController
 @synthesize peoplePicker, accessoryView, delegate;
 
@@ -26,7 +38,7 @@
 	[self.peoplePicker setNameDoubleAction:@selector(to:)];
 }
 
-- (NSString *)selectedString{
+- (LAAddressBookEntry *)selectedEntry{
 	NSString *email = nil;
 	ABPerson *person = nil;
 	
@@ -40,25 +52,30 @@
 	if(!!values && [values count] > 0){
 		person = [values objectAtIndex:0];
 	}
+	NSString *personString = [[NSString alloc] initWithFormat:@"%@ %@", [person valueForProperty:kABFirstNameProperty], [person valueForProperty:kABLastNameProperty], nil];
 	
-	return [NSString stringWithFormat:@"%@ %@ <%@>", [person valueForProperty:kABFirstNameProperty], [person valueForProperty:kABLastNameProperty], email];
+	LAAddressBookEntry *entry = [[LAAddressBookEntry alloc] initWithName:personString andEntry:email];
+	[personString release];
+	
+	NSLog(@"Sending entry: %@", entry);
+	return entry;
 }
 
 - (IBAction)to:(id)sender{
 	if(!!self.delegate && [self.delegate respondsToSelector:@selector(addToAddress:)]){
-		[self.delegate addToAddress:[self selectedString]];
+		[self.delegate addToAddress:[self selectedEntry]];
 	}
 }
 
 - (IBAction)cc:(id)sender{
 	if(!!self.delegate && [self.delegate respondsToSelector:@selector(addToAddress:)]){
-		[self.delegate addToAddress:[self selectedString]];
+		[self.delegate addToAddress:[self selectedEntry]];
 	}
 }
 
 - (IBAction)bcc:(id)sender{
 	if(!!self.delegate && [self.delegate respondsToSelector:@selector(addToAddress:)]){
-		[self.delegate addToAddress:[self selectedString]];
+		[self.delegate addToAddress:[self selectedEntry]];
 	}
 }
 

@@ -148,12 +148,12 @@
 	[[self.addressBookVC window] orderFront:self];
 }
 
-- (void)addToAddress:(NSString *)address{
+- (void)addToAddress:(LAAddressBookEntry *)address{
 	[self willChangeValueForKey:@"toList"];
 	if(!!self.toList){
-		self.toList = [self.toList stringByAppendingFormat:@", %@", [address copy]];
+		self.toList = [self.toList stringByAppendingFormat:@", %@", [address email]];
 	}else{
-		self.toList = [address copy];
+		self.toList = [address email];
 	}
 	[self didChangeValueForKey:@"toList"];
 }
