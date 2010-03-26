@@ -7,12 +7,14 @@
 
 
 #import <Cocoa/Cocoa.h>
+#import "LAAddressBookViewController.h"
 
-@interface LADocument : NSDocument {
+@interface LADocument : NSDocument <LAAddressBookViewDelegate>{
     
     // FIXME: this should all probably go in a window controller subclass...
     
     IBOutlet NSProgressIndicator *progressIndicator;
+	LAAddressBookViewController *addressBookVC;
 }
 
 @property (retain) NSString *toList;
@@ -22,4 +24,8 @@
 
 @property (retain) NSString *statusMessage;
 
+@property (retain) LAAddressBookViewController *addressBookVC;
+
+- (IBAction)openAddressBookPicker:(id)sender;
+- (void)addToAddress:(NSString *)address;
 @end
