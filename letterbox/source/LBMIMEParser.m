@@ -44,14 +44,13 @@ typedef enum {
     
     self = [super init];
     
-    if (self == nil) {
-        return nil;
+    if (self != nil) {
+        
+        properties  = [[NSMutableDictionary alloc] init];
+        subparts    = [[NSMutableArray alloc] init];
+        
+        [self parse:string];
     }
-    
-    properties = [[NSMutableDictionary alloc] init];
-    subparts = [[NSMutableArray alloc] init];
-    
-    [self parse:string];
     
     return self;
 }
@@ -105,56 +104,56 @@ typedef enum {
 }
 
 - (NSString*)contentType {
-    return [properties objectForKey:@"Content-Type"];
+    return [properties objectForKey:@"content-type"];
 }
 
 - (void)setContentType:(NSString*)type {
     
     if (type) {
-        [properties setObject:type forKey:@"Content-Type"];
+        [properties setObject:type forKey:@"content-type"];
     }
     else {
-        [properties removeObjectForKey:@"Content-Type"];
+        [properties removeObjectForKey:@"content-type"];
     }
 }
 
 - (NSString*)contentID {
-    return [properties objectForKey: @"Content-ID"];
+    return [properties objectForKey: @"content-id"];
 }
 
 - (void)setContentID:(NSString*)type {
 
     if (type) {
-        [properties setObject:type forKey:@"Content-ID"];
+        [properties setObject:type forKey:@"content-id"];
     }
     else {
-        [properties removeObjectForKey:@"Content-ID"];
+        [properties removeObjectForKey:@"content-id"];
     }
 }
 
 - (NSString*)contentDisposition {
-    return [properties objectForKey: @"Content-Disposition"];
+    return [properties objectForKey: @"content-disposition"];
 }
 
 - (void)setContentDisposition:(NSString*)type {
     if (type) {
-        [properties setObject:type forKey:@"Content-Disposition"];
+        [properties setObject:type forKey:@"content-disposition"];
     }
     else {
-        [properties removeObjectForKey:@"Content-Disposition"];
+        [properties removeObjectForKey:@"content-disposition"];
     }
 }
 
 - (NSString*)contentTransferEncoding {
-    return [properties objectForKey:@"Content-Transfer-Encoding"];
+    return [properties objectForKey:@"content-transfer-encoding"];
 }
 
 - (void)setContentTransferEncoding:(NSString*)type {
     if (type) {
-        [properties setObject:type forKey:@"Content-Transfer-Encoding"];
+        [properties setObject:type forKey:@"content-transfer-encoding"];
     }
     else {
-        [properties removeObjectForKey:@"Content-Transfer-Encoding"];
+        [properties removeObjectForKey:@"content-transfer-encoding"];
     }
 }
 
@@ -311,7 +310,7 @@ typedef enum {
             
             if ([key length] && [value length]) {
                 value = LBMIMEStringByDecodingEncodedWord(value);
-                [parsedProperties setObject:value forKey:key];
+                [parsedProperties setObject:value forKey:[key lowercaseString]];
             }
         }
     }
@@ -349,8 +348,8 @@ typedef enum {
 
 @implementation LBMIMEMultipartMessage
 
-- (BOOL)isMultipartAlternative {
-    return [self.contentType hasPrefix:@"multipart/alternative"];
+- (BOOL)isMultipart {
+    return [self.contentType hasPrefix:@"multipart/"];
 }
 
 - (NSArray*) types {
@@ -376,6 +375,7 @@ typedef enum {
 }
 
 - (LBMIMEPart*)availablePartForTypeFromArray:(NSArray*)types {
+    
     for (NSString *type in types) {
         LBMIMEPart *part = [self partForType:type];
         if (part) {
@@ -387,11 +387,13 @@ typedef enum {
 }
 
 - (LBMIMEPart*)partForType:(NSString*)mimeType {
+    
     if ([self.contentType hasPrefix:mimeType]) {
         return self;
     }
     
-    if ([self isMultipartAlternative]) {
+    if ([self isMultipart]) {
+        debug(@"yaymuuuuu");
         for (LBMIMEPart *part in self.subparts) {
             if ([part.contentType hasPrefix:mimeType]) {
                 return part;

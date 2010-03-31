@@ -21,7 +21,7 @@
     return [NSURL fileURLWithPath:[testDir stringByAppendingPathComponent:messageName]];
 }
 
-- (void) testTestTesterYesirTest {
+- (void) testSomeMultipartYo {
     
     NSUInteger usedEncoding;
     NSError *err = nil;
@@ -29,21 +29,32 @@
     
     LBMIMEMultipartMessage *mm = [[[LBMIMEMultipartMessage alloc] initWithString:message] autorelease];
     
+    GHAssertNotNil(mm, @"Creation of a LBMIMEMultipartMessage");
+    GHAssertEqualStrings([mm boundary], @"===============0703719983==", @"Checking the boundry");
+    GHAssertTrue([[mm contentType] hasPrefix:@"multipart/mixed"], @"Checking the contentType");
+    GHAssertTrue([[mm subparts] count] == 2, @"the count of subparts");
+    GHAssertTrue([mm isMultipart], @"checking that yes indeed it isMultipartAlternative");
+    
+    GHAssertTrue([[[[mm subparts] objectAtIndex:0] contentType] hasPrefix:@"multipart/alternative"], @"the type of the first subpart");
+    GHAssertTrue([[[[mm subparts] objectAtIndex:1] contentType] hasPrefix:@"text/plain"], @"the type of the second subpart");
+    
     for (LBMIMEPart *part in [mm subparts]) {
         NSLog(@"sub part: %@", part.contentType);
     }
     
-    debug(@"mimePart.contentType: '%@'", [mm contentType]);
+    LBMIMEPart *part = [mm availablePartForTypeFromArray:[NSArray arrayWithObjects: @"text/plain", @"text/html", nil]];
     
-    debug(@"mm: '%@'", mm);
+    GHAssertNotNil(part, @"the part");
     
-    LBMIMEPart *representation = [mm availablePartForTypeFromArray:[NSArray arrayWithObjects: @"text/plain", @"text/html", nil]];
     
-    GHAssertNotNil(representation, @"the representation");
+    GHAssertEqualStrings([part content], @"Hello sir, this is the content, and honestly it isn't much.  Sorry.\n\nLinebreak!", @"Checking the content");
     
-    debug(@"representation: '%@'", representation);
+    part = [mm availablePartForTypeFromArray:[NSArray arrayWithObjects: @"multipart/alternative", nil]];
     
-    GHAssertTrue(NO, nil);
+    
+    GHAssertNotNil(part, @"the multipart part");
+    
+    
 }
 
 @end

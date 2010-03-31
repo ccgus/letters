@@ -42,7 +42,7 @@
 @interface LBMIMEMultipartMessage : LBMIMEPart {
 }
 
-- (BOOL)isMultipartAlternative;
+- (BOOL)isMultipart;
 
 - (NSArray*)types;
 - (NSString *)availableTypeFromArray:(NSArray *)types;
