@@ -233,16 +233,6 @@ typedef enum {
                     state = LBMIMEParserStateReadingParts;
                 }
                 else {
-                    if ([lines count] > 0) {
-                        
-                        NSString *previousLine = [lines objectAtIndex:[lines count] - 1];
-                        if ([previousLine hasSuffix:@"="]) {
-                            string = [NSString stringWithFormat:@"%@%@", [previousLine substringToIndex:[previousLine length] - 1], string];
-                            [lines removeLastObject];
-                        }
-                    }
-                    
-                    //NSLog( @"adding content: %@", string );
                     [lines addObject:string];
                 }
                 break;
@@ -250,6 +240,7 @@ typedef enum {
             case LBMIMEParserStateReadingParts:
                 
                 if ([string hasPrefix: [NSString stringWithFormat:@"--%@", boundary]]) {
+                    [lines addObject:@""];
                     NSString *partSourceText = [lines componentsJoinedByString: @"\n"];
                     
                     // guynote: we've got all the text for a subpart here - we can do this in a block async. we'd need to make sure the resulting part was added to the subparts array in the correct position to preserve the "faithfullness" of alternative type ordering.
@@ -294,7 +285,6 @@ typedef enum {
     
     [content release];
     content = [decodedNewContent copy];
-    //NSLog( @"content: %@", content );
 }
 
 - (NSDictionary*)propertiesFromLines:(NSArray*)lines {
@@ -393,7 +383,6 @@ typedef enum {
     }
     
     if ([self isMultipart]) {
-        debug(@"yaymuuuuu");
         for (LBMIMEPart *part in self.subparts) {
             if ([part.contentType hasPrefix:mimeType]) {
                 return part;
@@ -446,7 +435,7 @@ NSString *LBMIMEStringByDecodingStringFromEncodingWithCharSet(NSString *inputStr
     NSString *decodedString = [NSString stringWithString:inputString];
     
     if ([transferEncoding isEqual: @"quoted-printable"]) {
-        //decodedString = [decodedString stringByReplacingOccurrencesOfString:@"=\r\n" withString:@""];
+        decodedString = [decodedString stringByReplacingOccurrencesOfString:@"=\n" withString:@""];
         decodedString = [decodedString stringByReplacingOccurrencesOfString:@"=" withString:@"%"];
         
         if ( [characterSet isCaseInsensitiveLike:@"ISO-8859-1"] ) {

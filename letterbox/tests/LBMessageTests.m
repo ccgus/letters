@@ -48,16 +48,13 @@
     LBMIMEPart *subpart_text = [[altpart subparts] objectAtIndex:0];
     GHAssertTrue([[subpart_text contentType] hasPrefix:@"text/plain"], @"the type of the text alternative part");
     GHAssertTrue([[subpart_text content] hasPrefix:@"\nOn Jan 17, 2010, at 9:13 PM, Joseph"], @"subpart_text begins with the right text");
-    GHAssertTrue([[subpart_text content] hasSuffix:@"Regards,\nBoone"], @"subpart_text ends with the right text");
-    // TODO: check if the ending is correct (perhaps should have preserved a newline?)
+    GHAssertTrue([[subpart_text content] hasSuffix:@"Regards,\nBoone\n"], @"subpart_text ends with the right text");
     
     LBMIMEPart *subpart_html = [[altpart subparts] objectAtIndex:1];
     GHAssertTrue([[subpart_html contentType] hasPrefix:@"text/html"], @"the type of the html alternative part");
-    NSLog(@"html part: %@", [subpart_html content]);
     GHAssertTrue([[subpart_html content] hasPrefix:@"<html><head></head><body style"], @"subpart_html starts with the right text");
-    // TODO: check if the substrings are correct (perhaps "=3D" should be unquoted, and the final "=" removed?)
-    GHAssertTrue([[subpart_html content] rangeOfString:@"<blockquote type=3D\"cite\">Also, let's learn some IMAP."].location != NSNotFound, @"subpart_html contains the right substring");
-    GHAssertTrue([[subpart_html content] hasSuffix:@"<br>Boone</div></body></html>="], @"subpart_html ends with the right text");
+    GHAssertTrue([[subpart_html content] rangeOfString:@"<blockquote type=\"cite\">Also, let's learn some IMAP."].location != NSNotFound, @"subpart_html contains the right substring");
+    GHAssertTrue([[subpart_html content] hasSuffix:@"<br>Boone</div></body></html>"], @"subpart_html ends with the right text");
     
     LBMIMEPart *textpart = [mm availablePartForTypeFromArray:[NSArray arrayWithObjects: @"text/plain", @"text/html", nil]];
     
