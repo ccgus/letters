@@ -186,10 +186,10 @@ typedef enum {
                     self.boundary   = [self boundaryFromContentType:self.contentType];
                     
                     //debug( @"properties: %@", self.properties );
-                    //debug( @"boundry: %@", boundry );
+                    //debug( @"boundary: %@", boundary );
                     [lines removeAllObjects];
                     
-                    if ([self.contentType hasPrefix:@"multipart/alternative"]) {
+                    if ([[self.contentType lowercaseString] hasPrefix:@"multipart/"]) {
                         if (boundary != nil) {
                             state = LBMIMEParserStateReadingContent;
                         }
@@ -226,7 +226,6 @@ typedef enum {
                 break;
                 
             case LBMIMEParserStateReadingContent:
-                
                 if ([string hasPrefix:[NSString stringWithFormat:@"--%@", boundary]]) {
                     [contentLines addObjectsFromArray:lines];
                     [lines removeAllObjects];
@@ -330,7 +329,8 @@ typedef enum {
 }
 
 - (NSString*)boundaryFromContentType:(NSString*)contentTypeString {
-    return [self valueForAttribute:@"boundary" inPropertyString:contentTypeString];
+    NSString *rough_value = [self valueForAttribute:@"boundary" inPropertyString:contentTypeString];
+    return [rough_value stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" "]];
 }
 
 @end
@@ -339,7 +339,7 @@ typedef enum {
 @implementation LBMIMEMultipartMessage
 
 - (BOOL)isMultipart {
-    return [self.contentType hasPrefix:@"multipart/"];
+    return [[self.contentType lowercaseString] hasPrefix:@"multipart/"];
 }
 
 - (NSArray*) types {

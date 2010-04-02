@@ -71,4 +71,23 @@
     
 }
 
+- (void) testBoundaryWarts {
+    NSString *source = (@"From nobody Fri Apr  2 23:31:22 2010\n"
+                        "Content-Type: MULTIPART/MIXED; boundary=ZZZZ \n"  // uppercase type, whitespace at end of boundary
+                        "\n"
+                        "--ZZZZ\n"
+                        "Content-Type: text/plain; charset=\"us-ascii\"\n"
+                        "Content-Transfer-Encoding: 7bit\n"
+                        "\n"
+                        "Hello world!\n"
+                        "--ZZZZ--");
+    LBMIMEMultipartMessage *message = [[[LBMIMEMultipartMessage alloc] initWithString:source] autorelease];
+    
+    GHAssertTrue([message isMultipart], @"message is multi-part");
+    GHAssertTrue([[message subparts] count] == 1, @"one message part");
+    LBMIMEMultipartMessage *textpart = [[message subparts] objectAtIndex:0];
+    GHAssertTrue([[textpart contentType] hasPrefix:@"text/plain"], @"proper content-type for part");
+    GHAssertTrue([[textpart content] isEqualToString:@"Hello world!"], @"proper content for text part");
+}
+
 @end
