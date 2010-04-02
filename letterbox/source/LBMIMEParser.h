@@ -35,6 +35,8 @@
 - (NSArray*)subparts;
 - (void)addSubpart:(LBMIMEPart*)subpart;
 - (void)removeSubpart:(LBMIMEPart*)subpart;
+// if this part is base64-encoded, returns decoded data; otherwise returns nil.
+- (NSData*)decodedData;
 
 @end
 

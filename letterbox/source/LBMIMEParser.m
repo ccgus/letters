@@ -157,6 +157,16 @@ typedef enum {
     }
 }
 
+- (NSData*)decodedData {
+    if ([self.contentTransferEncoding isEqualToString:@"base64"]) {
+        NSString* base64_data = [content stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+        return LBMIMEDataByDecodingBase64String(base64_data);
+    }
+    else {
+        return nil;
+    }
+}
+
 @end
 
 

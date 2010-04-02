@@ -90,4 +90,27 @@
     GHAssertTrue([[textpart content] isEqualToString:@"Hello world!"], @"proper content for text part");
 }
 
+- (void) testBase64 {
+    NSString *source = (@"From nobody Fri Apr  2 23:31:22 2010\n"
+                        "Content-Type: MULTIPART/MIXED; boundary=ZZZZ \n"  // uppercase type, whitespace at end of boundary
+                        "\n"
+                        "--ZZZZ\n"
+                        "Content-Type: somerandom/mimetype\n"
+                        "MIME-Version: 1.0\n"
+                        "Content-Transfer-Encoding: base64\n"
+                        "\n"
+                        "U09NRSBia\n"
+                        "W5hcnkgRE\n"
+                        "FUQQ==\n"
+                        "--ZZZZ--");
+    LBMIMEMultipartMessage *message = [[[LBMIMEMultipartMessage alloc] initWithString:source] autorelease];
+    
+    GHAssertTrue([message isMultipart], @"message is multi-part");
+    GHAssertTrue([[message subparts] count] == 1, @"one message part");
+    LBMIMEMultipartMessage *binpart = [[message subparts] objectAtIndex:0];
+    GHAssertTrue([[binpart contentType] hasPrefix:@"somerandom/mimetype"], @"proper content-type for part");
+    debug(@"content: %@", [binpart content]);
+    GHAssertTrue([[binpart decodedData] isEqualToData:[@"SOME binary DATA" dataUsingEncoding:NSASCIIStringEncoding]], @"proper content for part");
+}
+
 @end
