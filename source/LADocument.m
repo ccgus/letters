@@ -15,6 +15,7 @@
 @synthesize fromList;
 @synthesize subject;
 @synthesize message;
+@synthesize addressBookVC;
 
 - (id)init {
     self = [super init];
@@ -135,6 +136,26 @@
         [msg release];
     });
     */
+}
+
+
+#pragma mark -
+#pragma mark Addressbook integration
+
+- (IBAction)openAddressBookPicker:(id)sender{
+	self.addressBookVC = [LAAddressBookViewController newAddressBookViewControllerWithDelegate:self];
+	[self.addressBookVC showWindow:self];
+	[[self.addressBookVC window] orderFront:self];
+}
+
+- (void)addToAddress:(LAAddressBookEntry *)address{
+	[self willChangeValueForKey:@"toList"];
+	if(!!self.toList){
+		self.toList = [self.toList stringByAppendingFormat:@", %@", [address email]];
+	}else{
+		self.toList = [address email];
+	}
+	[self didChangeValueForKey:@"toList"];
 }
 
 @end

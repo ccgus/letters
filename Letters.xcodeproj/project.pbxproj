@@ -12,6 +12,8 @@
 		29DCAB681112C517006DAF70 /* LAPrefsFontsAndColorsModule.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAB347491111964200C270B4 /* LAPrefsFontsAndColorsModule.xib */; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		96D9712C11142FB100EBE2FE /* Letters.icns in Resources */ = {isa = PBXBuildFile; fileRef = 96D9712B11142FAE00EBE2FE /* Letters.icns */; };
+		9B6D6C83115C4A9E00414626 /* LAAddressBookView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B6D6C81115C4A9E00414626 /* LAAddressBookView.xib */; };
+		9B6D6C86115C4AC200414626 /* LAAddressBookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B6D6C85115C4AC200414626 /* LAAddressBookViewController.m */; };
 		AAB3471511117A8800C270B4 /* LAPrefsGeneralModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB3471411117A8800C270B4 /* LAPrefsGeneralModule.m */; };
 		AAB34744111195D400C270B4 /* LAPrefsFontsAndColorsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB34743111195D400C270B4 /* LAPrefsFontsAndColorsModule.m */; };
 		AAB3489B1112118600C270B4 /* LAPrefsAccountsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB3489A1112118600C270B4 /* LAPrefsAccountsModule.m */; };
@@ -83,6 +85,9 @@
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D15AC370486D014006FF6A4 /* CrashyEmailApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CrashyEmailApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96D9712B11142FAE00EBE2FE /* Letters.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Letters.icns; path = resources/images/Letters.icns; sourceTree = "<group>"; };
+		9B6D6C82115C4A9E00414626 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = resources/English.lproj/LAAddressBookView.xib; sourceTree = "<group>"; };
+		9B6D6C84115C4AC200414626 /* LAAddressBookViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LAAddressBookViewController.h; path = source/LAAddressBookViewController.h; sourceTree = "<group>"; };
+		9B6D6C85115C4AC200414626 /* LAAddressBookViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LAAddressBookViewController.m; path = source/LAAddressBookViewController.m; sourceTree = "<group>"; };
 		AAB3471311117A8800C270B4 /* LAPrefsGeneralModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LAPrefsGeneralModule.h; path = source/prefs/LAPrefsGeneralModule.h; sourceTree = "<group>"; };
 		AAB3471411117A8800C270B4 /* LAPrefsGeneralModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LAPrefsGeneralModule.m; path = source/prefs/LAPrefsGeneralModule.m; sourceTree = "<group>"; };
 		AAB3471A11117FA700C270B4 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = resources/English.lproj/LAPrefsGeneralModule.xib; sourceTree = "<group>"; };
@@ -182,6 +187,8 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				9B6D6C84115C4AC200414626 /* LAAddressBookViewController.h */,
+				9B6D6C85115C4AC200414626 /* LAAddressBookViewController.m */,
 				CCF4131D110D36D400401D5D /* LAActivityViewer.h */,
 				CCF4131E110D36D400401D5D /* LAActivityViewer.m */,
 				CCA5544B1106DF4D00CEEFF4 /* LAAppDelegate.h */,
@@ -258,6 +265,7 @@
 		CCA554581106E20500CEEFF4 /* xib */ = {
 			isa = PBXGroup;
 			children = (
+				9B6D6C81115C4A9E00414626 /* LAAddressBookView.xib */,
 				CE3B37B51113FCFE0073E972 /* CreateAccount.xib */,
 				CCF41322110D380800401D5D /* ActivityViewer.xib */,
 				CCA554271106DDF800CEEFF4 /* LADocument.xib */,
@@ -365,6 +373,7 @@
 				29DCAB671112C517006DAF70 /* LAPrefsAccountsModule.xib in Resources */,
 				29DCAB681112C517006DAF70 /* LAPrefsFontsAndColorsModule.xib in Resources */,
 				CE3B37B71113FCFE0073E972 /* CreateAccount.xib in Resources */,
+				9B6D6C83115C4A9E00414626 /* LAAddressBookView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,6 +411,7 @@
 				AAB3489B1112118600C270B4 /* LAPrefsAccountsModule.m in Sources */,
 				CE3B37AE1113FC740073E972 /* LAPrefsCreateAccountController.m in Sources */,
 				CC220D6711309A92000B46D8 /* LAMessageListView.m in Sources */,
+				9B6D6C86115C4AC200414626 /* LAAddressBookViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -416,6 +426,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		9B6D6C81115C4A9E00414626 /* LAAddressBookView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9B6D6C82115C4A9E00414626 /* English */,
+			);
+			name = LAAddressBookView.xib;
+			sourceTree = "<group>";
+		};
 		AAB347491111964200C270B4 /* LAPrefsFontsAndColorsModule.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
