@@ -35,7 +35,7 @@
 @property (assign) BOOL deletedFlag;
 @property (assign) BOOL draftFlag;
 @property (retain) NSString *flags;
-@property (retain) LBMIMEMultipartMessage *mimePart;
+@property (retain) LBMIMEMessage *mimePart;
 
 - (void) parseHeaders;
 

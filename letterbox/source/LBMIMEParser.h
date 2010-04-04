@@ -7,52 +7,15 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "LBMIMEMessage.h"
 
-
-@interface LBMIMEPart : NSObject {
-    
-	LBMIMEPart *superpart; // non-retained
-	NSMutableArray *subparts;
-	
-	NSString *content;
-	NSString *boundary;
-	NSMutableDictionary *properties;
-}
+@interface LBMIMEParser : NSObject
 
 // parses the string, pull out the properties and sets the content up as required. additionally, if the content is multi-part, will create a subtree of parts recursively.
-- (id) initWithString: (NSString*) string;
-
-@property (copy) NSString *content;
-
-@property (copy) NSString *contentType;
-@property (copy) NSString *contentID;
-@property (copy) NSString *contentDisposition;
-@property (copy) NSString *contentTransferEncoding;
-@property (copy) NSDictionary *properties; // all the properties in key value pairs.
-@property (copy) NSString *boundary;
-
-- (LBMIMEPart*)superpart;
-- (NSArray*)subparts;
-- (void)addSubpart:(LBMIMEPart*)subpart;
-- (void)removeSubpart:(LBMIMEPart*)subpart;
-// if this part is base64-encoded, returns decoded data; otherwise returns nil.
-- (NSData*)decodedData;
-
-@end
-
-
-@interface LBMIMEMultipartMessage : LBMIMEPart {
-}
-
-- (BOOL)isMultipart;
-
-- (NSArray*)types;
-- (NSString *)availableTypeFromArray:(NSArray *)types;
-- (LBMIMEPart*)partForType:(NSString*)mimeType;
-- (LBMIMEPart*)availablePartForTypeFromArray:(NSArray*) types;
-
-// the MIME spec says the alternative parts are ordered from least faithful to the most faithful. we can only presume the sender has done that correctly. consider this a guess rather than being definitive.
-- (NSString*)mostFailthfulAlternativeType;
++ (LBMIMEMessage*)messageFromString:(NSString*)sourceText;
++ (NSDictionary*)propertiesFromLines:(NSArray*)lines;
++ (NSString*)boundaryFromContentType:(NSString*)contentTypeString;
++ (NSString*)valueForAttribute:(NSString*)attribName inPropertyString:(NSString*)property;
 
 @end
 

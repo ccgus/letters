@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3AD3C2AD1168A4860063FF8C /* LBMIMEMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 3AD3C2AB1168A4860063FF8C /* LBMIMEMessage.h */; };
+		3AD3C2AE1168A4860063FF8C /* LBMIMEMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD3C2AC1168A4860063FF8C /* LBMIMEMessage.m */; };
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 		964BA5381115A9AC001B8F82 /* GHUnit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 968D0E5C111525550044BE1D /* GHUnit.framework */; };
 		968D0EAF111526880044BE1D /* LetterBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* LetterBox.framework */; };
@@ -243,6 +245,8 @@
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		0867D6A5FE840307C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		3AD3C2AB1168A4860063FF8C /* LBMIMEMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBMIMEMessage.h; path = source/LBMIMEMessage.h; sourceTree = "<group>"; };
+		3AD3C2AC1168A4860063FF8C /* LBMIMEMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBMIMEMessage.m; path = source/LBMIMEMessage.m; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* LetterBox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LetterBox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		968D0E5C111525550044BE1D /* GHUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GHUnit.framework; sourceTree = "<group>"; };
 		968D0E7B1115258B0044BE1D /* GHUnitTestMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GHUnitTestMain.m; path = tests/GHUnitTestMain.m; sourceTree = "<group>"; };
@@ -502,6 +506,8 @@
 				089C1665FE841158C02AAC07 /* Resources */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				034768DFFF38A50411DB9C8B /* Products */,
+				3AD3C2AB1168A4860063FF8C /* LBMIMEMessage.h */,
+				3AD3C2AC1168A4860063FF8C /* LBMIMEMessage.m */,
 			);
 			name = MailCore;
 			sourceTree = "<group>";
@@ -923,6 +929,7 @@
 				CCCB7D1D113B6B0700B2F291 /* LBEnvelopeTokenizer.h in Headers */,
 				CCCB7DBC113B764C00B2F291 /* LBNSStringAdditions.h in Headers */,
 				CC1C825F1142EA0300A8788E /* LBMIMEParser.h in Headers */,
+				3AD3C2AD1168A4860063FF8C /* LBMIMEMessage.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1126,6 +1133,7 @@
 				CCCB7D1E113B6B0700B2F291 /* LBEnvelopeTokenizer.m in Sources */,
 				CCCB7DBD113B764C00B2F291 /* LBNSStringAdditions.m in Sources */,
 				CC1C82601142EA0300A8788E /* LBMIMEParser.m in Sources */,
+				3AD3C2AE1168A4860063FF8C /* LBMIMEMessage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

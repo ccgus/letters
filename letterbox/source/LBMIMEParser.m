@@ -21,165 +21,12 @@ typedef enum {
 } LBMIMEParserState;
 
 
-@interface LBMIMEPart (LBMIMEParsing)
-- (void)parse:(NSString*)sourceText;
-- (NSDictionary*)propertiesFromLines:(NSArray*)lines;
-- (NSString*)boundaryFromContentType:(NSString*)contentTypeString;
-- (NSString*)valueForAttribute:(NSString*)attribName inPropertyString:(NSString*)property;
-@end
+@implementation LBMIMEParser
 
-@implementation LBMIMEPart
-@synthesize content;
-@synthesize boundary;
-
-+ (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString *)key {
-    if ([key isEqual: @"properties"] ) {
-        return [NSSet setWithObjects: @"contentType", @"contentID", @"contentTransferEncoding", @"contentDisposition", nil];
-    }
-    
-    return [super keyPathsForValuesAffectingValueForKey:key];
-}
-
-- (id)initWithString:(NSString*)string {
-    
-    self = [super init];
-    
-    if (self != nil) {
-        
-        properties  = [[NSMutableDictionary alloc] init];
-        subparts    = [[NSMutableArray alloc] init];
-        
-        [self parse:string];
-    }
-    
-    return self;
-}
-
-- (void)dealloc {
-
-    [subparts release];
-    [properties release];
-    [content release];
-    [boundary release];
-    
-    [super dealloc];
-}
-
-
-
-- (LBMIMEPart*)superpart {
-    return superpart;
-}
-
-- (NSArray*)subparts {
-    return [[subparts copy] autorelease];
-}
-
-- (NSDictionary*)properties {
-    return [[properties copy] autorelease];
-}
-
-- (void)setProperties:(NSDictionary *)newProperties {
-    NSMutableDictionary *tmp = [newProperties mutableCopy];
-    [properties release];
-    properties = tmp;
-}
-
-- (void)addSubpart:(LBMIMEPart *)subpart {
-    if (subpart == nil) {
-        return;
-    }
-    
-    subpart->superpart = self;
-    [subparts addObject:subpart];
-}
-
-- (void)removeSubpart:(LBMIMEPart*)subpart {
-    if (subpart == nil) {
-        return;
-    }
-    
-    subpart->superpart = nil;
-    [subparts removeObject: subpart];
-}
-
-- (NSString*)contentType {
-    return [properties objectForKey:@"content-type"];
-}
-
-- (void)setContentType:(NSString*)type {
-    
-    if (type) {
-        [properties setObject:type forKey:@"content-type"];
-    }
-    else {
-        [properties removeObjectForKey:@"content-type"];
-    }
-}
-
-- (NSString*)contentID {
-    return [properties objectForKey: @"content-id"];
-}
-
-- (void)setContentID:(NSString*)type {
-
-    if (type) {
-        [properties setObject:type forKey:@"content-id"];
-    }
-    else {
-        [properties removeObjectForKey:@"content-id"];
-    }
-}
-
-- (NSString*)contentDisposition {
-    return [properties objectForKey: @"content-disposition"];
-}
-
-- (void)setContentDisposition:(NSString*)type {
-    if (type) {
-        [properties setObject:type forKey:@"content-disposition"];
-    }
-    else {
-        [properties removeObjectForKey:@"content-disposition"];
-    }
-}
-
-- (NSString*)contentTransferEncoding {
-    return [properties objectForKey:@"content-transfer-encoding"];
-}
-
-- (void)setContentTransferEncoding:(NSString*)type {
-    if (type) {
-        [properties setObject:type forKey:@"content-transfer-encoding"];
-    }
-    else {
-        [properties removeObjectForKey:@"content-transfer-encoding"];
-    }
-}
-
-- (NSData*)decodedData {
-    if ([self.contentTransferEncoding isEqualToString:@"base64"]) {
-        NSString* base64_data = [content stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-        return LBMIMEDataByDecodingBase64String(base64_data);
-    }
-    else {
-        return nil;
-    }
-}
-
-@end
-
-
-@implementation LBMIMEPart ( LBMIMEParsing )
-
-- (void)parse:(NSString*)sourceText {
-    //NSMutableArray *parts = [NSMutableArray array];
-    
-    //LBMIMEParserState state = LBMIMEParserStateReadingHeader;
++ (LBMIMEMessage*)messageFromString:(NSString*)sourceText {
+    LBMIMEMessage *message = [LBMIMEMessage message];
     
     NSMutableArray *lines = [NSMutableArray array];
-    
-    self.boundary = @"--";
     
     NSMutableArray *contentLines = [NSMutableArray array];
 
@@ -192,15 +39,15 @@ typedef enum {
                 // blank line indicates end of properties block ...
                 if ([[string trim] length] == 0) {
                     
-                    self.properties = [self propertiesFromLines:lines];
-                    self.boundary   = [self boundaryFromContentType:self.contentType];
+                    message.properties = [self propertiesFromLines:lines];
+                    message.boundary   = [self boundaryFromContentType:message.contentType];
                     
-                    //debug( @"properties: %@", self.properties );
-                    //debug( @"boundary: %@", boundary );
+                    //debug( @"properties: %@", message.properties );
+                    //debug( @"boundary: %@", message.boundary );
                     [lines removeAllObjects];
                     
-                    if ([[self.contentType lowercaseString] hasPrefix:@"multipart/"]) {
-                        if (boundary != nil) {
+                    if ([[message.contentType lowercaseString] hasPrefix:@"multipart/"]) {
+                        if (message.boundary != nil) {
                             state = LBMIMEParserStateReadingContent;
                         }
                         else {
@@ -229,14 +76,14 @@ typedef enum {
             case LBMIMEParserStateDetermineBoundry:
                 
                 if ([string hasPrefix:@"--"]) {
-                    self.boundary = [string substringFromIndex:2];
+                    message.boundary = [string substringFromIndex:2];
                     state = LBMIMEParserStateReadingContent;
                 }
                 
                 break;
                 
             case LBMIMEParserStateReadingContent:
-                if ([string hasPrefix:[NSString stringWithFormat:@"--%@", boundary]]) {
+                if ([string hasPrefix:[NSString stringWithFormat:@"--%@", message.boundary]]) {
                     [contentLines addObjectsFromArray:lines];
                     [lines removeAllObjects];
                     state = LBMIMEParserStateReadingParts;
@@ -248,18 +95,18 @@ typedef enum {
                 
             case LBMIMEParserStateReadingParts:
                 
-                if ([string hasPrefix: [NSString stringWithFormat:@"--%@", boundary]]) {
+                if ([string hasPrefix: [NSString stringWithFormat:@"--%@", message.boundary]]) {
                     [lines addObject:@""];
                     NSString *partSourceText = [lines componentsJoinedByString: @"\n"];
                     
                     // guynote: we've got all the text for a subpart here - we can do this in a block async. we'd need to make sure the resulting part was added to the subparts array in the correct position to preserve the "faithfullness" of alternative type ordering.
-                    LBMIMEPart *subpart = [[LBMIMEPart alloc] initWithString: partSourceText];
-                    [self addSubpart: subpart];
+                    LBMIMEMessage *subpart = [LBMIMEParser messageFromString:partSourceText];
+                    [message addSubpart:subpart];
                     [subpart release];
                     
                     [lines removeAllObjects];
                     
-                    if ([string isEqual:[NSString stringWithFormat: @"--%@--", boundary]]) {
+                    if ([string isEqual:[NSString stringWithFormat: @"--%@--", message.boundary]]) {
                         state = LBMIMEParserStateFinishedReadingParts;
                     }
                     else {
@@ -287,16 +134,18 @@ typedef enum {
     }
     
     NSString *newContent = [contentLines componentsJoinedByString:@"\n"];
-    NSString *charSet = [self valueForAttribute:@"charset" inPropertyString:self.contentType];
-    NSString *transferEncoding = self.contentTransferEncoding;
+    NSString *charSet = [self valueForAttribute:@"charset" inPropertyString:message.contentType];
+    NSString *transferEncoding = message.contentTransferEncoding;
     
     NSString *decodedNewContent = LBMIMEStringByDecodingStringFromEncodingWithCharSet( newContent, transferEncoding, charSet );
     
-    [content release];
-    content = [decodedNewContent copy];
+    [message.content release];
+    message.content = [decodedNewContent copy];
+    
+    return message;
 }
 
-- (NSDictionary*)propertiesFromLines:(NSArray*)lines {
++ (NSDictionary*)propertiesFromLines:(NSArray*)lines {
     
     NSMutableDictionary *parsedProperties = [NSMutableDictionary dictionary];
     
@@ -317,7 +166,7 @@ typedef enum {
     return parsedProperties;
 }
 
-- (NSString*)valueForAttribute:(NSString*)attribName inPropertyString:(NSString*) property {
++ (NSString*)valueForAttribute:(NSString*)attribName inPropertyString:(NSString*) property {
     
     NSString *attribString = nil;
     NSArray *components = [property componentsSeparatedByString:@";"];
@@ -338,77 +187,13 @@ typedef enum {
     return nil;
 }
 
-- (NSString*)boundaryFromContentType:(NSString*)contentTypeString {
++ (NSString*)boundaryFromContentType:(NSString*)contentTypeString {
     NSString *rough_value = [self valueForAttribute:@"boundary" inPropertyString:contentTypeString];
     return [rough_value stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" "]];
 }
 
 @end
 
-
-@implementation LBMIMEMultipartMessage
-
-- (BOOL)isMultipart {
-    return [[self.contentType lowercaseString] hasPrefix:@"multipart/"];
-}
-
-- (NSArray*) types {
-    NSMutableArray *types = [NSMutableArray array];
-    for (LBMIMEPart *part in self.subparts) {
-        if (part.contentType) {
-            [types addObject: part.contentType];
-        }
-    }
-    
-    return types;
-}
-
-- (NSString *)availableTypeFromArray:(NSArray *)types {
-    NSArray *availableTypes = [self types];
-    for (NSString *type in types) {
-        if ([availableTypes containsObject: type]) {
-            return type;
-        }
-    }
-    
-    return nil;
-}
-
-- (LBMIMEPart*)availablePartForTypeFromArray:(NSArray*)types {
-    
-    for (NSString *type in types) {
-        LBMIMEPart *part = [self partForType:type];
-        if (part) {
-             return part;
-        }
-    }
-    
-    return nil;
-}
-
-- (LBMIMEPart*)partForType:(NSString*)mimeType {
-    
-    if ([self.contentType hasPrefix:mimeType]) {
-        return self;
-    }
-    
-    if ([self isMultipart]) {
-        for (LBMIMEPart *part in self.subparts) {
-            if ([part.contentType hasPrefix:mimeType]) {
-                return part;
-            }
-        }
-    }
-    
-    return nil;
-}
-
-// the MIME spec says the alternative parts are ordered from least faithful to the most faithful. we can only presume the sender has done that correctly. consider this a guess rather than being definitive.
-- (NSString*)mostFailthfulAlternativeType {
-    return [[self.subparts lastObject] contentType];
-}
-
-@end
 
 NSString *LBMIMEStringByDecodingPrintedQuoteableWithCharacterSet( NSString *inputString, NSString *characterSet )
 {

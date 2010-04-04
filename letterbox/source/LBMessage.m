@@ -132,9 +132,9 @@
         
         debug( @"URL: %@", messageURL );
         
-        mimePart = [[LBMIMEMultipartMessage alloc] initWithString: fullMessage];
+        mimePart = [LBMIMEParser messageFromString:fullMessage];
         debug( @"%@", mimePart.contentType );
-        for (LBMIMEPart *part in mimePart.subparts) {
+        for (LBMIMEMessage *part in mimePart.subparts) {
             NSLog(@"sub part: %@", part.contentType);
         }
         
@@ -144,7 +144,7 @@
             messageBody = [fullMessage retain];
         }
         else {
-            LBMIMEPart *representation = [mimePart availablePartForTypeFromArray:[NSArray arrayWithObjects: @"text/plain", @"text/html", nil]];
+            LBMIMEMessage *representation = [mimePart availablePartForTypeFromArray:[NSArray arrayWithObjects: @"text/plain", @"text/html", nil]];
             
             messageBody = [representation.content copy];
             
