@@ -13,7 +13,7 @@
 
 // parses the string, pull out the properties and sets the content up as required. additionally, if the content is multi-part, will create a subtree of parts recursively.
 + (LBMIMEMessage*)messageFromString:(NSString*)sourceText;
-+ (NSDictionary*)propertiesFromLines:(NSArray*)lines;
++ (NSDictionary*)headersFromLines:(NSArray*)lines;
 + (NSString*)boundaryFromContentType:(NSString*)contentTypeString;
 + (NSString*)valueForAttribute:(NSString*)attribName inPropertyString:(NSString*)property;
 

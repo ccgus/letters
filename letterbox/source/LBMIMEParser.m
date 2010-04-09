@@ -39,7 +39,7 @@ typedef enum {
                 // blank line indicates end of properties block ...
                 if ([[string trim] length] == 0) {
                     
-                    message.properties = [self propertiesFromLines:lines];
+                    message.properties = [self headersFromLines:lines];
                     message.boundary   = [self boundaryFromContentType:message.contentType];
                     
                     //debug( @"properties: %@", message.properties );
@@ -145,25 +145,48 @@ typedef enum {
     return message;
 }
 
-+ (NSDictionary*)propertiesFromLines:(NSArray*)lines {
++ (NSDictionary*)headersFromLines:(NSArray*)lines {
     
-    NSMutableDictionary *parsedProperties = [NSMutableDictionary dictionary];
+    NSMutableDictionary *headers = [NSMutableDictionary dictionary];
+    NSString *lastHeader = nil;
+    NSString *lastValue = nil;
+    NSCharacterSet *blanks = [NSCharacterSet whitespaceAndNewlineCharacterSet];
     
     for (NSString *line in lines) {
+        if ([line hasPrefix:@" "] || [line hasPrefix:@"\t"]) {
+            if (lastValue == nil)
+                continue; // TODO: handle error
+            
+            line = [line stringByTrimmingCharactersInSet: blanks];
+            line = [@" " stringByAppendingString:line];
+            lastValue = [lastValue stringByAppendingString: line];
+            continue;
+        }
+        
+        if (lastHeader != nil) {
+            // TODO: preserve case of header keys, but allow for case-insensitive retrieval
+            [headers setObject:LBMIMEStringByDecodingEncodedWord(lastValue)
+                        forKey:[lastHeader lowercaseString]];
+            lastHeader = nil;
+            lastValue = nil;
+        }
+        
         NSRange separatorRange = [line rangeOfString:@": "];
         
-        if (separatorRange.location != NSNotFound) {
-            NSString *key   = [line substringToIndex:separatorRange.location];
-            NSString *value = [line substringFromIndex:NSMaxRange(separatorRange)];
-            
-            if ([key length] && [value length]) {
-                value = LBMIMEStringByDecodingEncodedWord(value);
-                [parsedProperties setObject:value forKey:[key lowercaseString]];
-            }
-        }
+        if (separatorRange.location == NSNotFound)
+            continue; // TODO: handle error
+        
+        lastHeader = [line substringToIndex:separatorRange.location];
+        lastValue = [line substringFromIndex:NSMaxRange(separatorRange)];
     }
     
-    return parsedProperties;
+    if (lastHeader != nil) {
+        // TODO: preserve case of header keys, but allow for case-insensitive retrieval
+        [headers setObject:LBMIMEStringByDecodingEncodedWord(lastValue)
+                    forKey:[lastHeader lowercaseString]];
+    }
+    
+    return headers;
 }
 
 + (NSString*)valueForAttribute:(NSString*)attribName inPropertyString:(NSString*) property {

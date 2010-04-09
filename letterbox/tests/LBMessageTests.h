@@ -11,7 +11,9 @@
 
 
 @interface LBMessageTests : GHTestCase {
-
 }
+@end
 
+@interface LBParserHeaderTests: GHTestCase {
+}
 @end

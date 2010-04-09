@@ -114,3 +114,34 @@
 }
 
 @end
+
+@implementation LBParserHeaderTests
+
+- (void) testSimple {
+    NSArray *headers_src = [NSArray arrayWithObjects:
+                            @"X-HEADER-ONE: header value one",
+                            @"X-HEADER-TWO: second value",
+                            nil];
+    NSDictionary *headers = [LBMIMEParser headersFromLines:headers_src];
+    GHAssertTrue([headers count] == 2, @"Two headers");
+    GHAssertTrue([[headers valueForKey:@"x-header-one"] isEqualToString:@"header value one"], @"Value of first header");
+    GHAssertTrue([[headers valueForKey:@"x-header-two"] isEqualToString:@"second value"], @"Value of second header");
+}
+
+- (void) testMultiLine {
+    NSArray *headers_src = [NSArray arrayWithObjects:
+                            @"X-HEADER-ONE: header value one",
+                            @"   with other line",
+                            @"X-HEADER-TWO: second value",
+                            @"\twith its own continuation",
+                            @" on multiple lines",
+                            @"X-HEADER-THREE: and a third header",
+                            nil];
+    NSDictionary *headers = [LBMIMEParser headersFromLines:headers_src];
+    GHAssertTrue([headers count] == 3, @"Three headers");
+    GHAssertTrue([[headers valueForKey:@"x-header-one"] isEqualToString:@"header value one with other line"], @"Value of first header");
+    GHAssertTrue([[headers valueForKey:@"x-header-two"] isEqualToString:@"second value with its own continuation on multiple lines"], @"Value of second header");
+    GHAssertTrue([[headers valueForKey:@"x-header-three"] isEqualToString:@"and a third header"], @"Value of third header");
+}
+
+@end
