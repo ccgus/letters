@@ -166,8 +166,7 @@ typedef enum {
         }
         
         if (lastHeader != nil) {
-            // TODO: preserve case of header keys, but allow for case-insensitive retrieval
-            [headers addObject:[NSArray arrayWithObjects:[lastHeader lowercaseString], lastValue, nil]];
+            [headers addObject:[NSArray arrayWithObjects:lastHeader, lastValue, nil]];
             lastHeader = nil;
             lastValue = nil;
         }
@@ -185,8 +184,7 @@ typedef enum {
     }
     
     if (lastHeader != nil) {
-        // TODO: preserve case of header keys, but allow for case-insensitive retrieval
-        [headers addObject:[NSArray arrayWithObjects:[lastHeader lowercaseString], lastValue, nil]];
+        [headers addObject:[NSArray arrayWithObjects:lastHeader, lastValue, nil]];
     }
     
     return headers;

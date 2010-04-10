@@ -22,7 +22,7 @@
 - (id)init {
     self = [super init];
     if (self != nil) {
-        properties  = [[NSMutableDictionary alloc] init];
+        headers  = [[NSMutableArray alloc] init];
         subparts    = [[NSMutableArray alloc] init];
     }
     boundary = nil;
@@ -31,18 +31,22 @@
 
 - (void)dealloc {
     [subparts release];
-    [properties release];
+    [headers release];
     [content release];
     [boundary release];
     [super dealloc];
 }
 
 - (void)addHeaderWithName:(NSString*)name andValue:(NSString*)value {
-    [properties setObject:value forKey:name];
+    [headers addObject:[NSArray arrayWithObjects:name, value, nil]];
 }
 
 - (NSString*)headerValueForName:(NSString*)name {
-    return [properties objectForKey:name];
+    name = [name lowercaseString];
+    for (NSArray *h in headers)
+        if ([name isEqualToString:[[h objectAtIndex:0] lowercaseString]])
+            return [h objectAtIndex:1];
+    return nil;
 }
 
 - (NSString*)contentType {

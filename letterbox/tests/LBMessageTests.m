@@ -113,6 +113,14 @@
     GHAssertTrue([[binpart decodedData] isEqualToData:[@"SOME binary DATA" dataUsingEncoding:NSASCIIStringEncoding]], @"proper content for part");
 }
 
+- (void) testRetrieveHeaderValues {
+    LBMIMEMessage *message = [LBMIMEMessage message];
+    [message addHeaderWithName:@"MY-HEADER" andValue:@"hello"];
+    GHAssertTrue([message headerValueForName:@"not-here"] == nil, @"nil for header-not-found");
+    GHAssertTrue([[message headerValueForName:@"MY-HEADER"] isEqualToString:@"hello"], @"retrieve with same case");
+    GHAssertTrue([[message headerValueForName:@"My-HeAdEr"] isEqualToString:@"hello"], @"retrieve with other case");
+}
+
 @end
 
 @implementation LBParserHeaderTests
@@ -126,8 +134,8 @@
     for (NSArray *h in [LBMIMEParser headersFromLines:headers_src defects:nil])
         [headers setObject:[h objectAtIndex:1] forKey:[h objectAtIndex:0]];
     GHAssertTrue([headers count] == 2, @"Two headers");
-    GHAssertTrue([[headers valueForKey:@"x-header-one"] isEqualToString:@"header value one"], @"Value of first header");
-    GHAssertTrue([[headers valueForKey:@"x-header-two"] isEqualToString:@"second value"], @"Value of second header");
+    GHAssertTrue([[headers valueForKey:@"X-HEADER-ONE"] isEqualToString:@"header value one"], @"Value of first header");
+    GHAssertTrue([[headers valueForKey:@"X-HEADER-TWO"] isEqualToString:@"second value"], @"Value of second header");
 }
 
 - (void) testMultiLine {
@@ -143,9 +151,9 @@
     for (NSArray *h in [LBMIMEParser headersFromLines:headers_src defects:nil])
         [headers setObject:[h objectAtIndex:1] forKey:[h objectAtIndex:0]];
     GHAssertTrue([headers count] == 3, @"Three headers");
-    GHAssertTrue([[headers valueForKey:@"x-header-one"] isEqualToString:@"header value one with other line"], @"Value of first header");
-    GHAssertTrue([[headers valueForKey:@"x-header-two"] isEqualToString:@"second value with its own continuation on multiple lines"], @"Value of second header");
-    GHAssertTrue([[headers valueForKey:@"x-header-three"] isEqualToString:@"and a third header"], @"Value of third header");
+    GHAssertTrue([[headers valueForKey:@"X-HEADER-ONE"] isEqualToString:@"header value one with other line"], @"Value of first header");
+    GHAssertTrue([[headers valueForKey:@"X-HEADER-TWO"] isEqualToString:@"second value with its own continuation on multiple lines"], @"Value of second header");
+    GHAssertTrue([[headers valueForKey:@"X-HEADER-THREE"] isEqualToString:@"and a third header"], @"Value of third header");
 }
 
 - (void) testDefects {
@@ -161,7 +169,7 @@
     for (NSArray *h in [LBMIMEParser headersFromLines:headers_src defects:defects])
         [headers setObject:[h objectAtIndex:1] forKey:[h objectAtIndex:0]];
     GHAssertTrue([headers count] == 1, @"One valid header");
-    GHAssertTrue([[headers valueForKey:@"x-header-ok"] isEqualToString:@"fine header"], @"Value of header");
+    GHAssertTrue([[headers valueForKey:@"X-HEADER-OK"] isEqualToString:@"fine header"], @"Value of header");
     debug(@"defects: %@", defects);
     GHAssertTrue([defects count] == 4, @"Four defects");
     GHAssertTrue([[defects objectAtIndex:0] isEqualToString:@"Unexpected header continuation: \"   a bogus continuation\""], @"Text of first defect");

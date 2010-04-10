@@ -14,7 +14,7 @@
 	NSMutableArray *subparts;
 	NSString *content;
 	NSString *boundary;
-	NSMutableDictionary *properties; // should not be accessed directly
+	NSMutableArray *headers; // should not be accessed directly
 }
 
 @property (copy) NSString *content;
