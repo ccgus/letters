@@ -39,7 +39,7 @@ typedef enum {
                 // blank line indicates end of properties block ...
                 if ([[string trim] length] == 0) {
                     
-                    message.properties = [self headersFromLines:lines];
+                    message.properties = [self headersFromLines:lines defects:nil];
                     message.boundary   = [self boundaryFromContentType:message.contentType];
                     
                     //debug( @"properties: %@", message.properties );
@@ -145,7 +145,7 @@ typedef enum {
     return message;
 }
 
-+ (NSDictionary*)headersFromLines:(NSArray*)lines {
++ (NSDictionary*)headersFromLines:(NSArray*)lines defects:(NSMutableArray*)parseDefects {
     
     NSMutableDictionary *headers = [NSMutableDictionary dictionary];
     NSString *lastHeader = nil;
@@ -154,8 +154,11 @@ typedef enum {
     
     for (NSString *line in lines) {
         if ([line hasPrefix:@" "] || [line hasPrefix:@"\t"]) {
-            if (lastValue == nil)
-                continue; // TODO: handle error
+            if (lastValue == nil) {
+                if (parseDefects != nil)
+                    [parseDefects addObject:[NSString stringWithFormat: @"Unexpected header continuation: \"%@\"", line]];
+                continue;
+            }
             
             line = [line stringByTrimmingCharactersInSet: blanks];
             line = [@" " stringByAppendingString:line];
@@ -173,8 +176,11 @@ typedef enum {
         
         NSRange separatorRange = [line rangeOfString:@": "];
         
-        if (separatorRange.location == NSNotFound)
-            continue; // TODO: handle error
+        if (separatorRange.location == NSNotFound) {
+            if (parseDefects != nil)
+                [parseDefects addObject:[NSString stringWithFormat: @"Malformed header: \"%@\"", line]];
+            continue;
+        }
         
         lastHeader = [line substringToIndex:separatorRange.location];
         lastValue = [line substringFromIndex:NSMaxRange(separatorRange)];

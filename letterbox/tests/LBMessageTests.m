@@ -122,7 +122,7 @@
                             @"X-HEADER-ONE: header value one",
                             @"X-HEADER-TWO: second value",
                             nil];
-    NSDictionary *headers = [LBMIMEParser headersFromLines:headers_src];
+    NSDictionary *headers = [LBMIMEParser headersFromLines:headers_src defects:nil];
     GHAssertTrue([headers count] == 2, @"Two headers");
     GHAssertTrue([[headers valueForKey:@"x-header-one"] isEqualToString:@"header value one"], @"Value of first header");
     GHAssertTrue([[headers valueForKey:@"x-header-two"] isEqualToString:@"second value"], @"Value of second header");
@@ -137,11 +137,31 @@
                             @" on multiple lines",
                             @"X-HEADER-THREE: and a third header",
                             nil];
-    NSDictionary *headers = [LBMIMEParser headersFromLines:headers_src];
+    NSDictionary *headers = [LBMIMEParser headersFromLines:headers_src defects:nil];
     GHAssertTrue([headers count] == 3, @"Three headers");
     GHAssertTrue([[headers valueForKey:@"x-header-one"] isEqualToString:@"header value one with other line"], @"Value of first header");
     GHAssertTrue([[headers valueForKey:@"x-header-two"] isEqualToString:@"second value with its own continuation on multiple lines"], @"Value of second header");
     GHAssertTrue([[headers valueForKey:@"x-header-three"] isEqualToString:@"and a third header"], @"Value of third header");
+}
+
+- (void) testDefects {
+    NSArray *headers_src = [NSArray arrayWithObjects:
+                            @"   a bogus continuation",
+                            @"\tanother bogus continuation",
+                            @"X-HEADER-OK: fine header",
+                            @"X-HEADER-NO-SEPARATOR",
+                            @"   with other line",
+                            nil];
+    NSMutableArray *defects = [NSMutableArray array];
+    NSDictionary *headers = [LBMIMEParser headersFromLines:headers_src defects:defects];
+    GHAssertTrue([headers count] == 1, @"One valid header");
+    GHAssertTrue([[headers valueForKey:@"x-header-ok"] isEqualToString:@"fine header"], @"Value of header");
+    debug(@"defects: %@", defects);
+    GHAssertTrue([defects count] == 4, @"Four defects");
+    GHAssertTrue([[defects objectAtIndex:0] isEqualToString:@"Unexpected header continuation: \"   a bogus continuation\""], @"Text of first defect");
+    GHAssertTrue([[defects objectAtIndex:1] isEqualToString:@"Unexpected header continuation: \"\tanother bogus continuation\""], @"Text of second defect");
+    GHAssertTrue([[defects objectAtIndex:2] isEqualToString:@"Malformed header: \"X-HEADER-NO-SEPARATOR\""], @"Text of third defect");
+    GHAssertTrue([[defects objectAtIndex:3] isEqualToString:@"Unexpected header continuation: \"   with other line\""], @"Text of fourth defect");
 }
 
 @end
