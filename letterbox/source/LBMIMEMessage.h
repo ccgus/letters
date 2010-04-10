@@ -14,15 +14,10 @@
 	NSMutableArray *subparts;
 	NSString *content;
 	NSString *boundary;
-	NSMutableDictionary *properties;
+	NSMutableDictionary *properties; // should not be accessed directly
 }
 
 @property (copy) NSString *content;
-@property (copy) NSString *contentType;
-@property (copy) NSString *contentID;
-@property (copy) NSString *contentDisposition;
-@property (copy) NSString *contentTransferEncoding;
-@property (copy) NSDictionary *properties; // all the properties in key value pairs.
 @property (copy) NSString *boundary;
 
 + (LBMIMEMessage*)message;
@@ -30,6 +25,7 @@
 
 - (void)addHeaderWithName:(NSString*)name andValue:(NSString*)value;
 - (NSString*)headerValueForName:(NSString*)name;
+- (NSString*)contentType;
 - (LBMIMEMessage*)superpart;
 - (NSArray*)subparts;
 - (void)addSubpart:(LBMIMEMessage*)subpart;

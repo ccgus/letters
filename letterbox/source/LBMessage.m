@@ -133,9 +133,9 @@
         debug( @"URL: %@", messageURL );
         
         mimePart = [LBMIMEParser messageFromString:fullMessage];
-        debug( @"%@", mimePart.contentType );
+        debug( @"%@", [mimePart contentType] );
         for (LBMIMEMessage *part in mimePart.subparts) {
-            NSLog(@"sub part: %@", part.contentType);
+            NSLog(@"sub part: %@", [part contentType]);
         }
         
         NSRange r = [fullMessage rangeOfString:@"\r\n\r\n"];

@@ -15,14 +15,6 @@
 @synthesize content;
 @synthesize boundary;
 
-+ (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString *)key {
-    if ([key isEqual: @"properties"] ) {
-        return [NSSet setWithObjects: @"contentType", @"contentID", @"contentTransferEncoding", @"contentDisposition", nil];
-    }
-    
-    return [super keyPathsForValuesAffectingValueForKey:key];
-}
-
 + (LBMIMEMessage*) message {
     return [[LBMIMEMessage alloc] init];
 }
@@ -53,22 +45,16 @@
     return [properties objectForKey:name];
 }
 
+- (NSString*)contentType {
+    return [self headerValueForName:@"content-type"];
+}
+
 - (LBMIMEMessage*)superpart {
     return superpart;
 }
 
 - (NSArray*)subparts {
     return [[subparts copy] autorelease];
-}
-
-- (NSDictionary*)properties {
-    return [[properties copy] autorelease];
-}
-
-- (void)setProperties:(NSDictionary *)newProperties {
-    NSMutableDictionary *tmp = [newProperties mutableCopy];
-    [properties release];
-    properties = tmp;
 }
 
 - (void)addSubpart:(LBMIMEMessage *)subpart {
@@ -89,62 +75,9 @@
     [subparts removeObject: subpart];
 }
 
-- (NSString*)contentType {
-    return [properties objectForKey:@"content-type"];
-}
-
-- (void)setContentType:(NSString*)type {
-    
-    if (type) {
-        [properties setObject:type forKey:@"content-type"];
-    }
-    else {
-        [properties removeObjectForKey:@"content-type"];
-    }
-}
-
-- (NSString*)contentID {
-    return [properties objectForKey: @"content-id"];
-}
-
-- (void)setContentID:(NSString*)type {
-    
-    if (type) {
-        [properties setObject:type forKey:@"content-id"];
-    }
-    else {
-        [properties removeObjectForKey:@"content-id"];
-    }
-}
-
-- (NSString*)contentDisposition {
-    return [properties objectForKey: @"content-disposition"];
-}
-
-- (void)setContentDisposition:(NSString*)type {
-    if (type) {
-        [properties setObject:type forKey:@"content-disposition"];
-    }
-    else {
-        [properties removeObjectForKey:@"content-disposition"];
-    }
-}
-
-- (NSString*)contentTransferEncoding {
-    return [properties objectForKey:@"content-transfer-encoding"];
-}
-
-- (void)setContentTransferEncoding:(NSString*)type {
-    if (type) {
-        [properties setObject:type forKey:@"content-transfer-encoding"];
-    }
-    else {
-        [properties removeObjectForKey:@"content-transfer-encoding"];
-    }
-}
-
 - (NSData*)decodedData {
-    if ([self.contentTransferEncoding isEqualToString:@"base64"]) {
+    NSString *cte = [self headerValueForName:@"content-transfer-encoding"];
+    if ([cte isEqualToString:@"base64"]) {
         NSString* base64_data = [content stringByReplacingOccurrencesOfString:@"\n" withString:@""];
         return LBMIMEDataByDecodingBase64String(base64_data);
     }
@@ -154,13 +87,13 @@
 }
 
 - (BOOL)isMultipart {
-    return [[self.contentType lowercaseString] hasPrefix:@"multipart/"];
+    return [[[self contentType] lowercaseString] hasPrefix:@"multipart/"];
 }
 
 - (NSArray*) types {
     NSMutableArray *types = [NSMutableArray array];
     for (LBMIMEMessage *part in self.subparts) {
-        if (part.contentType) {
+        if ([part contentType]) {
             [types addObject: part.contentType];
         }
     }
@@ -193,13 +126,13 @@
 
 - (LBMIMEMessage*)partForType:(NSString*)mimeType {
     
-    if ([self.contentType hasPrefix:mimeType]) {
+    if ([[self contentType] hasPrefix:mimeType]) {
         return self;
     }
     
     if ([self isMultipart]) {
         for (LBMIMEMessage *part in self.subparts) {
-            if ([part.contentType hasPrefix:mimeType]) {
+            if ([[part contentType] hasPrefix:mimeType]) {
                 return part;
             }
         }

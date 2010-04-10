@@ -41,11 +41,11 @@ typedef enum {
                     
                     for (NSArray *h in [self headersFromLines:lines defects:nil])
                         [message addHeaderWithName:[h objectAtIndex:0] andValue:[h objectAtIndex:1]];
-                    message.boundary   = [self boundaryFromContentType:message.contentType];
+                    message.boundary   = [self boundaryFromContentType:[message contentType]];
                     
                     [lines removeAllObjects];
                     
-                    if ([[message.contentType lowercaseString] hasPrefix:@"multipart/"]) {
+                    if ([[[message contentType] lowercaseString] hasPrefix:@"multipart/"]) {
                         if (message.boundary != nil) {
                             state = LBMIMEParserStateReadingContent;
                         }
@@ -73,7 +73,7 @@ typedef enum {
                 break;
                 
             case LBMIMEParserStateDetermineBoundry:
-                
+                // TODO: do we really care about messages that don't advertise their boundary properly? we could just mark them as defective.
                 if ([string hasPrefix:@"--"]) {
                     message.boundary = [string substringFromIndex:2];
                     state = LBMIMEParserStateReadingContent;
@@ -133,8 +133,8 @@ typedef enum {
     }
     
     NSString *newContent = [contentLines componentsJoinedByString:@"\n"];
-    NSString *charSet = [self valueForAttribute:@"charset" inPropertyString:message.contentType];
-    NSString *transferEncoding = message.contentTransferEncoding;
+    NSString *charSet = [self valueForAttribute:@"charset" inPropertyString:[message headerValueForName:@"content-type"]];
+    NSString *transferEncoding = [message headerValueForName:@"content-transfer-encoding"];
     
     NSString *decodedNewContent = LBMIMEStringByDecodingStringFromEncodingWithCharSet( newContent, transferEncoding, charSet );
     
