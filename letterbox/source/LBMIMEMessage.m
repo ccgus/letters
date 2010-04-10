@@ -45,6 +45,14 @@
     [super dealloc];
 }
 
+- (void)addHeaderWithName:(NSString*)name andValue:(NSString*)value {
+    [properties setObject:value forKey:name];
+}
+
+- (NSString*)headerValueForName:(NSString*)name {
+    return [properties objectForKey:name];
+}
+
 - (LBMIMEMessage*)superpart {
     return superpart;
 }

@@ -39,11 +39,10 @@ typedef enum {
                 // blank line indicates end of properties block ...
                 if ([[string trim] length] == 0) {
                     
-                    message.properties = [self headersFromLines:lines defects:nil];
+                    for (NSArray *h in [self headersFromLines:lines defects:nil])
+                        [message addHeaderWithName:[h objectAtIndex:0] andValue:[h objectAtIndex:1]];
                     message.boundary   = [self boundaryFromContentType:message.contentType];
                     
-                    //debug( @"properties: %@", message.properties );
-                    //debug( @"boundary: %@", message.boundary );
                     [lines removeAllObjects];
                     
                     if ([[message.contentType lowercaseString] hasPrefix:@"multipart/"]) {
@@ -145,9 +144,9 @@ typedef enum {
     return message;
 }
 
-+ (NSDictionary*)headersFromLines:(NSArray*)lines defects:(NSMutableArray*)parseDefects {
++ (NSArray*)headersFromLines:(NSArray*)lines defects:(NSMutableArray*)parseDefects {
     
-    NSMutableDictionary *headers = [NSMutableDictionary dictionary];
+    NSMutableArray *headers = [NSMutableArray array];
     NSString *lastHeader = nil;
     NSString *lastValue = nil;
     NSCharacterSet *blanks = [NSCharacterSet whitespaceAndNewlineCharacterSet];
@@ -168,7 +167,7 @@ typedef enum {
         
         if (lastHeader != nil) {
             // TODO: preserve case of header keys, but allow for case-insensitive retrieval
-            [headers setObject:lastValue forKey:[lastHeader lowercaseString]];
+            [headers addObject:[NSArray arrayWithObjects:[lastHeader lowercaseString], lastValue, nil]];
             lastHeader = nil;
             lastValue = nil;
         }
@@ -187,7 +186,7 @@ typedef enum {
     
     if (lastHeader != nil) {
         // TODO: preserve case of header keys, but allow for case-insensitive retrieval
-        [headers setObject:lastValue forKey:[lastHeader lowercaseString]];
+        [headers addObject:[NSArray arrayWithObjects:[lastHeader lowercaseString], lastValue, nil]];
     }
     
     return headers;

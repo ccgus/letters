@@ -122,7 +122,9 @@
                             @"X-HEADER-ONE: header value one",
                             @"X-HEADER-TWO: second value",
                             nil];
-    NSDictionary *headers = [LBMIMEParser headersFromLines:headers_src defects:nil];
+    NSMutableDictionary *headers = [NSMutableDictionary dictionary];
+    for (NSArray *h in [LBMIMEParser headersFromLines:headers_src defects:nil])
+        [headers setObject:[h objectAtIndex:1] forKey:[h objectAtIndex:0]];
     GHAssertTrue([headers count] == 2, @"Two headers");
     GHAssertTrue([[headers valueForKey:@"x-header-one"] isEqualToString:@"header value one"], @"Value of first header");
     GHAssertTrue([[headers valueForKey:@"x-header-two"] isEqualToString:@"second value"], @"Value of second header");
@@ -137,7 +139,9 @@
                             @" on multiple lines",
                             @"X-HEADER-THREE: and a third header",
                             nil];
-    NSDictionary *headers = [LBMIMEParser headersFromLines:headers_src defects:nil];
+    NSMutableDictionary *headers = [NSMutableDictionary dictionary];
+    for (NSArray *h in [LBMIMEParser headersFromLines:headers_src defects:nil])
+        [headers setObject:[h objectAtIndex:1] forKey:[h objectAtIndex:0]];
     GHAssertTrue([headers count] == 3, @"Three headers");
     GHAssertTrue([[headers valueForKey:@"x-header-one"] isEqualToString:@"header value one with other line"], @"Value of first header");
     GHAssertTrue([[headers valueForKey:@"x-header-two"] isEqualToString:@"second value with its own continuation on multiple lines"], @"Value of second header");
@@ -153,7 +157,9 @@
                             @"   with other line",
                             nil];
     NSMutableArray *defects = [NSMutableArray array];
-    NSDictionary *headers = [LBMIMEParser headersFromLines:headers_src defects:defects];
+    NSMutableDictionary *headers = [NSMutableDictionary dictionary];
+    for (NSArray *h in [LBMIMEParser headersFromLines:headers_src defects:defects])
+        [headers setObject:[h objectAtIndex:1] forKey:[h objectAtIndex:0]];
     GHAssertTrue([headers count] == 1, @"One valid header");
     GHAssertTrue([[headers valueForKey:@"x-header-ok"] isEqualToString:@"fine header"], @"Value of header");
     debug(@"defects: %@", defects);

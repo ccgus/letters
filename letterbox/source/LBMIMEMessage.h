@@ -28,6 +28,8 @@
 + (LBMIMEMessage*)message;
 - (id)init;
 
+- (void)addHeaderWithName:(NSString*)name andValue:(NSString*)value;
+- (NSString*)headerValueForName:(NSString*)name;
 - (LBMIMEMessage*)superpart;
 - (NSArray*)subparts;
 - (void)addSubpart:(LBMIMEMessage*)subpart;
