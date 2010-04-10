@@ -168,8 +168,7 @@ typedef enum {
         
         if (lastHeader != nil) {
             // TODO: preserve case of header keys, but allow for case-insensitive retrieval
-            [headers setObject:LBMIMEStringByDecodingEncodedWord(lastValue)
-                        forKey:[lastHeader lowercaseString]];
+            [headers setObject:lastValue forKey:[lastHeader lowercaseString]];
             lastHeader = nil;
             lastValue = nil;
         }
@@ -188,8 +187,7 @@ typedef enum {
     
     if (lastHeader != nil) {
         // TODO: preserve case of header keys, but allow for case-insensitive retrieval
-        [headers setObject:LBMIMEStringByDecodingEncodedWord(lastValue)
-                    forKey:[lastHeader lowercaseString]];
+        [headers setObject:lastValue forKey:[lastHeader lowercaseString]];
     }
     
     return headers;
@@ -298,7 +296,6 @@ NSString *LBMIMEStringByDecodingStringFromEncodingWithCharSet(NSString *inputStr
 //
 NSString *LBMIMEStringByDecodingEncodedWord( NSString *inputString )
 {
-    #warning Can we remove this and just use the decodedName in LBAddress?
     NSString *encodedWord;
     NSString *encodedSubWord;
     NSRange encodedWordStart = [inputString rangeOfString:@"=?"];
