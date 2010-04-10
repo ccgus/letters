@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3AD3C2AD1168A4860063FF8C /* LBMIMEMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 3AD3C2AB1168A4860063FF8C /* LBMIMEMessage.h */; };
+		3AD3C2AD1168A4860063FF8C /* LBMIMEMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 3AD3C2AB1168A4860063FF8C /* LBMIMEMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3AD3C2AE1168A4860063FF8C /* LBMIMEMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD3C2AC1168A4860063FF8C /* LBMIMEMessage.m */; };
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 		964BA5381115A9AC001B8F82 /* GHUnit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 968D0E5C111525550044BE1D /* GHUnit.framework */; };
