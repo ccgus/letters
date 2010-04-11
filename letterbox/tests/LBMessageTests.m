@@ -121,6 +121,13 @@
     GHAssertTrue([[message headerValueForName:@"My-HeAdEr"] isEqualToString:@"hello"], @"retrieve with other case");
 }
 
+- (void) testHeaderDefect {
+    NSString *source = @"Header-With-Defect\n\n\n";
+    LBMIMEMessage *message = [[LBMIMEParser messageFromString:source] autorelease];
+    GHAssertTrue([message.defects count] == 1, @"one defect");
+    GHAssertTrue([[message.defects objectAtIndex:0] isEqualToString:@"Malformed header: \"Header-With-Defect\""], @"text of defect");
+}
+
 @end
 
 @implementation LBParserHeaderTests

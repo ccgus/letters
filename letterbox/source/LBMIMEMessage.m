@@ -14,6 +14,7 @@
 
 @synthesize content;
 @synthesize boundary;
+@synthesize defects;
 
 + (LBMIMEMessage*) message {
     return [[LBMIMEMessage alloc] init];
@@ -24,6 +25,7 @@
     if (self != nil) {
         headers  = [[NSMutableArray alloc] init];
         subparts    = [[NSMutableArray alloc] init];
+        defects = [[NSMutableArray alloc] init];
     }
     boundary = nil;
     return self;
@@ -32,6 +34,7 @@
 - (void)dealloc {
     [subparts release];
     [headers release];
+    [defects release];
     [content release];
     [boundary release];
     [super dealloc];

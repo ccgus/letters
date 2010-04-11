@@ -39,7 +39,7 @@ typedef enum {
                 // blank line indicates end of properties block ...
                 if ([[string trim] length] == 0) {
                     
-                    for (NSArray *h in [self headersFromLines:lines defects:nil])
+                    for (NSArray *h in [self headersFromLines:lines defects:message.defects])
                         [message addHeaderWithName:[h objectAtIndex:0] andValue:[h objectAtIndex:1]];
                     message.boundary   = [self boundaryFromContentType:[message contentType]];
                     

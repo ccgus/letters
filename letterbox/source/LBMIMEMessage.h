@@ -15,10 +15,12 @@
 	NSString *content;
 	NSString *boundary;
 	NSMutableArray *headers; // should not be accessed directly
+	NSMutableArray *defects;
 }
 
 @property (copy) NSString *content;
 @property (copy) NSString *boundary;
+@property (readonly) NSMutableArray *defects;
 
 + (LBMIMEMessage*)message;
 - (id)init;
