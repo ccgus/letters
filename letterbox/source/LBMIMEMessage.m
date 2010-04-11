@@ -23,9 +23,9 @@
 - (id)init {
     self = [super init];
     if (self != nil) {
-        headers  = [[NSMutableArray alloc] init];
-        subparts    = [[NSMutableArray alloc] init];
-        defects = [[NSMutableArray alloc] init];
+        headers = [[NSMutableArray array] retain];
+        subparts = [[NSMutableArray array] retain];
+        defects = [[NSMutableArray array] retain];
     }
     boundary = nil;
     return self;
@@ -61,7 +61,7 @@
 }
 
 - (NSArray*)subparts {
-    return [[subparts copy] autorelease];
+    return subparts;
 }
 
 - (void)addSubpart:(LBMIMEMessage *)subpart {
