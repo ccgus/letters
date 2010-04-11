@@ -9,8 +9,6 @@
 #import "LBMIMEParser.h"
 #import "LetterBoxUtilities.h"
 #import "LBNSStringAdditions.h"
-#include <openssl/bio.h>
-#include <openssl/evp.h>
 
 typedef enum {
     LBMIMEParserStateReadingProperties,
@@ -319,28 +317,4 @@ NSString *LBMIMEStringByDecodingEncodedWord( NSString *inputString )
         }
     }
     return decodedName;
-}
-
-NSData *LBMIMEDataByDecodingBase64String( NSString *encodedString )
-{
-    if ( ! [encodedString hasSuffix:@"\n"] ){
-        encodedString = [encodedString stringByAppendingString:@"\n"];
-    }
-    NSData *encodedData = [encodedString dataUsingEncoding:NSASCIIStringEncoding];
-    NSMutableData *decodedData = [NSMutableData data];
-    
-    char buf[512];
-    uint bufLength;
-    
-    BIO *b64coder = BIO_new(BIO_f_base64());
-    BIO *b64buffer = BIO_new_mem_buf((void *)[encodedData bytes], [encodedData length]);
-    
-    b64buffer = BIO_push(b64coder, b64buffer);
-    
-    while ( (bufLength = BIO_read(b64buffer, buf, 512)) > 0 ) {
-        [decodedData appendBytes:buf length:bufLength];
-    }
-    BIO_free_all(b64buffer);
-    
-    return [[[NSData alloc] initWithData:decodedData] autorelease];
 }

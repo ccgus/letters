@@ -30,4 +30,3 @@
 
 NSString *LBMIMEStringByDecodingPrintedQuoteableWithCharacterSet( NSString *inputString, NSString *characterSet );
 NSString *LBMIMEStringByDecodingEncodedWord( NSString *inputString );
-NSData *LBMIMEDataByDecodingBase64String( NSString *encodedString );

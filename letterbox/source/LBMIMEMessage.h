@@ -74,3 +74,4 @@
 @end
 
 NSData* LBMIMEDataFromQuotedPrintable(NSString* value);
+NSData* LBMIMEDataFromBase64(NSString* encodedString);

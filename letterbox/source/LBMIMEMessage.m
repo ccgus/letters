@@ -7,7 +7,8 @@
 //
 
 #import "LBMIMEMessage.h"
-#import "LBMIMEParser.h"
+#include <openssl/bio.h>
+#include <openssl/evp.h>
 
 
 @implementation LBMIMEMessage
@@ -86,7 +87,7 @@
     NSString *cte = [[self headerValueForName:@"content-transfer-encoding"] lowercaseString];
     if ([cte isEqualToString:@"base64"]) {
         NSString* base64_data = [content stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-        return LBMIMEDataByDecodingBase64String(base64_data);
+        return LBMIMEDataFromBase64(base64_data);
     }
     else if ([cte isEqualToString:@"quoted-printable"]) {
         return LBMIMEDataFromQuotedPrintable(content);
@@ -165,4 +166,28 @@ NSData* LBMIMEDataFromQuotedPrintable(NSString* value) {
     value = [value stringByReplacingOccurrencesOfString:@"=" withString:@"%"];
     value = [value stringByReplacingPercentEscapesUsingEncoding:enc];
     return [value dataUsingEncoding:enc];
+}
+
+NSData *LBMIMEDataFromBase64(NSString *encodedString)
+{
+    if ( ! [encodedString hasSuffix:@"\n"] ){
+        encodedString = [encodedString stringByAppendingString:@"\n"];
+    }
+    NSData *encodedData = [encodedString dataUsingEncoding:NSASCIIStringEncoding];
+    NSMutableData *decodedData = [NSMutableData data];
+    
+    char buf[512];
+    uint bufLength;
+    
+    BIO *b64coder = BIO_new(BIO_f_base64());
+    BIO *b64buffer = BIO_new_mem_buf((void *)[encodedData bytes], [encodedData length]);
+    
+    b64buffer = BIO_push(b64coder, b64buffer);
+    
+    while ( (bufLength = BIO_read(b64buffer, buf, 512)) > 0 ) {
+        [decodedData appendBytes:buf length:bufLength];
+    }
+    BIO_free_all(b64buffer);
+    
+    return [[[NSData alloc] initWithData:decodedData] autorelease];
 }
