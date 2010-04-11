@@ -30,13 +30,11 @@
 	LBMIMEMessage *superpart; // non-retained
 	NSMutableArray *subparts;
 	NSString *content;
-	NSString *boundary;
 	NSMutableArray *headers; // should not be accessed directly
 	NSMutableArray *defects;
 }
 
 @property (copy) NSString *content;
-@property (copy) NSString *boundary;
 @property (readonly) NSMutableArray *defects;
 
 // Create a new blank message
@@ -60,8 +58,12 @@
 
 // If the payload is base64-encoded, returns decoded data; otherwise returns nil.
 - (NSData*)contentTransferDecoded;
+
 // Returns YES if the message content main type is "multipart".
 - (BOOL)isMultipart;
+
+// Returns boundary that separates subparts
+- (NSString*)multipartBoundary;
 
 - (NSArray*)types;
 - (NSString *)availableTypeFromArray:(NSArray *)types;
@@ -70,6 +72,9 @@
 
 // the MIME spec says the alternative parts are ordered from least faithful to the most faithful. we can only presume the sender has done that correctly. consider this a guess rather than being definitive.
 - (NSString*)mostFailthfulAlternativeType;
+
+// Get a parameter from the "Content-Type" header.
+- (NSString*)contentTypeAttribute:(NSString*)attribName;
 
 @end
 

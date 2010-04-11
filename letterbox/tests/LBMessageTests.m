@@ -30,7 +30,7 @@
     LBMIMEMessage *mm = [[LBMIMEParser messageFromString:message] autorelease];
     
     GHAssertNotNil(mm, @"Creation of a LBMIMEMessage");
-    GHAssertEqualStrings([mm boundary], @"===============0703719983==", @"Checking the boundry");
+    GHAssertEqualStrings([mm multipartBoundary], @"===============0703719983==", @"Checking the boundry");
     GHAssertTrue([[mm contentType] hasPrefix:@"multipart/mixed"], @"Checking the contentType");
     GHAssertTrue([[mm subparts] count] == 2, @"the count of subparts");
     GHAssertTrue([mm isMultipart], @"checking that yes indeed it isMultipartAlternative");

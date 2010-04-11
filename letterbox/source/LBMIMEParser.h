@@ -22,8 +22,6 @@
 // header value. If |parsingDefects| is not nil, any problems encountered are
 // appended to it as strings.
 + (NSArray*)headersFromLines:(NSArray*)lines defects:(NSMutableArray*)parsingDefects;
-+ (NSString*)boundaryFromContentType:(NSString*)contentTypeString;
-+ (NSString*)valueForAttribute:(NSString*)attribName inPropertyString:(NSString*)property;
 
 @end
 

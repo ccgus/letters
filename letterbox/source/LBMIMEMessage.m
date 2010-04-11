@@ -7,6 +7,7 @@
 //
 
 #import "LBMIMEMessage.h"
+#import "LBNSStringAdditions.h"
 #include <openssl/bio.h>
 #include <openssl/evp.h>
 
@@ -14,7 +15,6 @@
 @implementation LBMIMEMessage
 
 @synthesize content;
-@synthesize boundary;
 @synthesize defects;
 
 + (LBMIMEMessage*) message {
@@ -28,7 +28,6 @@
         subparts = [[NSMutableArray array] retain];
         defects = [[NSMutableArray array] retain];
     }
-    boundary = nil;
     return self;
 }
 
@@ -37,7 +36,6 @@
     [headers release];
     [defects release];
     [content release];
-    [boundary release];
     [super dealloc];
 }
 
@@ -101,6 +99,10 @@
     return [[[self contentType] lowercaseString] hasPrefix:@"multipart/"];
 }
 
+- (NSString*)multipartBoundary {
+    return [self contentTypeAttribute:@"boundary"];
+}
+
 - (NSArray*) types {
     NSMutableArray *types = [NSMutableArray array];
     for (LBMIMEMessage *part in self.subparts) {
@@ -155,6 +157,27 @@
 // the MIME spec says the alternative parts are ordered from least faithful to the most faithful. we can only presume the sender has done that correctly. consider this a guess rather than being definitive.
 - (NSString*)mostFailthfulAlternativeType {
     return [[self.subparts lastObject] contentType];
+}
+
+- (NSString*)contentTypeAttribute:(NSString*)attribName {
+    // TODO: this function needs a battery of unit tests
+    NSString *attribString = nil;
+    NSArray *components = [[self contentType] componentsSeparatedByString:@";"];
+    NSString *attribAssignment = [NSString stringWithFormat:@"%@=", attribName];
+    
+    for (NSString *component in components) {
+        if ([[[component lowercaseString] trim] hasPrefix:attribAssignment]) {
+            attribString = [component substringFromIndex:NSMaxRange([component rangeOfString:attribAssignment])];
+            
+            if ([attribString hasPrefix:@"\""] && [attribString hasSuffix:@"\""]) {
+                attribString = [attribString substringWithRange:NSMakeRange(1, [attribString length] - 2)]; // remove the "s on either end
+            }
+            
+            return [attribString trim];
+        }
+    }
+    
+    return nil;
 }
 
 @end

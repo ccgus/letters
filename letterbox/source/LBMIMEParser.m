@@ -7,7 +7,6 @@
 //
 
 #import "LBMIMEParser.h"
-#import "LetterBoxUtilities.h"
 #import "LBNSStringAdditions.h"
 
 typedef enum {
@@ -25,9 +24,8 @@ typedef enum {
     LBMIMEMessage *message = [LBMIMEMessage message];
     
     NSMutableArray *lines = [NSMutableArray array];
-    
     NSMutableArray *contentLines = [NSMutableArray array];
-
+    __block NSString *boundary = nil;
     __block LBMIMEParserState state = LBMIMEParserStateReadingProperties;
     
     [sourceText enumerateLinesUsingBlock:^(NSString *string, BOOL *stop) {
@@ -39,12 +37,12 @@ typedef enum {
                     
                     for (NSArray *h in [self headersFromLines:lines defects:message.defects])
                         [message addHeaderWithName:[h objectAtIndex:0] andValue:[h objectAtIndex:1]];
-                    message.boundary   = [self boundaryFromContentType:[message contentType]];
+                    boundary = [message multipartBoundary];
                     
                     [lines removeAllObjects];
                     
                     if ([[[message contentType] lowercaseString] hasPrefix:@"multipart/"]) {
-                        if (message.boundary != nil) {
+                        if (boundary != nil) {
                             state = LBMIMEParserStateReadingContent;
                         }
                         else {
@@ -73,14 +71,14 @@ typedef enum {
             case LBMIMEParserStateDetermineBoundry:
                 // TODO: do we really care about messages that don't advertise their boundary properly? we could just mark them as defective.
                 if ([string hasPrefix:@"--"]) {
-                    message.boundary = [string substringFromIndex:2];
+                    boundary = [string substringFromIndex:2];
                     state = LBMIMEParserStateReadingContent;
                 }
                 
                 break;
                 
             case LBMIMEParserStateReadingContent:
-                if ([string hasPrefix:[NSString stringWithFormat:@"--%@", message.boundary]]) {
+                if ([string hasPrefix:[NSString stringWithFormat:@"--%@", boundary]]) {
                     [contentLines addObjectsFromArray:lines];
                     [lines removeAllObjects];
                     state = LBMIMEParserStateReadingParts;
@@ -92,7 +90,7 @@ typedef enum {
                 
             case LBMIMEParserStateReadingParts:
                 
-                if ([string hasPrefix: [NSString stringWithFormat:@"--%@", message.boundary]]) {
+                if ([string hasPrefix: [NSString stringWithFormat:@"--%@", boundary]]) {
                     [lines addObject:@""];
                     NSString *partSourceText = [lines componentsJoinedByString: @"\n"];
                     
@@ -103,7 +101,7 @@ typedef enum {
                     
                     [lines removeAllObjects];
                     
-                    if ([string isEqual:[NSString stringWithFormat: @"--%@--", message.boundary]]) {
+                    if ([string isEqual:[NSString stringWithFormat: @"--%@--", boundary]]) {
                         state = LBMIMEParserStateFinishedReadingParts;
                     }
                     else {
@@ -179,32 +177,6 @@ typedef enum {
     }
     
     return headers;
-}
-
-+ (NSString*)valueForAttribute:(NSString*)attribName inPropertyString:(NSString*) property {
-    
-    NSString *attribString = nil;
-    NSArray *components = [property componentsSeparatedByString:@";"];
-    NSString *attribAssignment = [NSString stringWithFormat:@"%@=", attribName];
-    
-    for (NSString *component in components) {
-        if ([[[component lowercaseString] trim] hasPrefix:attribAssignment]) {
-            attribString = [component substringFromIndex:NSMaxRange([component rangeOfString:attribAssignment])];
-            
-            if ([attribString hasPrefix:@"\""] && [attribString hasSuffix:@"\""]) {
-                attribString = [attribString substringWithRange:NSMakeRange(1, [attribString length] - 2)]; // remove the "s on either end
-            }
-            
-            return attribString;
-        }
-    }
-    
-    return nil;
-}
-
-+ (NSString*)boundaryFromContentType:(NSString*)contentTypeString {
-    NSString *rough_value = [self valueForAttribute:@"boundary" inPropertyString:contentTypeString];
-    return [rough_value stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" "]];
 }
 
 @end
@@ -296,7 +268,7 @@ NSString *LBMIMEStringByDecodingEncodedWord( NSString *inputString )
             NSString *decodedWord;
             
             // FIXME : jasonrm - Something about this doesn't seem right...
-            NSData *decodedData = LBMIMEDataByDecodingBase64String( encodedWord );
+            NSData *decodedData = LBMIMEDataFromBase64( encodedWord );
             
             if ( [characterSet isCaseInsensitiveLike:@"ISO-8859-1"] ) {
                 decodedWord = [[NSString alloc] initWithData:decodedData encoding:NSISOLatin1StringEncoding];
