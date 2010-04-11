@@ -144,7 +144,7 @@ typedef enum {
     return message;
 }
 
-+ (NSArray*)headersFromLines:(NSArray*)lines defects:(NSMutableArray*)parseDefects {
++ (NSArray*)headersFromLines:(NSArray*)lines defects:(NSMutableArray*)parsingDefects {
     
     NSMutableArray *headers = [NSMutableArray array];
     NSString *lastHeader = nil;
@@ -154,8 +154,8 @@ typedef enum {
     for (NSString *line in lines) {
         if ([line hasPrefix:@" "] || [line hasPrefix:@"\t"]) {
             if (lastValue == nil) {
-                if (parseDefects != nil)
-                    [parseDefects addObject:[NSString stringWithFormat: @"Unexpected header continuation: \"%@\"", line]];
+                if (parsingDefects != nil)
+                    [parsingDefects addObject:[NSString stringWithFormat: @"Unexpected header continuation: \"%@\"", line]];
                 continue;
             }
             
@@ -174,8 +174,8 @@ typedef enum {
         NSRange separatorRange = [line rangeOfString:@": "];
         
         if (separatorRange.location == NSNotFound) {
-            if (parseDefects != nil)
-                [parseDefects addObject:[NSString stringWithFormat: @"Malformed header: \"%@\"", line]];
+            if (parsingDefects != nil)
+                [parsingDefects addObject:[NSString stringWithFormat: @"Malformed header: \"%@\"", line]];
             continue;
         }
         
