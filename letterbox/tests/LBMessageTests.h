@@ -17,3 +17,6 @@
 @interface LBParserHeaderTests: GHTestCase {
 }
 @end
+
+@interface LBMessagePayloadTests: GHTestCase
+@end

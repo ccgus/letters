@@ -132,14 +132,7 @@ typedef enum {
         NSLog(@"MIME message messed up somehow - we didn't hit the terminator");
     }
     
-    NSString *newContent = [contentLines componentsJoinedByString:@"\n"];
-    NSString *charSet = [self valueForAttribute:@"charset" inPropertyString:[message headerValueForName:@"content-type"]];
-    NSString *transferEncoding = [message headerValueForName:@"content-transfer-encoding"];
-    
-    NSString *decodedNewContent = LBMIMEStringByDecodingStringFromEncodingWithCharSet( newContent, transferEncoding, charSet );
-    
-    [message.content release];
-    message.content = [decodedNewContent copy];
+    message.content = [contentLines componentsJoinedByString:@"\n"];
     
     return message;
 }
@@ -248,45 +241,6 @@ NSString *LBMIMEStringByDecodingPrintedQuoteableWithCharacterSet( NSString *inpu
 //    }
     return nil;
 }
-
-NSString *LBMIMEStringByDecodingStringFromEncodingWithCharSet(NSString *inputString, NSString *transferEncoding, NSString *characterSet)
-{
-    NSString *decodedString = [NSString stringWithString:inputString];
-    
-    if ([transferEncoding isEqual: @"quoted-printable"]) {
-        decodedString = [decodedString stringByReplacingOccurrencesOfString:@"=\n" withString:@""];
-        decodedString = [decodedString stringByReplacingOccurrencesOfString:@"=" withString:@"%"];
-        
-        if ( [characterSet isCaseInsensitiveLike:@"ISO-8859-1"] ) {
-            decodedString = [decodedString stringByReplacingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
-        }
-        else if ( [characterSet isCaseInsensitiveLike:@"UTF-8"] ) {
-            decodedString = [decodedString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        }
-        else if ( [characterSet isCaseInsensitiveLike:@"ISO-8859-2"] ) {
-            decodedString = [decodedString stringByReplacingPercentEscapesUsingEncoding:NSISOLatin2StringEncoding];
-        }
-        else if ( [characterSet isCaseInsensitiveLike:@"ISO-8859-15"] ) {
-            // FIXME : jasonrm - Is this even allowed? From lists of encodings 15 looks to match ISO-8859-15 but I don't like hardcoding a number here.
-            decodedString = [decodedString stringByReplacingPercentEscapesUsingEncoding:15];
-        }
-        else if ( [characterSet isCaseInsensitiveLike:@"US-ASCII"] ){
-            decodedString = [decodedString stringByReplacingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
-        }
-        else {
-            // FIXME : jasonrm - Only the most common (for someone in the US) encodings are supported, everything else is treated like ISO-8859-1
-            decodedString = [decodedString stringByReplacingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
-        }
-    }
-    
-    if (decodedString == nil) {
-        NSLog(@"error decoding!");
-        decodedString = inputString;
-    }
-    
-    return decodedString;
-}
-
 
 // RFC 2047 "Encoded Word" Decoder
 // http://tools.ietf.org/html/rfc2047

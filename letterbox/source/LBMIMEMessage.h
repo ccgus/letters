@@ -59,7 +59,7 @@
 - (void)removeSubpart:(LBMIMEMessage*)subpart;
 
 // If the payload is base64-encoded, returns decoded data; otherwise returns nil.
-- (NSData*)decodedData;
+- (NSData*)contentTransferDecoded;
 // Returns YES if the message content main type is "multipart".
 - (BOOL)isMultipart;
 
@@ -72,3 +72,5 @@
 - (NSString*)mostFailthfulAlternativeType;
 
 @end
+
+NSData* LBMIMEDataFromQuotedPrintable(NSString* value);

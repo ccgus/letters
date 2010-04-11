@@ -82,11 +82,14 @@
     [subparts removeObject: subpart];
 }
 
-- (NSData*)decodedData {
-    NSString *cte = [self headerValueForName:@"content-transfer-encoding"];
+- (NSData*)contentTransferDecoded {
+    NSString *cte = [[self headerValueForName:@"content-transfer-encoding"] lowercaseString];
     if ([cte isEqualToString:@"base64"]) {
         NSString* base64_data = [content stringByReplacingOccurrencesOfString:@"\n" withString:@""];
         return LBMIMEDataByDecodingBase64String(base64_data);
+    }
+    else if ([cte isEqualToString:@"quoted-printable"]) {
+        return LBMIMEDataFromQuotedPrintable(content);
     }
     else {
         return nil;
@@ -154,3 +157,12 @@
 }
 
 @end
+
+NSData* LBMIMEDataFromQuotedPrintable(NSString* value) {
+    // TODO: this function needs a battery of unit tests
+    NSStringEncoding enc = NSISOLatin1StringEncoding;
+    value = [value stringByReplacingOccurrencesOfString:@"=\n" withString:@""];
+    value = [value stringByReplacingOccurrencesOfString:@"=" withString:@"%"];
+    value = [value stringByReplacingPercentEscapesUsingEncoding:enc];
+    return [value dataUsingEncoding:enc];
+}

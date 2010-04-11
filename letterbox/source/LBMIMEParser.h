@@ -29,6 +29,5 @@
 
 
 NSString *LBMIMEStringByDecodingPrintedQuoteableWithCharacterSet( NSString *inputString, NSString *characterSet );
-NSString *LBMIMEStringByDecodingStringFromEncodingWithCharSet( NSString *inputString, NSString *transferEncoding, NSString *charSet );
 NSString *LBMIMEStringByDecodingEncodedWord( NSString *inputString );
 NSData *LBMIMEDataByDecodingBase64String( NSString *encodedString );
