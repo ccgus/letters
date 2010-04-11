@@ -38,10 +38,7 @@
     GHAssertTrue([[[[mm subparts] objectAtIndex:0] contentType] hasPrefix:@"multipart/alternative"], @"the type of the first subpart");
     GHAssertTrue([[[[mm subparts] objectAtIndex:1] contentType] hasPrefix:@"text/plain"], @"the type of the second subpart");
     
-    LBMIMEMessage *nosuchpart = [mm partForType: @"image/jpeg"];
-    GHAssertNil(nosuchpart, @"no such part");
-    
-    LBMIMEMessage *altpart = [mm partForType: @"multipart/alternative"];
+    LBMIMEMessage *altpart = [[mm subparts] objectAtIndex:0];
     GHAssertNotNil(altpart, @"the alternative part");
     GHAssertTrue([[altpart subparts] count] == 2, @"two sub-parts in altpart");
     
@@ -57,19 +54,10 @@
     GHAssertTrue([html_content rangeOfString:@"<blockquote type=\"cite\">Also, let's learn some IMAP."].location != NSNotFound, @"subpart_html contains the right substring");
     GHAssertTrue([html_content hasSuffix:@"<br>Boone</div></body></html>"], @"subpart_html ends with the right text");
     
-    LBMIMEMessage *textpart = [mm availablePartForTypeFromArray:[NSArray arrayWithObjects: @"text/plain", @"text/html", nil]];
-    
+    LBMIMEMessage *textpart = [[mm subparts] objectAtIndex:1];
     GHAssertNotNil(textpart, @"the part");
     
-    
     GHAssertEqualStrings([textpart content], @"Hello sir, this is the content, and honestly it isn't much.  Sorry.\n\nLinebreak!", @"Checking the content");
-    
-    textpart = [mm availablePartForTypeFromArray:[NSArray arrayWithObjects: @"multipart/alternative", nil]];
-    
-    
-    GHAssertNotNil(textpart, @"the multipart part");
-    
-    
 }
 
 - (void) testBoundaryWarts {

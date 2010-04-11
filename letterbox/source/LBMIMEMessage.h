@@ -65,14 +65,6 @@
 // Returns boundary that separates subparts
 - (NSString*)multipartBoundary;
 
-- (NSArray*)types;
-- (NSString *)availableTypeFromArray:(NSArray *)types;
-- (LBMIMEMessage*)partForType:(NSString*)mimeType;
-- (LBMIMEMessage*)availablePartForTypeFromArray:(NSArray*) types;
-
-// the MIME spec says the alternative parts are ordered from least faithful to the most faithful. we can only presume the sender has done that correctly. consider this a guess rather than being definitive.
-- (NSString*)mostFailthfulAlternativeType;
-
 // Get a parameter from the "Content-Type" header.
 - (NSString*)contentTypeAttribute:(NSString*)attribName;
 
