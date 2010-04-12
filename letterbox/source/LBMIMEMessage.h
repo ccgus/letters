@@ -27,7 +27,6 @@
 // LBMIMEMessage, LBMIMEParser and LBMIMEGenerator are modelled after Python's
 // email module, which informs their interface and implementation.
 @interface LBMIMEMessage : NSObject {
-	LBMIMEMessage *superpart; // non-retained
 	NSMutableArray *subparts;
 	NSString *content;
 	NSMutableArray *headers;
@@ -53,7 +52,6 @@
 
 // Get the value of the "Content-Type" header.
 - (NSString*)contentType;
-- (LBMIMEMessage*)superpart;
 - (NSArray*)subparts;
 - (void)addSubpart:(LBMIMEMessage*)subpart;
 - (void)removeSubpart:(LBMIMEMessage*)subpart;

@@ -59,16 +59,10 @@
     return [self headerValueForName:@"content-type"];
 }
 
-- (LBMIMEMessage*)superpart {
-    return superpart;
-}
-
 - (void)addSubpart:(LBMIMEMessage *)subpart {
     if (subpart == nil) {
         return;
     }
-    
-    subpart->superpart = self;
     [subparts addObject:subpart];
 }
 
@@ -76,9 +70,7 @@
     if (subpart == nil) {
         return;
     }
-    
-    subpart->superpart = nil;
-    [subparts removeObject: subpart];
+    [subparts removeObject:subpart];
 }
 
 - (NSData*)contentTransferDecoded {
