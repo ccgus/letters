@@ -29,7 +29,7 @@
     NSError *err = nil;
     NSString *message = [NSString stringWithContentsOfURL:[self urlToMessage:@"html1.letterbox"] usedEncoding:&usedEncoding error:&err];
     
-    LBMIMEMessage *mm = [[LBMIMEParser messageFromString:message] autorelease];
+    LBMIMEMessage *mm = [LBMIMEParser messageFromString:message];
     
     GHAssertNotNil(mm, @"Creation of a LBMIMEMessage");
     GHAssertEqualStrings([mm multipartBoundary], @"===============0703719983==", @"Checking the boundry");
@@ -72,7 +72,7 @@
                         "\n"
                         "Hello world!\n"
                         "--ZZZZ--");
-    LBMIMEMessage *message = [[LBMIMEParser messageFromString:source] autorelease];
+    LBMIMEMessage *message = [LBMIMEParser messageFromString:source];
     
     GHAssertTrue([message isMultipart], @"message is multi-part");
     GHAssertTrue([[message subparts] count] == 1, @"one message part");
@@ -94,13 +94,12 @@
                         "W5hcnkgRE\n"
                         "FUQQ==\n"
                         "--ZZZZ--");
-    LBMIMEMessage *message = [[LBMIMEParser messageFromString:source] autorelease];
+    LBMIMEMessage *message = [LBMIMEParser messageFromString:source];
     
     GHAssertTrue([message isMultipart], @"message is multi-part");
     GHAssertTrue([[message subparts] count] == 1, @"one message part");
     LBMIMEMessage *binpart = [[message subparts] objectAtIndex:0];
     GHAssertTrue([[binpart contentType] hasPrefix:@"somerandom/mimetype"], @"proper content-type for part");
-    debug(@"content: %@", [binpart content]);
     GHAssertTrue([[binpart contentTransferDecoded] isEqualToData:[@"SOME binary DATA" dataUsingEncoding:NSASCIIStringEncoding]], @"proper content for part");
 }
 
@@ -114,7 +113,7 @@
 
 - (void) testHeaderDefect {
     NSString *source = @"Header-With-Defect\n\n\n";
-    LBMIMEMessage *message = [[LBMIMEParser messageFromString:source] autorelease];
+    LBMIMEMessage *message = [LBMIMEParser messageFromString:source];
     GHAssertTrue([message.defects count] == 1, @"one defect");
     GHAssertTrue([[message.defects objectAtIndex:0] isEqualToString:@"Malformed header: \"Header-With-Defect\""], @"text of defect");
 }
@@ -168,7 +167,6 @@
         [headers setObject:[h objectAtIndex:1] forKey:[h objectAtIndex:0]];
     GHAssertTrue([headers count] == 1, @"One valid header");
     GHAssertTrue([[headers valueForKey:@"X-HEADER-OK"] isEqualToString:@"fine header"], @"Value of header");
-    debug(@"defects: %@", defects);
     GHAssertTrue([defects count] == 4, @"Four defects");
     GHAssertTrue([[defects objectAtIndex:0] isEqualToString:@"Unexpected header continuation: \"   a bogus continuation\""], @"Text of first defect");
     GHAssertTrue([[defects objectAtIndex:1] isEqualToString:@"Unexpected header continuation: \"\tanother bogus continuation\""], @"Text of second defect");

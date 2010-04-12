@@ -97,7 +97,6 @@ typedef enum {
                     // guynote: we've got all the text for a subpart here - we can do this in a block async. we'd need to make sure the resulting part was added to the subparts array in the correct position to preserve the "faithfullness" of alternative type ordering.
                     LBMIMEMessage *subpart = [LBMIMEParser messageFromString:partSourceText];
                     [message addSubpart:subpart];
-                    [subpart release];
                     
                     [lines removeAllObjects];
                     
@@ -143,8 +142,9 @@ typedef enum {
     for (NSString *line in lines) {
         if ([line hasPrefix:@" "] || [line hasPrefix:@"\t"]) {
             if (lastValue == nil) {
-                if (parsingDefects != nil)
+                if (parsingDefects != nil) {
                     [parsingDefects addObject:[NSString stringWithFormat: @"Unexpected header continuation: \"%@\"", line]];
+                }
                 continue;
             }
             
@@ -163,8 +163,9 @@ typedef enum {
         NSRange separatorRange = [line rangeOfString:@": "];
         
         if (separatorRange.location == NSNotFound) {
-            if (parsingDefects != nil)
+            if (parsingDefects != nil) {
                 [parsingDefects addObject:[NSString stringWithFormat: @"Malformed header: \"%@\"", line]];
+            }
             continue;
         }
         

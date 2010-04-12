@@ -20,7 +20,7 @@
 @synthesize headers;
 
 + (LBMIMEMessage*) message {
-    return [[LBMIMEMessage alloc] init];
+    return [[[LBMIMEMessage alloc] init] autorelease];
 }
 
 - (id)init {
@@ -47,9 +47,11 @@
 
 - (NSString*)headerValueForName:(NSString*)name {
     name = [name lowercaseString];
-    for (NSArray *h in headers)
-        if ([name isEqualToString:[[h objectAtIndex:0] lowercaseString]])
+    for (NSArray *h in headers) {
+        if ([name isEqualToString:[[h objectAtIndex:0] lowercaseString]]) {
             return [h objectAtIndex:1];
+        }
+    }
     return nil;
 }
 
@@ -59,10 +61,6 @@
 
 - (LBMIMEMessage*)superpart {
     return superpart;
-}
-
-- (NSArray*)subparts {
-    return subparts;
 }
 
 - (void)addSubpart:(LBMIMEMessage *)subpart {
