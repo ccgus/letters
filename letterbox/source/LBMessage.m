@@ -132,7 +132,7 @@
         
         debug( @"URL: %@", messageURL );
         
-        mimePart = [LBMIMEParser messageFromString:fullMessage];
+        mimePart = [[LBMIMEParser messageFromString:fullMessage] retain];
         debug( @"%@", [mimePart contentType] );
         for (LBMIMEMessage *part in mimePart.subparts) {
             NSLog(@"sub part: %@", [part contentType]);
