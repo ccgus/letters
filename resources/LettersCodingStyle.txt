@@ -30,7 +30,7 @@ if (foo) bar();
 When assigning a var in a conditional statment, use two parens:
 
 while ((foo = [e nextObject])) {
-	<#statements#>
+    <#statements#>
 }
 
 
@@ -79,11 +79,11 @@ LBObject.m:
 
 // inits go next, in the following style.
 - (id)init {
-	self = [super init];
-	if (self != nil) {
-		// stuff here.
-	}
-	return self;
+    self = [super init];
+    if (self != nil) {
+        // stuff here.
+    }
+    return self;
 }
 
 // deallocs go right below the init.
