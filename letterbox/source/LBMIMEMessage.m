@@ -15,10 +15,12 @@
 @implementation LBMIMEMessage
 
 @synthesize content;
+@synthesize subparts;
 @synthesize defects;
+@synthesize headers;
 
 + (LBMIMEMessage*) message {
-    return [[LBMIMEMessage alloc] init];
+    return [[[LBMIMEMessage alloc] init] autorelease];
 }
 
 - (id)init {
@@ -45,9 +47,11 @@
 
 - (NSString*)headerValueForName:(NSString*)name {
     name = [name lowercaseString];
-    for (NSArray *h in headers)
-        if ([name isEqualToString:[[h objectAtIndex:0] lowercaseString]])
+    for (NSArray *h in headers) {
+        if ([name isEqualToString:[[h objectAtIndex:0] lowercaseString]]) {
             return [h objectAtIndex:1];
+        }
+    }
     return nil;
 }
 
@@ -55,20 +59,10 @@
     return [self headerValueForName:@"content-type"];
 }
 
-- (LBMIMEMessage*)superpart {
-    return superpart;
-}
-
-- (NSArray*)subparts {
-    return subparts;
-}
-
 - (void)addSubpart:(LBMIMEMessage *)subpart {
     if (subpart == nil) {
         return;
     }
-    
-    subpart->superpart = self;
     [subparts addObject:subpart];
 }
 
@@ -76,9 +70,7 @@
     if (subpart == nil) {
         return;
     }
-    
-    subpart->superpart = nil;
-    [subparts removeObject: subpart];
+    [subparts removeObject:subpart];
 }
 
 - (NSData*)contentTransferDecoded {

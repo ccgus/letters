@@ -1,17 +1,19 @@
 //
-//  LBMessageTests.m
+//  LBMIMETests.m
 //  LetterBox
 //
 //  Created by August Mueller on 3/16/10.
 //  Copyright 2010 Flying Meat Inc. All rights reserved.
 //
 
-#import "LBMessageTests.h"
-#import "LBMessage.h"
+#import "LBMIMETests.h"
+#import "LBMIMEMessage.h"
+#import "LBMIMEParser.h"
+#import "LBMIMEGenerator.h"
 
 #define debug NSLog
 
-@implementation LBMessageTests
+@implementation LBMIMETests
 
 - (NSURL*)urlToMessage:(NSString*)messageName {
     NSString *myFilePath = [NSString stringWithUTF8String:__FILE__];
@@ -27,7 +29,7 @@
     NSError *err = nil;
     NSString *message = [NSString stringWithContentsOfURL:[self urlToMessage:@"html1.letterbox"] usedEncoding:&usedEncoding error:&err];
     
-    LBMIMEMessage *mm = [[LBMIMEParser messageFromString:message] autorelease];
+    LBMIMEMessage *mm = [LBMIMEParser messageFromString:message];
     
     GHAssertNotNil(mm, @"Creation of a LBMIMEMessage");
     GHAssertEqualStrings([mm multipartBoundary], @"===============0703719983==", @"Checking the boundry");
@@ -70,7 +72,7 @@
                         "\n"
                         "Hello world!\n"
                         "--ZZZZ--");
-    LBMIMEMessage *message = [[LBMIMEParser messageFromString:source] autorelease];
+    LBMIMEMessage *message = [LBMIMEParser messageFromString:source];
     
     GHAssertTrue([message isMultipart], @"message is multi-part");
     GHAssertTrue([[message subparts] count] == 1, @"one message part");
@@ -92,13 +94,12 @@
                         "W5hcnkgRE\n"
                         "FUQQ==\n"
                         "--ZZZZ--");
-    LBMIMEMessage *message = [[LBMIMEParser messageFromString:source] autorelease];
+    LBMIMEMessage *message = [LBMIMEParser messageFromString:source];
     
     GHAssertTrue([message isMultipart], @"message is multi-part");
     GHAssertTrue([[message subparts] count] == 1, @"one message part");
     LBMIMEMessage *binpart = [[message subparts] objectAtIndex:0];
     GHAssertTrue([[binpart contentType] hasPrefix:@"somerandom/mimetype"], @"proper content-type for part");
-    debug(@"content: %@", [binpart content]);
     GHAssertTrue([[binpart contentTransferDecoded] isEqualToData:[@"SOME binary DATA" dataUsingEncoding:NSASCIIStringEncoding]], @"proper content for part");
 }
 
@@ -112,14 +113,14 @@
 
 - (void) testHeaderDefect {
     NSString *source = @"Header-With-Defect\n\n\n";
-    LBMIMEMessage *message = [[LBMIMEParser messageFromString:source] autorelease];
+    LBMIMEMessage *message = [LBMIMEParser messageFromString:source];
     GHAssertTrue([message.defects count] == 1, @"one defect");
     GHAssertTrue([[message.defects objectAtIndex:0] isEqualToString:@"Malformed header: \"Header-With-Defect\""], @"text of defect");
 }
 
 @end
 
-@implementation LBParserHeaderTests
+@implementation LBMIMEHeaderTests
 
 - (void) testSimple {
     NSArray *headers_src = [NSArray arrayWithObjects:
@@ -166,7 +167,6 @@
         [headers setObject:[h objectAtIndex:1] forKey:[h objectAtIndex:0]];
     GHAssertTrue([headers count] == 1, @"One valid header");
     GHAssertTrue([[headers valueForKey:@"X-HEADER-OK"] isEqualToString:@"fine header"], @"Value of header");
-    debug(@"defects: %@", defects);
     GHAssertTrue([defects count] == 4, @"Four defects");
     GHAssertTrue([[defects objectAtIndex:0] isEqualToString:@"Unexpected header continuation: \"   a bogus continuation\""], @"Text of first defect");
     GHAssertTrue([[defects objectAtIndex:1] isEqualToString:@"Unexpected header continuation: \"\tanother bogus continuation\""], @"Text of second defect");
@@ -176,7 +176,7 @@
 
 @end
 
-@implementation LBMessagePayloadTests: GHTestCase
+@implementation LBMIMEPayloadTests: GHTestCase
 
 - (void) testStringPayload {
     NSString *message_src = (@"Header: value\n"
@@ -207,6 +207,46 @@
     GHAssertTrue([message2 isMultipart] == NO, @"message not multipart");
     GHAssertTrue([[message2 content] isEqualToString:@"hello=20=3E=3E=20world"], @"encoded message body");
     GHAssertTrue([[message2 contentTransferDecoded] isEqualToData:[@"hello >> world" dataUsingEncoding:NSASCIIStringEncoding]], @"decoded message body");
+}
+
+@end
+
+@implementation LBMIMEGeneratorTests: GHTestCase
+
+- (void) testSimpleMessage {
+    LBMIMEMessage *message = [LBMIMEMessage message];
+    [message addHeaderWithName:@"My-Header" andValue:@"its value"];
+    [message setContent:@"Hello world!\n"];
+    NSString *expected = (@"My-Header: its value\n"
+                          @"\n"
+                          @"Hello world!\n");
+    NSString *output = [LBMIMEGenerator stringFromMessage:message];
+    GHAssertTrue([expected isEqualToString:output], @"correct output");
+}
+
+- (void) testMultipartMessage {
+    LBMIMEMessage *message = [LBMIMEMessage message];
+    [message addHeaderWithName:@"Content-Type" andValue:@"multipart/alternative; boundary=QQQ"];
+    
+    LBMIMEMessage *part1 = [LBMIMEMessage message];
+    [part1 setContent:@"part one"];
+    [message addSubpart:part1];
+    
+    LBMIMEMessage *part2 = [LBMIMEMessage message];
+    [part2 setContent:@"part two"];
+    [message addSubpart:part2];
+    
+    NSString *output = [LBMIMEGenerator stringFromMessage:message];
+    NSString *expected = (@"Content-Type: multipart/alternative; boundary=QQQ\n"
+                          @"\n"
+                          @"--QQQ\n"
+                          @"\n"
+                          @"part one\n"
+                          @"--QQQ\n"
+                          @"\n"
+                          @"part two\n"
+                          @"--QQQ--");
+    GHAssertTrue([expected isEqualToString:output], @"correct output");
 }
 
 @end

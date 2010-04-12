@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A6A2EAC1173B77C00A089BC /* LBMIMEGenerator.h in Headers */ = {isa = PBXBuildFile; fileRef = 3A6A2EAA1173B77C00A089BC /* LBMIMEGenerator.h */; };
+		3A6A2EAD1173B77C00A089BC /* LBMIMEGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6A2EAB1173B77C00A089BC /* LBMIMEGenerator.m */; };
 		3AD3C2AD1168A4860063FF8C /* LBMIMEMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 3AD3C2AB1168A4860063FF8C /* LBMIMEMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3AD3C2AE1168A4860063FF8C /* LBMIMEMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD3C2AC1168A4860063FF8C /* LBMIMEMessage.m */; };
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
@@ -31,7 +33,7 @@
 		CC3D54271108E7F700EEEF77 /* FMResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = CC3D54211108E7F700EEEF77 /* FMResultSet.h */; };
 		CC3D54281108E7F700EEEF77 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3D54221108E7F700EEEF77 /* FMResultSet.m */; };
 		CC3D54381108EFE800EEEF77 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CC3D54371108EFE800EEEF77 /* libsqlite3.dylib */; };
-		CC45FB6411509BE700AD3A30 /* LBMessageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FB6311509BE700AD3A30 /* LBMessageTests.m */; };
+		CC45FB6411509BE700AD3A30 /* LBMIMETests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FB6311509BE700AD3A30 /* LBMIMETests.m */; };
 		CC46749F113464D500037A0B /* LBTestIMAPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = CC467350113453F800037A0B /* LBTestIMAPServer.m */; };
 		CC5BEC1C1134CC9D0024C6EA /* LBUtilityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5BEC1B1134CC9D0024C6EA /* LBUtilityTests.m */; };
 		CC877CE4110ABC04005ECF65 /* LetterBoxUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CC877CD0110ABC04005ECF65 /* LetterBoxUtilities.m */; };
@@ -245,6 +247,8 @@
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		0867D6A5FE840307C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		3A6A2EAA1173B77C00A089BC /* LBMIMEGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBMIMEGenerator.h; sourceTree = "<group>"; };
+		3A6A2EAB1173B77C00A089BC /* LBMIMEGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBMIMEGenerator.m; sourceTree = "<group>"; };
 		3AD3C2AB1168A4860063FF8C /* LBMIMEMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBMIMEMessage.h; path = source/LBMIMEMessage.h; sourceTree = "<group>"; };
 		3AD3C2AC1168A4860063FF8C /* LBMIMEMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBMIMEMessage.m; path = source/LBMIMEMessage.m; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* LetterBox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LetterBox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -266,8 +270,8 @@
 		CC3D54211108E7F700EEEF77 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = source/FMResultSet.h; sourceTree = "<group>"; };
 		CC3D54221108E7F700EEEF77 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = source/FMResultSet.m; sourceTree = "<group>"; };
 		CC3D54371108EFE800EEEF77 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		CC45FB6211509BE700AD3A30 /* LBMessageTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBMessageTests.h; path = tests/LBMessageTests.h; sourceTree = "<group>"; };
-		CC45FB6311509BE700AD3A30 /* LBMessageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBMessageTests.m; path = tests/LBMessageTests.m; sourceTree = "<group>"; };
+		CC45FB6211509BE700AD3A30 /* LBMIMETests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBMIMETests.h; path = tests/LBMIMETests.h; sourceTree = "<group>"; };
+		CC45FB6311509BE700AD3A30 /* LBMIMETests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBMIMETests.m; path = tests/LBMIMETests.m; sourceTree = "<group>"; };
 		CC46734F113453F800037A0B /* LBTestIMAPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBTestIMAPServer.h; path = tests/LBTestIMAPServer.h; sourceTree = "<group>"; };
 		CC467350113453F800037A0B /* LBTestIMAPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LBTestIMAPServer.m; path = tests/LBTestIMAPServer.m; sourceTree = "<group>"; };
 		CC5BEC1A1134CC9D0024C6EA /* LBUtilityTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LBUtilityTests.h; path = tests/LBUtilityTests.h; sourceTree = "<group>"; };
@@ -540,6 +544,8 @@
 				CC877CE3110ABC04005ECF65 /* LBAccount.h */,
 				CC877CE2110ABC04005ECF65 /* LBAccount.m */,
 				CC1C825D1142EA0300A8788E /* LBMIMEParser.h */,
+				3A6A2EAA1173B77C00A089BC /* LBMIMEGenerator.h */,
+				3A6A2EAB1173B77C00A089BC /* LBMIMEGenerator.m */,
 				CC1C825E1142EA0300A8788E /* LBMIMEParser.m */,
 				CCF41346110D39F200401D5D /* LBActivity.h */,
 				CC877CE1110ABC04005ECF65 /* LBAddress.h */,
@@ -827,8 +833,8 @@
 				CC5BEC1B1134CC9D0024C6EA /* LBUtilityTests.m */,
 				CCAF1448113B1CA400CE220F /* LBServerTests.h */,
 				CCAF1449113B1CA400CE220F /* LBServerTests.m */,
-				CC45FB6211509BE700AD3A30 /* LBMessageTests.h */,
-				CC45FB6311509BE700AD3A30 /* LBMessageTests.m */,
+				CC45FB6211509BE700AD3A30 /* LBMIMETests.h */,
+				CC45FB6311509BE700AD3A30 /* LBMIMETests.m */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -930,6 +936,7 @@
 				CCCB7DBC113B764C00B2F291 /* LBNSStringAdditions.h in Headers */,
 				CC1C825F1142EA0300A8788E /* LBMIMEParser.h in Headers */,
 				3AD3C2AD1168A4860063FF8C /* LBMIMEMessage.h in Headers */,
+				3A6A2EAC1173B77C00A089BC /* LBMIMEGenerator.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1134,6 +1141,7 @@
 				CCCB7DBD113B764C00B2F291 /* LBNSStringAdditions.m in Sources */,
 				CC1C82601142EA0300A8788E /* LBMIMEParser.m in Sources */,
 				3AD3C2AE1168A4860063FF8C /* LBMIMEMessage.m in Sources */,
+				3A6A2EAD1173B77C00A089BC /* LBMIMEGenerator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1151,7 +1159,7 @@
 				CC46749F113464D500037A0B /* LBTestIMAPServer.m in Sources */,
 				CC5BEC1C1134CC9D0024C6EA /* LBUtilityTests.m in Sources */,
 				CCAF144A113B1CA400CE220F /* LBServerTests.m in Sources */,
-				CC45FB6411509BE700AD3A30 /* LBMessageTests.m in Sources */,
+				CC45FB6411509BE700AD3A30 /* LBMIMETests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
