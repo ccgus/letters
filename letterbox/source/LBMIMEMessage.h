@@ -35,6 +35,7 @@
 }
 
 @property (copy) NSString *content;
+@property (readonly) NSArray *subparts;
 @property (readonly) NSMutableArray *defects;
 @property (readonly) NSArray *headers;
 

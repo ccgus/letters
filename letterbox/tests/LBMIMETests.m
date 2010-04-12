@@ -226,4 +226,29 @@
     GHAssertTrue([expected isEqualToString:output], @"correct output");
 }
 
+- (void) testMultipartMessage {
+    LBMIMEMessage *message = [LBMIMEMessage message];
+    [message addHeaderWithName:@"Content-Type" andValue:@"multipart/alternative; boundary=QQQ"];
+    
+    LBMIMEMessage *part1 = [LBMIMEMessage message];
+    [part1 setContent:@"part one"];
+    [message addSubpart:part1];
+    
+    LBMIMEMessage *part2 = [LBMIMEMessage message];
+    [part2 setContent:@"part two"];
+    [message addSubpart:part2];
+    
+    NSString *output = [LBMIMEGenerator stringFromMessage:message];
+    NSString *expected = (@"Content-Type: multipart/alternative; boundary=QQQ\n"
+                          @"\n"
+                          @"--QQQ\n"
+                          @"\n"
+                          @"part one\n"
+                          @"--QQQ\n"
+                          @"\n"
+                          @"part two\n"
+                          @"--QQQ--");
+    GHAssertTrue([expected isEqualToString:output], @"correct output");
+}
+
 @end

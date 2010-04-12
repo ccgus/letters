@@ -22,7 +22,17 @@
     }
     [outputLines addObject:@""];
     
-    [outputLines addObject:[message content]];
+    if ([message isMultipart]) {
+        NSString *boundary = [message multipartBoundary];
+        for (LBMIMEMessage *part in message.subparts) {
+            [outputLines addObject:[NSString stringWithFormat:@"--%@", boundary]];
+            [outputLines addObject:[LBMIMEGenerator stringFromMessage:part]];
+        }
+        [outputLines addObject:[NSString stringWithFormat:@"--%@--", boundary]];
+    }
+    else {
+        [outputLines addObject:[message content]];
+    }
     
     return [outputLines componentsJoinedByString:@"\n"];
 }

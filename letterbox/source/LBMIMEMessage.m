@@ -15,6 +15,7 @@
 @implementation LBMIMEMessage
 
 @synthesize content;
+@synthesize subparts;
 @synthesize defects;
 @synthesize headers;
 
