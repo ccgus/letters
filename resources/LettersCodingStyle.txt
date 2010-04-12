@@ -78,7 +78,7 @@ LBObject.m:
 }
 
 // inits go next, in the following style.
-- (id) init {
+- (id)init {
 	self = [super init];
 	if (self != nil) {
 		// stuff here.
