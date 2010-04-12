@@ -1,5 +1,5 @@
 //
-//  LBMessageTests.h
+//  LBMIMETests.h
 //  LetterBox
 //
 //  Created by August Mueller on 3/16/10.
@@ -10,13 +10,11 @@
 #import <GHUnit/GHUnit.h>
 
 
-@interface LBMessageTests : GHTestCase {
-}
+@interface LBMIMETests : GHTestCase
 @end
 
-@interface LBParserHeaderTests: GHTestCase {
-}
+@interface LBMIMEHeaderTests: GHTestCase
 @end
 
-@interface LBMessagePayloadTests: GHTestCase
+@interface LBMIMEPayloadTests: GHTestCase
 @end

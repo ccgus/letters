@@ -1,17 +1,18 @@
 //
-//  LBMessageTests.m
+//  LBMIMETests.m
 //  LetterBox
 //
 //  Created by August Mueller on 3/16/10.
 //  Copyright 2010 Flying Meat Inc. All rights reserved.
 //
 
-#import "LBMessageTests.h"
-#import "LBMessage.h"
+#import "LBMIMETests.h"
+#import "LBMIMEMessage.h"
+#import "LBMIMEParser.h"
 
 #define debug NSLog
 
-@implementation LBMessageTests
+@implementation LBMIMETests
 
 - (NSURL*)urlToMessage:(NSString*)messageName {
     NSString *myFilePath = [NSString stringWithUTF8String:__FILE__];
@@ -119,7 +120,7 @@
 
 @end
 
-@implementation LBParserHeaderTests
+@implementation LBMIMEHeaderTests
 
 - (void) testSimple {
     NSArray *headers_src = [NSArray arrayWithObjects:
@@ -176,7 +177,7 @@
 
 @end
 
-@implementation LBMessagePayloadTests: GHTestCase
+@implementation LBMIMEPayloadTests: GHTestCase
 
 - (void) testStringPayload {
     NSString *message_src = (@"Header: value\n"
