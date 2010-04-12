@@ -9,6 +9,7 @@
 #import "LBMIMETests.h"
 #import "LBMIMEMessage.h"
 #import "LBMIMEParser.h"
+#import "LBMIMEGenerator.h"
 
 #define debug NSLog
 
@@ -208,6 +209,21 @@
     GHAssertTrue([message2 isMultipart] == NO, @"message not multipart");
     GHAssertTrue([[message2 content] isEqualToString:@"hello=20=3E=3E=20world"], @"encoded message body");
     GHAssertTrue([[message2 contentTransferDecoded] isEqualToData:[@"hello >> world" dataUsingEncoding:NSASCIIStringEncoding]], @"decoded message body");
+}
+
+@end
+
+@implementation LBMIMEGeneratorTests: GHTestCase
+
+- (void) testSimpleMessage {
+    LBMIMEMessage *message = [LBMIMEMessage message];
+    [message addHeaderWithName:@"My-Header" andValue:@"its value"];
+    [message setContent:@"Hello world!\n"];
+    NSString *expected = (@"My-Header: its value\n"
+                          @"\n"
+                          @"Hello world!\n");
+    NSString *output = [LBMIMEGenerator stringFromMessage:message];
+    GHAssertTrue([expected isEqualToString:output], @"correct output");
 }
 
 @end

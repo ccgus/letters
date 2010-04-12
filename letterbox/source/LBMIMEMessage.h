@@ -30,12 +30,13 @@
 	LBMIMEMessage *superpart; // non-retained
 	NSMutableArray *subparts;
 	NSString *content;
-	NSMutableArray *headers; // should not be accessed directly
+	NSMutableArray *headers;
 	NSMutableArray *defects;
 }
 
 @property (copy) NSString *content;
 @property (readonly) NSMutableArray *defects;
+@property (readonly) NSArray *headers;
 
 // Create a new blank message
 + (LBMIMEMessage*)message;

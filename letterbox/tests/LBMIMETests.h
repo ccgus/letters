@@ -18,3 +18,6 @@
 
 @interface LBMIMEPayloadTests: GHTestCase
 @end
+
+@interface LBMIMEGeneratorTests: GHTestCase
+@end

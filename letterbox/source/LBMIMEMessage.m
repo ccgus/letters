@@ -16,6 +16,7 @@
 
 @synthesize content;
 @synthesize defects;
+@synthesize headers;
 
 + (LBMIMEMessage*) message {
     return [[LBMIMEMessage alloc] init];
