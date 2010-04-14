@@ -209,6 +209,89 @@
     GHAssertTrue([[message2 contentTransferDecoded] isEqualToData:[@"hello >> world" dataUsingEncoding:NSASCIIStringEncoding]], @"decoded message body");
 }
 
+- (void) testEncodeQuotedPrintable {
+    NSData *in1 = [@"asdf\n" dataUsingEncoding:NSISOLatin1StringEncoding];
+    NSString *out1 = @"asdf\r\n";
+    GHAssertTrue([out1 isEqualToString:LBMIMEQuotedPrintableFromData(in1)], @"value 1");
+    
+    NSData *in2 = [NSData dataWithBytes:(char[]) {'a', 's', 0xce, 'f', '\n'} length:5];
+    NSString *out2 = @"as=CEf\r\n";
+    GHAssertTrue([out2 isEqualToString:LBMIMEQuotedPrintableFromData(in2)], @"value 2");
+    
+    NSData *in3 = [@"asdf" dataUsingEncoding:NSISOLatin1StringEncoding];
+    NSString *out3 = @"asdf=\r\n";
+    GHAssertTrue([out3 isEqualToString:LBMIMEQuotedPrintableFromData(in3)], @"value 3");
+}
+
+- (void) testEncodeQuoPriLineEndings {
+    // case one - simple long lines
+    NSData *in1 = [@"012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789"
+                   @"01234567890123456789012345678901234567890123456789012345678901234567890123456789"
+                   dataUsingEncoding:NSISOLatin1StringEncoding];
+    NSString *out1 = (@"012345678901234567890123456789012345678901234567890123456789012345678901234=\r\n"
+                      @"567890123456789012345678901234567890123456789012345678901234567890123456789=\r\n"
+                      @"01234567890123456789=\r\n");
+    GHAssertTrue([out1 isEqualToString:LBMIMEQuotedPrintableFromData(in1)], @"value 1");
+    
+    // case two - newlines in text
+    NSData *in2 = [@"asdf\n"
+                   @"qwer\r"
+                   @"zxcv\r\n"
+                   @"qaz\n"
+                   dataUsingEncoding:NSISOLatin1StringEncoding];
+    NSString *out2 = (@"asdf\r\nqwer\r\nzxcv\r\nqaz\r\n");
+    GHAssertTrue([out2 isEqualToString:LBMIMEQuotedPrintableFromData(in2)], @"value 2");
+    
+    // case three - whitespace at end of line
+    // no line may be more than 76 chars; no ' ' or '\t' stranded at end of line
+    NSData *in3 = [@"asdf\n"
+                   @"qwer    \n"
+                   @"zxcv\n"
+                   @"012345678901234567890123456789012345678901234567890123456789012345678901 \n"
+                   @"0123456789012345678901234567890123456789012345678901234567890123456789012 \n"
+                   @"01234567890123456789012345678901234567890123456789012345678901234567890123 \n"
+                   @"012345678901234567890123456789012345678901234567890123456789012345678901234 \n"
+                   @"01234567890123456789012345678901234567890123456789012345678901234567890  \n"
+                   @"012345678901234567890123456789012345678901234567890123456789012345678901  \n"
+                   @"0123456789012345678901234567890123456789012345678901234567890123456789012  \n"
+                   @"01234567890123456789012345678901234567890123456789012345678901234567890123  \n"
+                   @"012345678901234567890123456789012345678901234567890123456789012345678901234  \n"
+                   @"0123456789012345678901234567890123456789012345678901234567890123456789   \n"
+                   @"01234567890123456789012345678901234567890123456789012345678901234567890   \n"
+                   @"012345678901234567890123456789012345678901234567890123456789012345678901   \n"
+                   @"0123456789012345678901234567890123456789012345678901234567890123456789012   \n"
+                   @"01234567890123456789012345678901234567890123456789012345678901234567890123   \n"
+                   dataUsingEncoding:NSISOLatin1StringEncoding];
+    NSString *out3 = (@"asdf\r\n"
+                      @"qwer   =20\r\n"
+                      @"zxcv\r\n"
+                      @"012345678901234567890123456789012345678901234567890123456789012345678901=20\r\n"
+                      @"0123456789012345678901234567890123456789012345678901234567890123456789012=20\r\n"
+                      @"01234567890123456789012345678901234567890123456789012345678901234567890123=\r\n=20\r\n"
+                      @"012345678901234567890123456789012345678901234567890123456789012345678901234=\r\n=20\r\n"
+                      @"01234567890123456789012345678901234567890123456789012345678901234567890 =20\r\n"
+                      @"012345678901234567890123456789012345678901234567890123456789012345678901 =20\r\n"
+                      @"0123456789012345678901234567890123456789012345678901234567890123456789012 =\r\n=20\r\n"
+                      @"01234567890123456789012345678901234567890123456789012345678901234567890123 =\r\n=20\r\n"
+                      @"012345678901234567890123456789012345678901234567890123456789012345678901234=\r\n =20\r\n"
+                      @"0123456789012345678901234567890123456789012345678901234567890123456789  =20\r\n"
+                      @"01234567890123456789012345678901234567890123456789012345678901234567890  =20\r\n"
+                      @"012345678901234567890123456789012345678901234567890123456789012345678901  =\r\n=20\r\n"
+                      @"0123456789012345678901234567890123456789012345678901234567890123456789012  =\r\n=20\r\n"
+                      @"01234567890123456789012345678901234567890123456789012345678901234567890123 =\r\n =20\r\n");
+    GHAssertTrue([out3 isEqualToString:LBMIMEQuotedPrintableFromData(in3)], @"value 3");
+    
+    // case four and five - long lines at end of text
+    NSData *in4 = [@"012345678901234567890123456789012345678901234567890123456789012345678901234"
+                   dataUsingEncoding:NSISOLatin1StringEncoding];
+    NSString *out4 = @"012345678901234567890123456789012345678901234567890123456789012345678901234=\r\n";
+    GHAssertTrue([out4 isEqualToString:LBMIMEQuotedPrintableFromData(in4)], @"value 4");
+    NSData *in5 = [@"0123456789012345678901234567890123456789012345678901234567890123456789012345"
+                   dataUsingEncoding:NSISOLatin1StringEncoding];
+    NSString *out5 = @"012345678901234567890123456789012345678901234567890123456789012345678901234=\r\n5=\r\n";
+    GHAssertTrue([out5 isEqualToString:LBMIMEQuotedPrintableFromData(in5)], @"value 5");
+}
+
 @end
 
 @implementation LBMIMEGeneratorTests: GHTestCase

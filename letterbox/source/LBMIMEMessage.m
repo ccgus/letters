@@ -150,3 +150,78 @@ NSData *LBMIMEDataFromBase64(NSString *encodedString)
     
     return [[[NSData alloc] initWithData:decodedData] autorelease];
 }
+
+NSString* wrap_line(NSMutableString *line) {
+    int snip_index = [line length];
+    while (snip_index > 75) {
+        snip_index -= 1;
+        if ([line characterAtIndex:snip_index-2] == '=') {
+            // the last character was an escape sequence. remove it wholesale.
+            snip_index -= 2;
+        }
+    }
+    NSString *whole_line = [line substringToIndex:snip_index];
+    [line setString:[line substringFromIndex:snip_index]];
+    return [whole_line stringByAppendingString:@"=\r\n"];
+}
+
+NSString* LBMIMEQuotedPrintableFromData(NSData* value) {
+    NSMutableString *output = [NSMutableString stringWithCapacity:[value length]*2];
+    NSMutableString *line = [NSMutableString stringWithCapacity:100];
+    
+    int line_size = 0;
+    for (int i = 0; i < [value length]; i++) {
+        unsigned char ch = ((unsigned const char *)[value bytes])[i];
+        
+        if (ch == '\r') {
+            if (i+1 < [value length] && ((unsigned const char *)[value bytes])[i+1] == '\n') {
+                // if we are at CR before a NL, skip one character ahead
+                i += 1;
+            }
+            // but anyway, treat this as a newline
+            ch = '\n';
+        }
+        
+        if (ch == '\n') {
+            unsigned char last_ch = [line characterAtIndex:[line length]-1];
+            if (last_ch == ' ' || last_ch == '\t') {
+                [line setString:[line substringToIndex:[line length]-1]];
+                [line appendFormat:@"=%02X", last_ch];
+            }
+            if ([line length] > 76) {
+                [output appendString:wrap_line(line)];
+            }
+            [output appendString:line];
+            [output appendString:@"\r\n"];
+            [line setString:@""];
+            continue;
+        }
+        
+        if (! (ch == ' ' || ch == '\t' || (ch >= '!' && ch <= '<') || (ch >= '>' && ch <= '~'))) {
+            // need to quote
+            [line appendFormat:@"=%02X", ch];
+        }
+        else {
+            // don't quote
+            [line appendFormat:@"%c", ch];
+        }
+        
+        // make sure lines don't get too long
+        if ([line length] > 76) {
+            [output appendString:wrap_line(line)];
+        }
+    }
+    
+    // terminate the last line
+    if ([line length] > 0) {
+        if(! [line hasSuffix:@"\r\n"]) {
+            if ([line length] > 75) {
+                [output appendString:wrap_line(line)];
+            }
+            [line appendString:@"=\r\n"];
+        }
+        [output appendString:line];
+    }
+    
+    return output;
+}
