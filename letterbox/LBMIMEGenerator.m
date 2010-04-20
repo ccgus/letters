@@ -34,7 +34,7 @@
         [outputLines addObject:[message content]];
     }
     
-    return [outputLines componentsJoinedByString:@"\n"];
+    return [outputLines componentsJoinedByString:@"\r\n"];
 }
 
 @end

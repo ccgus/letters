@@ -216,10 +216,10 @@
 - (void) testSimpleMessage {
     LBMIMEMessage *message = [LBMIMEMessage message];
     [message addHeaderWithName:@"My-Header" andValue:@"its value"];
-    [message setContent:@"Hello world!\n"];
-    NSString *expected = (@"My-Header: its value\n"
-                          @"\n"
-                          @"Hello world!\n");
+    [message setContent:@"Hello world!\r\n"];
+    NSString *expected = (@"My-Header: its value\r\n"
+                          @"\r\n"
+                          @"Hello world!\r\n");
     NSString *output = [LBMIMEGenerator stringFromMessage:message];
     GHAssertTrue([expected isEqualToString:output], @"correct output");
 }
@@ -237,14 +237,14 @@
     [message addSubpart:part2];
     
     NSString *output = [LBMIMEGenerator stringFromMessage:message];
-    NSString *expected = (@"Content-Type: multipart/alternative; boundary=QQQ\n"
-                          @"\n"
-                          @"--QQQ\n"
-                          @"\n"
-                          @"part one\n"
-                          @"--QQQ\n"
-                          @"\n"
-                          @"part two\n"
+    NSString *expected = (@"Content-Type: multipart/alternative; boundary=QQQ\r\n"
+                          @"\r\n"
+                          @"--QQQ\r\n"
+                          @"\r\n"
+                          @"part one\r\n"
+                          @"--QQQ\r\n"
+                          @"\r\n"
+                          @"part two\r\n"
                           @"--QQQ--");
     GHAssertTrue([expected isEqualToString:output], @"correct output");
 }
