@@ -2,7 +2,6 @@ Letters
 =======
 
 **Letters-Dev:** http://lists.ranchero.com/listinfo.cgi/letters-dev-ranchero.com<br/>
-**Email-init** (aka Letters-Talk): http://lists.ranchero.com/listinfo.cgi/email-init-ranchero.com<br/>
 **irc:** freenode.net ##lettersapp
 
 What you'll find here isn't actually Letters.  It's a prototype named "CrashyEmailApp" which, as you might have guessed, is going to crash when you build and run it.
