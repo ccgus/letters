@@ -4,8 +4,8 @@
 
 @interface FMDatabase : NSObject 
 {
-    sqlite3*    db;
-    NSString*   databasePath;
+	sqlite3*    db;
+	NSString*   databasePath;
     BOOL        logsErrors;
     BOOL        crashOnErrors;
     BOOL        inUse;
@@ -25,7 +25,7 @@
 #if SQLITE_VERSION_NUMBER >= 3005000
 - (BOOL) openWithFlags:(int)flags;
 #endif
-- (void) close;
+- (BOOL) close;
 - (BOOL) goodConnection;
 - (void) clearCachedStatements;
 

@@ -64,12 +64,12 @@
 #endif
 
 
-- (void) close {
+- (BOOL) close {
     
     [self clearCachedStatements];
     
 	if (!db) {
-        return;
+        return YES;
     }
     
     int  rc;
@@ -84,7 +84,7 @@
             if (busyRetryTimeout && (numberOfRetries++ > busyRetryTimeout)) {
                 NSLog(@"%s:%d", __FUNCTION__, __LINE__);
                 NSLog(@"Database busy, unable to close");
-                return;
+                return NO;
             }
         }
         else if (SQLITE_OK != rc) {
@@ -94,6 +94,7 @@
     while (retry);
     
 	db = nil;
+    return YES;
 }
 
 - (void) clearCachedStatements {
@@ -215,7 +216,7 @@
     
     // FIXME - someday check the return codes on these binds.
     else if ([obj isKindOfClass:[NSData class]]) {
-        sqlite3_bind_blob(pStmt, idx, [obj bytes], [obj length], SQLITE_STATIC);
+        sqlite3_bind_blob(pStmt, idx, [obj bytes], (int)[obj length], SQLITE_STATIC);
     }
     else if ([obj isKindOfClass:[NSDate class]]) {
         sqlite3_bind_double(pStmt, idx, [obj timeIntervalSince1970]);
