@@ -57,12 +57,14 @@ void letterbox_logger(int direction, const char * str, size_t size) {
 }
 
 
-void LBQuickError(NSError **err, NSString *domain, NSInteger code, NSString *description) {
+BOOL LBQuickError(NSError **err, NSString *domain, NSInteger code, NSString *description) {
     // fixme: add a com.lettersapp in front of the domain?
     if (err) {
         *err = [NSError errorWithDomain:domain code:code userInfo:[NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey]];
     }
     
+    // make the static analyzer shudup by returning a BOOL
+    return YES;
 }
 
 

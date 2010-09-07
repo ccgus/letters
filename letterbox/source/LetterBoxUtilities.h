@@ -31,7 +31,7 @@
 
 #import <Foundation/Foundation.h>
 
-void LBQuickError(NSError **err, NSString *domain, NSInteger code, NSString *description);
+BOOL LBQuickError(NSError **err, NSString *domain, NSInteger code, NSString *description);
 
 NSString *LBQuote(NSString *body, NSString *prefix);
 
@@ -44,3 +44,9 @@ NSDictionary* LBParseSimpleFetchResponse(NSString *fetchResponse);
 
 #define LBRelease(a)  { [a release]; a = nil; }
 #define LBPrefs [NSUserDefaults standardUserDefaults]
+
+#ifdef DEBUG
+    #define LBAssert(...) assert(__VA_ARGS__)
+#else
+    #define LBAssert(...)
+#endif

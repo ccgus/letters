@@ -9,6 +9,7 @@
 #import "LBMessage.h"
 #import "LetterBoxUtilities.h"
 #import "LBMIMEParser.h"
+#import "LBNSStringAdditions.h"
 
 @implementation LBMessage
 
@@ -84,12 +85,12 @@
     return m;
 }
 
-- (id) copy {
+- (id)copy {
     return [self copyWithZone:nil];
 }
 
 
-- (void) parseHeaders {
+- (void)parseHeaders {
     
     if (!subject) {
         self.subject = [messageURL lastPathComponent];
@@ -157,6 +158,29 @@
     }
     
     return messageBody;
+}
+
+- (NSData*)SMTPData {
+    
+    NSMutableString *ret = [NSMutableString string];
+    
+    if (to) {
+        [ret appendFormat:@"To: %@\r\n", to];
+    }
+    
+    if (sender) {
+        [ret appendFormat:@"From: %@\r\n", sender];
+    }
+    
+    if (subject) {
+        [ret appendFormat:@"Subject: %@\r\n", subject];
+    }
+    
+    [ret appendFormat:@"%@\r\n.\r\n", messageBody];
+    
+    debug(@"ret: '%@'", ret);
+    
+    return [ret utf8Data];
 }
 
 @end

@@ -12,7 +12,7 @@
 @implementation LAAddressBookEntry
 @synthesize name, email;
 -(id)initWithName:(NSString*)aname andEntry:(NSString*)anemail{
-	if(self = [super init]){
+	if ((self = [super init])) {
 		self.name = aname;
 		self.email = anemail;
 	}

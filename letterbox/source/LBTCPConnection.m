@@ -9,6 +9,7 @@
 #import "LBTCPConnection.h"
 #import "LBTCPReader.h"
 #import "LBAccount.h"
+#import "LetterBoxUtilities.h"
 
 #import "TCP_Internal.h"
 #import "IPAddress.h"
@@ -43,6 +44,8 @@ NSString *LBCONNECTING = @"THISSTRINGDOESN'TMATTER";
 }
 
 - (void)sendData:(NSData*)data readBlock:(void (^)(LBTCPReader *))block {
+    
+    LBAssert(data);
     
     bytesRead           = 0;
     self.responseBytes  = [NSMutableData data];

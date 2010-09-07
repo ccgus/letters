@@ -37,7 +37,7 @@
 @property (retain) NSString *flags;
 @property (retain) LBMIMEMessage *mimePart;
 
-- (void) parseHeaders;
-
+- (void)parseHeaders;
+- (NSData*)SMTPData;
 
 @end

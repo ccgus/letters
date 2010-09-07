@@ -229,7 +229,7 @@ JRLog(
     //  
     va_list args;
     va_start(args, format_);
-    NSString *message = [[NSString alloc] initWithFormat:format_ arguments:args];
+    NSString *message = [[[NSString alloc] initWithFormat:format_ arguments:args] autorelease];
     va_end(args);
     
     [[JRLogOutput sharedOutput] logWithLevel:callerLevel_

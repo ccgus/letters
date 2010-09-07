@@ -20,10 +20,7 @@
 - (id)init {
     self = [super init];
     if (self) {
-    
-        // Add your subclass-specific initialization here.
-        // If an error occurs here, send a [self release] message and return nil.
-    
+        
     }
     return self;
 }
@@ -42,23 +39,18 @@
 
 
 - (NSString *)windowNibName {
-    // Override returning the nib file name of the document
-    // If you need to use a subclass of NSWindowController or if your document supports multiple NSWindowControllers, you should remove this method and override -makeWindowControllers instead.
     return @"LADocument";
 }
 
 - (void)windowControllerDidLoadNib:(NSWindowController *) aController {
     [super windowControllerDidLoadNib:aController];
-    // Add any code here that needs to be executed once the windowController has loaded the document's window.
+    
+    LBAccount *account = [[appDelegate accounts] lastObject];
+    
+    [self setFromList:[account fromAddress]];
 }
 
 - (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError {
-    // Insert code here to write your document to data of the specified type. If the given outError != NULL, ensure that you set *outError when returning nil.
-
-    // You can also choose to override -fileWrapperOfType:error:, -writeToURL:ofType:error:, or -writeToURL:ofType:forSaveOperation:originalContentsURL:error: instead.
-
-    // For applications targeted for Panther or earlier systems, you should use the deprecated API -dataRepresentationOfType:. In this case you can also choose to override -fileWrapperRepresentationOfType: or -writeToFile:ofType: instead.
-
     if (outError) {
         *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
     }
@@ -67,12 +59,6 @@
 }
 
 - (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError {
-    // Insert code here to read your document from the given data of the specified type.  If the given outError != NULL, ensure that you set *outError when returning NO.
-
-    // You can also choose to override -readFromFileWrapper:ofType:error: or -readFromURL:ofType:error: instead. 
-    
-    // For applications targeted for Panther or earlier systems, you should use the deprecated API -loadDataRepresentation:ofType. In this case you can also choose to override -readFromFile:ofType: or -loadFileWrapperRepresentation:ofType: instead.
-    
     if (outError != NULL) {
         *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
     }
@@ -90,52 +76,57 @@
     assert(account);
     
     if (![fromList length]) {
-        debug(@"need a from!");
+        [[fromTextField window] makeFirstResponder:fromTextField];
         return;
     }
     
     if (![toList length]) {
-        debug(@"need a _toList!");
+        [[toTextField window] makeFirstResponder:toTextField];
         return;
     }
     
-    NSMutableSet *toSet = [NSMutableSet set];
-    
-    for (NSString *addr in [toList componentsSeparatedByString:@" "]) {
-        [toSet addObject:[LBAddress addressWithName:@"" email:addr]];
+    if (![subject length]) {
+        [self setSubject:NSLocalizedString(@"No Subject", @"No Subject")];
+        [[subjectTextField window] makeFirstResponder:subjectTextField];
+        return;
     }
     
-    /*
-    LBIMAPMessage *msg = [[LBIMAPMessage alloc] init];
-    [msg setTo:toSet];
-    [msg setFrom:[NSSet setWithObject:[LBAddress addressWithName:@"" email:fromList]]];
-    [msg setBody:[[message copy] autorelease]];
-    [msg setSubject:subject];
+    if (![message length]) {
+        [self setMessage:NSLocalizedString(@"This space intentionally left blank.", @"This space intentionally left blank.")];
+        [[messageTextView window] makeFirstResponder:messageTextView];
+        return;
+    }
     
-    [self setStatusMessage:NSLocalizedString(@"Sending message", @"Sending message")];
-    [progressIndicator startAnimation:self];
+    LBMessage *lbmessage = [[[LBMessage alloc] init] autorelease];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
+    [lbmessage setTo:toList];
+    [lbmessage setSender:fromList];
+    [lbmessage setSubject:subject];
+    [lbmessage setMessageBody:message];
+    
+    LBSMTPConnection *conn = [[[LBSMTPConnection alloc] initWithAccount:account] autorelease];
+    
+    conn.debugOutput = YES;
+    
+    [conn connectUsingBlock:^(NSError *err) {
         
-        // FIXME: how do we know if it was successful or not?
+        if (err) {
+            NSRunAlertPanel(@"Error", [err localizedDescription], @"OK", nil, nil);
+            return;
+        }
         
-        [LBSMTPConnection sendMessage:msg
-                               server:[account smtpServer]
-                             username:[account username]
-                             password:[account password]
-                                 port:25 // fixme
-                               useTLS:YES // fixme, lookup in acct
-                              useAuth:YES];
-        
-        dispatch_async(dispatch_get_main_queue(),^ {
-            [self setStatusMessage:nil];
-            [progressIndicator stopAnimation:self];
+        [conn sendMessage:lbmessage block:^(NSError *berr) {
+            
+            if (berr) {
+                NSRunAlertPanel(@"Error", [berr localizedDescription], @"OK", nil, nil);
+            }
+            
             [self close];
-        });
-        
-        [msg release];
-    });
-    */
+            
+            (void)lbmessage; // so it's kept alive by copyblock and friends till here.
+            
+        }];
+    }];
 }
 
 

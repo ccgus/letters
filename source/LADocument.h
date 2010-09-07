@@ -13,8 +13,14 @@
     
     // FIXME: this should all probably go in a window controller subclass...
     
-    IBOutlet NSProgressIndicator *progressIndicator;
-	LAAddressBookViewController *addressBookVC;
+    IBOutlet NSProgressIndicator    *progressIndicator;
+    
+    IBOutlet NSTextField            *fromTextField;
+    IBOutlet NSTextField            *toTextField;
+    IBOutlet NSTextField            *subjectTextField;
+    IBOutlet NSTextView             *messageTextView;
+    
+	LAAddressBookViewController     *addressBookVC;
 }
 
 @property (retain) NSString *toList;

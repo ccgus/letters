@@ -8,7 +8,9 @@
 
 }
 
-- (void)test;
+//- (void)test;
 - (id)initWithAccount:(LBAccount*)account;
+
+- (void)sendMessage:(LBMessage*)message block:(LBResponseBlock)block;
 
 @end

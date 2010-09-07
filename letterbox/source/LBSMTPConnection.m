@@ -3,8 +3,10 @@
 #import "LBAccount.h"
 #import "IPAddress.h"
 #import "LetterBoxUtilities.h"
+#import "LBMessage.h"
 
 static NSString *LBSMTPHELLO    = @"HELO";
+static NSString *LBSMTPEHLO     = @"EHLO";
 static NSString *LBSMTPMAILFROM = @"MAIL FROM:";
 static NSString *LBSMTPRCPTTO   = @"RCPT TO:";
 static NSString *LBSMTPDATA     = @"DATA";
@@ -70,6 +72,8 @@ static NSString *LBSMTPDATA     = @"DATA";
         
         NSString *serverName = [[self address] hostname];
         
+        // FIXME: we should really use esmtp here, and find out the server capibilities and such.
+        //[self sendCommand:LBSMTPEHLO withArgument:serverName readBlock:^(LBTCPReader *arg1) {
         [self sendCommand:LBSMTPHELLO withArgument:serverName readBlock:^(LBTCPReader *arg1) {
             
             [self appendDataFromReader:reader];
@@ -95,12 +99,16 @@ static NSString *LBSMTPDATA     = @"DATA";
     [super connectUsingBlock:block];
 }
 
-- (void)sendMessage:(NSString*)message to:(NSString*)to from:(NSString*)from block:(LBResponseBlock)block {
+- (void)sendMessage:(LBMessage*)message block:(LBResponseBlock)block {
+    
+    LBAssert([message to]);
+    LBAssert([message sender]);
+    LBAssert([message messageBody]);
     
     responseBlock = [block copy];
     
-    to   = [NSString stringWithFormat:@"%@<%@>", LBSMTPRCPTTO, to];
-    from = [NSString stringWithFormat:@"%@<%@>", LBSMTPMAILFROM, from];
+    NSString *to   = [NSString stringWithFormat:@"%@<%@>", LBSMTPRCPTTO, [message to]];
+    NSString *from = [NSString stringWithFormat:@"%@<%@>", LBSMTPMAILFROM, [message sender]];
     
     [self sendCommand:from withArgument:nil readBlock:^(LBTCPReader *reader) {
         
@@ -153,9 +161,7 @@ static NSString *LBSMTPDATA     = @"DATA";
                     return;
                 }
                 
-                NSString *fixedmessage = [message stringByAppendingString:@"\r\n.\r\n"];
-                
-                [self sendData:[fixedmessage dataUsingEncoding:NSUTF8StringEncoding] readBlock:^(LBTCPReader *reader) {
+                [self sendData:[message SMTPData] readBlock:^(LBTCPReader *reader) {
                     [self appendDataFromReader:reader];
                     
                     NSString *res = [[self responseBytes] lbFirstLine];
@@ -176,7 +182,7 @@ static NSString *LBSMTPDATA     = @"DATA";
     }];
 }
 
-
+/*
 - (void) test {
     
     [self setDebugOutput:[LBPrefs boolForKey:@"debugIMAPMessages"]];
@@ -208,6 +214,6 @@ static NSString *LBSMTPDATA     = @"DATA";
         }];
     }];
 }
-
+*/
 
 @end
